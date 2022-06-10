@@ -13,6 +13,7 @@
 .*.lb
 *.fdb_latexmk
 *.gz
+*.thm
 
 # Miscellaneous
 vscode/

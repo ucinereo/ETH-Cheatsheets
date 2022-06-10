@@ -28,12 +28,52 @@
 \theoremstyle{definition}
 \newtheorem*{theorem}{Thm}
 \newtheorem*{definition}{Def}
-\newtheorem*{note}{Hint}
-
+\newtheorem*{note_wrapper}{Hint}
 
 \newtheoremstyle{named}{}{}{}{}{\bfseries}{.}{.5em}{\thmnote{#3}}
-\theoremstyle{named}
-\newtheorem*{ntheorem}{Theorem}
+\theoremstyle{named} 
+\newtheorem*{ntheorem_wrapper}{Theorem}
+
+% Colored boxes
+\usepackage{xcolor}
+\usepackage{mdframed}
+\mdfsetup{skipabove=-2pt,skipbelow=-2pt}
+
+\definecolor{cwhite}{HTML}{d7dbd7}
+\mdfdefinestyle{important}{
+    linecolor=yellow,
+    linewidth=0pt,
+    innertopmargin=-6pt,
+    innerbottommargin=2pt,
+    innerrightmargin=2pt,
+    innerleftmargin=2pt,
+    leftmargin=0pt,
+    rightmargin=0pt,
+    outerlinewidth=0pt,
+    backgroundcolor=cwhite,
+}
+
+\newenvironment{ntheorem}%
+    {\begin{mdframed}[style=important]\begin{ntheorem_wrapper}}%
+    {\end{ntheorem_wrapper}\end{mdframed}}
+
+\definecolor{cgreen}{HTML}{2ecc71} 
+\mdfdefinestyle{trick}{
+    linecolor=yellow,
+    linewidth=0pt,
+    innertopmargin=-6pt,
+    innerbottommargin=2pt,
+    innerrightmargin=2pt,
+    innerleftmargin=2pt,
+    leftmargin=0pt,
+    rightmargin=0pt,
+    outerlinewidth=0pt,
+    backgroundcolor=cgreen,
+}
+
+\newenvironment{note}%
+    {\begin{mdframed}[style=trick]\begin{note_wrapper}}%
+    {\end{note_wrapper}\end{mdframed}}
 
 % Miscellaneous
 \usepackage{hyperref}
