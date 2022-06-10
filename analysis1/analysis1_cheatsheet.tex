@@ -75,6 +75,10 @@
     {\begin{mdframed}[style=trick]\begin{note_wrapper}}%
     {\end{note_wrapper}\end{mdframed}}
 
+% Table stuff
+\usepackage{tabularx} % tabularx since the width should be handled automatically
+\usepackage{booktabs}
+
 % Miscellaneous
 \usepackage{hyperref}
 \hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue}
@@ -89,6 +93,7 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\C}{\mathbb{C}}
+\newcommand{\BO}{\mathcal{O}}
 \renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
 
 % Metadata
@@ -183,17 +188,6 @@ $(a_n)_{n \geq 1}$ converges to $L = \lim_{n \to \infty} a_n$ $\iff \forall \eps
     "$\sum_{k=1}^\infty a_k$" converges, if the sequence $(S_n)_{n \geq 1}$ of partial sums converges and $\sum_{k=1}^\infty a_k := \lim_{n \to \infty} S_n$
 \end{definition}
 
-\subsection{Important Series}
-\begin{itemize}
-    \item Geometric: $\sum_{n = 0}^\infty q^n = \frac{1}{1 - q}$ if $|q| < 1$
-    \item Harmonic: $\sum_{n = 1}^\infty \frac{1}{k}$ diverges
-    \item Telescope: $\sum_{n = 0}^\infty \frac{1}{k(k + 1)} = 1$
-    \item $\exp(z) := \sum_{n = 0}^\infty \frac{z^n}{n!} = \underset{n \to \infty}{\lim}(1 + \frac{z}{n})^n = e^z$
-    \item $\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}$ converges $s > 1$
-    \item $\text{p}(z) = \sum_{k = 0}^\infty c_kz^k$ converges absolute for $|z| < \rho$
-    \item $\lim_{n\to\infty} (1 + \frac{1}{n})^n = e$
-\end{itemize}
-
 \begin{theorem}
     $\sum_{k = 1}^\infty a_k$ and $\sum_{j = 1}^\infty b_j$ convergent:
     \begin{itemize}
@@ -238,13 +232,13 @@ $(a_n)_{n \geq 1}$ converges to $L = \lim_{n \to \infty} a_n$ $\iff \forall \eps
     $$\sum_{k=1}^\infty (-1)^{k + 1} a_k \text{ converges}$$
 \end{ntheorem}
 
-\begin{theorem}[Ratio Test]
+\begin{ntheorem}[Ratio Test]
     Let $(a_n)_{n \geq 1}$ with $a_n \neq 0 \quad \forall n\geq 1$:
     
     $\underset{n\to\infty}{\lim\sup} \frac{|a_{n+1}|}{|a_n|} < 1 \implies \sum_{n=1}^\infty a_n$ converges absolute.
 
     $\underset{n\to\infty}{\lim\inf} \frac{|a_{n+1}|}{|a_n|} > 1 \implies \sum_{n=1}^\infty a_n$ diverges
-\end{theorem}
+\end{ntheorem}
 
 \begin{lemma}
     $\lim_{n\to\infty} \frac{|a_{n+1}|}{|a_n|} = L$:
@@ -666,22 +660,21 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \subsection{Integrability criteria}
 
 \begin{definition}[Integrable]
-    Bounded $f: [a, b] \to \R$ is integrable if $\underline{S}(f) = \overline{S}(f)$ and the shared value is $\int_a^b f(x) dx$.
+    Bounded $f: [a, b] \to \R$ is integrable if $\underline{S}(f) = \overline{S}(f)$ and the shared value is $\int_a^b f(x) \,dx$.
 \end{definition}
 
 \begin{ntheorem}[Riemann Criteria]
-    Bounded $f: I \to \R$ is integrable
+    Bounded $f: I \to \R$ is integrable. Let $\mathcal{P}_\delta(I) := \{P \in \mathcal{P}(I) \ | \ \delta(P) < \delta\}$.
     \begin{flalign*}
-        &\Leftrightarrow &&\forall \epsilon > 0 \ \exists P \in \mathcal{P}(I) \ : \overline{S}(f, P) - \underline{S}(f, P) < \epsilon & \\
-        &\Leftrightarrow &&\forall \epsilon > 0 \ \exists \delta > 0 \ \forall P \in \mathcal{P}_\delta(I) := \{P \in \mathcal{P}(I) \ | \ \delta(P) < \delta\}: & \\
-        &&& \overline{S}(f, P) - \underline{S}(f, P) < \epsilon & \\
+        &\Leftrightarrow &&\forall \epsilon > 0 \ \exists P \in \mathcal{P}(I) : \overline{S}(f, P) - \underline{S}(f, P) < \epsilon & \\
+        &\Leftrightarrow &&\forall \epsilon > 0 \ \exists \delta > 0 \ \forall P \in \mathcal{P}_\delta(I): \overline{S}(f, P) - \underline{S}(f, P) < \epsilon & \\
         &\Leftrightarrow &&\forall \epsilon > 0 \ \exists \delta > 0 \ \forall P \in \mathcal{P} \ \text{with} \ \delta(P) < \delta: & \\
         &&& \left|A - \sum_{i=1}^n f(\xi_i)(x_i - x_{i - 1})\right| < \epsilon
     \end{flalign*}
 \end{ntheorem}
 
 \begin{note}
-    Bounded $f: [a, b] \to \R$ is int. if $\lim_{\delta(P) \to 0} S(f, P, \xi)$ exists for all $P$ with $\delta(P) \to 0$. It follows that \newline $\lim_{\delta(P) \to 0} S(f, P, \xi) = \int_a^b f(x) dx$
+    Bounded $f: [a, b] \to \R$ is int. if $\lim_{\delta(P) \to 0} S(f, P, \xi)$ exists for all $P$ with $\delta(P) \to 0$. It follows that \newline $\lim_{\delta(P) \to 0} S(f, P, \xi) = \int_a^b f(x) \,dx$
 \end{note}
 
 \subsection{Integrable Functions}
@@ -709,36 +702,36 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 
 \begin{theorem}
     $f, g: [a, b] \to \R$ bounded and integrable and $\forall x \in [a, b]: f(x) \leq g(x) \implies$
-    $$\int_a^b f(x) dx \leq \int_a^b g(x) dx$$
+    $$\int_a^b f(x) \,dx \leq \int_a^b g(x) \,dx$$
 \end{theorem}
 
 \begin{corollary}
-    $|\int_a^b f(x) dx| \leq \int_a^b |f(x)| dx$
+    $|\int_a^b f(x) \,dx| \leq \int_a^b |f(x)| \,dx$
 \end{corollary}
 
 \begin{ntheorem}[Cauchy-Schwarz]
-    $$\left|\int_a^b f(x)g(x) dx\right| \leq \sqrt{\int_a^b f^2(x) dx}\sqrt{\int_a^b g^2(x) dx}$$
+    $$\left|\int_a^b f(x)g(x) \,dx\right| \leq \sqrt{\int_a^b f^2(x) \,dx}\sqrt{\int_a^b g^2(x) \,dx}$$
 \end{ntheorem}
 
 \begin{note}
-    $<f, g> := \int_a^b f(x)g(x) dx$ is a scalar product. \newline
-    $||f||^2 = <f, f> = \int_a^b f^2(x) dx$.
+    $<f, g> := \int_a^b f(x)g(x) \,dx$ is a scalar product. \newline
+    $||f||^2 = <f, f> = \int_a^b f^2(x) \,dx$.
 \end{note}
 
 \begin{ntheorem}[Mean Value Theorem]
-    $f: [a, b] \to \R$ continuous $\implies \exists \xi \in [a, b]: \int_a^b f(x) dx = f(\xi)(b - a)$
+    $f: [a, b] \to \R$ continuous $\implies \exists \xi \in [a, b]: \int_a^b f(x) \,dx = f(\xi)(b - a)$
 \end{ntheorem}
 \begin{ntheorem}[Cauchy]
-    $f, g: [a, b] \to \R$ with $f$ cont. and $g$ bounded and integrable with $g(x) \geq 0$, $\forall x \in [a, b]$ $\implies \exists c \in [a, b]: \int_a^b f(x)g(x) dx = f(c)\int_a^b g(x) dx$.
+    $f, g: [a, b] \to \R$ with $f$ cont. and $g$ bounded and integrable with $g(x) \geq 0$, $\forall x \in [a, b]$ $\implies \exists c \in [a, b]: \int_a^b f(x)g(x) \,dx = f(c)\int_a^b g(x) \,dx$.
 \end{ntheorem}
 
 \subsection{Integration Properties}
 \begin{ntheorem}[Additive Property]
-    $$\int_a^b f(x) dx = \int_a^c f(x) dx + \int_c^b f(x) dx$$
+    $$\int_a^b f(x) \,dx = \int_a^c f(x) \,dx + \int_c^b f(x) \,dx$$
 \end{ntheorem}
 
 \begin{ntheorem}[Linearity]
-    $$\int_a^b(\alpha f_1 + \beta f_2) dx = \alpha \int_a^b f_1(x) dx + \beta \int_a^b f_2(x) dx$$
+    $$\int_a^b(\alpha f_1 + \beta f_2) \,dx = \alpha \int_a^b f_1(x) \,dx + \beta \int_a^b f_2(x) \,dx$$
 \end{ntheorem}
 
 \subsection{Primitive Functions}
@@ -747,7 +740,7 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \end{definition}
 
 \begin{note}
-    $f \ \text{is integrale} \not\Rightarrow$ exists a primitive function for $f$.
+    $f \ \text{is integrable} \not\Rightarrow$ exists a primitive function for $f$.
 \end{note}
 
 \begin{ntheorem}[HID]
@@ -758,31 +751,29 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 
 \begin{ntheorem}[Fundamental theorem of calculus]
     $f: [a, b] \to \R$ continuous. Dann there exists a unique (except a constant term) primitive function $F$ of $f$, such that 
-    $$\int_a^b f(x) dx = F(b) - F(a).$$
+    $$\int_a^b f(x) \,dx = F(b) - F(a).$$
 \end{ntheorem}
 
 \subsection{Integration Methods}
 \begin{ntheorem}[Partial Inegration]
     \begin{align*}
-        \int_a^b f(x) g'(x) dx &= f(b)g(b) - f(a)g(a) - \int_a^b f'(x)g(x) dx \\
-        \int_a^b f(x) g'(x) dx &= (f \cdot g)|_a^b - \int_a^b f'(x)g(x) dx \\
-        \int f(x)g'(x) dx &= f(x) g(x) - \int f'(x) g(x) dx
+        \int_a^b f(x) g'(x) \,dx &= f(b)g(b) - f(a)g(a) - \int_a^b f'(x)g(x) \,dx \\
+        \int_a^b f(x) g'(x) \,dx &= (f \cdot g)|_a^b - \int_a^b f'(x)g(x) \,dx \\
+        \int f(x)g'(x) \,dx &= f(x) g(x) - \int f'(x) g(x) \,dx
     \end{align*}
 \end{ntheorem}
 \begin{itemize}
     \item Choose $g'$: exp $\rightarrow$ trig $\rightarrow$ poly $\rightarrow$ inverse trig. $\rightarrow$ logs
     \item Choose $f$: logs $\rightarrow$ inverse trig. $\rightarrow$ poly $\rightarrow$ trig $\rightarrow$ exp
-    \item Sometimes it is necessary to multiply by $1$. E.g.: $\int \ln x \ dx = \int \ln x \cdot 1 \ dx \implies f(x) = \ln x, \ g'(x) = 1$.
+    \item Sometimes it is necessary to multiply by $1$. E.g.: $\int \ln x \ \,dx = \int \ln x \cdot 1 \ \,dx \implies f(x) = \ln x, \ g'(x) = 1$.
     \item Sometimes it is necessary to to it multiple times
 \end{itemize}
 
 \begin{ntheorem}[Substitution]
     Let $a < b$, $\phi: [a, b] \to \R$, cont. diff, $I \subseteq \R$ with $\phi([a, b]) \subseteq I$ and $f: I \to \R$ a cont. function. Then it follows:
-    $$\int_{\phi(a)}^{\phi(b)} f(x) dx = \int_a^b f(\phi(t)) \phi'(t) dt = (F \circ \phi)(b) - (F \circ \phi)(a)$$
+    $$\int_{\phi(a)}^{\phi(b)} f(x) \,dx = \int_a^b f(\phi(t)) \phi'(t) dt = (F \circ \phi)(b) - (F \circ \phi)(a)$$
     since $F'=f$ then $f(\phi(t))\phi'(t) = (F \circ \phi)'(t)$.
 \end{ntheorem}
-
-t.b.d
 
 \begin{ntheorem}[Partial Fraction Decomposition]
     Let $P(x)$, $Q(x)$ be two polynomials. $\int \frac{P(x)}{Q(x)}$ can be calculated as follows:
@@ -800,17 +791,17 @@ t.b.d
 \end{ntheorem}
 
 \begin{corollary}
-    $\int_{a + c}^{b + c} f(x) dx = \int_a^b f(t + c) dt$
+    $\int_{a + c}^{b + c} f(x) \,dx = \int_a^b f(t + c) dt$
 \end{corollary}
 
 \begin{corollary}
-    $\int_a^b f(ct) dt = \frac{1}{c} \int_{ac}^{bc} f(x) dx$
+    $\int_a^b f(ct) dt = \frac{1}{c} \int_{ac}^{bc} f(x) \,dx$
 \end{corollary}
 
 \subsection{Integration of convergent series}
 \begin{theorem}
     Let $f_n: [a, b] \to \R$ be a sequence of bounded, integrable functions which converges uniformly against a function $f: [a, b] \to \R$. Then $f$ is bounded and integrable and
-    $$\lim_{n \to \infty} \int_a^b f_n(x) dx = \int_a^b \lim_{n \to \infty}  f_n(x) dx = \int_a^b f(x) dx$$
+    $$\lim_{n \to \infty} \int_a^b f_n(x) \,dx = \int_a^b \lim_{n \to \infty}  f_n(x) \,dx = \int_a^b f(x) \,dx$$
 \end{theorem}
 
 \begin{theorem}
@@ -824,51 +815,112 @@ t.b.d
 \end{center}
 
 \begin{definition}
-    Let $f: [a, \infty[ \to \R$ be bounded and integrable on $[a, b]$ for all $b > a$. If $\lim_{b \to \infty} \int_a^b f(x) dx$ exists, the limit is defined as $\int_a^\infty f(x) dx$ and one can say that $f$ is integrable on $[a, +\infty[$. If the limit does not exists, one can say that $\int_a^\infty f(x) dx$ diverges.
+    Let $f: [a, \infty[ \to \R$ be bounded and integrable on $[a, b]$ for all $b > a$. If $\lim_{b \to \infty} \int_a^b f(x) \,dx$ exists, the limit is defined as $\int_a^\infty f(x) \,dx$ and one can say that $f$ is integrable on $[a, +\infty[$. If the limit does not exists, one can say that $\int_a^\infty f(x) \,dx$ diverges.
 \end{definition}
 
 \begin{ntheorem}[Comparison Theorem]
     Let $f: [a, \infty[ \to \R$ be bounded and integrable on $[a, b] \ \forall b \in \R, b > a$.
     \begin{enumerate}
         \item If $\forall x \geq a : |f(x)| \leq g(x)$ and $g(x)$ is integrable on $[a, \infty[$ $\implies f$ is integrable on $[a, \infty[$.
-        \item If $0 \leq g(x) \leq f(x)$ and $\int_a^\infty g(x) dx$ diverges $\implies \int_a^\infty g(x) dx$ diverges.
+        \item If $0 \leq g(x) \leq f(x)$ and $\int_a^\infty g(x) \,dx$ diverges $\implies \int_a^\infty g(x) \,dx$ diverges.
     \end{enumerate}
 \end{ntheorem}
 
 \begin{note}
     Sometimes an integral can be split into a normal integral and an improper integral:
-    $$\int_0^\infty e^{-x^2} dx = \int_0^1 e^{-x^2} dx + \int_1^\infty e^{-x^2} dx$$
+    $$\int_0^\infty e^{-x^2} \,dx = \int_0^1 e^{-x^2} \,dx + \int_1^\infty e^{-x^2} \,dx$$
 \end{note}
 
 \begin{ntheorem}[McLaurin]
     Let $f: [1, \infty[ \to [0, \infty[$ be monotonically decreasing.
-    $$\sum_{n=1}^\infty f(n) \ \text{converges} \iff \int_1^\infty f(x) dx \ \text{converges}.$$ 
+    $$\sum_{n=1}^\infty f(n) \ \text{converges} \iff \int_1^\infty f(x) \,dx \ \text{converges}.$$ 
     The following holds:
-    $$0 \leq \sum_{k=1}^\infty f(k) - \int_1^\infty f(x) dx \leq f(1)$$
+    $$0 \leq \sum_{k=1}^\infty f(k) - \int_1^\infty f(x) \,dx \leq f(1)$$
 \end{ntheorem}
 
 \begin{definition}
-    Let $f$ be a function which is bounded and integrable on all intervals $[a + \epsilon, b] \ \forall \epsilon > 0$. $f: ]a, b] \to \R$ is integrable if $\lim_{\epsilon \to 0} \int_{a + \epsilon}^b f(x) dx$ exists. In this case the limit is defined as $\int_a^b f(x) dx$.
+    Let $f$ be a function which is bounded and integrable on all intervals $[a + \epsilon, b] \ \forall \epsilon > 0$. $f: ]a, b] \to \R$ is integrable if $\lim_{\epsilon \to 0} \int_{a + \epsilon}^b f(x) \,dx$ exists. In this case the limit is defined as $\int_a^b f(x) \,dx$.
 \end{definition}
 The comparison theorem can be used for such integrals as well.
 
 \subsection{Indefinite Integrals}
 Let $f: I \to \R$ be defined on the interval $I \subseteq \R$. If $f$ is continuous there exists a primitive function $F$.
-$$\int f(x) dx = F(x) + C$$
+$$\int f(x) \,dx = F(x) + C$$
 The indefinite integral is the inverse of the derivative.
 
 \begin{note}
-    $\int_{-\infty}^\infty f(x) dx = \lim\limits_{b \to - \infty} \int_b^a f(x) dx + \lim\limits_{c \to \infty} \int_a^c f(x) dx$.
-    $$\int_{-infty}^\infty \ \text{conv.} \iff \int_{-\infty}^a f(x) dx \ \text{conv.} \land \int_a^\infty f(x) dx \ \text{conv.}$$
+    $\int_{-\infty}^\infty f(x) \,dx = \lim\limits_{b \to - \infty} \int_b^a f(x) \,dx + \lim\limits_{c \to \infty} \int_a^c f(x) \,dx$.
+    $$\int_{-infty}^\infty \ \text{conv.} \iff \int_{-\infty}^a f(x) \,dx \ \text{conv.} \land \int_a^\infty f(x) \,dx \ \text{conv.}$$
     In general: Let $f: ]a, b[ \to \R$ such that it is integrable on each compact interval $[\tilde{a}, \tilde{b}]$. Then 
-    $$\int_a^b f(x) dx := \lim\limits_{\tilde{a} \searrow a}\lim\limits_{\tilde{b} \nearrow b} \int_{\tilde{a}}^{\tilde{b}} f(x) dx$$
+    $$\int_a^b f(x) \,dx := \lim\limits_{\tilde{a} \searrow a}\lim\limits_{\tilde{b} \nearrow b} \int_{\tilde{a}}^{\tilde{b}} f(x) \,dx$$
 \end{note}
 
 \subsection{Euler Gamma Function}
 \begin{definition}
     For $s > 0$:
-    $$\Gamma(s) := \int_0^\infty e^{-x}x^{s - 1} dx.$$
+    $$\Gamma(s) := \int_0^\infty e^{-x}x^{s - 1} \,dx.$$
 \end{definition}
 $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. It converges for all $s > 0$.
+\pagebreak
+
+\section*{Useful Listings}
+\subsection*{Limits}
+\newcommand{\limxi}{\lim\limits_{x\to\infty}}
+\newcommand{\limxni}{\lim\limits_{x\to-\infty}}
+\newcommand{\limx}{\lim\limits_{x\to\pm\infty}}
+\newcommand{\limxz}{\lim\limits_{x\to0}}
+\renewcommand{\arraystretch}{1.8}
+\begin{tabularx}{\linewidth}{XX}
+    $\limxi \frac{1}{x} = 0$ & $\limxi 1 + \frac{1}{x} = 1$ \\
+    $\limxi e^x = \infty$ & $\limxni e^x = 0$ \\
+    $\limxi e^{-x} = 0$ & $\limxni e^{-x} = \infty$ \\
+    $\limxi \frac{e^x}{x^m} = \infty$ & $\limxni xe^x = 0$ \\
+    $\limxi \ln(x) = \infty$ & $\limxz \ln(x) = -\infty$ \\
+    $\limxi (1 + x)^\frac{1}{x} = 1$ & $\limxz (1 + x)^\frac{1}{x} = e$ \\
+    $\limxi (1 + \frac{1}{x})^\lambda = 1$ & $\limxi (1 - \frac{1}{x})^\lambda = 1$ \\
+    $\limxi x^\lambda q^x = 0$, $\forall 0 \leq q < 1$ & $\limxi \sqrt[x]{x} = 1$ \\
+    $\limx (1 + \frac{1}{x})^x = e$ & $\limxi (1 - \frac{1}{x})^x = \frac{1}{e}$ \\
+    $\limx (1 + \frac{\lambda}{x})^{\alpha x} = e^{\lambda \alpha}$ & $\limxz \frac{\sin(x)}{x} = 1$ \\
+    $\limxz \frac{1}{\cos(x)} = 1$ & $\limxz \frac{\cos(x) - 1}{x} = 0$ \\
+    $\limxz \frac{\log(1) - x}{x} = -1$ & $\limxz x \log x = 0$ \\
+    $\limxz \frac{1 - \cos(x)}{x^2} = \frac{1}{2}$ & $\limxz \frac{e^x - 1}{x} = 1$ \\
+    $\limxz \frac{x}{\arctan(x)} = 1$ & $\limxi \arctan(x) = \frac{\pi}{2}$ \\
+    $\limxi (\frac{x}{x + \lambda})^x = e^{-\lambda}$ & $\limxz \frac{e^x - 1}{x} = 1$ \\
+    $\limxz \frac{\lambda^x - 1}{x} = \ln(\lambda), \lambda > 0$ & $\limxz \frac{e^{\lambda x} - 1}{x} = \lambda$ \\
+    $\limxz \frac{\ln(x+1)}{x} = 1$ & $\lim\limits_{x \to 1} \frac{\ln(x)}{x - 1} = 1$ \\
+    $\limxi \frac{\ln(x)}{x} = 0$ & $\limxi \frac{\log(x)}{x^\lambda} = 0$ \\
+    $\limxi \frac{\lambda x}{\lambda^x} = 0$ & $\lim\limits_{x \to \frac{\pi}{2}^-} \tan(x) = +\infty$\\
+    $\lim\limits_{x \to \frac{\pi}{2}^+} \tan(x) = -\infty$ & $\limxi \frac{\sin(x)}{x} = 0$ \\
+    $\lim\limits_{x \to 0^+} x \ln x = 0$
+\end{tabularx}
+
+\subsection*{Series}
+\begin{itemize}
+    \item Geometric: $\sum_{n = 0}^\infty q^n = \frac{1}{1 - q}$ if $|q| < 1$
+    \item Harmonic: $\sum_{n = 1}^\infty \frac{1}{k}$ diverges
+    \item Telescope: $\sum_{n = 0}^\infty \frac{1}{k(k + 1)} = 1$
+    \item $\exp(z) := \sum_{n = 0}^\infty \frac{z^n}{n!} = \underset{n \to \infty}{\lim}(1 + \frac{z}{n})^n = e^z$
+    \item $\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}$ converges $s > 1$
+    \item $\text{p}(z) = \sum_{k = 0}^\infty c_kz^k$ converges absolute for $|z| < \rho$
+\end{itemize}
+\begin{tabularx}{\linewidth}{XX}
+    \toprule
+    $\sum\limits_{i=1}^n i = \frac{n(n+1)}{2}$ & $\sum\limits_{i=1}^n i^2 = \frac{n(n+1)(2n + 1)}{6}$ \\
+    $\sum\limits_{i=1}^n i^3 = \frac{n^2(n+1)^2}{4}$ & $\sum\limits_{i=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$ \\
+    \bottomrule
+\end{tabularx}
+
+\subsection*{Taylor Polynomials}
+\begin{align*}
+    e^x &= 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \BO(x^5) \\
+    \sin(x) &= x - \frac{x^3}{3!} + \frac{x^5}{5!} - \BO(x^7) \\
+    \sinh(x) &= x + \frac{x^3}{3!} + \frac{x^5}{5!} + \BO(x^7) \\
+    \cos(x) &= 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \BO(x^6) \\
+    \cosh(x) &= 1 + \frac{x^2}{2!} + \frac{x^4}{4!} + \BO(x^6) \\
+    \tan(x) &= x + \frac{x^3}{3} + \frac{2x^5}{15} + \BO(x^7) \\
+    \tanh(x) &= x - \frac{x^3}{3} + \frac{2x^5}{15} - \BO(x^7) \\
+    \log(1+x) &= x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{d} + \BO(x^5) \\
+    \sqrt{1 + x} &= 1 + \frac{x}{2} - \frac{x^2}{8} + \frac{x^3}{16} - \BO(x^4)
+\end{align*}
 
 \end{document}
