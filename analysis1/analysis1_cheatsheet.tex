@@ -133,8 +133,18 @@
 $(a_n)_{n \geq 1}$ converges to $L = \lim_{n \to \infty} a_n$ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \epsilon)$
 
 \begin{definition}[Convergence]
-    $(a_n)_{n \geq 1}$ convergent $\iff \exists L \in \R  \ \forall \epsilon > 0 \ (\{n \in \N \ | \ |a_n - L| \geq \epsilon \})$ is finite.
+    $(a_n)_{n \geq 1}$ converges $\iff \exists L \in \R  \ \forall \epsilon > 0 \ (\{n \in \N \ | \ |a_n - L| \geq \epsilon \})$ is finite.
 \end{definition}
+
+\begin{note}
+    Let $(a_n)_{n\geq1}$, $(b_n)_{n\geq1}$ converge with limit $a$ and $b$:
+    \begin{enumerate}
+        \item $(a_n + b_n)_{n\geq1}$ converges with limit $a + b$
+        \item $(a_n \cdot b_n)_{n\geq1}$ converges with limit $a \cdot b$.
+        \item $(\frac{a_n}{b_n})_{n\geq1}$ converges with limit $\frac{a}{b}$
+        \item $\exists K \geq 1 \ \forall n \geq K: a_n \leq b_n \implies a \leq b$
+    \end{enumerate}
+\end{note}
 
 \subsubsection{Tips \& Tricks}
 \begin{itemize}
@@ -157,7 +167,7 @@ $(a_n)_{n \geq 1}$ converges to $L = \lim_{n \to \infty} a_n$ $\iff \forall \eps
 \end{definition}
 
 \begin{ntheorem}[Cauchy Criteria]
-    $a_n$ converges iff $\forall \epsilon > 0 \ \exists N \geq 1$ s.t. $|a_n - a_m| < \epsilon$ $\forall n,m \geq N$.
+    $a_n$ converges iff $\forall \epsilon > 0 \ \exists N \geq 1$ s.t. $|a_n - a_m| < \epsilon$ $\forall n,m \geq N$ (cauchy sequence).
     \begin{enumerate}[label=(\roman*)]
         \item Each Cauchy sequence is bounded
         \item $(a_n)_{n \geq 1}$ conv. $\implies (a_n)_{n \geq 1}$ cauchy
@@ -180,7 +190,7 @@ $(a_n)_{n \geq 1}$ converges to $L = \lim_{n \to \infty} a_n$ $\iff \forall \eps
 \begin{corollary}
     Let $(a_n)$ be bounded, then for each subsequence $(b_n)$: $\liminf a_n \leq \lim b_n \leq \limsup a_n$.
 
-    For each subsequence $(b_n)$ of a convergent $(a_n)$: $(b_n)$ converges and $\lim b_n = \lim a_n$.
+    Each subsequence $(b_n)$ of a convergent $(a_n)$ converges and $\lim b_n = \lim a_n$.
 \end{corollary}
 
 \section{Series}
@@ -197,17 +207,17 @@ $(a_n)_{n \geq 1}$ converges to $L = \lim_{n \to \infty} a_n$ $\iff \forall \eps
 \end{theorem}
 
 \begin{ntheorem}[Couchy Criteria]
-    $\sum_{k = 1}^\infty a_k$ converges $\iff$ $\forall \epsilon > 0 \ \exists N \geq 1 \ (|\sum_{k = n}^m a_k| < \epsilon)$ $\forall m\geq n \geq N$
+    $\sum_{k = 1}^\infty a_k$ conv. $\iff$ $\forall \epsilon > 0 \ \exists N \geq 1 : |\sum_{k = n}^m a_k| < \epsilon$ $\forall m\geq n \geq N$
 \end{ntheorem}
 
 \begin{ntheorem}[Zero Sequence Criteria]
-    $\sum_{k=1}^\infty a_k$ conv. $\implies \lim a_k = 0$
+    $\sum\limits_{k=1}^\infty a_k$ conv. $\implies \lim a_k = 0$
 \end{ntheorem}
 
 \begin{ntheorem}[Comparison Theorem]
     Let $\sum_{k = 1}^\infty a_k$, $\sum_{k = 1}^\infty b_k$ series s.t. $0 \leq a_k \leq b_k \quad \forall k \geq 1$:
-    $$\sum_{k=1}^\infty b_k \text{converges} \implies \sum_{k = 1}^\infty a_k \text{converges}$$
-    $$\sum_{k = 1}^\infty  a_k \text{diverges} \implies \sum_{k = 1}^\infty  b_k \text{diverges}$$
+    $$\sum_{k=1}^\infty b_k \ \text{converges} \implies \sum_{k = 1}^\infty a_k \ \text{converges}$$
+    $$\sum_{k = 1}^\infty  a_k \ \text{diverges} \implies \sum_{k = 1}^\infty  b_k \ \text{diverges}$$
 \end{ntheorem}
 
 \begin{theorem}
@@ -224,12 +234,14 @@ $(a_n)_{n \geq 1}$ converges to $L = \lim_{n \to \infty} a_n$ $\iff \forall \eps
 \end{definition}
 
 \begin{theorem}
-    $$|\sum_{k=1}^\infty a_k| \leq \sum_{k=1}^\infty |a_k|$$
+    $$\left|\sum_{k=1}^\infty a_k\right| \leq \sum_{k=1}^\infty |a_k|$$
 \end{theorem}
 
 \begin{ntheorem}[Leibniz]
     $(a_n)_{n\geq1}$ monotone decreasing s.t. $a_n \geq 1 \quad \forall n \geq 1$ and $\lim a_n = 0$:
-    $$\sum_{k=1}^\infty (-1)^{k + 1} a_k \text{ converges}$$
+    $$S := \sum_{k=1}^\infty (-1)^{k + 1} a_k \ \text{converges.}$$
+    Furthermore: $a_1 - a_2 \leq S \leq a_1$
+    
 \end{ntheorem}
 
 \begin{ntheorem}[Ratio Test]
@@ -303,6 +315,10 @@ $\R^D = \{f: D \to \R \ | \ f \ \text{is function} \}$
     A function $f: D \to \R$ is continuous if it is continuous in all $x_0 \in D$
 \end{definition}
 
+\begin{note}
+    To prove continuity try to filter $|x - x_0|$ out of $|f(x) - f(x_0)|$ and choose $\delta$, such that the rest term disappears. Be aware that $\delta$ is part of $\epsilon$ and normally $|x_0|$ as well. But no $x$!
+\end{note}
+
 \begin{corollary}
     $f, g: D \to \R$ continuous in $x_0 \in D$. Then:
     \begin{itemize}
@@ -353,7 +369,7 @@ $\exp: \R \to ]0, \infty [$ is continuous, strictly monotone increasing, surject
 \subsection{Converge of function sequences}
 $$\N \to \R^D = \{f: D \to \R\}, \quad n \mapsto f(n)$$
 \begin{definition} [pointwise convergence]
-    $(f_n)_{n \geq 0}$ converges pointwise to a function $f: D \to \R$, if $\forall x \in D \ (\lim_{n \to \infty} f_n(x) = f(x))$
+    $(f_n)_{n \geq 0}$ converges pointwise to a function $f: D \to \R$, if $\forall x \in D : \lim_{n \to \infty} f_n(x) = f(x)$
     $$\iff$$
     $$\forall x \in D \ \forall \epsilon > 0 \ \exists N \in \N \ \text{s.t.} \ \forall n \geq N \ (|f_n(x) - f(x)| < \epsilon)$$
 \end{definition}
@@ -465,6 +481,15 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
     \end{enumerate}
 \end{ntheorem}
 
+\begin{note}
+    Sometimes it can be really helpful to convert known functions to their power series to calculate a limit. E.g.
+    $$\lim_{x \to 0} \frac{\sin(x)}{x} = \frac{x - \frac{x^3}{3!} + \ldots}{x} = \lim_{x \to 0} 1 - \frac{x^2}{3!} + \ldots = 1$$
+\end{note}
+
+\begin{note}[$e^{\log}$] Transform ugly function with this trick.
+    $$\lim_{x \to x_0}f(x)^{g(x)} = \lim_{x \to x_0} e^{g(x)\log(f(x))} = e^{\lim\limits_{x \to x_0} g(x)\log(f(x))}$$
+\end{note}
+
 \section{Differentiable Functions}
 
 \begin{definition}[Differentiable]
@@ -543,7 +568,7 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
     If $\forall x \in ]a, b[ : g'(x) \neq 0$ it implies that $g(a) \neq g(b)$ and $\frac{f(b) - f(a)}{g(b) - g(a)} = \frac{f'(\xi)}{g'(\xi)}$
 \end{ntheorem}
 
-\begin{ntheorem}[l'Hospital]
+\begin{ntheorem}[l'Hôspital]
     $f,g : ]a, b[ \to \R$ diff. with $\forall x \in ]a, b[ : g'(x) \neq 0$.
     If $\lim_{x \to b^-} f(x) = 0, \lim_{x \to b^-} g(x) = 0$ and $\lim_{x \to b^-} \frac{f'(x)}{g'(x)} =: \lambda$ exists, then $\lim_{x \to b^-}\frac{f(x)}{g(x)} = \lim_{x \to b^-}\frac{f'(x)}{g'(x)}$.
 \end{ntheorem}
@@ -674,7 +699,7 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \end{ntheorem}
 
 \begin{note}
-    Bounded $f: [a, b] \to \R$ is int. if $\lim_{\delta(P) \to 0} S(f, P, \xi)$ exists for all $P$ with $\delta(P) \to 0$. It follows that \newline $\lim_{\delta(P) \to 0} S(f, P, \xi) = \int_a^b f(x) \,dx$
+    Bounded $f: [a, b] \to \R$ is int. if $\lim\limits_{\delta(P) \to 0} S(f, P, \xi)$ exists for all $P$ with $\delta(P) \to 0$. It follows that \newline $\lim_{\delta(P) \to 0} S(f, P, \xi) = \int_a^b f(x) \,dx$
 \end{note}
 
 \subsection{Integrable Functions}
@@ -705,10 +730,6 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
     $$\int_a^b f(x) \,dx \leq \int_a^b g(x) \,dx$$
 \end{theorem}
 
-\begin{corollary}
-    $|\int_a^b f(x) \,dx| \leq \int_a^b |f(x)| \,dx$
-\end{corollary}
-
 \begin{ntheorem}[Cauchy-Schwarz]
     $$\left|\int_a^b f(x)g(x) \,dx\right| \leq \sqrt{\int_a^b f^2(x) \,dx}\sqrt{\int_a^b g^2(x) \,dx}$$
 \end{ntheorem}
@@ -722,7 +743,8 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
     $f: [a, b] \to \R$ continuous $\implies \exists \xi \in [a, b]: \int_a^b f(x) \,dx = f(\xi)(b - a)$
 \end{ntheorem}
 \begin{ntheorem}[Cauchy]
-    $f, g: [a, b] \to \R$ with $f$ cont. and $g$ bounded and integrable with $g(x) \geq 0$, $\forall x \in [a, b]$ $\implies \exists c \in [a, b]: \int_a^b f(x)g(x) \,dx = f(c)\int_a^b g(x) \,dx$.
+    $f, g: [a, b] \to \R$ with $f$ continuous and $g$ bounded and integrable with $g(x) \geq 0$, $\forall x \in [a, b]$
+    $$\implies \exists \xi \in [a, b]: \int_a^b f(x)g(x) \,dx = f(\xi)\int_a^b g(x) \,dx$$
 \end{ntheorem}
 
 \subsection{Integration Properties}
@@ -732,6 +754,14 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 
 \begin{ntheorem}[Linearity]
     $$\int_a^b(\alpha f_1 + \beta f_2) \,dx = \alpha \int_a^b f_1(x) \,dx + \beta \int_a^b f_2(x) \,dx$$
+\end{ntheorem}
+
+\begin{ntheorem}[Preservation of Order]
+    $$\forall x \in [a, b]: f(x) \leq g(x) \implies \int_a^b f(x) \,dx \leq \int_a^b g(x) \,dx$$
+\end{ntheorem}
+
+\begin{ntheorem}[Triangle Inequality]
+    $$\left|\int_a^b f(x) \,dx\right| \leq \int_a^b |f(x)| \,dx$$
 \end{ntheorem}
 
 \subsection{Primitive Functions}
@@ -789,6 +819,10 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
         \item Calculate parameters $A_1, \ldots, A_n$. (Insert the root as $s$, transform and solve)
     \end{enumerate}
 \end{ntheorem}
+
+\begin{note}[Odd functions]
+    $\int_{-\lambda}^\lambda f(x) \, dx = 0$.
+\end{note}
 
 \begin{corollary}
     $\int_{a + c}^{b + c} f(x) \,dx = \int_a^b f(t + c) dt$
@@ -877,7 +911,7 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     $\limxi \frac{e^x}{x^m} = \infty$ & $\limxni xe^x = 0$ \\
     $\limxi \ln(x) = \infty$ & $\limxz \ln(x) = -\infty$ \\
     $\limxi (1 + x)^\frac{1}{x} = 1$ & $\limxz (1 + x)^\frac{1}{x} = e$ \\
-    $\limxi (1 + \frac{1}{x})^\lambda = 1$ & $\limxi (1 - \frac{1}{x})^\lambda = 1$ \\
+    $\limxi (1 \pm \frac{1}{x})^\lambda = 1$ & $\limxi (1 + \frac{\lambda}{x})^x = e^\lambda$ \\
     $\limxi x^\lambda q^x = 0$, $\forall 0 \leq q < 1$ & $\limxi \sqrt[x]{x} = 1$ \\
     $\limx (1 + \frac{1}{x})^x = e$ & $\limxi (1 - \frac{1}{x})^x = \frac{1}{e}$ \\
     $\limx (1 + \frac{\lambda}{x})^{\alpha x} = e^{\lambda \alpha}$ & $\limxz \frac{\sin(x)}{x} = 1$ \\
@@ -923,4 +957,45 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     \sqrt{1 + x} &= 1 + \frac{x}{2} - \frac{x^2}{8} + \frac{x^3}{16} - \BO(x^4)
 \end{align*}
 
+\subsection*{Parity of Functions}
+\textbf{Even:} $f(-x) = f(x) \quad \forall x \in D \hfill |x|, \ \cos x, \ x^2$ \\
+\textbf{Odd:} $f(-x) = -f(x) \quad \forall x \in D \hfill x, \sin, \tan, x^3$
+
+\begin{note}
+    Chaining odd functions results in an odd function.
+\end{note}
+
+\subsection*{Common Derivatives and Integrals}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\linewidth}{>{\hsize=.6\hsize\centering\arraybackslash}X|>{\centering\arraybackslash}XX}
+    $\mathbf{F(x)}$ & $\mathbf{f(x)}$ \\
+    \midrule
+    $c$ & $0$ \\
+    $x^a$ & $a \cdot x^{a - 1}$ \\
+    $\frac{1}{a+1} x^{a + 1}$ & $x^a$ \\
+    $\frac{1}{a \cdot (n + 1)} (ax + b)^{n + 1}$ & $(ax + b)^n$ \\
+    $\frac{x^{a + 1}}{a + 1}$ & $x^a, \ a \neq -1$ \\
+    $\sqrt{x}$ & $\frac{1}{2\sqrt{x}}$ \\
+    $\sqrt[n]{x}$ & $\frac{1}{n}x^{\frac{1}{n} - 1}$ \\
+    $\frac{2}{3}x^{\frac{3}{2}}$ & $\sqrt{x}$ \\
+    $\frac{n}{n+1} x^{\frac{1}{n} + 1}$ & $\sqrt[n]{x}$ \\
+    $e^x$ & $e^x$ \\
+    $\ln(|x|)$ & $\frac{1}{x}$ \\
+    $\log_a(|x|)$ & $\frac{1}{x \ln(a)} = \log_a(e)^\frac{1}{x}$ \\
+    $\sin(x)$ & $\cos(x)$ \\
+    $\cos(x)$ & $-\sin(x)$ \\
+    $\tan(x)$ & $\frac{1}{\cos^2(x) = 1 + \tan^2(x)}$ \\
+    $\cot(x)$ & $\frac{1}{-\sin^2(x)}$ \\
+    $\arcsin(x)$ & $\frac{1}{\sqrt{1 - x^2}}$ \\
+    $\arccos(x)$ & $\frac{-1}{\sqrt{1 - x^2}}$ \\
+    $\arctan(x)$ & $\frac{1}{1 + x^2}$ \\
+    $\sinh(x)$ & $\cosh(x)$ \\
+    $\cosh(x)$ & $\sinh(x)$ \\
+    $\tanh(x)$ & $\frac{1}{\cosh^2(x)} = 1 - \tanh^2(x)$ \\
+    $\frac{1}{f(x)}$ & $\frac{-f'(x)}{(f(x))^2}$ \\
+    $a^{cx}$ & $a^{ck} \cdot c \ln(a)$ \\
+    $x^x$ & $x^x \cdot (1 + \ln(x)), \ x > 0$ \\
+    $(x^x)^x$ & $(x^x)^x (x + 2x \ln(x)), \ x > 0$ \\
+    $x^{x^x}$ & $x^{x^x} (x^{x - 1} + \ln(x) \cdot x^x (1 + \ln(x)))$ \\
+\end{tabularx}
 \end{document}
