@@ -1,0 +1,834 @@
+% Configuration
+\documentclass[a4paper, 10pt]{article}
+
+% Formatting
+\usepackage[landscape, left=0.75cm, top=1.0cm, right=0.75cm, bottom=1.5cm, footskip=15pt]{geometry}
+\setlength{\columnsep}{0.5cm}
+\usepackage{flowfram}
+\ffvadjustfalse
+\Ncolumn{3}
+\usepackage[compact]{titlesec}
+
+% ------------------------
+% Imports and commands
+% ------------------------
+
+% Language stuff
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+% Math stuff
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\newtheorem*{corollary}{Cor}
+\newtheorem*{lemma}{Lemma}
+
+\theoremstyle{definition}
+\newtheorem*{theorem}{Thm}
+\newtheorem*{definition}{Def}
+\newtheorem*{note}{Hint}
+
+
+\newtheoremstyle{named}{}{}{}{}{\bfseries}{.}{.5em}{\thmnote{#3}}
+\theoremstyle{named}
+\newtheorem*{ntheorem}{Theorem}
+
+% Miscellaneous
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue}
+
+\usepackage{enumitem}
+\setitemize{itemsep=0.5pt, topsep=0pt}
+\setenumerate{itemsep=0.75pt}
+
+% Custom commands
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+
+% Metadata
+\title{Analysis I Summary}
+\author{Nicola Studer \\ \href{mailto:nicstuder@student.ethz.ch}{nicstuder@student.ethz.ch}}
+\date{\today}
+
+
+% ------------------------
+% Document
+% ------------------------
+
+\begin{document}
+\maketitle
+
+\section{Real numbers, euclidean spaces}
+\begin{ntheorem}[Archimedes' principle]
+    If $x \in \R$ with $x > 0$ and $y \in \R$, then $\exists n \in \N \ (y \leq n \cdot x)$
+\end{ntheorem}
+
+\begin{theorem}
+    \begin{enumerate}[label=(\roman*)]
+        \item $|x| \leq 0 \quad \forall x \in \R$
+        \item $|xy| = |x||y| \quad \forall x, y \in \R$
+        \item $|x + y| \leq |x| + |y| \quad \forall x, y \in \R$
+        \item $|x + y| \geq ||x| - |y|| \quad \forall x, y \in \R$
+    \end{enumerate}
+\end{theorem}
+
+\begin{ntheorem}[Young's inequality]
+    $\forall \epsilon > 0, \forall x, y \in \R$:
+    $$2 |xy| \leq \epsilon x^2 + \frac{1}{\epsilon} y^2$$
+\end{ntheorem}
+
+\section{Sequences}
+\subsection{Convergence}
+$(a_n)_{n \geq 1}$ converges to $L = \lim_{n \to \infty} a_n$ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \epsilon)$
+
+\begin{definition}[Convergence]
+    $(a_n)_{n \geq 1}$ convergent $\iff \exists L \in \R  \ \forall \epsilon > 0 \ (\{n \in \N \ | \ |a_n - L| \geq \epsilon \})$ is finite.
+\end{definition}
+
+\subsubsection{Tips \& Tricks}
+\begin{itemize}
+    \item $a_n$ convergent $\implies$ $a_n$ bounded
+    \item $a_n$ convergent $\iff$ $a_n$ bounded and $\lim\inf a_n = \lim\sup a_n$
+\end{itemize}
+
+\begin{ntheorem}[Monotone Convergence]
+    $(a_n)_{n \geq 1}$ monotone increasing and upper bounded $\implies$ $\lim a_n = \sup\{a_n \ | \ n\geq 1\}$ \newline
+    $(a_n)_{n \geq 1}$ monotone decreasing and lower bounded $\implies$ $\lim a_n = \inf\{a_n \ | \ n\geq 1\}$
+\end{ntheorem}
+
+\begin{lemma}[Bernoulli Inequation]
+    $$(1 + x)^n \geq 1 + nx \quad \forall n \in \N, x > -1$$
+\end{lemma}
+
+\begin{definition}
+    $$\underset{n\to\infty}{\lim\inf} \ a_n \ := \ \lim_{n\to\infty} (\inf \{a_k \ | \ k \geq n\})$$
+    $$\underset{n\to\infty}{\lim\sup} \ a_n \ := \ \lim_{n\to\infty} (\sup \{a_k \ | \ k \geq n\})$$
+\end{definition}
+
+\begin{ntheorem}[Cauchy Criteria]
+    $a_n$ converges iff $\forall \epsilon > 0 \ \exists N \geq 1$ s.t. $|a_n - a_m| < \epsilon$ $\forall n,m \geq N$.
+    \begin{enumerate}[label=(\roman*)]
+        \item Each Cauchy sequence is bounded
+        \item $(a_n)_{n \geq 1}$ conv. $\implies (a_n)_{n \geq 1}$ cauchy
+        \item $(a_n)_{n \geq 1}$ cauchy $\implies (a_n)_{n \geq 1}$ conv.
+    \end{enumerate}
+\end{ntheorem}
+
+\begin{ntheorem}[Bolzano-Weierstrass]
+    Each bounded sequence contains a convergent sub sequence.
+\end{ntheorem}
+
+\begin{ntheorem}[Sandwich]
+    If $\lim a_n = \alpha$, $\lim b_n = \alpha$, $k \in \N$ and $a_n \leq c_n \leq b_n$ $\forall n \geq k$, then $\lim c_n = \alpha$
+\end{ntheorem}
+
+\begin{ntheorem}[Cauchy-Cantor]
+    Let $I_1 \supseteq I_2 \subseteq \cdots I_n \cdots$ be a sequence of proper intervals with $\mathcal{L} < + \infty$, then $\bigcap_{n\geq1} I_n \neq 0$. And if $\lim_{n \to \infty} \mathcal{L}(I_n) = 0$ then $|\bigcap_{n\geq1} I_n| = 1$
+\end{ntheorem}
+
+\begin{corollary}
+    Let $(a_n)$ be bounded, then for each subsequence $(b_n)$: $\liminf a_n \leq \lim b_n \leq \limsup a_n$.
+
+    For each subsequence $(b_n)$ of a convergent $(a_n)$: $(b_n)$ converges and $\lim b_n = \lim a_n$.
+\end{corollary}
+
+\section{Series}
+\begin{definition}
+    "$\sum_{k=1}^\infty a_k$" converges, if the sequence $(S_n)_{n \geq 1}$ of partial sums converges and $\sum_{k=1}^\infty a_k := \lim_{n \to \infty} S_n$
+\end{definition}
+
+\subsection{Important Series}
+\begin{itemize}
+    \item Geometric: $\sum_{n = 0}^\infty q^n = \frac{1}{1 - q}$ if $|q| < 1$
+    \item Harmonic: $\sum_{n = 1}^\infty \frac{1}{k}$ diverges
+    \item Telescope: $\sum_{n = 0}^\infty \frac{1}{k(k + 1)} = 1$
+    \item $\exp(z) := \sum_{n = 0}^\infty \frac{z^n}{n!} = \underset{n \to \infty}{\lim}(1 + \frac{z}{n})^n = e^z$
+    \item $\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}$ converges $s > 1$
+    \item $\text{p}(z) = \sum_{k = 0}^\infty c_kz^k$ converges absolute for $|z| < \rho$
+    \item $\lim_{n\to\infty} (1 + \frac{1}{n})^n = e$
+\end{itemize}
+
+\begin{theorem}
+    $\sum_{k = 1}^\infty a_k$ and $\sum_{j = 1}^\infty b_j$ convergent:
+    \begin{itemize}
+        \item $\sum_{k = 1}^\infty (a_k + b_k) = (\sum_{k = 1}^\infty a_k) + (\sum_{k = 1}^\infty b_k)$
+        \item $\sum_{k = 1}^\infty \alpha \cdot a_k = \alpha \sum_{k = 1}^\infty a_k$
+    \end{itemize}
+\end{theorem}
+
+\begin{ntheorem}[Couchy Criteria]
+    $\sum_{k = 1}^\infty a_k$ converges $\iff$ $\forall \epsilon > 0 \ \exists N \geq 1 \ (|\sum_{k = n}^m a_k| < \epsilon)$ $\forall m\geq n \geq N$
+\end{ntheorem}
+
+\begin{ntheorem}[Zero Sequence Criteria]
+    $\sum_{k=1}^\infty a_k$ conv. $\implies \lim a_k = 0$
+\end{ntheorem}
+
+\begin{ntheorem}[Comparison Theorem]
+    Let $\sum_{k = 1}^\infty a_k$, $\sum_{k = 1}^\infty b_k$ series s.t. $0 \leq a_k \leq b_k \quad \forall k \geq 1$:
+    $$\sum_{k=1}^\infty b_k \text{converges} \implies \sum_{k = 1}^\infty a_k \text{converges}$$
+    $$\sum_{k = 1}^\infty  a_k \text{diverges} \implies \sum_{k = 1}^\infty  b_k \text{diverges}$$
+\end{ntheorem}
+
+\begin{theorem}
+    A series converges if the sequence of partial sums $(s_n)_{n \geq 1}$ converges. $s_n := \sum_{k = 1}^n a_k$
+    $$lim_{n \to \infty} s_n = \lim_{n \to \infty} \sum_{k = 1}^n a_k =: \sum_{k=1}^\infty a_k$$
+\end{theorem}
+
+\begin{definition}[Asolute Convergence]
+    $\sum_{k=1}^\infty a_k$ absolute converges if $\sum_{k=1}^\infty |a_k|$ converges.
+    $$\sum_{k = 1}^\infty |a_k| \text{ converges} \implies \sum_{k=1}^\infty a_k \text{ converges}$$
+    $$\sum_{k=1}^\infty a_k \text{ converges} \nRightarrow \sum_{k=1}^\infty |a_k| \text{ converges}$$
+    (\textbf{Dirichlet}) If a series converges absolute, then each permutation of the series converges with the same limit.
+    (\textbf{Riemann}) If a series only converges, then there exists a permutation such that: \newline $\sum_{k=1}^\infty a_{\phi(k)} = x \quad \forall x \in \R \cup \{\infty\}$
+\end{definition}
+
+\begin{theorem}
+    $$|\sum_{k=1}^\infty a_k| \leq \sum_{k=1}^\infty |a_k|$$
+\end{theorem}
+
+\begin{ntheorem}[Leibniz]
+    $(a_n)_{n\geq1}$ monotone decreasing s.t. $a_n \geq 1 \quad \forall n \geq 1$ and $\lim a_n = 0$:
+    $$\sum_{k=1}^\infty (-1)^{k + 1} a_k \text{ converges}$$
+\end{ntheorem}
+
+\begin{theorem}[Ratio Test]
+    Let $(a_n)_{n \geq 1}$ with $a_n \neq 0 \quad \forall n\geq 1$:
+    
+    $\underset{n\to\infty}{\lim\sup} \frac{|a_{n+1}|}{|a_n|} < 1 \implies \sum_{n=1}^\infty a_n$ converges absolute.
+
+    $\underset{n\to\infty}{\lim\inf} \frac{|a_{n+1}|}{|a_n|} > 1 \implies \sum_{n=1}^\infty a_n$ diverges
+\end{theorem}
+
+\begin{lemma}
+    $\lim_{n\to\infty} \frac{|a_{n+1}|}{|a_n|} = L$:
+
+    \begin{itemize}
+        \item $L < 1 \implies \sum_{n=1}^\infty a_n$ converges absolute.
+        \item $L > 1 \implies \sum_{n=1}^\infty a_n$ diverges.
+        \item $L = 1 \implies$ no information
+    \end{itemize}
+\end{lemma}
+
+\begin{ntheorem}[Root Test]
+    Let $(a_n)_{n \geq 1}$ with $a_n \neq 0 \quad \forall n\geq 1$:
+
+    $\underset{n\to\infty}{\lim\sup} \sqrt[n]{|a_n|} < 1 \implies \sum_{n=1}^\infty a_n$ converges absolute.
+
+    $\underset{n\to\infty}{\lim\inf} \sqrt[n]{|a_n|} > 1 \implies \sum_{n=1}^\infty a_n$ diverges.
+\end{ntheorem}
+
+\begin{lemma}
+    $\lim_{n\to\infty} \sqrt[n]{|a_n|} = L$:
+
+    \begin{itemize}
+        \item $L < 1 \implies \sum_{n=1}^\infty a_n$ converges absolute.
+        \item $L > 1 \implies \sum_{n=1}^\infty a_n$ diverges.
+        \item $L = 1 \implies$ no information
+    \end{itemize}
+\end{lemma}
+
+\begin{definition}[Cauchy Product]
+    $\sum_{i=0}^\infty a_i$, $\sum_{j=0}^\infty b_j$:
+    $$\sum_{n=0}^\infty (\sum_{j=0}^\infty a_{n-j}b_j) = a_0b_0 + (a_0b_1 + a_1b_0) + \cdots$$
+\end{definition}
+
+\begin{theorem}
+    If $\sum_{i=0}^\infty a_i$ and $\sum_{j=0}^\infty b_j$ converge absolute:
+    $$\sum_{n=0}^\infty (\sum_{j=0}^\infty a_{n-j}b_j) = (\sum_{i=0}^\infty a_i) (\sum_{j=0}^\infty b_j) = \sum_{n=0}^\infty \sum_{i+j = n} a_i b_j$$
+\end{theorem}
+
+\subsection{Strategy: Convergence of Series}
+\begin{enumerate}
+    \item Check for known types (Telescope, Geometric, etc.)
+    \item $\lim a_n \neq 0 \implies$ divergence
+    \item Ratio Test
+    \item Root Test
+    \item Search convergent majors: $0 \leq a_n \leq b_n$
+    \item If divergent minors $\implies$ divergence
+    \item Be creative
+\end{enumerate}
+
+\section{Functions}
+$\R^D = \{f: D \to \R \ | \ f \ \text{is function} \}$
+\subsection{Continuity}
+\begin{definition}[Continuity]
+    A function $f$ is continuous in $x_0$ if:
+    $$\forall \epsilon > 0 \ \exists \delta > 0 \ \forall x \in D \ (|x - x_0| < \delta \implies |f(x) - f(x_0)| < \epsilon)$$
+    $$\iff$$
+    $$\forall (a_n)_{n \geq 1} \ \text{with} \ \lim a_n = x_0 \ \text{holds} \ \lim f(a_n) = f(\lim a_n)$$
+\end{definition}
+
+\begin{definition}
+    A function $f: D \to \R$ is continuous if it is continuous in all $x_0 \in D$
+\end{definition}
+
+\begin{corollary}
+    $f, g: D \to \R$ continuous in $x_0 \in D$. Then:
+    \begin{itemize}
+        \item $fg, \lambda f, f \pm g$ continuous in $x_0$
+        \item $\frac{f}{g}: D \setminus \{x \in D \ | \ g(x) = 0\} \to \R$ continuous in $x_0$ (if $g(x_0) \neq 0$)
+        \item $|f|, \max(f, g), \min(f, g)$ continuous in $x_0$
+        \item $P(x) = a_n x^n + \cdots + a_0$ continuous on $\R$
+        \item $\frac{P(x)}{Q(x)}$ continuous on $\R \setminus \{x_1, \cdots, x_m\}$ if $x_1, \cdots, x_m$ are roots of $Q(x)$
+    \end{itemize}
+\end{corollary}
+
+\begin{theorem}
+    Let $f: D_1 \to D2 \subset \R, g: D_2 \to \R$ be continuous $\implies g \circ f : D_1 \to \R$ continuous.
+\end{theorem}
+
+\begin{ntheorem}[Bolzano (Intermediate value theorem)]
+    Let $I \subseteq \R$, $f : I \to \R$ and $a, b \in I$. For each $c$ between $f(a)$ and $f(b)$ there is a $z \in [a, b]$ with $f(z) = c$
+\end{ntheorem}
+
+\begin{ntheorem}[Min-Max]
+    Let $f: I = [a, b] \to \R$ be continuous.
+    $$\exists u, v \in I \ \forall x \in I \ (f(u) \leq f(x) \leq f(v))$$
+    In particular $f([a, b]) \subset [f(u), f(v)]$ is bounded.
+\end{ntheorem}
+
+\begin{corollary}
+    $I = [a, b]$, $f: I \to \R$ continuous, then $\Im(f) = f(I)$ is a compact interval $J = [\min f, \max f] = [f(u), f(v)]$
+\end{corollary}
+
+\begin{ntheorem}[Inverse Mapping]
+    Let $f: I \to \R$ be continuous and strict monotone increasing. Then $J := f(I) \subseteq \R$ is an interval and $f^{-1}: J \to I$ is continuous and strict monotone.
+\end{ntheorem}
+
+\subsection{Exponential function}
+$\exp: \R \to ]0, \infty [$ is continuous, strictly monotone increasing, surjective.
+\begin{itemize}
+    \item $\exp(x) \geq 1 + x \quad \forall x \in \R$
+    \item For $x > 0, a \in \R: x^a := \exp(a \ln x)$
+    \item $x^0 = 1 \quad \forall x > 0$
+\end{itemize}
+
+\begin{definition}
+    The inverse mapping of $\exp (x)$ is called the natural logarithm: 
+    $$\ln : ]0, \infty [ \to \R, \quad x \mapsto \ln x$$
+    It is strictly monotone increasing, continuous and bijective.
+\end{definition}
+
+\subsection{Converge of function sequences}
+$$\N \to \R^D = \{f: D \to \R\}, \quad n \mapsto f(n)$$
+\begin{definition} [pointwise convergence]
+    $(f_n)_{n \geq 0}$ converges pointwise to a function $f: D \to \R$, if $\forall x \in D \ (\lim_{n \to \infty} f_n(x) = f(x))$
+    $$\iff$$
+    $$\forall x \in D \ \forall \epsilon > 0 \ \exists N \in \N \ \text{s.t.} \ \forall n \geq N \ (|f_n(x) - f(x)| < \epsilon)$$
+\end{definition}
+
+\begin{definition}[uniform convergence (Weierstrass)]
+    $f_n: D \to \R$ converges uniformly in $D$ to $f: D \to \R$ if: 
+    $$\forall \epsilon > 0 \ \exists N \geq 1 \ \text{s.t.} \ \forall n \geq N \ \forall x \in D \ (|f_n(x) - f(x)| < \epsilon)$$
+    $$\iff$$
+    $$\lim_{n\to\infty} \sup_{x \in D} |f_n(x) - f(x)| = 0$$
+    The function sequence $(f_n)$ converges uniformly if for all $x \in D$ the limit $\lim_{n\to\infty} f_n(x) = f(x)$ exists and the sequence $(f_n)$ uniformly converges to $f$.
+
+    The series $\sum_{n = 1}^\infty f_n(x)$ converges uniformly (in $D$), if the function sequence $S_n(x) := \sum_{k=0}^n f_k(x)$ converges uniformly.
+\end{definition}
+
+\begin{theorem}
+    let $D \subseteq \R$ and $f_n: D \to \R$ a function sequence containing (in $D$) continuous functions which converge (in $D$) uniformly against a function $f: D \to \R$, then $f$ (in $D$) is continuous.
+\end{theorem}
+
+\begin{note}[not uniform convergent] $(f_n)_{n \geq 0}$ converges not uniformly if:
+    $$\forall \epsilon > 0 \ \forall N \in \N \ \exists x \in D (|f_n(x) - f(x)| \geq \epsilon)$$
+\end{note}
+
+\begin{note}
+    Check the function and try to construct $x$ (dependent on $N$ in general), such that $|f_n(x) - f(x)|$ is always greater than a specific $\epsilon$ and afterwards choose the $\epsilon$.
+\end{note}
+
+\begin{definition}[Power Functions]
+    $\sum_{k = 0}^\infty c_k x^k$ has positive convergence radius if $\underset{k \to \infty}{\limsup}$.
+    $$\rho = \begin{cases}
+        + \infty \quad \quad \quad \quad \text{, if} \ \underset{k \to \infty}{\limsup} \sqrt[k]{|c_k|} = 0 \\
+        \frac{1}{\underset{k \to \infty}{\limsup} \sqrt[k]{|c_k|}} \quad \text{, if} \ \underset{k \to \infty}{\limsup} \sqrt[k]{|c_k|} > 0
+    \end{cases}$$
+\end{definition}
+
+\begin{theorem}
+    Let $\sum_{k=0}^\infty c_kx^k$ be a power series with positive convergence radius $\rho > 0$ and let $f(x) = \sum_{k=0}^\infty c_kx^k, |x| < \rho$ Then: $\forall 0 \leq r < \rho$ converges $\sum_{k=0}^\infty c_kx^k$ uniformly on $[-r,r]$, furthermore  $f: ]-\rho, \rho[ \to \mathbb{R}$ is continuous.
+\end{theorem}
+
+\subsection{Trigonometric Functions}
+$\sin$ and $\cos$ are continuous functions $\R \to \R$
+$$\sin z = z - \frac{z^3}{3!} + \frac{z^5}{5!} - \cdots = \sum_{n = 0}^\infty \frac{(-1)^n z^{2n + 1}}{(2n + 1)!}$$
+$$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \frac{(-1)^n z^{2n}}{(2n)!}$$
+
+\begin{theorem}
+    \begin{enumerate}
+        \item $\exp(iz) = \cos(z) +i\sin(z) \quad \forall z \in \C$
+        \item $\cos z = \cos(-z) \text{ und } \sin(-z) = - \sin(z) \quad \forall z \in \C$
+        \item $\sin(z) = \frac{e^{iz}-e^{-iz}}{2i}, \cos(z) = \frac{e^{iz}+e^{-iz}}{2}$
+        \item $\sin(z+w) = \sin(z)\cos(w) + \cos(z)\sin(w)$ \\
+            $\cos(z+w) = \cos(z)\cos(w) - \sin(z)\sin(w)$
+        \item $\cos(z)^2+\sin(z)^2 = 1 \quad \forall z \in \mathbb{C}$
+    \end{enumerate}
+\end{theorem}
+
+\begin{corollary}
+    $$\sin(2z) = 2 \sin(z)\cos(z)$$
+    $$\cos(2z) = \cos(z)^2 - \sin(z)^2$$
+    $$\sin(x) - \sin(y) = 2 \sin\left(\frac{x + y}{2}\right)\cos\left(\frac{x - y}{2}\right)$$
+\end{corollary}
+
+\begin{definition}[$\pi$]
+    $\pi := \inf \{ t > 0 \ | \ \sin t = 0\}$
+    \begin{enumerate}[label=(\roman*)]
+        \item $\sin \pi = 0, \pi \in ]2, 4[$
+        \item $\forall x \in ]0, \pi[$: $\sin x > 0$
+        \item $e^{\frac{i \pi}{2}} = i$
+    \end{enumerate}
+\end{definition}
+
+\begin{corollary}
+    $x \geq \sin x \geq x - \frac{x^3}{3!} \quad \forall 0 \leq x \leq \sqrt{6}$
+\end{corollary}
+
+\begin{corollary}
+    \begin{enumerate}
+        \item $e^{i\pi}=-1, \qquad e^{2i\pi}=1$
+        \item $\sin(x+\frac{\pi}{2}) = \cos(x), \quad \cos(1+\frac{\pi}{2}) = -\sin(x) \quad \forall x \in \R$
+        \item $\sin(x+\pi)=-\sin(x), \quad \sin(x+2\pi) = \sin(x) \quad \forall x \in \R$
+        \item $\cos(x+\pi) = -\cos(x), \quad \cos(x+2\pi) = \cos(x) \quad \forall x \in \R$
+        \item Roots of sinus $= \{\pi \cdot k \ | \ k \in \Z \}$ \\ 
+        $\sin(x) > 0 \ \forall x \in ] 2k \pi, (2k + 1)\pi [, \quad k \in Z$ \\
+        $\sin(x) < 0 \ \forall x \in ] (2k + 1)\pi, (2k + 2) \pi [, \quad k \in \Z$
+        \item Roots of cosine $= \{\frac{\pi}{2} + k \cdot \pi \ | \ k \in \Z \}$ \\
+        $\cos(x) > 0 \ \forall x \in ] - \frac{\pi}{2} + 2k \pi, - \frac{\pi}{2} + (2k + 1)\pi [, \quad k \in \Z$ \\
+        $\cos(x) < 0 \ \forall x \in ] -\frac{\pi}{2} + (2k + 1) \pi, - \frac{\pi}{2} + (2k + 2) \pi [, \ k \in \Z$
+    \end{enumerate}
+\end{corollary}
+
+\subsection{Limit of Functions}
+\begin{definition}[accumulation point]
+    $x_0 \in \R$ is an accumulation point of $D$ if $\forall \delta > 0$: $(]x_0 - \delta, x_0 + \delta[ \setminus \{x_0\}) \cap D \neq \varnothing$
+\end{definition}
+
+\begin{definition}[Limit of Function]
+    if $f : D \to \R, x_0 \in \R$ an accumulation point of $D$, then $A \in \R$ is the limit of $f(x)$ for $x \to x_0$, written as $\lim_{x \to x_0} f(x) = A$. If $\forall \epsilon > 0 \ \exists \delta > 0$ s.t. $\forall x \in D \cap (]x_0 - \delta, x_0 + \delta[ \setminus \{x_0\}): \ |f(x) - A| < \epsilon$
+\end{definition}
+
+\begin{ntheorem}[Important Rules]
+    Let $f: D \to \R$ and $x_0$ is an accumulation point of $D$.
+    \begin{enumerate}
+        \item $\lim_{x \to x_0} f(x) = A \iff \forall (a_n)_{n \geq 1}$ in $D \setminus \{x_0\}$ with $\lim_{n \to \infty} a_n = x_0 \implies \lim_{n \to \infty} f(a_n) = A$.
+        \item Let $x_0 \in D$. Then $f$ is continuous in $x_0$ \newline $\iff \lim_{x \to x_0} f(x) = f(x_0)$
+        \item $f, g: D \to \R$ and $\exists \lim_{x \to x_0} f(x), \exists \lim_{x \to x_0} g(x) \implies$
+        $$\lim_{x \to x_0} (f + g)(x) = \lim_{x \to x_0} f(x) + \lim_{x \to x_0} g(x)$$
+        $$\lim_{x \to x_0} (f \cdot g) (x) = \lim_{x \to x_0}f(x) \cdot \lim_{x \to x_0} g(x)$$
+        \item $f, g: D \to \R$ and $f \leq g$, then if both limit exists
+        $$\lim_{x \to x_0} f(x) \leq \lim_{x \to x_0} g(x)$$ 
+        \item If $g_1 \leq f \leq g_2$ and $\lim_{x \to x_0} g_1(x) = \lim_{x \to x_0} g_2(x)$ then $\lim_{x \to x_0} f(x) = \lim_{x \to x_0} g_1(x)$
+    \end{enumerate}
+\end{ntheorem}
+
+\section{Differentiable Functions}
+
+\begin{definition}[Differentiable]
+    $f$ is in $x_0$ differentiable, if the limit
+    $\lim_{x \to x_0} \frac{f(x) - f(x_0)}{x - x_0} = \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0)}{h} = f'(x_0)$ exists. $f$ is differentiable if $\forall x_0 \in D \ f$ is differentiable. 
+\end{definition}
+
+\begin{ntheorem}[Weierstrass]
+    $f: D \to \R$, $x_0 \in D$ accumulation point. Equivalent statements:
+    \begin{enumerate}
+        \item $f$ is in $x_0$ differentiable
+        \item It exists $c \in R$ ($c = f'(x_0)$) and $r: D \to \R$ s.t.:
+            \begin{enumerate}
+                \item $f(x) = f(x_0) + c(x - x_0) + r(x)(x - x_0)$
+                \item $r(x_0) = 0$ and $r$ continuous in $x_0$.
+            \end{enumerate}
+    \end{enumerate}
+\end{ntheorem}
+
+\begin{corollary}
+    $f$ diff. in $x_0 \iff f$ continuous in $x_0$
+\end{corollary}
+
+\begin{ntheorem}[Derivative rules]$\ $ \newline
+    Linearity: $(\alpha \cdot f(x) + g(x))' = \alpha \cdot f'(x) + g'(x)$ \\
+    Product rule: $(f \cdot g)'(x) = f'(x)\cdot g(x) + f(x)\cdot g'(x)$ \\
+    Quotient rule: $\left(\frac{f}{g}\right)'(x) = \frac{f'(x)\cdot g(x) - f(x)\cdot g'(x)}{g(x)^2}$ \\
+    Chain rule: $(f \circ g)'(x) = f'(g(x))\cdot g'(x)$
+\end{ntheorem}
+
+\begin{corollary}
+    $f$ bijective and in $x_0$ differentiable s.t. $f'(x_0) \neq 0$. $f^{-1}$ is continuous in $y_0 = f(x_0)$. Then $f^{-1}$ is differentiable in $y_0$ and $(f^{-1})'(y_0) = \frac{1}{f'(x_0)} = \frac{1}{f'(f^{-1}(y_0))}$. 
+\end{corollary}
+
+\subsection{Derivative Implications}
+\begin{enumerate}
+    \item $x_0$ is local minimum if $f'(x_0) = 0 \land f''(x_0) > 0$ or the sign of $f'$ changes from $-$ to $+$.
+    \item $x_0$ is local maximum if $f'(x_0) = 0 \land f''(x_0) < 0$ or the sign of $f'$ changes from $+$ to $-$.
+    \item $x_0$ is local extremum if $f'(x_0) = 0 \land f''(x_0) \neq 0$
+    \item $x_0$ is a saddle point if $f'(x_0) = 0$ and $f''(x_0) = 0$
+    \item $x_0$ is a inflection point if $f''(x_0) = 0$
+    \item $f'(x_0) = f^{(2)}(x_0) = \ldots = f^{(n)}(x_0) = 0$
+    \begin{enumerate}
+        \item $n$ odd and $f^{(n+1)}(x_0) > 0$ $\implies$ $x_0$ strict local minimum
+        \item $n$ odd and $f^{(n+1)}(x_0) < 0$ $\implies$ $x_0$ strict local maximum
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{Derivative Theorems}
+\begin{ntheorem}[Rolle]
+    Let $f: [a, b] \to \R$ continuous and in $]a, b[$ differentiable. If $f(a) = f(b)$, then there exists $\xi \in ]a, b[$ with $f'(\xi) = 0$.
+\end{ntheorem}
+
+\begin{ntheorem}[Mean Value / Lagrange]
+    Let $f: [a, b] \to \R$ continuous and in $]a, b[$ differentiable, then there exists $\xi \in ]a, b[$ with $f(b) - f(a) = f'(\xi)(b-a)$.
+
+    There exists points $\xi$ with $f'(\xi)$ equal to the gradient of the secant between $a$ to $b$.
+\end{ntheorem}
+
+\begin{corollary}
+    Let $f, g: [a, b] \to \R$ continuous and diff. in $]a, b[$.
+    \begin{enumerate}
+        \item $\forall \xi \in ]a, b[: f'(\xi) = 0 \implies f$ is constant
+        \item $\forall \xi \in ]a, b[: f'(\xi) = g'(x) \implies \exists c \in \R \forall x \in [a, b] : f(x) = g(x) + c$
+        \item $\forall \xi \in ]a, b[: f'(\xi) \geq 0 \implies f$ in $[a, b]$ mon. inc.
+        \item $\forall \xi \in ]a, b[: f'(\xi) \geq 0 \implies f$ in $[a, b]$ str. mon. inc.
+        \item $\forall \xi \in ]a, b[: f'(\xi) \leq 0 \implies f$ in $[a, b]$ mon. dec.
+        \item $\forall \xi \in ]a, b[: f'(\xi) < 0 \implies f$ in $[a, b]$ str. mon. dec.
+        \item $\exists M \geq 0 \ \forall \xi \in ]a, b[ : |f'(\xi)| \leq M \implies$ \newline $\forall x_1, x_2 \in [a, b]: |f(x_1) - f(x_2)| \leq M |x_1 - x_2|$
+    \end{enumerate}
+\end{corollary}
+
+\begin{ntheorem}[Cauchy]
+    $f, g,: [a, b] \to \R$ continuous and in $]a, b[$ diff. Then there exists $\xi \in ]a, b[$ with $g'(\xi)(f(b) - f(a)) = f'(\xi)(g(b) - g(a))$.
+
+    If $\forall x \in ]a, b[ : g'(x) \neq 0$ it implies that $g(a) \neq g(b)$ and $\frac{f(b) - f(a)}{g(b) - g(a)} = \frac{f'(\xi)}{g'(\xi)}$
+\end{ntheorem}
+
+\begin{ntheorem}[l'Hospital]
+    $f,g : ]a, b[ \to \R$ diff. with $\forall x \in ]a, b[ : g'(x) \neq 0$.
+    If $\lim_{x \to b^-} f(x) = 0, \lim_{x \to b^-} g(x) = 0$ and $\lim_{x \to b^-} \frac{f'(x)}{g'(x)} =: \lambda$ exists, then $\lim_{x \to b^-}\frac{f(x)}{g(x)} = \lim_{x \to b^-}\frac{f'(x)}{g'(x)}$.
+\end{ntheorem}
+
+\begin{note}
+    Only use l'Hospital if either $\frac{0}{0}$ or $\frac{\infty}{\infty}$!
+\end{note}
+
+\begin{definition}
+    \begin{enumerate}
+        \item convex: ($x \leq y$): $f (\lambda x + (1 - \lambda)y) \leq \lambda f(x) + (1 - \lambda)f(y)$
+        \item strict convex: ($x \leq y$): $f (\lambda x + (1 - \lambda)y) < \lambda f(x) + (1 - \lambda)f(y)$
+        \item concave: ($x \leq y$): $f (\lambda x + (1 - \lambda)y) \geq \lambda f(x) + (1 - \lambda)f(y)$
+        \item strict concave: ($x \leq y$): $f (\lambda x + (1 - \lambda)y) > \lambda f(x) + (1 - \lambda)f(y)$
+    \end{enumerate}
+\end{definition}
+
+\begin{lemma}
+    $f: I \to \R$. $f$ is convex $\iff \forall x_0 < x < x_1 \in I: \frac{f(x) - f(x_0)}{x - x_0} \leq \frac{f(x_1) - f(x)}{x_1 - x}$. Strictly convex if $<$.
+\end{lemma}
+
+\begin{theorem}
+    $f: ]a, b[ \to \R$ in $]a, b[$ diff. Function is (strictly) convex if $f'$ is (strictly) monotonically increasing.
+\end{theorem}
+
+\subsection{Higher Derivatives}
+\begin{enumerate}
+    \item For $n \geq 2$ is $f$ $n$-times differentiable in $D$ if $f^{(n-1)}$ in $D$ is differentiable. Then $f^{(n)} := (f^{(n-1)})'$ and is the $n$-th derivative of $f$
+    \item $f$ is $n$-times \textbf{continuous differentiable} if $f$ is $n$-times differentiable and if $f^{(n)}$ is continuous in $D$
+    \item $f$ is in $D$ smooth if $\forall n \geq 1$, $f$ is $n$-times differentiable.
+\end{enumerate}
+
+\begin{ntheorem}[Smooth Functions]
+    $\exp$, $\sin$, $\cos$, $\sinh$, $\cosh$, $\tanh$, $\ln$, $\arcsin$, $\arccos$, $\text{arccot}$, $\arctan$ and all polynomials. $\tan$ is smooth on $\R \setminus \{\pi / 2 + k \pi\}$ and $\cot$ on $\R \setminus\{k\pi\}$
+\end{ntheorem}
+
+\begin{theorem}
+    $f, g: D \to \R$ are $n$-times diff. in $D$.
+    \begin{enumerate}
+        \item $(f + g)^{(n)} = f^{(n)} + g^{(n)}$
+        \item $(f \cdot g)^{(n)} = \sum_{k = 0}^n \binom{n}{k}f^{(k)}g^{(n-k)}$
+        \item $(g \circ f)^{(n)}(x) = \sum_{k=1}^n A_{n,k}(x)(g^{(k)} \circ f)(x)$ with $A_{n,k}$ as polynom of in the functions $f', f^{(2)}, \ldots, f^{(n+1-k)}$
+    \end{enumerate}
+\end{theorem}
+
+\subsection{Power Series and Taylor approximation}
+\begin{theorem}
+    Let $f_n : ]a, b[$ be a function sequence with $f_n$ one time in $]a, b[$ continuous diff. $\forall n \geq 1$. Assume that $(f_n)_{n \geq 1}$, $(f_n')_{n \geq 1}$ uniformly convergent in $]a, b[$ with $\lim_{n \to \infty} f_n =: f$ and $\lim_{n \to \infty} f_n' =: p$, then $f$ is continuously diff. and $f' = p$.
+\end{theorem}
+
+\begin{theorem}
+    Let $\sum_{k = 0}^\infty$ be a power series with convergent radius $p > 0$. Then $f(x) = \sum_{k = 0}^\infty c_k(x - x_0)^k$ is differentiable on $]x_0 - p , x_0 + p[$ and $\forall x \in ]x_0 - p , x_0 + p[: f'(x) = \sum_{k = 0}^\infty kc_k(x - x_0)^{k - 1}$
+\end{theorem}
+\begin{corollary}
+    $f^(j) = \sum_{k = j}^\infty c_k \frac{k!}{(k-j)!}(x - x_0)^{k - j}$. Furthermore $c_j = \frac{f^(j)(x_0)}{j!}$. Power series can be differentiated part by part in their converge area.
+\end{corollary}
+
+\begin{definition}[Taylor Polynomial]
+    The $n$-th Taylor-polynomial of cont. $n + 1$ times diff. in $[c, d]$ $f$ is defined as $T_n(f, x, a)$ with center $a \in ]c, d[$ and error $R_n(f, x, a)$. $\forall x \in [a, b] \ \exists \xi \in ]x, a[ \ \cup \ ]a, x[$ : 
+    \begin{align*}
+        T_n(f, x, a) &= \sum_{k = 0}^n \frac{f^{(k)}(a)}{k!} \cdot (x - a)^k \\
+        R_n(f, x, a) &= \frac{f^(n+1)(\xi)}{(n + 1)!}(x-a)^{n+1} \\
+        f(x) &= T_n(f, x, a) + R_n(f, x, a)
+    \end{align*}
+\end{definition}
+
+\begin{note}
+    The error can be approximated as $|R_n(f, x, a)| \leq \sup_{a < c < x}|\frac{f^{(n + 1)(x)(x-a)^{n+1}}}{(n+1)!}|$
+\end{note}
+
+\begin{definition}[Taylor Series]
+    $T_\infty(f, x, x_0) := \sum_{k = 0}^\infty \frac{f^{(k)}(x_0)}{k!}(x-x_0)^k$
+\end{definition}
+
+\section{Riemann Integral}
+\begin{center}
+    $a < b$, $I = [a, b]$, $\mathcal{P}(I) = \{P \ | \ P \subsetneq I \land \{a, b\} \in P \land |P| \in \N \}$
+\end{center}
+\begin{definition}[Partition]
+    \begin{itemize}
+        \item Partition:  $P \in \mathcal{P}(I)$
+        \item $\delta_i := x_i - x_{i-1}$ length of $I_i := [x_{i-1}, x_i]$, $i \geq 1$
+        \item Mesh of partition: $\delta(P) := \max_{1 \leq i \leq n}(x_i, x_{i - 1})$
+        \item $\xi := \{\xi_1, \ldots, \xi_n\}$, $\xi_i \in I_i$
+        \item $P'$ refines $P$ if $P \subset P'$
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Riemann Sums]
+    $S(f, P, \xi) := \sum_{i = 1}^n f(\xi_i) \cdot (x_i - x_{i - 1})$
+    \begin{itemize}
+        \item Lower sum: $\underline{S}(f, P) := \sum_{i = 1}^n (\inf_{x \in I_i} f(x)) (x_i - x_{i - 1})$
+        \item Upper sum: $\overline{S}(f, P) := \sum_{i = 1}^n (\sup_{x \in I_i} f(x)) (x_i - x_{i - 1})$
+    \end{itemize}
+    It holds: $-M(b - a) \leq \underline{S}(f, P) \leq \overline{S}(f, P) \leq M(b - a)$
+\end{definition}
+
+\begin{lemma}
+    $P \subset P'$: $\underline{S}(f, P) \leq \underline{S}(f, P') \leq \overline{S}(f, P') \leq \overline{S}(f, P)$
+\end{lemma}
+
+\begin{lemma}
+    $\forall P_1, P_2 \in \mathcal{P}(I): \underline{S}(f, P_1) \leq \overline{S}(f, P_2)$
+\end{lemma}
+
+\begin{definition}[Lower Riemann Integral]
+    $\underline{S}(f) := \sup_{P \in \mathcal{P}(I)} \underline{S}(f, P)$
+\end{definition}
+
+\begin{definition}[Upper Riemann Integral]
+    $\overline{S}(f) := \inf_{P \in \mathcal{P}(I)} \overline{S}(f, P)$
+\end{definition}
+
+\subsection{Integrability criteria}
+
+\begin{definition}[Integrable]
+    Bounded $f: [a, b] \to \R$ is integrable if $\underline{S}(f) = \overline{S}(f)$ and the shared value is $\int_a^b f(x) dx$.
+\end{definition}
+
+\begin{ntheorem}[Riemann Criteria]
+    Bounded $f: I \to \R$ is integrable
+    \begin{flalign*}
+        &\Leftrightarrow &&\forall \epsilon > 0 \ \exists P \in \mathcal{P}(I) \ : \overline{S}(f, P) - \underline{S}(f, P) < \epsilon & \\
+        &\Leftrightarrow &&\forall \epsilon > 0 \ \exists \delta > 0 \ \forall P \in \mathcal{P}_\delta(I) := \{P \in \mathcal{P}(I) \ | \ \delta(P) < \delta\}: & \\
+        &&& \overline{S}(f, P) - \underline{S}(f, P) < \epsilon & \\
+        &\Leftrightarrow &&\forall \epsilon > 0 \ \exists \delta > 0 \ \forall P \in \mathcal{P} \ \text{with} \ \delta(P) < \delta: & \\
+        &&& \left|A - \sum_{i=1}^n f(\xi_i)(x_i - x_{i - 1})\right| < \epsilon
+    \end{flalign*}
+\end{ntheorem}
+
+\begin{note}
+    Bounded $f: [a, b] \to \R$ is int. if $\lim_{\delta(P) \to 0} S(f, P, \xi)$ exists for all $P$ with $\delta(P) \to 0$. It follows that \newline $\lim_{\delta(P) \to 0} S(f, P, \xi) = \int_a^b f(x) dx$
+\end{note}
+
+\subsection{Integrable Functions}
+\begin{enumerate}
+    \item $f$ (bounded) cont. in $[a, b]$ $\implies$ $f$ int. over $[a, b]$
+    \item $f$ monotone in $[a, b]$ $\implies$ $f$ int. over $[a, b]$
+    \item If $f, g$ bounded and int., then
+    $$f + g, \lambda \cdot f, f \cdot g, |f|, \max(f,g), \frac{f}{g}$$ are integrable.
+    \item All polynomials are integrable, even $\frac{P(x)}{Q(x)}$ if $Q(x)$ has no root in $[a, b]$
+\end{enumerate}
+
+\begin{note}
+    Let $V: = \{f: I \to \R \ | \ f \ \text{is a mapping}\}$. $(V, +, \cdot)$ is a vector space.
+    Then it implies that $W := \{f: I \to \R \ | \ f \ \text{is integrable}\}$ is a subspace of $V$.
+\end{note}
+
+\subsection{Integration Inequalities and Theorems}
+\begin{definition}[Uniform continuous]
+    $$\forall \epsilon > 0 \ \exists \delta > 0 \ \forall x,y \in D: |x - y| < \delta \implies |f(x) - f(y)| < \epsilon $$
+\end{definition}
+
+\begin{theorem}
+    $f: [a, b] \to \R$ cont. $\implies$ $f$ is uni. cont. in $[a, b]$.
+\end{theorem}
+
+\begin{theorem}
+    $f, g: [a, b] \to \R$ bounded and integrable and $\forall x \in [a, b]: f(x) \leq g(x) \implies$
+    $$\int_a^b f(x) dx \leq \int_a^b g(x) dx$$
+\end{theorem}
+
+\begin{corollary}
+    $|\int_a^b f(x) dx| \leq \int_a^b |f(x)| dx$
+\end{corollary}
+
+\begin{ntheorem}[Cauchy-Schwarz]
+    $$\left|\int_a^b f(x)g(x) dx\right| \leq \sqrt{\int_a^b f^2(x) dx}\sqrt{\int_a^b g^2(x) dx}$$
+\end{ntheorem}
+
+\begin{note}
+    $<f, g> := \int_a^b f(x)g(x) dx$ is a scalar product. \newline
+    $||f||^2 = <f, f> = \int_a^b f^2(x) dx$.
+\end{note}
+
+\begin{ntheorem}[Mean Value Theorem]
+    $f: [a, b] \to \R$ continuous $\implies \exists \xi \in [a, b]: \int_a^b f(x) dx = f(\xi)(b - a)$
+\end{ntheorem}
+\begin{ntheorem}[Cauchy]
+    $f, g: [a, b] \to \R$ with $f$ cont. and $g$ bounded and integrable with $g(x) \geq 0$, $\forall x \in [a, b]$ $\implies \exists c \in [a, b]: \int_a^b f(x)g(x) dx = f(c)\int_a^b g(x) dx$.
+\end{ntheorem}
+
+\subsection{Integration Properties}
+\begin{ntheorem}[Additive Property]
+    $$\int_a^b f(x) dx = \int_a^c f(x) dx + \int_c^b f(x) dx$$
+\end{ntheorem}
+
+\begin{ntheorem}[Linearity]
+    $$\int_a^b(\alpha f_1 + \beta f_2) dx = \alpha \int_a^b f_1(x) dx + \beta \int_a^b f_2(x) dx$$
+\end{ntheorem}
+
+\subsection{Primitive Functions}
+\begin{definition}[Primitive Function]
+    $F: [a, b] \to \R$ is a primitive function of $f$ if $F$ is cont. diff. and $F' = f$.
+\end{definition}
+
+\begin{note}
+    $f \ \text{is integrale} \not\Rightarrow$ exists a primitive function for $f$.
+\end{note}
+
+\begin{ntheorem}[HID]
+    Let $a < b$, $f: [a, b] \to \R$ continuous. The function 
+    $$F(x) := \int_a^x f(t) dt \quad a \leq x \leq b$$
+    is cont. diff. in $[a, b]$ and $F'(x) = f(x) \ \forall x \in [a, b]$.
+\end{ntheorem}
+
+\begin{ntheorem}[Fundamental theorem of calculus]
+    $f: [a, b] \to \R$ continuous. Dann there exists a unique (except a constant term) primitive function $F$ of $f$, such that 
+    $$\int_a^b f(x) dx = F(b) - F(a).$$
+\end{ntheorem}
+
+\subsection{Integration Methods}
+\begin{ntheorem}[Partial Inegration]
+    \begin{align*}
+        \int_a^b f(x) g'(x) dx &= f(b)g(b) - f(a)g(a) - \int_a^b f'(x)g(x) dx \\
+        \int_a^b f(x) g'(x) dx &= (f \cdot g)|_a^b - \int_a^b f'(x)g(x) dx \\
+        \int f(x)g'(x) dx &= f(x) g(x) - \int f'(x) g(x) dx
+    \end{align*}
+\end{ntheorem}
+\begin{itemize}
+    \item Choose $g'$: exp $\rightarrow$ trig $\rightarrow$ poly $\rightarrow$ inverse trig. $\rightarrow$ logs
+    \item Choose $f$: logs $\rightarrow$ inverse trig. $\rightarrow$ poly $\rightarrow$ trig $\rightarrow$ exp
+    \item Sometimes it is necessary to multiply by $1$. E.g.: $\int \ln x \ dx = \int \ln x \cdot 1 \ dx \implies f(x) = \ln x, \ g'(x) = 1$.
+    \item Sometimes it is necessary to to it multiple times
+\end{itemize}
+
+\begin{ntheorem}[Substitution]
+    Let $a < b$, $\phi: [a, b] \to \R$, cont. diff, $I \subseteq \R$ with $\phi([a, b]) \subseteq I$ and $f: I \to \R$ a cont. function. Then it follows:
+    $$\int_{\phi(a)}^{\phi(b)} f(x) dx = \int_a^b f(\phi(t)) \phi'(t) dt = (F \circ \phi)(b) - (F \circ \phi)(a)$$
+    since $F'=f$ then $f(\phi(t))\phi'(t) = (F \circ \phi)'(t)$.
+\end{ntheorem}
+
+t.b.d
+
+\begin{ntheorem}[Partial Fraction Decomposition]
+    Let $P(x)$, $Q(x)$ be two polynomials. $\int \frac{P(x)}{Q(x)}$ can be calculated as follows:
+    \begin{enumerate}
+        \item If $\deg(P) \geq Q(P)$ use polynomial division to to get
+        $$\frac{P(x)}{Q(x)} = S(x) + \frac{\hat{P}(x)}{Q(x)}$$
+        \item Calculate all roots of $Q(x)$
+        \item Create a partial fraction per root
+        \begin{itemize}
+            \item Simple real root: $x_1 \to \frac{A}{x - x_1}$
+            \item $n$-fold real root: $x_1 \to \frac{A_1}{x - x_1} + \ldots + \frac{A_r}{(x - x_1)^r}$
+        \end{itemize}
+        \item Calculate parameters $A_1, \ldots, A_n$. (Insert the root as $s$, transform and solve)
+    \end{enumerate}
+\end{ntheorem}
+
+\begin{corollary}
+    $\int_{a + c}^{b + c} f(x) dx = \int_a^b f(t + c) dt$
+\end{corollary}
+
+\begin{corollary}
+    $\int_a^b f(ct) dt = \frac{1}{c} \int_{ac}^{bc} f(x) dx$
+\end{corollary}
+
+\subsection{Integration of convergent series}
+\begin{theorem}
+    Let $f_n: [a, b] \to \R$ be a sequence of bounded, integrable functions which converges uniformly against a function $f: [a, b] \to \R$. Then $f$ is bounded and integrable and
+    $$\lim_{n \to \infty} \int_a^b f_n(x) dx = \int_a^b \lim_{n \to \infty}  f_n(x) dx = \int_a^b f(x) dx$$
+\end{theorem}
+
+\begin{theorem}
+    Let $f(x) := \sum_{k=0}^\infty c_k x^k$ be a power series with positive convergence radius $p > 0$. Then $\forall 0 \leq r < p$ $f$ is integrable on $[-r, r]$ and $\forall x \in ]-p, p[$:
+    $$\int_0^x f(t) dt = \sum_{k=0}^\infty c_k \frac{x^{k + 1}}{k + 1}$$
+\end{theorem}
+
+\subsection{Improper Integral}
+\begin{center}
+    $f: [a, \infty) \to \R, f: [-\infty, a] \to \R, f: (-\infty, \infty) \to \R$
+\end{center}
+
+\begin{definition}
+    Let $f: [a, \infty[ \to \R$ be bounded and integrable on $[a, b]$ for all $b > a$. If $\lim_{b \to \infty} \int_a^b f(x) dx$ exists, the limit is defined as $\int_a^\infty f(x) dx$ and one can say that $f$ is integrable on $[a, +\infty[$. If the limit does not exists, one can say that $\int_a^\infty f(x) dx$ diverges.
+\end{definition}
+
+\begin{ntheorem}[Comparison Theorem]
+    Let $f: [a, \infty[ \to \R$ be bounded and integrable on $[a, b] \ \forall b \in \R, b > a$.
+    \begin{enumerate}
+        \item If $\forall x \geq a : |f(x)| \leq g(x)$ and $g(x)$ is integrable on $[a, \infty[$ $\implies f$ is integrable on $[a, \infty[$.
+        \item If $0 \leq g(x) \leq f(x)$ and $\int_a^\infty g(x) dx$ diverges $\implies \int_a^\infty g(x) dx$ diverges.
+    \end{enumerate}
+\end{ntheorem}
+
+\begin{note}
+    Sometimes an integral can be split into a normal integral and an improper integral:
+    $$\int_0^\infty e^{-x^2} dx = \int_0^1 e^{-x^2} dx + \int_1^\infty e^{-x^2} dx$$
+\end{note}
+
+\begin{ntheorem}[McLaurin]
+    Let $f: [1, \infty[ \to [0, \infty[$ be monotonically decreasing.
+    $$\sum_{n=1}^\infty f(n) \ \text{converges} \iff \int_1^\infty f(x) dx \ \text{converges}.$$ 
+    The following holds:
+    $$0 \leq \sum_{k=1}^\infty f(k) - \int_1^\infty f(x) dx \leq f(1)$$
+\end{ntheorem}
+
+\begin{definition}
+    Let $f$ be a function which is bounded and integrable on all intervals $[a + \epsilon, b] \ \forall \epsilon > 0$. $f: ]a, b] \to \R$ is integrable if $\lim_{\epsilon \to 0} \int_{a + \epsilon}^b f(x) dx$ exists. In this case the limit is defined as $\int_a^b f(x) dx$.
+\end{definition}
+The comparison theorem can be used for such integrals as well.
+
+\subsection{Indefinite Integrals}
+Let $f: I \to \R$ be defined on the interval $I \subseteq \R$. If $f$ is continuous there exists a primitive function $F$.
+$$\int f(x) dx = F(x) + C$$
+The indefinite integral is the inverse of the derivative.
+
+\begin{note}
+    $\int_{-\infty}^\infty f(x) dx = \lim\limits_{b \to - \infty} \int_b^a f(x) dx + \lim\limits_{c \to \infty} \int_a^c f(x) dx$.
+    $$\int_{-infty}^\infty \ \text{conv.} \iff \int_{-\infty}^a f(x) dx \ \text{conv.} \land \int_a^\infty f(x) dx \ \text{conv.}$$
+    In general: Let $f: ]a, b[ \to \R$ such that it is integrable on each compact interval $[\tilde{a}, \tilde{b}]$. Then 
+    $$\int_a^b f(x) dx := \lim\limits_{\tilde{a} \searrow a}\lim\limits_{\tilde{b} \nearrow b} \int_{\tilde{a}}^{\tilde{b}} f(x) dx$$
+\end{note}
+
+\subsection{Euler Gamma Function}
+\begin{definition}
+    For $s > 0$:
+    $$\Gamma(s) := \int_0^\infty e^{-x}x^{s - 1} dx.$$
+\end{definition}
+$\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. It converges for all $s > 0$.
+
+\end{document}
