@@ -78,7 +78,25 @@ Ilija Pejic <[ipejic@student.ethz.ch](mailto:ipejic@student.ethz.ch)>
       - [Projections](#projections)
     - [Linearizability](#linearizability)
     - [Sequential Consistency](#sequential-consistency)
-  - [Distributed Memory](#distributed-memory)
+    - [Quiescent Consistency](#quiescent-consistency)
+    - [Consensus (Wait-free)](#consensus-wait-free)
+      - [Requirements](#requirements)
+      - [Examples](#examples)
+        - [Atomic registers](#atomic-registers)
+        - [CAS](#cas)
+        - [FIFO queue](#fifo-queue)
+  - [Transactional Memory](#transactional-memory)
+    - [Implementation](#implementation)
+      - [STM Implementation (Using ScalaSTM)](#stm-implementation-using-scalastm)
+      - [Clock-based STM](#clock-based-stm)
+    - [Isolation Methods](#isolation-methods)
+    - [Nestings](#nestings)
+      - [Flattened nesting](#flattened-nesting)
+      - [Closed Nesting](#closed-nesting)
+  - [Distributed Memory and Message Passing](#distributed-memory-and-message-passing)
+    - [The Actor Model](#the-actor-model)
+    - [Event Driven Model](#event-driven-model)
+    - [Communicating Sequential Processes](#communicating-sequential-processes)
   - [Implications](#implications)
   - [Keywords](#keywords)
 
@@ -279,7 +297,7 @@ Also internal, but transfers to software.
 
 - **Latency**: time needed to perform a given computation (e.g., process a customer)
 $$l = \sum_{s \in \text{stages}} s$$
-$$\text{latency bound} = \text{\#Stages}\cdot \max(\text{computationtime}(\text{stages}))$$
+$$\text{latency bound} = \text{\#Stages} \cdot \max(\text{computationtime}(\text{stages}))$$
 - **Throughput**: amount of work that can be done by a system in a given period of time(e.g., how many customers can be processed in one minute).
 $$tp = \frac{1}{\max(\text{computationtime}(\text{stages}))}$$
 - **Balanced/Unbalanced Pipeline**: a pipeline is balanced if it has constant latency. If the first computation step is the longest, the pipeline is always balanced.
@@ -1327,6 +1345,7 @@ How to solve?
 - Garbage Collection: Relies on the existence of a GC, much too slow to use in the inner of a runtime kernel
 - Pointer Tagging: Does not cure the problem, rather delay it
 - Hazard Pointers
+- Transactional Memory
 
 #### Pointer Tagging
 Aligned addresses (values of pointers) make some bits avaiable for pointer tagging.
@@ -1359,7 +1378,7 @@ A q: void
 
 **Sequential Specification**: Tells if a single-theaded, single objects history is legal.
 **Precedence**: A method calls precedes another method call if the response event precedes the invocation event. If no precedence then method calls overlap.
-$m_0 \to_H m_1$ means $m_0$ precedes $m_1$. $\to_H$ is a releation and implies a partial order on H. The order is total when H is sequential.
+**Notation**: $m_0 \to_H m_1$ means method $m_0$ precedes method $m_1$. $\to_H$ is a releation and implies a partial order on $H$. The order is total when $H$ is sequential.
 
 | Sequential | Concurrent |
 | --- | --- |
@@ -1397,7 +1416,7 @@ H <   B p.enq(4)  \
 **Sequential Histories**: Method calls of different threads do not interleave. A final pending invocations is ok.
 **Well formed histories**: Per thread projections are sequential.
 **Equivalent histories**: $H|A = G|A \land H|B = G|B \implies H \equiv B$
-**Legal histories**: If for every object x H|x adheres to the sequential specification of x.
+**Legal histories**: If for every object $x$, $H|x$ adheres to the sequential specification of $x$.
 
 #### Projections
 **Object Projections** H|q:
@@ -1429,6 +1448,8 @@ The obejct is correct if the associated sequential behavior is correct.
 
 The **linearization points** can often be specified, but they may depend on the execution. Some linearization points are when locks are released. Most of the time when something locked or synchronized is accessed.
 
+> When the method shows effect (e.g., updates are gloabbly visible or visibale decisions are made).
+
 History $H$ is linearizable if it can be extended to a history $G$
 - appending zero or more responses to pending invocations that took effect
 - discarding zero or more pending invocations that did not take effect.
@@ -1440,12 +1461,227 @@ $$
 \implies \to_G \subset \to_S
 $$
 
-> **Composability Theorem**: History H is linearizable if and only if for every object x H|x is linearizable.
+> **Composability Theorem**: History $H$ is linearizable $\iff$ for every object $x$, $H|x$ is linearizable.
 > **Modularity**: Linearizability of obejcts can be proven in isolation. Independently implmeneted objects can be composed.
 
-### Sequential Consistency
+**Atomic Registers** have a single linearization point.
+$\implies$ Sequentially consistent; every read operation yields most recently written value.
+$\implies$ for non-overlapping  oeprations, the realtime order is respected.
 
-## Distributed Memory
+### Sequential Consistency
+History $H$ is sequentially consistent if it an be extended to a history $G$
+- appending zero or more responses to to pending invocations that took effect
+- discarding zero or more pending invocations that did not take effect
+
+such that $G$ is equivalent to a legal sequential history $S$.
+
+> $\to_G \subset \to_S$ is not required, i.e., no order across threads required
+
+Requires that operations done by one thread respect program order.
+- Cannot re-order operations done by the same thread
+- Can re-order non-overlapping operations done by different threads
+
+> Sequential Consistency is not a local proparty and thus we lose composability.
+
+### Quiescent Consistency
+Programs should respect real-time order of algorithms separated by periods of quiescence. Non-overlapping methods required to take effect in their real-time order.
+
+### Consensus (Wait-free)
+```Java
+public interface Consensus<T> {
+  T decide(T value);
+}
+```
+
+A class $C$ solves **n-thread consensus** if there exists a consensus protocol. Consensus number of $C$: largest $n$ such that $C$ solves n-thread consensus.
+#### Requirements
+- **wait-free**: consensus returns in finite time for each thread
+- **consistent**: all threads decide the same value
+- **validb**: the common decision value is some thread's input
+
+$\implies$ linearizability of consensus must be such that first thread's decision is adopted for all threads.
+
+#### Examples
+| Object | Consensus Number |
+|---|---|
+| Wait-free FIFO queue (using `getAndSet`, ...) | 2 |
+| Wait-free LIFO stack (using `getAndSet`, ...) | 2 |
+| Test-And-Set | 2 |
+| Get-And-Set | 2 |
+| Get-And-Increment | 2 |
+| CAS | $\infty$ |
+
+$\implies$ wait-free FIFO queues, wait-free RMW operations and CAS cannot be implemented with atomic registers.
+
+##### Atomic registers
+> **Theorem I**: Atomic Registers have consensus number 1
+> **Corolarry**: There is no wait-free implementation of n-thread consensus, $n > 1$, from read-write registers.
+
+##### CAS
+> **Theorem II**: Compare-And-Swap has infinite consensus number.
+
+Proof is done by construction, with an `AtomicIntegerArray` which stores all proposed inputs, then `AtomicInteger` which stores the decided value and an `int` which stores the thead ID of the first thread which set the consensus.
+
+##### FIFO queue
+> **Theorem**: There is no wait-free implementation of a FIFO queue with atomic registers.
+
+Proof:
+- **Given**: A consensus protocol from queue and registers
+- **Assumption**: A queue implementation from atomic registers
+- **Substitution yields**: A wait-free consensus protocol from atomic registers
+- **Contradiction**: Atomic register have consensus number 1.
+
+## Transactional Memory
+Let hardware / software handle synchronization. Programmer explicitly defines atomic code sections. 
+
+**Pros**:
+- simples and less error-prone code
+- higher-level semantics (what vs how)
+- composable
+- optimistic by design (**does not require mutual exclusion**)
+
+**Properties inherited from database transactions (ACID)**:
+- Atomicity 
+- Consistency (database remains in a consistent state)
+- Isolation (no mutual corruption of data)
+- *Durability(transaction effects will survive power loss)*
+
+**Concurrency Control (CC)**: Handles transaction issues (aborting, retrying, etc.). When a transaction aborts, it can be retried automatically or the user is notified.
+
+### Implementation
+**Hardware TM (HTM)**:
+- can be fast, but bounded resources
+- an often not handle big transactions
+
+**Software TM (STM)**:
+- in the parallel programming language
+- greater flexibility
+- achieving good performance might be challenging
+
+Can be implemented by putting the mutable state into special variables. These variables can only be modified inside a transaction. Everything else else is immutable (or not shared).
+
+#### STM Implementation (Using ScalaSTM)
+```Java
+class AccountSTM {
+  private final Integer id; // account id
+  private final Ref.View<Integer> balance;
+
+  AccountSTM(int id, int balance) {
+    this.id = new Integer(id);
+    this.balance = STM.newRef(balance);
+  }
+
+  void withdraw(final int amount) {
+    // assume that there are always sufficient funds...
+    STM.atomic(new Runnable() { public void run() {
+      int old_val = balance.get();
+      balance.set(old_val – amount);
+    }});
+  }
+
+  void deposit(final int amount) {
+    STM.atomic(new Runnable() { public void run() {
+      int old_val = balance.get();
+      balance.set(old_val + amount);
+    }});
+  }
+
+  public int getBalance() {
+    int result = STM.atomic(new Callable<Integer>() {
+      public Integer call() {
+        int result = balance.get();
+        return result;
+      }
+    });
+    return result;
+  }
+
+  static void transfer(final AccountSTM a, final AccountSTM b, final int amount) {
+    atomic { // insert STM logic here :)
+      a.withdraw(amount);
+      b.deposit(amount);
+    }
+  }
+
+  static void transfer_retry(final AccountSTM a, final AccountSTM b, final int amount) {
+    atomic { // Insert STM logic here :)
+      if (a.balance.get() < amount)
+        STM.retry(); // Abort transaction and retry
+      a.withdraw(amount);
+      b.deposit(amount);
+    }
+  }
+}
+```
+
+#### Clock-based STM
+![](imgs/clock-based-stm.png)
+
+Transaction uses a local read-set and a local write-set holding all locally read and written objects. 
+- **Transaction calls read**:
+  - Check if the object is in the write set $\implies$ return this (new) version
+  - Otherwise check if object's time stamp $\leq$ transaction's birthdate, if not throw aborted exception, otherweise add new copy of the object to the read set
+- **Transaction calls write**
+  - If object is not in write set, create a copy of it in the write set
+- **Commit**:
+  - Lock all objects of read- and write-set
+  - Check that all objects in the sets provice a time stamp $\leq$ birthdate of the transaction, ortherwise abort
+  - Increment and get the value $T$ of the current global lock
+  - Copy each element of the write set back to global memory with timestamp $T$
+  - Release all locks and return
+
+### Isolation Methods
+**Strong Isolation**: transation guarantess are still maintained.
+**Weak Isolation**: transaction guarantees are not maintained.
+
+### Nestings
+#### Flattened nesting
+```
+atomic {
+  atomic {
+    atomic {       atomic {
+      ...     ==>    ...
+    }              }
+  }
+}
+```
+- inner aborts $\implies$ outer aborts
+- inner commits $\implies$ changes visible only if outer commits
+
+#### Closed Nesting
+- inner aborts $\not\Rightarrow$ outer aborts
+- inner commits $\implies$ changes visible for outer transaction
+- inner commits $\implies$ changes not visible for other transactions
+- outer commits $\implies$ changes of inner transactions become visible globally
+
+## Distributed Memory and Message Passing
+Private isolated mutable state for each thread. Tasks cooperate via message passing.
+The states can be distributed on different memories, where memory systems communicate with a bus.
+
+Concurrent Message Passing Methods:
+- CSP: Communicating Sequential Processes
+- Actor programming model
+- MPI (Message Passing Interface)
+
+**Synchronous Messages**: Sender blocks until message is received
+**Asynchronous Mesages**: Sendes does not block (fire-and-forget) but are placed into buffer for receiver to get instead (mail-box analogy)
+
+### The Actor Model
+Provides dynamic interconnection topology with actors (agent that maps communication to a finite set of states/actors/communications)
+- dynamiccaly configure actor graph during runtime (add channels)
+- dynamically allocate resources
+- direct message sending by direct naming (without port/channel/queue/etc.)
+
+### Event Driven Model
+Actors react to messages (events) with event listeners/handlers. E.g. graphical user interface (user presses OK Button $\to$ do something)
+
+### Communicating Sequential Processes
+- Sunchronisation and communication between parallel processes with message passing
+  - Symbolic channels between sender and receiver
+  - Read/Write requires a rendevous (synchronous)
+  - Intermediary entity (port / channel) to address send destination
+  - `send()` specifies the port to which the message is sent
+  - `receive()` specifies a port number and waits for the first message that arrives at port
 
 ## Implications
 - wait-freedom $\implies$ lock-freedom $\implies$ system-wide progress
