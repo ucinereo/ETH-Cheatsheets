@@ -45,6 +45,9 @@ Ilija Pejic <[ipejic@student.ethz.ch](mailto:ipejic@student.ethz.ch)>
       - [TAS Lock](#tas-lock)
       - [TATAS Lock](#tatas-lock)
       - [Lock with sequential Backoff](#lock-with-sequential-backoff)
+    - [Registers](#registers)
+      - [Atomic Registers](#atomic-registers)
+      - [SWMR Register (Single Write Multiple Reader Register)](#swmr-register-single-write-multiple-reader-register)
     - [Deadlock and Livelocks](#deadlock-and-livelocks)
     - [State Diagram](#state-diagram)
     - [Semaphores](#semaphores)
@@ -82,7 +85,7 @@ Ilija Pejic <[ipejic@student.ethz.ch](mailto:ipejic@student.ethz.ch)>
     - [Consensus (Wait-free)](#consensus-wait-free)
       - [Requirements](#requirements)
       - [Examples](#examples)
-        - [Atomic registers](#atomic-registers)
+        - [Atomic registers](#atomic-registers-1)
         - [CAS](#cas)
         - [FIFO queue](#fifo-queue)
   - [Transactional Memory](#transactional-memory)
@@ -95,8 +98,13 @@ Ilija Pejic <[ipejic@student.ethz.ch](mailto:ipejic@student.ethz.ch)>
       - [Closed Nesting](#closed-nesting)
   - [Distributed Memory and Message Passing](#distributed-memory-and-message-passing)
     - [The Actor Model](#the-actor-model)
-    - [Event Driven Model](#event-driven-model)
+    - [Event Driven Programming Model](#event-driven-programming-model)
     - [Communicating Sequential Processes](#communicating-sequential-processes)
+    - [Message Passing Interface (MPI)](#message-passing-interface-mpi)
+      - [MPI Communicators](#mpi-communicators)
+      - [MPI in Java](#mpi-in-java)
+  - [Parallel Sorting](#parallel-sorting)
+    - [Sorting Networks](#sorting-networks)
   - [Implications](#implications)
   - [Keywords](#keywords)
 
@@ -671,8 +679,6 @@ unlock(me) {
 - is stravation free
 - is not fair (first-come-first-serve)
 
-Todo: Safe Single Write Multiple Reader Register
-
 ### Bakery Algorithm
 ```
 volatile int np = 0;
@@ -766,8 +772,24 @@ class Backoff {
 }
 ```
 
+### Registers
+#### Atomic Registers
+**Operations**: `r.read()` / `r.write(v)`
+**Invocation**: $J$ of `r.read` or `r.write` takes effect at a single point $\theta(J)$
+**Safe**: Two operations on the same register always have a different effect time
+
+#### SWMR Register (Single Write Multiple Reader Register)
+**Operations**: `r.read()` / `r.write(v)`
+**Properties**: Only one concurrent write, but multiple concurrent reads allowed
+**Safe**: Any read not concurrent with a write returns the current value of `r`. Any read concurrent with a write can return **any** value of the domain of `r`.
+
 ### Deadlock and Livelocks
-TODO: formally Lecture 17
+![](imgs/deadlock.png)
+
+$$
+T_1 \ldots T_n \ \text{deadlock} \iff \text{Graph contais cycle}
+$$
+
 **Deadlock detection**: Finding cycles in the dependency graph.
 
 **Deadlock avoidance**: Techniques to ensure a cycle can never arise.
@@ -1548,6 +1570,11 @@ Let hardware / software handle synchronization. Programmer explicitly defines at
 
 **Concurrency Control (CC)**: Handles transaction issues (aborting, retrying, etc.). When a transaction aborts, it can be retried automatically or the user is notified.
 
+**Issues**:
+- No best semantic for transaction
+- Getting good performance is challenging
+- I/O operations
+
 ### Implementation
 **Hardware TM (HTM)**:
 - can be fast, but bounded resources
@@ -1671,8 +1698,9 @@ Provides dynamic interconnection topology with actors (agent that maps communica
 - dynamiccaly configure actor graph during runtime (add channels)
 - dynamically allocate resources
 - direct message sending by direct naming (without port/channel/queue/etc.)
+- Asynchronous Message Passing
 
-### Event Driven Model
+### Event Driven Programming Model
 Actors react to messages (events) with event listeners/handlers. E.g. graphical user interface (user presses OK Button $\to$ do something)
 
 ### Communicating Sequential Processes
@@ -1682,6 +1710,182 @@ Actors react to messages (events) with event listeners/handlers. E.g. graphical 
   - Intermediary entity (port / channel) to address send destination
   - `send()` specifies the port to which the message is sent
   - `receive()` specifies a port number and waits for the first message that arrives at port
+
+### Message Passing Interface (MPI)
+- Hides Software/Hardware details
+- Portable, flexible
+- Implemented as a library
+
+Works with SPMD (Single Program Multiple Data). Compile one program and by case distinctions evaluate the work load.
+
+Can either be used synchronous or asynchronous, which defines communication between sender and receiver.
+
+**Blocking**: Return after local actions are complete, thought the message transfer may not have been completed.
+**Non-Blocking**: Return immediately.
+
+> Blocking/Non-Blocking is about handling data to be sent / received. Default in MPI is **blocking** $/implies$ deadlock potential deadlock
+```
+Process 0           Process 1
+----------------    ----------------
+Send(1)             Send(0)
+Recv(1)             Recv(0)
+```
+"unsafe" because it depends on the availability of system buffers in which to store the data sent until it can be received.
+
+Solution for problem:
+```
+Process 0           Process 1
+----------------    ----------------
+Send(1)             Recv(0)
+Recv(1)             Send(0)
+
+or
+Sendrecv(1)         Sendrecv(0)     <== supply receive buffer at send
+
+or
+Bsend(1)            Bsend(0)        <== supply own space as buffer for send
+Recv(1)             Recv(0)
+
+or
+Isend(1)            Isend(0)
+Irecv(1)            Irecv(0)
+Waitall             Waitall         <== non-blocking
+```
+
+#### MPI Communicators
+- Defines set of processes that are allowed to ocmmunicate with each other
+- The group of all processes is initialy given the name `MPI_COMM_WORLD`, which is the communicator all processer initially are.
+- MPI processes can be collected into groups.
+- **Comunicator = Group + Color**
+- A process is identified by its communicator dedicated **rank**.
+- The rank of processes are assciated with a communicator, numbered from $0$ to $n-1$
+
+#### MPI in Java
+In general no synchronization, which allows local progress, but requires local storage for messages.
+
+Synchronous sending/receiving can be done with `Ssend` and `Recv`, which wait until complete message canbe accepted by the receiving process befor ecompleting the send.
+
+**Get Process rank**:
+```Java
+public static void main(String args []) throws Exception {
+  MPI.Init(args);
+  int rank = MPI.COMM_WORLD.Rank();
+  MPI.Finalize();
+}
+```
+
+**Send Messages**
+```Java
+void Communicator.send(
+  Object buffer,         // pointer to data to be sent
+  int offset,
+  int count,             // number of elements to be sent
+  Datatype datatype,     // datatype of data
+  int dest,              // destination process id
+  int tag                // data tag id
+)
+```
+
+**Receive Message**
+```Java
+void Communicator.send(
+  Object buffer,         // Pointer to the buffer to receive to
+  int offset,
+  int count,             // number of items to be received
+  Datatype datatype,     // datatype of data
+  int src,               // source process id or MPI_ANY_SOURCE
+  int tag                // data id tag or MPI_ANY_TAG
+)
+```
+
+**Reduce - Collective Computation**
+```Java
+public void Reduce(
+  Object sendbuffer,     // Pointer to data to be sent
+  int sendoffset,
+  Object receivebuffer,  // Pointer to the buffer to receive to
+  int recvoffset,
+  int count,             // number of items
+  Datatype datatype,     // datatype of data
+  Op op,                 // operation to be done
+  int root               // rank of root
+)
+```
+```
+P0 [A| | | ]       Reduce       [A+B+C+D]
+P1 [B| | | ]    ----------->    [ | | | ]
+P2 [C| | | ]                    [ | | | ]
+P3 [D| | | ]                    [ | | | ]
+```
+
+**Broadcast - Collective Data Movement**: Send data to all processes in the communicator.
+```
+P0 [A| | | ]     Broadcast      [A| | | ]
+P1 [ | | | ]    ----------->    [A| | | ]
+P2 [ | | | ]                    [A| | | ]
+P3 [ | | | ]                    [A| | | ]
+```
+
+**Allreduce - Collective Computation**
+```Java
+public void Allreduce(
+  Object sendbuffer,     // Pointer to data to be sent
+  int sendoffset,
+  Object receivebuffer,  // Pointer to the buffer to receive to
+  int recvoffset,
+  int count,             // number of items
+  Datatype datatype,     // datatype of data
+  Op op,                 // operation to be done
+)
+```
+```
+P0 [A| | | ]     Allreduce      [A+B+C+D]
+P1 [B| | | ]    ----------->    [A+B+C+D]
+P2 [C| | | ]                    [A+B+C+D]
+P3 [D| | | ]                    [A+B+C+D]
+```
+
+> Allreduce $/neq$ Reduce + Broadcast, since Allreduce uses butterfly mechanism
+
+![](imgs/butterfly.png)
+
+**Scatter/Gather - Collective Data Movement**
+```
+P0 [A|B|C|D]       Scatter      [A| | | ]
+P1 [ | | | ]    ----------->    [B| | | ]
+P2 [ | | | ]       Gather       [C| | | ]
+P3 [ | | | ]    <-----------    [D| | | ]
+```
+
+**More Collective Data Movement**
+```
+P0 [A| | | ]     Allgather      [A|B|C|D]
+P1 [B| | | ]    ----------->    [A|B|C|D]
+P2 [C| | | ]                    [A|B|C|D]
+P3 [D| | | ]                    [A|B|C|D]
+```
+```
+P0 [A|B|C|D]      Alltoall      [A|E|I|M]
+P1 [E|F|G|H]    ----------->    [B|F|J|N]
+P2 [I|J|K|L]                    [C|G|K|O]
+P3 [M|N|O|P]                    [D|H|L|P]
+```
+> `Alltoall` is just like a matrix transpose!
+
+## Parallel Sorting
+- No comparison sort can have worst-case better than the height of a binary tree with $n!$ leaves
+- Height of this tree is $\Omega(n \log n) \implies$ Sorting is $\Omega(n \log n)$
+
+### Sorting Networks
+![](imgs/sorting_networks.png)
+
+> **Zero-one-principle**: If a network with $n$ input lines sort all $2^n$ sequences of $0$s and $1$s into non-decreasing order, it will sort any arbitrary sequence of $n$ numbers in non-decreasing order.
+
+$$
+x \ \text{not sorted by} \ N \implies f(x) \in \{0,1\}^n \ \text{not sorted by} \ N \\
+\iff \\
+\forall f \in \{0, 1\}^n: f \ \text{sorted by} \ N \implies \forall x: x \ \text{sorted by} \ N
+$$
 
 ## Implications
 - wait-freedom $\implies$ lock-freedom $\implies$ system-wide progress
