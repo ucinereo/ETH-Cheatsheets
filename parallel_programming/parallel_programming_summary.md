@@ -2,6 +2,8 @@
 Nicola Studer <[nicstuder@student.ethz.ch](mailto:nicstuder@student.ethz.ch)>,
 Ilija Pejic <[ipejic@student.ethz.ch](mailto:ipejic@student.ethz.ch)>
 
+All screenshots are directly taken from the lecture notes. All copyrights belong to the respective owners.
+
 - [Parallel Programming Summary](#parallel-programming-summary)
   - [Java Threads](#java-threads)
     - [Start / Join](#start--join)
@@ -37,6 +39,12 @@ Ilija Pejic <[ipejic@student.ethz.ch](mailto:ipejic@student.ethz.ch)>
     - [Synchronized-With (SW)](#synchronized-with-sw)
     - [Happens-before (HB)](#happens-before-hb)
   - [Behind Locks (Mutual Exclusion)](#behind-locks-mutual-exclusion)
+    - [Proof Notation for Locks](#proof-notation-for-locks)
+      - [Events and precedence](#events-and-precedence)
+      - [Intervals](#intervals)
+      - [Registers](#registers)
+        - [Atomic Registers](#atomic-registers)
+        - [SWMR Register (Single Write Multiple Reader Register)](#swmr-register-single-write-multiple-reader-register)
     - [Deckers Algorithm for 2 processes](#deckers-algorithm-for-2-processes)
     - [Peterson Lock](#peterson-lock)
     - [Filter Lock](#filter-lock)
@@ -45,9 +53,6 @@ Ilija Pejic <[ipejic@student.ethz.ch](mailto:ipejic@student.ethz.ch)>
       - [TAS Lock](#tas-lock)
       - [TATAS Lock](#tatas-lock)
       - [Lock with sequential Backoff](#lock-with-sequential-backoff)
-    - [Registers](#registers)
-      - [Atomic Registers](#atomic-registers)
-      - [SWMR Register (Single Write Multiple Reader Register)](#swmr-register-single-write-multiple-reader-register)
     - [Deadlock and Livelocks](#deadlock-and-livelocks)
     - [State Diagram](#state-diagram)
     - [Semaphores](#semaphores)
@@ -616,6 +621,35 @@ The following algorithms are not used for mutual exclusion
 - without volatile variables the assumption on memory reordering does not hold. Memory barriers in hardware are expensive
 - modern multiprocessor architectures provide special instructions for atomically reading and writing at once
 
+### Proof Notation for Locks
+#### Events and precedence
+**Events**: Thread produces sequence of events $p_0, p_1, \ldots$.
+$$
+p_1 = "\text{flag}[P] = \text{true}"
+$$
+
+**$j$-th occurence of event $i$ in thread $P$**: $p_i^j$
+
+**Precedence relation**: $a \to b \iff$ $a$ occurs before $b$
+
+#### Intervals
+$I_A = (a_0, a_1)$: interval of events $a_0$, $a_1$ with $a_0 \to a_1$
+
+**Precedence relation**: $a_1 \to b_0 \implies I_A \to I_B$
+
+Intervals can be either interleaved (that means two intervals are concurrent) or disjoint.
+
+#### Registers
+##### Atomic Registers
+**Operations**: `r.read()` / `r.write(v)`
+**Invocation**: $J$ of `r.read` or `r.write` takes effect at a single point $\theta(J)$
+**Safe**: Two operations on the same register always have a different effect time
+
+##### SWMR Register (Single Write Multiple Reader Register)
+**Operations**: `r.read()` / `r.write(v)`
+**Properties**: Only one concurrent write, but multiple concurrent reads allowed
+**Safe**: Any read not concurrent with a write returns the current value of `r`. Any read concurrent with a write can return **any** value of the domain of `r`.
+
 ### Deckers Algorithm for 2 processes
 ```
 volatile boolean wantp = false;
@@ -655,7 +689,7 @@ loop                                | loop
   flag[P] = false                   |   flag[Q] = false
 ```
 
-TODO: Add proofs for peterson lock
+![](imgs/peterson_lock.png)
 
 ### Filter Lock
 ```
@@ -772,18 +806,9 @@ class Backoff {
 }
 ```
 
-### Registers
-#### Atomic Registers
-**Operations**: `r.read()` / `r.write(v)`
-**Invocation**: $J$ of `r.read` or `r.write` takes effect at a single point $\theta(J)$
-**Safe**: Two operations on the same register always have a different effect time
-
-#### SWMR Register (Single Write Multiple Reader Register)
-**Operations**: `r.read()` / `r.write(v)`
-**Properties**: Only one concurrent write, but multiple concurrent reads allowed
-**Safe**: Any read not concurrent with a write returns the current value of `r`. Any read concurrent with a write can return **any** value of the domain of `r`.
-
 ### Deadlock and Livelocks
+Let the red arrows denote the relation that a thread $T$ attempts to acquire resource $R$. Red the green arrow denote the relation that a resource $R$ is held by thread $T$.
+
 ![](imgs/deadlock.png)
 
 $$

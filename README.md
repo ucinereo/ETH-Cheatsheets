@@ -8,7 +8,8 @@ Summaries are created mostly with LaTeX, with the exception for coding intensive
 
 | **Course** | Content | Sources |
 |---|---|---|
-| **Analysis I** | Statements from the lecture notes or script with a few tips and tricks as addition. | [course site](https://metaphor.ethz.ch/x/2022/fs/401-0212-16L/), [script](https://metaphor.ethz.ch/x/2022/fs/401-0212-16L/sc/SkriptAnalysis1FS21.pdf), [notes from Gil Vieira Pereira](https://n.ethz.ch/~givieira/) |
+| **Analysis I** | Statements from the lecture notes or script with a few tips and tricks as addition. | [course site](https://metaphor.ethz.ch/x/2022/fs/401-0212-16L/), [script](https://metaphor.ethz.ch/x/2022/fs/401-0212-16L/sc/SkriptAnalysis1FS21.pdf), [notes from Gil Vieira Pereira](https://n.ethz.ch/~givieira/), [summary of XYQuadrat](https://github.com/XYQuadrat/eth-cheatsheets) |
+| **Parallel Programming** | Java threading, hardware parallelism, races, locks, concurrency theory, lock-free programming, transactional memory, message passing, parallel algorithms, speedups, etc. | [Lecture Notes](https://spcl.inf.ethz.ch/Teaching/2022-pp/) |
 
 ## License
 This project is licensed under the MIT license - see [LICENSE](LICENSE) file for further details.
