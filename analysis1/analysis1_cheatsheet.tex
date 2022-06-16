@@ -116,7 +116,7 @@
 
 \begin{theorem}
     \begin{enumerate}[label=(\roman*)]
-        \item $|x| \leq 0 \quad \forall x \in \R$
+        \item $|x| \geq 0 \quad \forall x \in \R$
         \item $|xy| = |x||y| \quad \forall x, y \in \R$
         \item $|x + y| \leq |x| + |y| \quad \forall x, y \in \R$
         \item $|x + y| \geq ||x| - |y|| \quad \forall x, y \in \R$
@@ -130,10 +130,12 @@
 
 \section{Sequences}
 \subsection{Convergence}
-$(a_n)_{n \geq 1}$ converges to $L = \lim_{n \to \infty} a_n$ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \epsilon)$
+$(a_n)_{n \geq 1}$ converges to $L = \lim_{n \to \infty} a_n$ \\
+$\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \epsilon)$
 
 \begin{definition}[Convergence]
-    $(a_n)_{n \geq 1}$ converges $\iff \exists L \in \R  \ \forall \epsilon > 0 \ (\{n \in \N \ | \ |a_n - L| \geq \epsilon \})$ is finite.
+    $(a_n)_{n \geq 1}$ converges \\
+    $\iff \exists L \in \R  \ \forall \epsilon > 0 \ (\{n \in \N \ | \ |a_n - L| \geq \epsilon \})$ is finite.
 \end{definition}
 
 \begin{note}
@@ -149,7 +151,8 @@ $(a_n)_{n \geq 1}$ converges to $L = \lim_{n \to \infty} a_n$ $\iff \forall \eps
 \subsubsection{Tips \& Tricks}
 \begin{itemize}
     \item $a_n$ convergent $\implies$ $a_n$ bounded
-    \item $a_n$ convergent $\iff$ $a_n$ bounded and $\lim\inf a_n = \lim\sup a_n$
+    \item $a_n$ convergent $\iff$ $a_n$ bounded and \\ 
+    $\lim\inf a_n = \lim\sup a_n$
 \end{itemize}
 
 \begin{ntheorem}[Monotone Convergence]
@@ -180,7 +183,8 @@ $(a_n)_{n \geq 1}$ converges to $L = \lim_{n \to \infty} a_n$ $\iff \forall \eps
 \end{ntheorem}
 
 \begin{ntheorem}[Sandwich]
-    If $\lim a_n = \alpha$, $\lim b_n = \alpha$, $k \in \N$ and $a_n \leq c_n \leq b_n$ $\forall n \geq k$, then $\lim c_n = \alpha$
+    If $\lim a_n = \alpha$, $\lim b_n = \alpha$, $k \in \N$ and \\
+    $a_n \leq c_n \leq b_n$ $\forall n \geq k$, then $\lim c_n = \alpha$
 \end{ntheorem}
 
 \begin{ntheorem}[Cauchy-Cantor]
@@ -238,7 +242,7 @@ $(a_n)_{n \geq 1}$ converges to $L = \lim_{n \to \infty} a_n$ $\iff \forall \eps
 \end{theorem}
 
 \begin{ntheorem}[Leibniz]
-    $(a_n)_{n\geq1}$ monotone decreasing s.t. $a_n \geq 1 \quad \forall n \geq 1$ and $\lim a_n = 0$:
+    $(a_n)_{n\geq1}$ monotone decreasing s.t. $a_n \geq 1 \, \forall n \geq 1$ and $\lim a_n = 0$:
     $$S := \sum_{k=1}^\infty (-1)^{k + 1} a_k \ \text{converges.}$$
     Furthermore: $a_1 - a_2 \leq S \leq a_1$
     
@@ -316,7 +320,8 @@ $\R^D = \{f: D \to \R \ | \ f \ \text{is function} \}$
 \end{definition}
 
 \begin{note}
-    To prove continuity try to filter $|x - x_0|$ out of $|f(x) - f(x_0)|$ and choose $\delta$, such that the rest term disappears. Be aware that $\delta$ is part of $\epsilon$ and normally $|x_0|$ as well. But no $x$!
+    To prove continuity try to filter $|x - x_0|$ out of \\
+    $|f(x) - f(x_0)|$ and choose $\delta$, such that the rest term disappears. Be aware that $\delta$ is part of $\epsilon$ and normally $|x_0|$ as well. But no $x$!
 \end{note}
 
 \begin{corollary}
@@ -379,7 +384,8 @@ $$\N \to \R^D = \{f: D \to \R\}, \quad n \mapsto f(n)$$
     $$\forall \epsilon > 0 \ \exists N \geq 1 \ \text{s.t.} \ \forall n \geq N \ \forall x \in D \ (|f_n(x) - f(x)| < \epsilon)$$
     $$\iff$$
     $$\lim_{n\to\infty} \sup_{x \in D} |f_n(x) - f(x)| = 0$$
-    The function sequence $(f_n)$ converges uniformly if for all $x \in D$ the limit $\lim_{n\to\infty} f_n(x) = f(x)$ exists and the sequence $(f_n)$ uniformly converges to $f$.
+    The function sequence $(f_n)$ converges uniformly if for all \\
+    $x \in D$ the limit $\lim_{n\to\infty} f_n(x) = f(x)$ exists and the sequence $(f_n)$ uniformly converges to $f$.
 
     The series $\sum_{n = 1}^\infty f_n(x)$ converges uniformly (in $D$), if the function sequence $S_n(x) := \sum_{k=0}^n f_k(x)$ converges uniformly.
 \end{definition}
@@ -470,14 +476,14 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \begin{ntheorem}[Important Rules]
     Let $f: D \to \R$ and $x_0$ is an accumulation point of $D$.
     \begin{enumerate}
-        \item $\lim_{x \to x_0} f(x) = A \iff \forall (a_n)_{n \geq 1}$ in $D \setminus \{x_0\}$ with $\lim_{n \to \infty} a_n = x_0 \implies \lim_{n \to \infty} f(a_n) = A$.
-        \item Let $x_0 \in D$. Then $f$ is continuous in $x_0$ \newline $\iff \lim_{x \to x_0} f(x) = f(x_0)$
-        \item $f, g: D \to \R$ and $\exists \lim_{x \to x_0} f(x), \exists \lim_{x \to x_0} g(x) \implies$
+        \item $\lim\limits_{x \to x_0} f(x) = A \iff \forall (a_n)_{n \geq 1}$ in $D \setminus \{x_0\}$ with $\lim\limits_{n \to \infty} a_n = x_0 \implies \lim\limits_{n \to \infty} f(a_n) = A$.
+        \item Let $x_0 \in D$. Then $f$ is continuous in $x_0$ \newline $\iff \lim\limits_{x \to x_0} f(x) = f(x_0)$
+        \item $f, g: D \to \R$ and $\exists \lim\limits_{x \to x_0} f(x), \exists \lim\limits_{x \to x_0} g(x) \implies$
         $$\lim_{x \to x_0} (f + g)(x) = \lim_{x \to x_0} f(x) + \lim_{x \to x_0} g(x)$$
         $$\lim_{x \to x_0} (f \cdot g) (x) = \lim_{x \to x_0}f(x) \cdot \lim_{x \to x_0} g(x)$$
         \item $f, g: D \to \R$ and $f \leq g$, then if both limit exists
         $$\lim_{x \to x_0} f(x) \leq \lim_{x \to x_0} g(x)$$ 
-        \item If $g_1 \leq f \leq g_2$ and $\lim_{x \to x_0} g_1(x) = \lim_{x \to x_0} g_2(x)$ then $\lim_{x \to x_0} f(x) = \lim_{x \to x_0} g_1(x)$
+        \item If $g_1 \leq f \leq g_2$ and $\lim\limits_{x \to x_0} g_1(x) = \lim\limits_{x \to x_0} g_2(x)$ then $\lim\limits_{x \to x_0} f(x) = \lim\limits_{x \to x_0} g_1(x)$
     \end{enumerate}
 \end{ntheorem}
 
@@ -563,14 +569,16 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \end{corollary}
 
 \begin{ntheorem}[Cauchy]
-    $f, g,: [a, b] \to \R$ continuous and in $]a, b[$ diff. Then there exists $\xi \in ]a, b[$ with $g'(\xi)(f(b) - f(a)) = f'(\xi)(g(b) - g(a))$.
+    $f, g,: [a, b] \to \R$ continuous and in $]a, b[$ diff. Then there exists $\xi \in ]a, b[$ with \\
+    $g'(\xi)(f(b) - f(a)) = f'(\xi)(g(b) - g(a))$.
 
     If $\forall x \in ]a, b[ : g'(x) \neq 0$ it implies that $g(a) \neq g(b)$ and $\frac{f(b) - f(a)}{g(b) - g(a)} = \frac{f'(\xi)}{g'(\xi)}$
 \end{ntheorem}
 
 \begin{ntheorem}[l'Hôspital]
     $f,g : ]a, b[ \to \R$ diff. with $\forall x \in ]a, b[ : g'(x) \neq 0$.
-    If $\lim_{x \to b^-} f(x) = 0, \lim_{x \to b^-} g(x) = 0$ and $\lim_{x \to b^-} \frac{f'(x)}{g'(x)} =: \lambda$ exists, then $\lim_{x \to b^-}\frac{f(x)}{g(x)} = \lim_{x \to b^-}\frac{f'(x)}{g'(x)}$.
+    If $\lim\limits_{x \to b^-} f(x) = 0, \lim\limits_{x \to b^-} g(x) = 0$ and \\
+    $\lim\limits_{x \to b^-} \frac{f'(x)}{g'(x)} =: \lambda$ exists, then $\lim\limits_{x \to b^-}\frac{f(x)}{g(x)} = \lim\limits_{x \to b^-}\frac{f'(x)}{g'(x)}$.
 \end{ntheorem}
 
 \begin{note}
@@ -579,10 +587,14 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 
 \begin{definition}
     \begin{enumerate}
-        \item convex: ($x \leq y$): $f (\lambda x + (1 - \lambda)y) \leq \lambda f(x) + (1 - \lambda)f(y)$
-        \item strict convex: ($x \leq y$): $f (\lambda x + (1 - \lambda)y) < \lambda f(x) + (1 - \lambda)f(y)$
-        \item concave: ($x \leq y$): $f (\lambda x + (1 - \lambda)y) \geq \lambda f(x) + (1 - \lambda)f(y)$
-        \item strict concave: ($x \leq y$): $f (\lambda x + (1 - \lambda)y) > \lambda f(x) + (1 - \lambda)f(y)$
+        \item convex: ($x \leq y$): \\
+            $f (\lambda x + (1 - \lambda)y) \leq \lambda f(x) + (1 - \lambda)f(y)$
+        \item strict convex: ($x \leq y$): \\
+            $f (\lambda x + (1 - \lambda)y) < \lambda f(x) + (1 - \lambda)f(y)$
+        \item concave: ($x \leq y$): \\
+            $f (\lambda x + (1 - \lambda)y) \geq \lambda f(x) + (1 - \lambda)f(y)$
+        \item strict concave: ($x \leq y$): \\
+        $f (\lambda x + (1 - \lambda)y) > \lambda f(x) + (1 - \lambda)f(y)$
     \end{enumerate}
 \end{definition}
 
@@ -636,7 +648,8 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \end{definition}
 
 \begin{note}
-    The error can be approximated as $|R_n(f, x, a)| \leq \sup_{a < c < x}|\frac{f^{(n + 1)(x)(x-a)^{n+1}}}{(n+1)!}|$
+    The error can be approximated as \\ 
+    $$|R_n(f, x, a)| \leq \sup_{a < c < x}|\frac{f^{(n + 1)(x)(x-a)^{n+1}}}{(n+1)!}|$$
 \end{note}
 
 \begin{definition}[Taylor Series]
@@ -713,7 +726,8 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 
 \begin{note}
     Let $V: = \{f: I \to \R \ | \ f \ \text{is a mapping}\}$. $(V, +, \cdot)$ is a vector space.
-    Then it implies that $W := \{f: I \to \R \ | \ f \ \text{is integrable}\}$ is a subspace of $V$.
+    Then it implies that \\
+    $W := \{f: I \to \R \ | \ f \ \text{is integrable}\}$ is a subspace of $V$.
 \end{note}
 
 \subsection{Integration Inequalities and Theorems}
@@ -726,8 +740,9 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \end{theorem}
 
 \begin{theorem}
-    $f, g: [a, b] \to \R$ bounded and integrable and $\forall x \in [a, b]: f(x) \leq g(x) \implies$
-    $$\int_a^b f(x) \,dx \leq \int_a^b g(x) \,dx$$
+    $f, g: [a, b] \to \R$ bounded and integrable and \\
+    $\forall x \in [a, b]: f(x) \leq g(x) \implies$
+    $\int_a^b f(x) \,dx \leq \int_a^b g(x) \,dx$
 \end{theorem}
 
 \begin{ntheorem}[Cauchy-Schwarz]
@@ -735,13 +750,14 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \end{ntheorem}
 
 \begin{note}
-    $<f, g> := \int_a^b f(x)g(x) \,dx$ is a scalar product. \newline
+    $<f, g> := \int_a^b f(x)g(x) \,dx$ is a scalar product. \\
     $||f||^2 = <f, f> = \int_a^b f^2(x) \,dx$.
 \end{note}
 
 \begin{ntheorem}[Mean Value Theorem]
     $f: [a, b] \to \R$ continuous $\implies \exists \xi \in [a, b]: \int_a^b f(x) \,dx = f(\xi)(b - a)$
 \end{ntheorem}
+
 \begin{ntheorem}[Cauchy]
     $f, g: [a, b] \to \R$ with $f$ continuous and $g$ bounded and integrable with $g(x) \geq 0$, $\forall x \in [a, b]$
     $$\implies \exists \xi \in [a, b]: \int_a^b f(x)g(x) \,dx = f(\xi)\int_a^b g(x) \,dx$$
@@ -780,10 +796,11 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \end{ntheorem}
 
 \begin{ntheorem}[Fundamental theorem of calculus]
-    $f: [a, b] \to \R$ continuous. Dann there exists a unique (except a constant term) primitive function $F$ of $f$, such that 
+    $f: [a, b] \to \R$ continuous. Then there exists a unique (except a constant term) primitive function $F$ of $f$, such that 
     $$\int_a^b f(x) \,dx = F(b) - F(a).$$
 \end{ntheorem}
 
+\pagebreak
 \subsection{Integration Methods}
 \begin{ntheorem}[Partial Inegration]
     \begin{align*}
@@ -865,6 +882,8 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
     $$\int_0^\infty e^{-x^2} \,dx = \int_0^1 e^{-x^2} \,dx + \int_1^\infty e^{-x^2} \,dx$$
 \end{note}
 
+$\, \\$
+
 \begin{ntheorem}[McLaurin]
     Let $f: [1, \infty[ \to [0, \infty[$ be monotonically decreasing.
     $$\sum_{n=1}^\infty f(n) \ \text{converges} \iff \int_1^\infty f(x) \,dx \ \text{converges}.$$ 
@@ -873,9 +892,8 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \end{ntheorem}
 
 \begin{definition}
-    Let $f$ be a function which is bounded and integrable on all intervals $[a + \epsilon, b] \ \forall \epsilon > 0$. $f: ]a, b] \to \R$ is integrable if $\lim_{\epsilon \to 0} \int_{a + \epsilon}^b f(x) \,dx$ exists. In this case the limit is defined as $\int_a^b f(x) \,dx$.
+    Let $f$ be a function which is bounded and integrable on all intervals $[a + \epsilon, b] \ \forall \epsilon > 0$. $f: ]a, b] \to \R$ is integrable if $\lim\limits_{\epsilon \to 0} \int_{a + \epsilon}^b f(x) \,dx$ exists. In this case the limit is defined as $\int_a^b f(x) \,dx$. (The comparison theorem can be used for such integrals as well.)
 \end{definition}
-The comparison theorem can be used for such integrals as well.
 
 \subsection{Indefinite Integrals}
 Let $f: I \to \R$ be defined on the interval $I \subseteq \R$. If $f$ is continuous there exists a primitive function $F$.
