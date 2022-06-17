@@ -188,7 +188,7 @@ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \e
 \end{ntheorem}
 
 \begin{ntheorem}[Cauchy-Cantor]
-    Let $I_1 \supseteq I_2 \subseteq \cdots I_n \cdots$ be a sequence of proper intervals with $\mathcal{L} < + \infty$, then $\bigcap_{n\geq1} I_n \neq 0$. And if $\lim_{n \to \infty} \mathcal{L}(I_n) = 0$ then $|\bigcap_{n\geq1} I_n| = 1$
+    Let $I_1 \supseteq I_2 \supseteq \cdots I_n \cdots$ be a sequence of proper intervals with $\mathcal{L} < + \infty$, then $\bigcap_{n\geq1} I_n \neq 0$. And if $\lim_{n \to \infty} \mathcal{L}(I_n) = 0$ then $|\bigcap_{n\geq1} I_n| = 1$
 \end{ntheorem}
 
 \begin{corollary}
@@ -199,7 +199,7 @@ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \e
 
 \section{Series}
 \begin{definition}
-    "$\sum_{k=1}^\infty a_k$" converges, if the sequence $(S_n)_{n \geq 1}$ of partial sums converges and $\sum_{k=1}^\infty a_k := \lim_{n \to \infty} S_n$
+    "$\sum_{k=1}^\infty a_k$" converges, if the sequence $(S_n)_{n \geq 1}$ of partial sums converges and $\sum\limits_{k=1}^\infty a_k := \lim\limits_{n \to \infty} S_n = \lim\limits_{n \to \infty} \sum\limits_{k=1}^n a_k$
 \end{definition}
 
 \begin{theorem}
@@ -225,15 +225,15 @@ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \e
 \end{ntheorem}
 
 \begin{theorem}
-    A series converges if the sequence of partial sums $(s_n)_{n \geq 1}$ converges. $s_n := \sum_{k = 1}^n a_k$
-    $$lim_{n \to \infty} s_n = \lim_{n \to \infty} \sum_{k = 1}^n a_k =: \sum_{k=1}^\infty a_k$$
+    Let $\sum_{k=1}^\infty a_k$ be a series with $a_k \geq 0 \quad \forall k \in \N^*$
+    $$\sum_{k=1}^\infty \ \text{converges} \iff (S_n)_{n\geq1} \ \text{upper bounded}$$
 \end{theorem}
 
 \begin{definition}[Asolute Convergence]
     $\sum_{k=1}^\infty a_k$ absolute converges if $\sum_{k=1}^\infty |a_k|$ converges.
     $$\sum_{k = 1}^\infty |a_k| \text{ converges} \implies \sum_{k=1}^\infty a_k \text{ converges}$$
     $$\sum_{k=1}^\infty a_k \text{ converges} \nRightarrow \sum_{k=1}^\infty |a_k| \text{ converges}$$
-    (\textbf{Dirichlet}) If a series converges absolute, then each permutation of the series converges with the same limit.
+    (\textbf{Dirichlet}) If a series converges absolute, then each permutation of the series converges with the same limit. \\
     (\textbf{Riemann}) If a series only converges, then there exists a permutation such that: \newline $\sum_{k=1}^\infty a_{\phi(k)} = x \quad \forall x \in \R \cup \{\infty\}$
 \end{definition}
 
@@ -242,7 +242,7 @@ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \e
 \end{theorem}
 
 \begin{ntheorem}[Leibniz]
-    $(a_n)_{n\geq1}$ monotone decreasing s.t. $a_n \geq 1 \, \forall n \geq 1$ and $\lim a_n = 0$:
+    $(a_n)_{n\geq1}$ monotone decreasing s.t. $a_n \geq 0 \, \forall n \geq 1$ and $\lim a_n = 0$:
     $$S := \sum_{k=1}^\infty (-1)^{k + 1} a_k \ \text{converges.}$$
     Furthermore: $a_1 - a_2 \leq S \leq a_1$
     
@@ -290,20 +290,22 @@ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \e
 \end{definition}
 
 \begin{theorem}
-    If $\sum_{i=0}^\infty a_i$ and $\sum_{j=0}^\infty b_j$ converge absolute:
-    $$\sum_{n=0}^\infty (\sum_{j=0}^\infty a_{n-j}b_j) = (\sum_{i=0}^\infty a_i) (\sum_{j=0}^\infty b_j) = \sum_{n=0}^\infty \sum_{i+j = n} a_i b_j$$
+    $\sum\limits_{i=0}^\infty a_i$, $\sum\limits_{j=0}^\infty b_j$ conv. abs. $\Rightarrow$ Couchy prod. conv. abs.:
+    $$\sum_{n=0}^\infty (\sum_{j=0}^n a_{n-j}b_j) = \sum_{i=0}^\infty \sum_{j=0}^\infty a_i b_j = \sum_{j=0}^\infty \sum_{i=0}^\infty a_i b_j$$
 \end{theorem}
 
-\subsection{Strategy: Convergence of Series}
-\begin{enumerate}
-    \item Check for known types (Telescope, Geometric, etc.)
-    \item $\lim a_n \neq 0 \implies$ divergence
-    \item Ratio Test
-    \item Root Test
-    \item Search convergent majors: $0 \leq a_n \leq b_n$
-    \item If divergent minors $\implies$ divergence
-    \item Be creative
-\end{enumerate}
+\begin{note}[Strategy: Convergence of Series]
+    $\,$
+    \begin{enumerate}
+        \item Check for known types (Telescope, Geometric, etc.)
+        \item $\lim a_n \neq 0 \implies$ divergence
+        \item Ratio Test
+        \item Root Test
+        \item Search convergent majors: $0 \leq a_n \leq b_n$
+        \item If divergent minors $\implies$ divergence
+        \item Be creative
+    \end{enumerate}
+\end{note}
 
 \section{Functions}
 $\R^D = \{f: D \to \R \ | \ f \ \text{is function} \}$
@@ -952,8 +954,8 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     \item Harmonic: $\sum_{n = 1}^\infty \frac{1}{k}$ diverges
     \item Telescope: $\sum_{n = 0}^\infty \frac{1}{k(k + 1)} = 1$
     \item $\exp(z) := \sum_{n = 0}^\infty \frac{z^n}{n!} = \underset{n \to \infty}{\lim}(1 + \frac{z}{n})^n = e^z$
-    \item $\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}$ converges $s > 1$
-    \item $\text{p}(z) = \sum_{k = 0}^\infty c_kz^k$ converges absolute for $|z| < \rho$
+    \item $\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}$ converges $s > 1 \ (\frac{1}{1 - 1/(2^{s-1})})$
+    \item $\text{p}(z) = \sum_{k = 0}^\infty c_kz^k$ conv. abs. $|z| < \rho = \frac{1}{\limsup |c_k|^{1/k}}$
 \end{itemize}
 \begin{tabularx}{\linewidth}{XX}
     \toprule
