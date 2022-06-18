@@ -1,0 +1,625 @@
+% Configuration
+\documentclass[a4paper, 10pt]{article}
+
+% Formatting
+\usepackage[landscape, left=0.75cm, top=1.0cm, right=0.75cm, bottom=1.5cm, footskip=15pt]{geometry}
+\setlength{\columnsep}{0.5cm}
+\usepackage{flowfram}
+\ffvadjustfalse
+\Ncolumn{3}
+\usepackage[compact]{titlesec}
+
+% ------------------------
+% Imports and commands
+% ------------------------
+
+% Language stuff
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+
+% Math stuff
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\newtheorem*{corollary}{Cor}
+\newtheorem*{lemma}{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Def}[section]
+\newtheorem{theorem}[definition]{Satz}
+\newtheorem{nlemma}[definition]{Lemma}
+\newtheorem{ncorollary}[definition]{Cor}
+\newtheorem*{note}{Bmk.}
+\newtheorem*{theorem*}{Theorem}
+
+
+\newtheoremstyle{named}{}{}{}{}{\bfseries}{.}{.5em}{\thmnote{#3}}
+\theoremstyle{named}
+\newtheorem*{ntheorem}{Theorem}
+
+% Miscellaneous
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue}
+
+\usepackage{enumitem}
+\setitemize{itemsep=0.5pt, topsep=0pt}
+\setenumerate{itemsep=0.75pt}
+
+% Custom commands
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\BO}{\mathcal{O}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\text{Var}}
+
+% Metadata
+\title{Algorithmen und Wahrscheinlichkeit}
+\author{Nicola Studer \\ \href{mailto:nicstuder@student.ethz.ch}{nicstuder@student.ethz.ch}}
+\date{\today}
+
+
+% ------------------------
+% Document
+% ------------------------
+
+\begin{document}
+\maketitle
+
+\section{Graphen}
+\subsection{Terminologie}
+\begin{itemize}
+    \item $K_n :=$ Vollständiger Graph mit $n$ Knoten
+    \item $C_n :=$ Kreisgraph mit $n$ Knoten
+    \item $P_n :=$ Pfad mit $n$ Knoten
+    \item $H_d :=$ $d$-dimensionaler Hyperwürfel
+    \item Hamiltonkreis $:=$ Ein Kreis in $G$, der jeden Knoten genau einmal enthält. $\BO(n^22^n)$
+    \item Eulertour $:=$ Ein geschlossener Weg in $G$, der jede Kante genau einmal enthält
+\end{itemize}
+
+\subsection{Zusammenhang}
+
+\setcounter{definition}{22}
+\begin{definition}[k-zusammenhängend]
+    Ein Graph $G = (V, E)$ heisst \textit{k-zusammenhängend}, falls $|V| \geq k + 1$ und für alle Teilmengen $X \subseteq V$ mit $|V| < k$ gilt: Der Graph $G[V \setminus X]$ is zusammenhängend.
+\end{definition}
+
+\begin{definition}[k-kanten-zusammenhängend]
+    Ein Graph $G = (V, E)$ heisst \textit{k-kanten-zusammenhängend}, falls für alle Teilmengen $X \subseteq E$ mit $|X| < k$ gilt: Der Graph $(V, E \setminus X)$ is zusammenhängend.
+\end{definition}
+
+\begin{theorem}[Menger]
+    Sei $G = (V, E)$ ein Graph. Dann gilt:
+    \begin{enumerate}[label=\alph*)]
+        \item $G$ ist k-zusammenhängend $\iff \forall u,v \in V, u \neq v$ gibt es $k$ intern-knotendiskunkte $u$-$v$-Pfade-Pfade 
+        \item $G$ ist k-kanten-zusammenhängend $\iff \forall u,v \in V, u\neq v$ gibt es $k$ kantendisjunkte $u$-$v$-Pfade
+    \end{enumerate}
+\end{theorem}
+
+\begin{note}
+    (Knoten-) Zusammenhang $\leq$ Kanten-Zusammenhang $\leq$ minimaler Grad
+\end{note}
+
+\begin{note}[low-Werte]
+    $$low[v] = \min\left(dfs[v], \min_{(v, w) \in E} \begin{cases} dfs[v] & \text{if $(v, w)$ rest-edge} \\ low[w] & \text{if $(v, w)$ tree-edge}\end{cases} \right)$$
+\end{note}
+
+\begin{ntheorem}[Artikulationsknoten]
+    Sei $G = (V, E)$ ein zusammenhängender Graph. $v \in V$ Artikulationsknoten $\iff G[V\setminus \{v\}]$ nicht zusammenhängend. Artikulationsknoten, wenn:
+    \begin{enumerate}
+        \item $v \neq$ root und $v$ hat Kind $u$ im DFS-Baum mit $\text{low}[u] \geq \text{dfs}[v]$
+        \item $v = $ root und $v$ hat mindestens zwei Kinder im DFS-Baum.
+    \end{enumerate}
+\end{ntheorem}
+
+\begin{ntheorem}[Brücken]
+    $e \in E$ Brücke $\iff G-e$ nicht zusammenhängend.
+    Eine Baumkante $e = (v, w) \in E$ ist genau dann eine Brücke, wenn $\text{low}[w] > \text{dfs}[v]$. Restkanten sind niemals Brücken. 
+\end{ntheorem}
+
+\begin{lemma}
+    Sei $G = (V, E)$ ein zusammenhängender Graph. Ist $\{x, y\} \in E$ eine Brücke so gilt: $\deg(x) = 1$ oder $x$ ist Artikulationsknoten.
+\end{lemma}
+
+\setcounter{definition}{27}
+\begin{theorem}
+    Für zusammenhängende Graphen $G = (V, E)$, die mit Adjazenzlisten gespeichert sind, kann man in Zeit $\BO(|E|)$ alle Artikulationsknoten und Brücken berechnen.
+\end{theorem}
+
+\begin{definition}
+    Sei $G = (V, E)$ ein zusammenhängender Graph. Für $e, f \in E$ definieren wir eine Äquivalenzrelation durch:
+    $$e \sim f :\iff e \begin{cases}
+        e = f, \quad \text{oder} \\
+        \exists \text{Kreis durch $e$ und $f$}
+    \end{cases}$$
+\end{definition}
+
+\subsection{Kreise}
+
+\setcounter{definition}{30}
+\begin{theorem}
+    Ein zusammenhängender Graph $G = (V, E)$ enthält eine Eulertour $\iff$ der Grad jedes Knotens gerade ist. Die Tour kann man in $\BO(|E|)$ Zeit finden.
+\end{theorem}
+
+\begin{theorem}
+    Seien $m, n \geq 2$. Ein $n \times m$ Gitter enthält einen Hamiltonkreis $\iff$ $n \cdot m$ gerade ist.
+\end{theorem}
+
+\setcounter{definition}{39}
+\begin{theorem}[Dirac 1952]
+    Jeder Graph $G = (V, E)$ mit $|V| \geq 3$ und Minimalgrad $\delta(G) \geq \frac{|V|}{2}$ enthält einen Hamiltonkreis.
+\end{theorem}
+
+\setcounter{definition}{42}
+Für das \textsc{Metrische Traveling Salesman Problem} gibt es einen 2-Approximationsalgorithmus mit Laufzeit $\BO(n^2)$.
+
+\subsection{Matchings}
+\begin{ntheorem}[Matching]
+    Eine Kantenmenge $M \subseteq E$ heisst Matching in einem Graphen $G = (V, E)$, falls kein Knoten des Graphen zu mehr als einer Kante aus $M$ inzident ist.
+
+    $$e \cap f = \varnothing \ \text{für alle} \ e, f \in M \ \text{mit} \ e \neq f$$
+
+    Ein Knoten wird von $M$ überdeckt, falls es eine Kante $e \in M$ gibt, die $v$ enthält.
+\end{ntheorem}
+
+\begin{ntheorem}[Perfekts Matching]
+    Ein Matching $M$ heisst perfektes Matching, wenn jeder Knoten durch genau eine Kante aus $M$ überdeckt wird, oder, anders ausgedrückt, wenn $M = \frac{|V|}{2}$
+\end{ntheorem}
+
+\begin{ntheorem}[Matching Typen] \hfill
+    \begin{itemize}
+        \item $M$ heisst inklusionsmaximal, falls gilt $M \cup \{e\}$ ist kein Matching für alle Kanten $e \in E \setminus M$.
+        \item $M$ heisst kardinalitätsmaximal, falls gilt $|M| \geq |M'|$ für alle Matchings $M'$ in $G$.
+    \end{itemize}
+\end{ntheorem}
+
+\setcounter{definition}{46}
+\begin{theorem}
+    Der Algortihmus \textsc{Greedy-Matching} bestimmt in Zeit $\BO(|E|)$ ein inklusionsmaximales Matching $M_{Greedy}$ für das gilt:
+    $$|M_{Greedy}| \geq \frac{1}{2}|M_{max}|$$
+    wobei $M_{max}$ ein kardinalitätsmaximales Matching sei.
+\end{theorem}
+
+\begin{ntheorem}[Augmentierender Pfad]
+    Ein $M$-augmentierenderPfad ist ein Pfad, der abwechselnd Kanten aus $M$ und nicht aus $M$ enthält und der in von $M$ nicht überdeckten Knoten beginnt und endet.
+
+    $\implies$ durch tauschen entlang $M$ können wir das Matching verbessern.
+\end{ntheorem}
+
+\begin{theorem}[Berge]
+    Ist $M$ ein Matching in einem Graphen $G = (V, E)$, das nicht kardinalitätsmaximal ist, so existiert ein augmentierender Pfad zu $M$.
+\end{theorem}
+
+\setcounter{definition}{50}
+\begin{theorem}
+    Für das \textsc{Metrische Travelling Salesman Problem} gibt es einen $3/4$-Approximationsalgorithmus mit Laufzeit $\BO(n^3)$ mit MST, Matching und Eulertour.
+\end{theorem}
+
+\begin{theorem}[Hall, Heiratssatz]
+    Ein bipartiter Graph $G = (A \uplus B, E)$ enthält ein Matching $M$ der Kardinalität $|M| = |A| \iff \forall X \subseteq A \ (|X| \leq |N(X)|)$ 
+\end{theorem}
+
+\begin{corollary}[Frobenius]
+    Für alle $k$ gilt: Jeder $k$-reguläre bipartite Graph enthält ein perfektes Matching.
+\end{corollary}
+
+\subsection{Färbungen}
+\setcounter{definition}{55}
+\begin{definition}
+    Eine Färbung eines Graphen $G = (V, E)$ mit $k$ Farben ist eine Abbildung $c: V \to [k]$, so dass gilt
+    $$c(u) \neq c(v) \quad \text{für alle Kanten} \ \{u, v\} \in E$$
+    Die chromatische Zahl $\chi(G)$ ist die minimale Anzahl Farben, die für eine Knotenfärbung von $G$ benötigt wird.
+    $$\chi(G) \leq k \iff G \ k\text{-partit}$$
+\end{definition}
+
+\setcounter{definition}{57}
+\begin{theorem}
+    Ein Graph $G = (V, E)$ ist genau dann bipartit, wenn er keinen Kreis ungerader Länge als Teilgraphen enthält.
+\end{theorem}
+
+\begin{theorem}[Vierfarbensatz]
+    Jede Landkarte lässt sich mit vier Farben färben.
+\end{theorem}
+
+\begin{note}
+    \begin{itemize}
+        \item Die Heuristik findet immer eine Färbung mit 2 Farben für Bäume
+        \item ist ein Graph planar (Kann überkreuzungsfrei in der Ebene gezeichnet werden), so gibt es immer einen Knoten vom Grad $\leq 5$.
+        \item Die Heuristik findet eine Färbung mit $\leq 6$ Farben für planare Graphen
+        \item $G = (V, E)$ zshgd. und es gibt $v \in V$ mit $\deg(v) < \Delta(G)$. Heuristik (Breiten/Tiefensuche) liefert Reihenfolge, für die der Greedy-Algorithmus höchstens $\Delta(G)$ Farben benötigt.
+    \end{itemize}
+\end{note}
+
+\begin{theorem}
+    Sei $G$ ein zusammenhängender Graph. Für die Anzahl Farben $C(G)$, die der Algorithmus \textsc{Greedy-Färbung} benötigt, um die Knoten des Graphen $G$ zu färben, gilt
+    $$\chi(G) \leq C(G) \leq \Delta(G) + 1$$
+    ist der Graph als Adjazenzliste gespeichert, findet der Algortihmus die Färbung in zeit $\BO(|E|)$
+\end{theorem}
+
+\begin{corollary}
+    Ist $G$ ein Graph, in dem man jeden Block mit $k$ Farben färben kann, dann kann man auch $G$ mit $k$ Farben färben.
+\end{corollary}
+
+\begin{theorem*}
+    $\forall k \in \N, \forall r \in \N$: es gibt Graphen ohne einen Kreis mit Länge $\leq k$, aber mit chromatischer Zahl $\geq r$.
+\end{theorem*}
+
+\setcounter{definition}{63}
+\begin{theorem}[Brooks]
+    Ist $G = (V, E)$ ein zusammenhängender Graph, $G \neq K_n, G \neq C_{2n + 1}$, so gilt:
+    $$\chi(G) \leq \Delta(G)$$
+    und es gibt einen Algorithmus, der die Knoten des Graphen in Zeit $\BO(|E|)$ mit $\delta(G)$ Farben färbt.
+\end{theorem}
+
+\setcounter{definition}{65}
+\begin{theorem}[Mycielski-Konstruktion]
+    Für alle $k \geq 2$ gibt es einen dreiecksfreien Graphen $G_k$ mit $\chi(G_k) \geq k$.
+\end{theorem}
+
+\begin{theorem}
+    Einen 3-färbbaren Graphen kann man in Zeit $\BO(|V| + |E|)$ mit $\BO(\sqrt[]{|V|})$ Farben färben.
+\end{theorem}
+
+\section{Wahrscheinlichkeit Theorie}
+\begin{definition}
+    Ein diskreter Wahrscheinlichkeitsraum ist bestimmt durch eine Ergebnismenge $\Omega = \{\omega_1, \omega_2, \ldots\}$ von Elementarereignissen. Jedem Elementarereignis $\omega_i$ ist eine Wahrscheinlichkeit $\Pr[\omega_i]$ zugeordnet, wobei wir fordern, dass $0 \leq \Pr[\omega_i] \leq 1$ und $\sum_{\omega \in \Omega} \Pr[\omega] = 1$.
+    Eine Menge $E \subseteq \Omega$ heisst Ergeinis. Die Wahrscheinlichkeit $\Pr[E]$ eines Ereginisses ist definiert durch $\Pr[E] := \sum_{\omega \in E} \Pr[\omega]$.
+    Ist $E$ ein Ergeinis, so bezeichnen wir mit $\overline{E} := \Omega \setminus E$ das Komplementärereignis zu $E$.
+\end{definition}
+
+\begin{nlemma}
+    Für Ereignisse A, B gilt:
+    \begin{enumerate}
+        \item $\Pr[\varnothing] = 0, \Pr[\Omega] = 1$
+        \item $0 \leq \Pr[A] \leq 1$
+        \item $\Pr[\overline{A}] = 1 - \Pr[A]$
+        \item Wenn $A \subseteq B$, so folgt $\Pr[A] \leq \Pr[B]$
+    \end{enumerate}
+\end{nlemma}
+
+\begin{theorem}[Additionssatz]
+    Wenn $A_1, \ldots , A_n$ paarweise disjunkte Ereignisse sind, so gilt
+    $$\Pr\left[\bigcup_{i = 1}^n A_i\right] = \sum_{i=1}^n \Pr[A_i]$$
+    Für eine unendliche Menge von disjunkten Ereignissen $A_1, A_2, \ldots$ gilt analog
+    $$\Pr\left[\bigcup_{i = 1}^\infty A_i \right] = \sum_{i=1}^\infty \Pr[A_i]$$
+\end{theorem}
+
+\setcounter{definition}{4}
+\begin{theorem}[Siebformel]
+    Für Ereignisse $A_1, \ldots , A_n (n \geq 2)$ gilt:
+    \begin{align*}
+        \Pr\left[\bigcup_{i = 1}^n A_i\right] &= \sum_{l=1}^n (-1)^{l+1} \sum_{1 \leq i_1 < \cdots < i_l \leq n} \Pr[A_{i_1} \cap \cdots \cap A_{i_l}] \\
+        &= \sum_{i = 1}^n \Pr[A_i] - \sum_{i \leq i_1 < i_2 \leq n} \Pr[A_{i_1} \cap A_{i_2}] \\
+        & \quad + \sum_{1 \leq i_1 < i_2 < i_3 \leq n} \Pr[A_{i_1} \cap A_{i_2} \cap A_{i_3}] - \cdots \\
+        & \quad + (-1)^{n+1} \cdots \Pr[A_1 \cap \cdots \cap A_n]
+    \end{align*}
+\end{theorem}
+
+\begin{ncorollary}[Boolsche Ungleichung]
+    Für Ereignisse $A_1, \ldots, A_n$ gilt:
+    $$\Pr\left[\bigcup_{i=1}^n A_i\right] \leq \sum_{i=1}^n  \Pr[A_i]$$
+    Analog gilt für eine unendliche Folge von Ereignissen $A_1, A_2, \ldots$, dass $\Pr[\bigcup_{i=1}^\infty A_i] \leq \sum_{i=1}^\infty \Pr[A_i]$.
+\end{ncorollary}
+
+\setcounter{definition}{7}
+\begin{definition}
+    $A$ und $B$ seien Ereignisse mit $\Pr[B] > 0$. Die bedingte Wahrscheinlichkeit $\Pr[A|B]$ von $A$ gegeben $B$ ist definiert durch
+    $$\Pr[A|B] := \frac{\Pr[A \cap B]}{\Pr[B]}$$
+\end{definition}
+
+\setcounter{definition}{9}
+\begin{theorem}[Multiplikationssatz]
+    Seien die Ereignisse $A_1, \ldots, A_n$ gegeben. Falls $\Pr[A_1 \cap \cdots \cap A_n] > 0$ ist, gilt
+    \begin{multline*}
+        Pr[A_1 \cap \cdots \cap A_n] = \\
+        \Pr[A_1] \cdot \Pr[A_2 | A_1] \cdots \Pr \Pr[A_n | A_1 \cap \cdots \cap A_{n - 1}]
+    \end{multline*}
+\end{theorem}
+
+\setcounter{definition}{12}
+\begin{theorem}[Totale Wahrscheinlichkeit]
+    Die Ereignisse $A_1, \ldots, A_n$ seien paarweise diskunkt und es gelte $B \subseteq A_1 \cup \ldots \cup A_n$. Dann folgt
+    $$\Pr[B] = \sum_{i = 1}^n \Pr[B | A_i] \cdot \Pr[A_i]$$
+    Analog gilt für paarweise disjunkte Ereignisse $A_1, A_2, \ldots$ mit $B \subseteq \bigcup_{i = 1}^\infty A_i$, dass
+    $$\Pr[B] = \sum_{i = 1}^\infty \Pr[B | A_i] \cdot \Pr[A_i]$$
+\end{theorem}
+
+\setcounter{definition}{14}
+\begin{theorem}[Bayes]
+    Die Ereignisse $A_1, \ldots, A_n$ seien paarweise disjunkt. Ferner sei $B \subseteq A_1 \cup \ldots \cup A_n$ ein Ereignis mit $\Pr[B] > 0$. Dann gilt für ein beliebiges $i = 1, \ldots, n$
+    $$\Pr[A_i | B] = \frac{\Pr[A_i \cap B]}{\Pr[B]} = \frac{Pr[B | A_i] \cdot \Pr[A_i]}{\sum_{j = 1}^n \Pr[B | A_j] \cdot \Pr[A_j]}$$
+    Analog gilt für paarweise disjunkte Ereignisse $A_1, A_2, \ldots$ mit $B \subseteq \bigcup_{i = 1}^\infty A_i$, dass
+    $$\Pr[A_i | B] = \frac{\Pr[A_i \cap B]}{\Pr[B]} = \frac{Pr[B | A_i] \cdot \Pr[A_i]}{\sum_{j = 1}^\infty \Pr[B | A_j] \cdot \Pr[A_j]}$$
+\end{theorem}
+
+\setcounter{definition}{17}
+\begin{definition}
+    Die Ereignisse $A$ und $B$ heissen unabhängig, wenn gilt $\Pr[A \cap B] = Pr[A] \cdot \Pr[B]$
+\end{definition}
+
+\setcounter{definition}{21}
+\begin{definition}
+    Die Ereignisse $A_1, \ldots, A_n$ heissen unabhängig, wenn für alle Teilmengen $I \subseteq \{1, \ldots, n\}$ mit $I = \{i_1, \ldots, i_k\}$ gilt, dass
+    $$\Pr[A_{i_1} \cap \cdots \cap A_{i_k}] = \Pr[A_{i_1}] \cdots \Pr[A_{i_k}]$$
+    Eine unendliche Familie von Ereignissen $A_i$ mit $i \in \N$ heisst unabhängig, wenn die Gleichung für jede endliche Teilmenge $I \subseteq \N$ erfüllt ist.
+\end{definition}
+
+\begin{nlemma}
+    Die Ereignisse $A_1, \ldots, A_n$ sind genau dann unabhängig, wenn für alle $(s_1, \ldots, s_n) \in \{0, 1\}^n$ gilt, dass
+    $$\Pr[A_1^{s_1} \cap \cdots \cap A_n^{s_n}] = \Pr[A_1^{s_1}] \cdots \Pr[A_n^{s_n}]$$
+    wobei $A_i^0 = \overline{A}_i$ und $A_i^1 = A_i$.
+\end{nlemma}
+
+\begin{nlemma}
+    Seien $A$, $B$ und $C$ unabhängige Ereignisse Dann sind auch $A \cap B$ und $C$ bzw. $A \cup B$ und $C$ unabhängig.
+\end{nlemma}
+
+\begin{definition}
+    Eine Zufallsvariable ist eine Abbildung $X: \Omega \to \R$, wobei $\Omega$ die Ergebnismenge eines Wahrscheinlichkeitsraum ist.
+\end{definition}
+
+\begin{ntheorem}[Dichtefunktion]
+    $$f_X: \R \to [0,1], \quad x \mapsto \Pr[X = x]$$
+\end{ntheorem}
+
+\begin{ntheorem}[Verteilungsfunktion]
+    $$F_X: \R \to [0,1], \quad x \mapsto \Pr[X \leq x] = \sum_{x' \in W_X: x' \leq x} \Pr[X = x']$$
+\end{ntheorem}
+
+\setcounter{definition}{26}
+\begin{definition}
+    Zu einer Zufallsvariable $X$ definieren wir den Erwartungswert $\E[X]$ durch
+    $$\E[X] := \sum_{x \in W_X} x \cdot \Pr[X = x]$$
+    sofern die Summe absolut konvergiert. Ansonsten sagen wir, dass der Erwartungswert undefiniert ist.
+\end{definition}
+
+\setcounter{definition}{28}
+\begin{nlemma}
+    Ist $X$ eine Zufallsvariable, so gilt:
+    $$\E[X] = \sum_{\omega \in \Omega} X(\omega) \cdot \Pr[\omega]$$
+\end{nlemma}
+
+\begin{theorem}
+    Sei $X$ eine Zufallsvariable mit $W_X \subseteq \N_0$. Dann gilt
+    $$\E[X] = \sum_{i = 1}^\infty \Pr[X \geq i]$$
+\end{theorem}
+
+\setcounter{definition}{31}
+\begin{theorem}
+    Sei $X$ eine Zufallsvariable. Für paarweise disjunkte Ereignisse $A_1, \ldots, A_n$ mit $A_1 \cup \cdots A_n = \Omega$ und \\ $\Pr[A_1], \ldots, \Pr[A_n] > 0$ gilt
+    $$\E[X] = \sum_{i = 1}^n \E[X|A_i] \cdot \Pr[A_i]$$
+    Für paarweise disjunkte Ereignisse $A_1, A_2, \ldots$ mit $\bigcup_{i=1}^\infty A_k = \Omega$ und $\Pr[A_1], \Pr[A_2], \ldots > 0$ gilt analog
+    $$\E[X] = \sum_{i = 1}^\infty \E[X | A_i] \cdot \Pr[A_i]$$
+\end{theorem}
+
+\begin{theorem}[Linearität des Erwartungswerts]
+    Für Zufallsvariable $X_1, \ldots, X_n$ und $X := a_1X_1 + \ldots + a_n X_n + b$ mit $a_1, \ldots, a_n, b \in \R$ gilt
+    $$\E[X] = a_1 \E[X_1] + \ldots + a_n \E[X_n] + b$$
+\end{theorem}
+
+\setcounter{definition}{34}
+\begin{definition}[Indikatorvariable]
+    Für ein Ereignis $A \subseteq \Omega$ ist die zugehörige Indikatorvariable $X_A$ definiert durch:
+    $$X_A(\omega) := \begin{cases}
+        1, \ \text{falls} \ \omega \in A \\
+        0, \ \text{sonst}
+    \end{cases}$$
+    Für den Erwartungswert von $X_A$ gilt: $\E[X_A] = \Pr[A]$.
+\end{definition}
+
+\setcounter{definition}{38}
+\begin{definition}
+    Für eine Zufallsvariable $X$ mit $\mu = \E[X]$ definieren wir die Varianz $\Var[X]$ durch:
+    $$\Var[X] := \E[(X - \mu)^2] = \sum_{x \in W_X} (x - \mu)^2 \cdot \Pr[X = x]$$
+    Die Grösse $\sigma := \sqrt{\Var[X]}$ heisst Standardabweichung von $X$.
+\end{definition}
+
+\begin{theorem}
+    Für eine beliebige Zufallsvariable $X$ gilt 
+    $$\Var[X] = \E[X^2] - \E[X]^2$$
+\end{theorem}
+
+\begin{theorem}
+    Für eine beliebige Zufallsvariable $X$ und $a, b \in \R$ gilt
+    $$\Var[a \cdot X + b] = a^2 \cdot \Var[X]$$
+\end{theorem}
+
+\subsection{Diskrete Verteilungen}
+\begin{note}[Bernoulli-Verteilung]
+    $$X \sim \text{Bernoulli}(p) \implies \E[X] = p \quad \Var[X] = p(1 - p)$$
+    $$f_X(x) = \begin{cases}
+        p & \text{für} \ x = 1, \\
+        1 - p & \text{für} \ x = 0, \\
+        0 & \text{sonst}
+    \end{cases}$$
+\end{note}
+
+\begin{note}[Binomial-Verteilung]
+    $$X \sim \text{Bin}(n, p) \implies \E[X] = np \quad \Var[X] = np(1 - p)$$
+    $$f_X(x) = \begin{cases}
+        \binom{n}{x}p^x(1-p)^{n - x} & x \in \{0, 1, \ldots, n\} \\
+        0 & \text{sonst}
+    \end{cases}$$
+\end{note}
+
+\begin{note}[Negativ Binomial-Verteilung]
+    $$\E[Z] = \sum_{i = 1}^n \E[X_i] = \frac{n}{p}$$
+    $$f_Z(z) = \binom{z - 1}{n - 1}\cdot p^n(1 - p)^{z - n}$$
+\end{note}
+
+\begin{note}[Geometrisch-Verteilung]
+    $$X \sim \text{Geo}(p) \implies \E[X] = \frac{1}{p} \quad \Var[X] = \frac{1 - p}{p^2}$$
+    $$f_X(i) = \begin{cases}
+        p(1-p)^{i - 1} & \text{für} i \in \N \\
+        0 & \text{sonst}
+    \end{cases}$$
+\end{note}
+
+\setcounter{definition}{44}
+\begin{theorem}
+    Ist $X \sim \text{Geo}(p)$, so gilt für alle $s, t \in \N$:
+    $$\Pr[X \geq s + t \ | \ X > s] = \Pr[X \geq t]$$
+\end{theorem}
+
+\begin{note}[Poisson-Verteilung]
+    $$X \sim \text{Po}(\lambda) \implies \E[X] = \Var[X] = \lambda$$
+    $$f_X(i) = \begin{cases}
+        \frac{e^{-\lambda} \lambda^i}{i!} & \text{für} i \in \N \\
+        0 & \text{sonst}
+    \end{cases}$$
+\end{note}
+
+\subsection{Mehrere Zufallsvariablen}
+$\Pr[X = x, Y = y] = \Pr[\{\omega \in \Omega \ | \ X(\omega) = x, Y(\omega) = y\}]$
+
+\begin{note}
+    Die gemeinsame Dichte von $X$ und $Y$:
+    $$f_{X, Y}(x, y) := \Pr[X = x, Y = y]$$
+    $$\implies$$
+    $$f_X(x) = \sum_{y \in W_Y} f_{X, Y}(x, y) \ \text{bzw.} \ f_Y(y) = \sum_{x \in W_X} f_{X, Y}(x, y)$$
+\end{note}
+
+\setcounter{definition}{51}
+\begin{definition}
+    Zufallsvariablen $X_1, \ldots, X_n$ heissen unabhängig, genau dann wenn für alle $(x_1, \ldots, x_n) \in W_{X_1} \times \ldots \times W_{X_n}$ gilt
+    $$\Pr[X_1 = x_1, \ldots , X_n = x_n] = \Pr[X_1 = x_1] \cdot \; \cdots \; \cdot \Pr[X_n = x_n]$$
+\end{definition}
+
+\begin{nlemma}
+    Sind $X_1, \ldots, X_n$ unabhängige Zufallsvariablen und $S_1, \ldots, S_n$ beliebige Mengen mit $S_i \subseteq W_{X_i}$, dann gilt
+    $$\Pr[X_1 \in S_1, \ldots, X_n \in S_n] = \Pr[X_1 \in S_1] \cdot \; \cdots \; \cdot \Pr[X_n \in S_n]$$
+\end{nlemma}
+
+\begin{ncorollary}
+    Sind $X_1, \ldots, X_n$ unabhängige Zufallsvariablen und ist $I = \{i+1, \ldots, i_k\} \subseteq [n]$, dann sind $X_{i_1}, \ldots, X_{i_k}$ ebenfalls unabhängig.
+\end{ncorollary}
+
+\begin{theorem}
+    Seien $f_1, \ldots, f_n$ reellwertige Funktionen ($f_i: \R \to \R$ für $i = 1, \ldots, n$). Wenn die Zufallsvariablen $X_1, \ldots, X_n$ unabhängig sind, dann gilt dies auch für $f_1(X_1), \ldots, f_n(X_n)$.
+\end{theorem}
+
+\setcounter{definition}{57}
+\begin{theorem}
+    Für zwei unabhängige Zufallsvariablen $X$ und $Y$ und $Z := X + Y$. Es gilt
+    $$f_Z(z) = \sum_{x \in W_X} f_X(x) \cdot f_Y(z - x)$$
+\end{theorem}
+
+\setcounter{definition}{59}
+\begin{theorem}[Linearität des Erwartungswert]
+    Für Zufallsvariablen $X_1, \ldots, X_n$ und $X := a_1 X_1 + \cdots + a_n X_n$ mit $a_1, \ldots, a_n \in \R$ gilt
+    $$\E[X] = a_1 \E[X_1] + \cdots + a_n \E[X_n]$$
+\end{theorem}
+
+\begin{theorem}[Multiplikativität des Erwartungswerts]
+    Für unabhängige Zufallsvariablen $X_1, \ldots, X_n$ gilt
+    $$\E[X_1 \cdot \; \cdots \; X_n] = \E[X_1] \cdot \; \cdots \; \cdot \E[X_n]$$
+\end{theorem}
+
+\begin{theorem}
+    Für unabhängige Zufallsvariablen $X_1, \ldots, X_n$  und $X := a_1 X_1 + \cdots + a_n X_n$ gilt
+    $$\Var[X] = \Var[X_1] + \ldots + \Var[X_n]$$
+\end{theorem}
+
+\setcounter{definition}{59}
+\begin{theorem}[Waldsche Identität]
+    $N$ und $X$ seien zwei unabhängige Zufallsvariable, wobei für den Wertebereich von $N$ gilt: $W_N \subseteq \N$. Weiter sei $Z := \sum_{i=1}^N X_i$
+    wobei $X_1, X_2, \ldots$ unabhängige Kopien von $X$ seien. Dann gilt: $\E[Z] = \E[N] \cdot \E[X]$
+\end{theorem}
+
+\setcounter{definition}{66}
+\begin{theorem}[Ungleichung von Markov]
+    Sei $X$ eine Zufallsvariable, die nur nicht-negative Werte annimmt. Dann gilt für alle $t \in \R$ mit $t > 0$, dass
+    $$\Pr[X \geq t] \leq \frac{\E[X]}{t}$$
+    Oder äquivalent: $\Pr[X \geq t \cdot \E[X]] \leq \frac{1}{t}$
+\end{theorem}
+
+\begin{theorem}[Ungleichung von Chebyshev]
+    Sei $X$ eine Zufallsvariable und $t \in \R$ mit $t > 0$. Dann gilt
+    $$\Pr[|X - \E[X]| \geq t] \leq \frac{\Var[X]}{t^2}$$
+    oder äquivalent: $\Pr[|X - \E[X]| \geq t \sqrt{\Var[X]}] \leq \frac{1}{t^2}$
+\end{theorem}
+
+\setcounter{definition}{69}
+\begin{theorem}[Chernoff-Schranken]
+    Seien $X_1, \ldots, X_n$ unabhängig Bernoulliverteilte Zufallsvariablen mit $\Pr[X_i = 1] = p_1$ und $\Pr[X_1 = 0] = 1 - p_i$. Dann gilt für $X := \sum_{i = 1}^n X_i$:
+    \begin{enumerate}[label=(\roman*)]
+        \item $\Pr[X \geq (1+\delta)\mathbb{E}[X]] \leq e^{-\frac{1}{3}\delta^2\mathbb{E}[X]} \quad \forall 0 < \delta \leq 1$
+        \item $\Pr[X \leq (1-\delta)\mathbb{E}[X]] \leq e^{-\frac{1}{2}\delta^2\mathbb{E}[X]} \quad \forall 0 < \delta \leq 1$
+        \item $\Pr[X \geq t] \leq 2^{-t} \quad \text{für } t \geq 2e\mathbb{E}[X]$
+    \end{enumerate}
+\end{theorem}
+
+\subsection{Randomisierte Algorithmen}
+\setcounter{definition}{71}
+\begin{theorem}
+    Sei $A$ ein randomisierter Algorithmus, der nie eine falsche Antwort gibt, aber zuweilen '???' ausgibt, wobei $$\Pr[A(I) \ \text{korrekt}] \leq \epsilon$$
+    Dann gilt für alle $\delta > 0$: bezeichnet man mit $A_\delta$ den Algorithmus, der $A$ solange aufruft bis entweder ein Wert verschieden von '???' ausgegeben wird (und $A_\delta$ diesen Wert dann ebenfalls ausgibt) oder bis $N = \epsilon^{-1}\ln \delta^{-1}$ mal '???' ausgegeben wurde (und $A_\delta$ dann ebenfalls '???' ausgibt), so gilt für den Algorithmus $A_\delta$, dass 
+    $$\Pr[A_\delta(I) \ \text{korrekt}] \geq 1 - \delta$$
+\end{theorem}
+
+\setcounter{definition}{73}
+\begin{theorem} [Monte Carlo - Einseitiger Fehler]
+    Sei $A$ ein randomisierter Algorithmus, der immer eine der beiden Antworten 'Ja' oder 'Nein' ausgibt, wobei
+    \begin{center}
+        $\Pr[A(I) = \text{Ja}] = 1$ falls $I$ eine Ja-Instanz ist
+    \end{center}
+    und 
+    \begin{center}
+        $\Pr[A(I) = \text{Nein}] \geq \epsilon$ falls $I$ eine Nein-Instanz ist
+    \end{center}
+    Dann gilt für alle $\delta > 0$: bezeichnet man mit $A_\delta(I)$ den Algorithmus, der $A$ solange aufruft bis entweder der Wert 'Nein' ausgegeben wird (und $A$ dann ebenfalls 'Nein' ausgibt) oder bis $N = \epsilon^{-1} \ln \delta^{-1}$ mal 'Ja' ausgegeben wurde (und $A_\delta$ dann ebenfalls 'Ja' ausgibt), so gilt für alle Instanzen I
+    $$\Pr[A_\delta(I) \ \text{korrekt}] \geq 1 - \delta$$
+\end{theorem}
+
+\begin{theorem}[Monte Carlo - zweiseitiger Fehler]
+    Sei $\epsilon > 0$ und $A$ ein randomisierter Algorithmus, der immer eine der beiden Antworten 'Ja' oder 'Nein' ausgibt, wobei
+    $$\Pr[A(I) \ \text{korrekt}] \geq \frac{1}{2} + \epsilon$$
+    Dann gilt für alle $\delta > 0$: bezeichnet man mit $A_\delta$ den Algorithmus, der $N = 4 \epsilon^{-2}\ln \delta^{-1}$ unabhängige Aufrufe von $A$ macht und dann die Mehrheit der erhaltenen Antworten ausgibt, so gilt für den Algorithmus $A_\delta$, dass
+    $$\Pr[A_\delta(I) \ \text{korrekt}] \geq 1 - \delta$$
+\end{theorem}
+
+\begin{theorem}
+    Sei $\epsilon > 0$ und $A$ ein randomisierter Algorithmus für ein Maximierungsproblem, wobei gelte: $$\Pr[A(I) \geq f(I)] \geq \epsilon$$ Dann gilt für alle $\delta > 0$ bezeichnet man mit $A_\delta$ den Algorithmus, der $N = \epsilon^{-1}\ln \delta^{-1}$ unabhängige Aufrufe von $A$ macht und die beste der erhaltenen Antworten ausgibt, so gilt für den Algorithmus $A_\delta$, dass $$\Pr[A_\delta(I) \geq f(I)] \geq 1 -\delta$$ (Für Minimierungsprobleme gilt eine analoge Aussage wenn wir „$\geq f(I)$“ durch „$\leq f(I)$“ ersetzen.)
+\end{theorem}
+
+\subsubsection{Primzahltest}
+\begin{theorem}[Kleiner fermatscher Satz]
+    Ist $n \in \N$ prim, so gilt für alle Zahlen $0 < a < n$
+    $$a^{n - 1} \equiv 1 \quad \mod n$$
+\end{theorem}
+
+\subsubsection{Target Shooting}
+\setcounter{definition}{78}
+\begin{theorem}
+    Seien $\delta, \epsilon > 0$. Falls $N \geq 3 \frac{|U|}{|S|} \cdot \epsilon^{-2} \cdot \ln(\frac{2}{\delta})$, so ist die Ausgabe des Algorithmus \textsc{Target-Shooting} mit Wahrscheinlichkeit mindestens $1 - \delta$ im Intervall $$\left[(1-\epsilon)\frac{|S|}{|U|}, (1 + \epsilon) \frac{|S|}{|U|}\right]$$
+    (multiplikativer Fehler von $1 \pm \epsilon$)
+\end{theorem}
+
+\begin{note}[Hashfunktion]
+    Hashfunktion $h: U \to [m]$ mit folgenden Eigenschaften:
+    \begin{itemize}
+        \item $h$ ist effizient berechenbar
+        \item $h$ verhält sich wie eine Zufallsfunktion, d.h.
+        $$\forall u \in U \ \forall i \in [m] : \Pr[h(u) = i] = \frac{1}{m} \quad \text{unabhängig}$$
+        \item $s_i = s_j \implies h(s_i) = h(s_j)$
+    \end{itemize}
+    Essenz: $m$ viel kleiner als $|U|$ für Komprimierung.
+\end{note}
+
+\begin{note}[Kollisionen bei Hashing]
+    Kollisionen sind neue (unerwünschte) Duplikate im Hashmap. Sei $K_{i, j}$ die Bernoulli Variable mit 
+    $$K_{i,j} = 1 \iff (i,j) \ \text{is eine Kollision}$$
+    Es gilt $$\Pr[K_{i,j} = 1] = \begin{cases}
+        1/m & \text{if $s_i \neq s_j$}, \\
+        0 & \text{else}
+    \end{cases}
+    \implies \E[K_{i,j}] \leq \frac{1}{m}$$
+    $$\E[\text{\#Kollisionen}] = \sum_{1 \leq i < j \leq n} \E[K_{i, j}] \leq \binom{n}{2}\frac{1}{m}$$
+    Mit $m = n^2$ is der Mehraufwand durch Kollisionen konstant. Laufzeit:
+    $$\BO(n) + \BO(n \log n) + \BO(n + |\text{Dupl}(S)|)$$
+\end{note}
+
+\end{document}
