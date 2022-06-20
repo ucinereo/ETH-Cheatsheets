@@ -310,7 +310,7 @@ Also internal, but transfers to software.
 
 - **Latency**: time needed to perform a given computation (e.g., process a customer)
 $$l = \sum_{s \in \text{stages}} s$$
-$$\text{latency bound} = \text{\#Stages} \cdot \max(\text{computationtime}(\text{stages}))$$
+$$\text{latency bound} = \sharp\text{Stages} \cdot \max(\text{computationtime}(\text{stages}))$$
 - **Throughput**: amount of work that can be done by a system in a given period of time(e.g., how many customers can be processed in one minute).
 $$tp = \frac{1}{\max(\text{computationtime}(\text{stages}))}$$
 - **Balanced/Unbalanced Pipeline**: a pipeline is balanced if it has constant latency. If the first computation step is the longest, the pipeline is always balanced.
