@@ -16,4 +16,4 @@
 *.thm
 
 # Miscellaneous
-vscode/
+.vscode/
