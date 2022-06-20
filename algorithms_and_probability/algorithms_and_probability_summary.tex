@@ -21,16 +21,19 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{mathtools}
 
 \newtheorem*{corollary}{Cor}
 \newtheorem*{lemma}{Lemma}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Def}[section]
+\newtheorem*{definition*}{Def}
 \newtheorem{theorem}[definition]{Satz}
 \newtheorem{nlemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
 \newtheorem{ncorollary}[definition]{Cor}
-\newtheorem*{note}{Bmk.}
+\newtheorem*{note}{Bmk}
 \newtheorem*{theorem*}{Theorem}
 
 
@@ -55,6 +58,9 @@
 \newcommand{\BO}{\mathcal{O}}
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\Var}{\text{Var}}
+\newcommand{\val}{\text{val}}
+\newcommand{\net}{N = (V, A, c, s, t)}
+\newcommand{\conv}{\text{conv}}
 
 % Metadata
 \title{Algorithmen und Wahrscheinlichkeit}
@@ -94,7 +100,7 @@
 \begin{theorem}[Menger]
     Sei $G = (V, E)$ ein Graph. Dann gilt:
     \begin{enumerate}[label=\alph*)]
-        \item $G$ ist k-zusammenhängend $\iff \forall u,v \in V, u \neq v$ gibt es $k$ intern-knotendiskunkte $u$-$v$-Pfade-Pfade 
+        \item $G$ ist k-zusammenhängend $\iff \forall u,v \in V, u \neq v$ gibt es $k$ intern-knotendisjunkte $u$-$v$-Pfade-Pfade 
         \item $G$ ist k-kanten-zusammenhängend $\iff \forall u,v \in V, u\neq v$ gibt es $k$ kantendisjunkte $u$-$v$-Pfade
     \end{enumerate}
 \end{theorem}
@@ -552,6 +558,7 @@ $\Pr[X = x, Y = y] = \Pr[\{\omega \in \Omega \ | \ X(\omega) = x, Y(\omega) = y\
     \end{enumerate}
 \end{theorem}
 
+\setcounter{subsection}{8}
 \subsection{Randomisierte Algorithmen}
 \setcounter{definition}{71}
 \begin{theorem}
@@ -585,11 +592,29 @@ $\Pr[X = x, Y = y] = \Pr[\{\omega \in \Omega \ | \ X(\omega) = x, Y(\omega) = y\
     Sei $\epsilon > 0$ und $A$ ein randomisierter Algorithmus für ein Maximierungsproblem, wobei gelte: $$\Pr[A(I) \geq f(I)] \geq \epsilon$$ Dann gilt für alle $\delta > 0$ bezeichnet man mit $A_\delta$ den Algorithmus, der $N = \epsilon^{-1}\ln \delta^{-1}$ unabhängige Aufrufe von $A$ macht und die beste der erhaltenen Antworten ausgibt, so gilt für den Algorithmus $A_\delta$, dass $$\Pr[A_\delta(I) \geq f(I)] \geq 1 -\delta$$ (Für Minimierungsprobleme gilt eine analoge Aussage wenn wir „$\geq f(I)$“ durch „$\leq f(I)$“ ersetzen.)
 \end{theorem}
 
+\setcounter{subsubsection}{2}
 \subsubsection{Primzahltest}
 \begin{theorem}[Kleiner fermatscher Satz]
     Ist $n \in \N$ prim, so gilt für alle Zahlen $0 < a < n$
     $$a^{n - 1} \equiv 1 \quad \mod n$$
 \end{theorem}
+
+\begin{definition*}[Carmichael-Zahl]
+    $n$ heisst Carmichael-Zahl, falls $n$ nicht prim ist und $PB_n = \Z_n^*$
+    $$PB_n := \{ a \in [n - 1] \ | \ \text{ggT}(a, n) = 1 \land a^{n-1} \equiv_n 1 \}$$
+\end{definition*}
+
+\begin{note}[Miller-Rabin-Primzahltest]
+    $\,$
+    \begin{enumerate}
+        \item $d, k \in \N$ mit $n-1 = 2^kd$, $d$ ungerade
+        \item Wähle $a \in [n-1]$, zufällig gleichverteilt
+        \item $a^d \not\equiv_n 1 \land \not\exists i < k: a^{2^i d} \equiv_n n-1 \implies$ nicht prim
+        \item ansonsten prim
+    \end{enumerate}
+    Die Ausgabe 'nicht prim' ist immer richtig. \\
+    Die Ausgabe 'prim' ist falsch mit einer W'keit $\leq \frac{1}{4}$
+\end{note}
 
 \subsubsection{Target Shooting}
 \setcounter{definition}{78}
@@ -598,6 +623,7 @@ $\Pr[X = x, Y = y] = \Pr[\{\omega \in \Omega \ | \ X(\omega) = x, Y(\omega) = y\
     (multiplikativer Fehler von $1 \pm \epsilon$)
 \end{theorem}
 
+\subsubsection{Finden von Duplikaten}
 \begin{note}[Hashfunktion]
     Hashfunktion $h: U \to [m]$ mit folgenden Eigenschaften:
     \begin{itemize}
@@ -621,5 +647,273 @@ $\Pr[X = x, Y = y] = \Pr[\{\omega \in \Omega \ | \ X(\omega) = x, Y(\omega) = y\
     Mit $m = n^2$ is der Mehraufwand durch Kollisionen konstant. Laufzeit:
     $$\BO(n) + \BO(n \log n) + \BO(n + |\text{Dupl}(S)|)$$
 \end{note}
+
+\begin{note}[Bloom-Filter]
+    Wähle $k$ Hashfunktionen mit $h_i: U \to [m], \, i=1,\ldots,k$. Für jedes $s_i \in S$ haben wir einen Hashvektor $(x_1, \ldots, x_k) := (h_1(s_i), \ldots, h_k(s_i))$. Wir bereiten ein boolsches Feld $M[1..m]$ vor, anfangs alle Einträge auf $0$. 
+
+    Wir arbeiten uns durch die Elemente von $s \in S$, wobei wir für jedes $x_i$ von $s$ im Hashvektor je Element den Eintrag $M[x_i] = 1$ setzten. Falls schon alle $M[x_i]$ auf $1$, gesetzt ist, fügen wir $s$ in eine List $\mathcal{L}$ hinzu. Zum Schluss kontrolliert man nur diese Elemente von $\mathcal{L}$ nach Duplikaten.
+
+    $$X_i = 1 \iff \begin{cases}
+        s_i \ \text{tritt in} \ (s_1, \ldots, s_{i-1}) \ \text{nicht auf und} \\
+        M[x_1] = \ldots = M[x_k] = 1 \ \text{vor} \ s_i.
+    \end{cases}$$
+    $$\E[\text{\#Fehler} \ \mathcal{L}] = \sum_{i=1}^n \E[X_i] \leq n \cdot \left(1 - \left(1 - \frac{1}{m}^{k(n-1)} \right)^k \right)$$
+
+    \begin{center}
+        $k$ und $m$ gross $\implies$ \#Falsche Einträge klein \\
+        $k$ gross $\implies$ langsamer \\
+        $m$ gross $\implies$ mehr Speicher
+    \end{center}
+\end{note}
+
+\section{Algorithmen - Highlights}
+\subsection{Graphen Algorithmen}
+\subsubsection{Lange Pfade}
+\begin{theorem}
+    Falls wir \textsc{LONG-PATH} für Graphen mit $n$ Knoten in $t(n)$ Zeit entscheiden können, dann können wir in $t(2n - 2) + \BO(n^2)$ Zeit entscheiden, ob ein Graph mit $n$ Knoten einen Hamilton Kreis hat.
+\end{theorem}
+
+\begin{theorem}
+    Sei $G$ ein Graph mit einem Pfad der Länge $k-1$.
+    \begin{enumerate}
+        \item Eine zufällige Färbung mit $k$ Farben erzeugt einen bunten Pfad der Länge $k-1$ mit Wahrscheinlichkeit $p_{\text{Erfolg}} \geq e^{-k}$.
+        \item Bei wiederholten Färbungen mit $k$ Farben ist der Erwartungswert der Anzahl Versuche bis man einen bunten Pfad der Länge $k-1$ erhält $\frac{1}{p_{\text{Erfolg}}} \leq e^k$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{theorem}
+    \begin{enumerate} $\,$
+        \item Der Algorithmus hat eine Laufzeit von $\BO(\lambda(2e)^kkm)$.
+        \item Antwortet der Algorithmus mit \textsc{Ja}, dann hat der Graph einen Pfad der Länge $k - 1$.
+        \item Hat der Graph einen Pfad der Länge $k-1$, dann ist die Wahrscheinlichkeit, dass der Algortihmus mit \textsc{Nein} antwortet, höchstens $e^{-\lambda}$.
+    \end{enumerate}
+\end{theorem}
+
+\subsubsection{Flüsse in Netzwerken}
+\begin{definition}
+    Ein Netzwerk ist ein Tupel $\net$, wobei gilt:
+    \begin{itemize}
+        \item $(V, A)$ ist ein gerichteter Graph
+        \item $s \in V$, source
+        \item $t \in V\ \{s\}$, target
+        \item $c: A \to \R_0^+$, capacity function
+    \end{itemize}
+\end{definition}
+
+\begin{definition}
+    Gegeben sei ein Netzwerk $\net$. Ein Fluss in $N$ ist eine Funktion $f: A \to \R$ mit den Bedingungen:
+    \begin{itemize}
+        \item $\forall e \in A: 0 \leq f(e) \leq c(e)$
+        \item $\forall v \in V \ \{s,t\}:$ $$\sum_{u \in V: (u, v) \in A} f(u, v) = \sum_{u \in V: (u, v) \in A} f(v, u)$$
+        \item $\val(f) := \text{netoutflow}(s) :=$ $$\sum_{u \in V: (s, u) \in A} f(s, u) - \sum_{u \in V: (u, s) \in A} f(u, s)$$
+    \end{itemize}
+\end{definition}
+
+\begin{nlemma}
+    Der Nettozufluss der Senke gleicht dem Wert des Flusses, d.h. $\text{netinflow}(t) :=$
+    $$\sum_{u \in V: (u, v) \in A}f(u,t) - \sum_{u \in V: (t, u) \in A} f(t, u) = \val(f)$$
+\end{nlemma}
+
+\begin{definition}
+    Ein s-t-Schnitt für ein Netzwerk $\net$ ist eine Partition $(S, T)$ von $V$ (d.h. $S \cup T = V \land S \cap T = \emptyset$) mit $s \in S$ und $t \in T$. Die Kapazität eines s-t-Schnitts $(S, T)$ ist definiert durch:
+    $$\text{cap}(S, T) := \sum_{(u, w) \in (S \times T) \cap A} c(u, w)$$
+\end{definition}
+
+\begin{nlemma}
+    Ist $f$ ein Fluss und $(S, T)$ ein s-t-Schnitt in einem Netzwerk $\net$, so gilt
+    $$\val(f) \leq \text{cap}(S, T)$$
+\end{nlemma}
+
+\begin{theorem}[Maxflow-Mincut]
+    Jedes Netzwerk \\
+    $\net$ erfüllt:
+    $$\max_{f \ \text{Fluss in} \ N} \val(f) = \min_{(S, T) \ \text{s-t-Schnitt in} \ N} \text{cap}(S, T)$$
+\end{theorem}
+
+\begin{definition}
+    Sei $\net$ ein Netzwerk ohne entgegen gerichtete Kanten und sei $f$ ein Fluss in $N$. Das Restnetzwerk $N_f := (V, A_f, r_f, s, t)$ ist wie folgt definiert:
+    \begin{enumerate}
+        \item Ist $e \in A$ mit $f(e) < c(e)$, dann ist $e$ auch eine Kante in $A_f$ mit $r_f(e) := c(e) - f(e)$.
+        \item ist $e \in A$ mit $f(e) > 0$, dann ist $e^{\text{opp}}$ in $A_f$, mit $r_f(e^{\text{opp}}) = f(e)$.
+        \item Nur Kanten wie in 1. und 2. beschrieben finden sich in $A_f$.
+    \end{enumerate}
+    $r_f(e), e \in A$ nennen wir die Restkapazität der Kante $e$.
+\end{definition}
+
+\begin{theorem}
+    Ein Fluss $f$ in einem Netzwerk $N$ ist ein maximaler Fluss $\iff$ es im Restnetzwerk $N_f$, keinen gerichteten s-t-Pad gibt. Für jeden solchen maximalen Fluss gibt es einen s-t-Schnitt $(S, T)$ mit $\val(f) = \text{cap}(S, T)$.
+\end{theorem}
+
+\begin{theorem}
+    Sei $\net$ ein Netzwerk mit $c: A \to \N_0^{\leq U}, U \in \N$, ohne entgegen gerichtete Kanten. Dann gibt es einen ganzzahligen maximalen Fluss, der in Zeit $\BO(mnU)$ berechnet werden kann.
+\end{theorem}
+
+\begin{proposition}[Capacity-Scaling]
+    Sind in einem Netzwerk alle Kapazitäten ganzzahlig und höchstens $U$, so gibt es einen maximalen Fluss, der in Zeit $\BO(mn(1 + \log U))$ berechnet werden kann ($m$ Anzahl Kanten, $n$, Anzahl Knoten).
+\end{proposition}
+
+\begin{proposition}[Dynamic Trees]
+    Der maximale Fluss eines Netzwerks kann in Zeit $\BO(mn \log n)$ berechnet werden ($m$ Anzahl Kanten, $n$ Anzahl Knoten).
+\end{proposition}
+
+\begin{nlemma}
+    Die maximale Grösse eines Matchings im bipartiten Graph $G$ ist gleich dem Wert eines maximalen Flusses im Netzwerk $N$ mit $c \equiv 1$ und 
+    $$A := (\{s\} \times U) \cup \{(u, w) \in U \times W \ | \ \{u, w\} \in E \} \cup (W \times \{t\})$$
+\end{nlemma}
+
+\begin{note}
+    \begin{align*}
+        G &= (V, E), u, v \in V \mapsto N_G^* = (V, A, c, u, v) \\
+        A :&= \{(x, y), (y, x) \ | \ \{x, y\} \in E\} \\
+        c &\equiv 1
+    \end{align*}
+    $$\max_{f \ \text{Fluss in} \ N} \val(f) = \text{\# intern knotendisjunkter $u$-$v$-Pfade}$$
+\end{note}
+
+\begin{note}[Bildsegmentierung]
+    Ein Bild ist ein Graph $(P, E)$ mit Farbinformation $\chi: P \to \ \text{Farben}$.
+    \begin{flalign*}
+        &\alpha : P \to \R_0^+ &&\alpha_p \ \text{grösser} \implies \text{eher im Vordergrund}& \\
+        &\beta : P \to \R_0^+ &&\beta_p \ \text{grösser} \implies \text{eher im Hintergrund}& \\
+        &\gamma : P \to \R_0^+ &&\gamma_p \ \text{grösser} \implies \text{eher im gleichen Teil}&
+    \end{flalign*}
+    $$q(A, B) := \sum_{p \in A} \alpha_p + \sum_{p \in B} \beta_p - \smashoperator{\sum_{e \in E, |e \cap A| = 1}} \gamma_e$$
+    zu maximieren ist äquivalent zur Minimierung von
+    $$q'(A, B) := \sum_{p \in A} \beta_p + \sum_{p \in B} \alpha_p + \smashoperator{\sum_{e \in E}, |e \cap A| = 1} \lambda_e$$
+    Die Problemstellung kann man durch ein Maxflow Problem im folgenden Netzwerk lösen:
+    $N := (P \cup \{s, st\}, \overset{\to}{E}, c, s, t)$
+    \begin{itemize}
+        \item Neue Knoten $s$ und $t$, Quelle und Senke im Netzwerk.
+        \item $\forall p \in P: (s, p) \in \overset{\to}{E} \land \text{cap}((s, p)) = \alpha_p$
+        \item $\forall p \in P: (p, t) \in \overset{\to}{E} \land \text{cap}((p, t)) = \beta_p$
+        \item $\forall (p, p') \in E, p \neq p' : (p, p') \in \overset{\to}{E} \land (p', p) \in \overset{\to}{E} \land \text{cap}((p, p')) = \text{cap}((p', p)) = \lambda_e$
+    \end{itemize}
+\end{note}
+
+\subsubsection{Minimale Schnitte in Graphen}
+Es werden ungerichtete Multigraphen für dieses Kapitel betrachtet.
+$\mu(G) \overset{\text{def}}{\Leftrightarrow} \text{Kardinalität eines kleinsten Kantenschnitts in $G$}$
+
+\setcounter{definition}{19}
+\begin{nlemma}
+    Sei $G$ ein Graph und $e$ eine Kante in $G$. Dann gilt $\mu(G \setminus e) \geq \mu(G)$ und falls es in $G$ einen minimalen Schnitt $C$ mit $e \not\in C$ gibt, dann gilt $\mu(G \setminus e) = \mu(G)$.
+\end{nlemma}
+
+\begin{nlemma}
+    Sei $G = (V, E), n := |V|$. Für $e$ gleichverteilt zufällig in $E$ gilt:
+    $$\Pr[\mu(G) = \mu(G \setminus e)] \geq 1 - \frac{2}{n}$$
+\end{nlemma}
+
+\begin{note}
+    $\hat{p}(G) :=$ W'keit, dass \textsc{Cut}(G) $\mu(G)$ ausgibt
+\end{note}
+
+\begin{nlemma}
+    Es gilt für alle $n \geq 3$
+    $$\hat{p}(n) \geq (1 - \frac{2}{n}) \cdot \hat{p}(n - 1)$$
+\end{nlemma}
+
+\begin{nlemma}
+    Für alle $n \geq 2$ gilt $\hat{p}(n) \geq 1 / \binom{n}{2}$. Das heisst, der Erwartungswert der \#Wiederholungen, bis wir das erste Mal $\mu(G)$ ausgeben ist höchstens $\binom{n}{2}$
+\end{nlemma}
+
+\begin{definition}
+    Für den Algorithmus der $\lambda \binom{n}{2}$-maligen Wiederholung von $\textsc{Cut}(G)$ gilt:
+    \begin{enumerate}
+        \item Der Algorithmus hat eine Laufzeit von $\BO(\lambda n^4)$.
+        \item Der kleinste angetroffene Wert ist mit einer W'keit von mindestens $1 - e^{-\lambda}$ gleich $\mu(G)$
+    \end{enumerate}
+\end{definition}
+
+\begin{note}[Bootstrapping]
+    Wir wenden $\textsc{Cut}(G)$ an, brechen nach bei $G'$ mit $t$ Knoten ab und wenden den Algorithmus $\textsc{Cut}(G')$ an.
+
+    $$\BO(\lambda \left(\frac{n^4}{t^2} + n^2 t^2\right)) \overset{t = \sqrt{n}}{=} \BO(\lambda n^3)$$
+    \\ Es bietet sich an, die gleiche Methode nun mit dem neuen $\BO(n^3)$ Algorithmus statt dem $\BO(n^4)$ Algorithmus zu versuchen und tatsächlich bekommen wir einen noch bessern, etc.
+    \\ Im Limit entwickelt sich ein $\BO(n^2 \text{polylog}(n))$-Algorithmus.
+\end{note}
+
+\subsection{Geometrische Algorithmen}
+\subsubsection{Kleinster umschliessender Kreis}
+
+\begin{nlemma}
+    Für jede (endliche) Punktemenge $P \subset \R^2$ gibt es einen eindeutigen kleinsten umschliessenden Kreis $C(P)$.
+\end{nlemma}
+
+\begin{nlemma}
+    Für jede (endliche) Punktemenge $P \subset \R^2$ mit $|P| \geq 3$ gibt es eine Teilmenge $Q \subseteq P$, so dass $|Q| = 3$ und $C(Q) = C(P)$.
+\end{nlemma}
+
+\setcounter{definition}{27}
+\begin{nlemma}[Sampling-Lemma]
+    Sei $P'$ eine Menge von $n$ (nicht unbedingt verschiedenen) Punkten und für $r \in \N$, für $R$ zufällig gleichverteilt aus $\binom{P}{r}$. Dann ist die erwartete Anzahl Punkte von $P$, die ausserhalb von $C(R)$ liegen, höchstens $3 \frac{n - r}{r + 1} \leq 3 \frac{n}{r + 1}$.
+\end{nlemma}
+
+\begin{theorem}
+    Algorithmus \textsc{Ranomized\_CleverVersion} berechnet den kleinsten umschliessenden Kreis von $P$ in erwarteter Laufzeit $\BO(n \log n)$.
+\end{theorem}
+
+\subsubsection{Konvexe Hülle}
+\setcounter{definition}{32}
+\begin{definition} $\,$
+    \begin{itemize}
+        \item Liniensegment: $\overline{v_0v_1} := \{ (1 - \lambda) v_0  \lambda v_1 \ | \ \lambda \in [0, 1] \}$
+        \item Konvexe Menge $C \subset \R^d$. $\forall v_0, v_1 \in C: \overline{v_0v_1} \subseteq C$
+        \item Konvexe Hülle $\conv(S) := \bigcap\limits_{S \subseteq C \subseteq R^s, C \ \text{konvex}} C$
+    \end{itemize}
+    $\conv(P)$ wird durch ein Polygon $P$ bestimmt, welches die Ecken Punkte aus $P$ sind.
+\end{definition}
+
+\begin{nlemma}
+    $(q_0, q_1, \ldots, q_{h-1})$ ist die Eckfolge des $\conv(P)$ umschliessenden Polygons gegen den Uhrzeigersinn genau dann wenn alle Paare $(q_{i-1}, q_i), \, i = 1, 2, \ldots h$ Randkanten von $P$ sind.
+\end{nlemma}
+
+\begin{nlemma}
+    Seien $p = (p_x, p_y)$, $q = (q_x, q_y)$ und $r = (r_x, r_y)$ Punkte in $R^2$. Es gilt $q \neq r$ und $p$ liegt links von $qr$ genau dann wenn:
+    \begin{align*}
+        \det(p, q, r) := &\begin{vmatrix}
+            p_x & p_y & 1 \\
+            q_q & q_y & 1 \\
+            r_x & r_y & 1
+        \end{vmatrix} = \begin{vmatrix}
+            q_x - p_x & q_y - p_y \\
+            r_x - p_x & r_y - p_y
+        \end{vmatrix} > 0 \\
+        \iff &(q_x - p_x)(r_y - p_y) > (q_y - p_y)(r_x - p_x)
+    \end{align*}
+\end{nlemma}
+
+\begin{nlemma}
+    Ist $q$ eine Ecke der konvexen Hülle von $P$, so ist die Relation $\prec_q$ eine totale Ordnung auf $P \setminus \{q\}$. Für das Minimum $p_min$ dieser Ordnung gilt, dass $qp_{\min}$ eine Randkante ist.
+    $$p_1 \prec_q p_2 :\iff p_1 \ \text{rechts von} \ qp_2$$
+\end{nlemma}
+
+\begin{theorem}
+    Gegeben eine Menge $P$ von $n$ Punkten in allgemeiner Lage in $R^2$, berechnet der Algorithmus \textsc{JarvisWrap} die konvexe Hülle in Zeit $\BO(nh)$, wobei $h$ die Anzahl der Ecken der konvexen Hülle von $P$ ist.
+\end{theorem}
+
+\begin{note}[Kollinearitäten] $\,$
+    \begin{itemize}
+        \item Anfangspunkt $q_0$ als den Punkt mit der lexikographisch kleinster Koordinate.
+        \item $p$ rechts von $qq_{\text{next}}$ muss ersetzt werden durch: $p$ rechts von $qq_{\text{next}}$ oder $p$ auf der Geraden durch $qq_{\text{next}}$ und $|qp| > |qq_{\text{next}}|$.
+        \item Man kann nicht annehmen, dass die Punkte verschieden sind.
+    \end{itemize}
+\end{note}
+
+\begin{note}[Lokales Verbessern]
+    Sortiere $P$ aufsteigend nach $x$-Koordinate: $(p_1, p_2, \ldots, p_n)$ und betrachte das Polygon $(p_1, p_2, \ldots, p_{n-1}, p_n, p_{n-1}, \ldots p_2)$.
+
+    \textbf{Invarianten:}
+    \begin{enumerate}
+        \item Der Teilpolygonzug $(p_1, \ldots, p_n)$ ist $x$-monoton und hat keinen Punkt in $P$ unter sich.
+        \item Der Teilpolygonzug $(p_n, \ldots, p_1)$ ist $x$-monoton und hat keinen PUnkt in $P$ über sich.
+        \item Der Teilpolygonzug $(p_1, \ldots, p_n)$ liegt nirgends über dem Teilpolygonzug $(p_n, \ldots, p_1)$
+    \end{enumerate}
+\end{note}
+
+\begin{theorem}
+    Gegeben eine Folge $p_1, p_2, \ldots, p_n$ nach \\
+    $x$-Koordinate sortierter Punkte in allgemeiner Lage in $R^2$, berechnet der Algorithmus \textsc{LocalRepair} die konvexe Hülle von $\{p_1, p_2, \ldots, p_n\}$ in Zeit $\BO(n)$.
+\end{theorem}
 
 \end{document}
