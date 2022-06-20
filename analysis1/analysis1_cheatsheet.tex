@@ -211,7 +211,7 @@ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \e
 \end{theorem}
 
 \begin{ntheorem}[Couchy Criteria]
-    $\sum_{k = 1}^\infty a_k$ conv. $\iff$ $\forall \epsilon > 0 \ \exists N \geq 1 : |\sum_{k = n}^m a_k| < \epsilon$ $\forall m\geq n \geq N$
+    $\sum_{k = 1}^\infty a_k$ conv. $\iff$ $\forall \epsilon > 0 \ \exists N \geq 1 : |\sum_{k = n}^m a_k| = |S_m - S_n| < \epsilon$ $\forall m\geq n \geq N$
 \end{ntheorem}
 
 \begin{ntheorem}[Zero Sequence Criteria]
@@ -234,7 +234,7 @@ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \e
     $$\sum_{k = 1}^\infty |a_k| \text{ converges} \implies \sum_{k=1}^\infty a_k \text{ converges}$$
     $$\sum_{k=1}^\infty a_k \text{ converges} \nRightarrow \sum_{k=1}^\infty |a_k| \text{ converges}$$
     (\textbf{Dirichlet}) If a series converges absolute, then each permutation of the series converges with the same limit. \\
-    (\textbf{Riemann}) If a series only converges, then there exists a permutation such that: \newline $\sum_{k=1}^\infty a_{\phi(k)} = x \quad \forall x \in \R \cup \{\infty\}$
+    (\textbf{Riemann}) If a series only converges, then there exists a permutation such that: $$\sum_{k=1}^\infty a_{\phi(k)} = x \quad \forall x \in \R \cup \{\infty\}$$
 \end{definition}
 
 \begin{theorem}
@@ -271,7 +271,7 @@ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \e
 
     $\underset{n\to\infty}{\lim\sup} \sqrt[n]{|a_n|} < 1 \implies \sum_{n=1}^\infty a_n$ converges absolute.
 
-    $\underset{n\to\infty}{\lim\inf} \sqrt[n]{|a_n|} > 1 \implies \sum_{n=1}^\infty a_n$ diverges.
+    $\underset{n\to\infty}{\lim\inf} \sqrt[n]{|a_n|} > 1 \implies \sum_{n=1}^\infty a_n, \sum_{n=1}^\infty |a_n|$ diverge.
 \end{ntheorem}
 
 \begin{lemma}
@@ -308,7 +308,7 @@ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \e
 \end{note}
 
 \section{Functions}
-$\R^D = \{f: D \to \R \ | \ f \ \text{is function} \}$
+$\R^D = \{f: D \to \R \ | \ f \ \text{is function} \}$, $(\R^D; +, \cdot)$ is V.R.
 \subsection{Continuity}
 \begin{definition}[Continuity]
     A function $f$ is continuous in $x_0$ if:
@@ -386,8 +386,9 @@ $$\N \to \R^D = \{f: D \to \R\}, \quad n \mapsto f(n)$$
     $$\forall \epsilon > 0 \ \exists N \geq 1 \ \text{s.t.} \ \forall n \geq N \ \forall x \in D \ (|f_n(x) - f(x)| < \epsilon)$$
     $$\iff$$
     $$\lim_{n\to\infty} \sup_{x \in D} |f_n(x) - f(x)| = 0$$
-    The function sequence $(f_n)$ converges uniformly if for all \\
-    $x \in D$ the limit $\lim_{n\to\infty} f_n(x) = f(x)$ exists and the sequence $(f_n)$ uniformly converges to $f$.
+    The function sequence $(f_n)$ is uniformly convergent if for all
+    $x \in D$ the limit $\lim_{n\to\infty} f_n(x) = f(x)$ exists and the sequence $(f_n)$ uniformly converges to $f$. Furthermore if \\
+    $\forall \epsilon > 0 \ \exists N \geq 1 \ \forall n, m \geq N \ \forall x \in D: |f_n(x) - f_m(x)| < \epsilon$.
 
     The series $\sum_{n = 1}^\infty f_n(x)$ converges uniformly (in $D$), if the function sequence $S_n(x) := \sum_{k=0}^n f_k(x)$ converges uniformly.
 \end{definition}
@@ -397,7 +398,7 @@ $$\N \to \R^D = \{f: D \to \R\}, \quad n \mapsto f(n)$$
 \end{theorem}
 
 \begin{note}[not uniform convergent] $(f_n)_{n \geq 0}$ converges not uniformly if:
-    $$\forall \epsilon > 0 \ \forall N \in \N \ \exists x \in D (|f_n(x) - f(x)| \geq \epsilon)$$
+    $\forall \epsilon > 0 \ \forall N \in \N \ \exists x \in D (|f_n(x) - f(x)| \geq \epsilon)$
 \end{note}
 
 \begin{note}
@@ -405,7 +406,7 @@ $$\N \to \R^D = \{f: D \to \R\}, \quad n \mapsto f(n)$$
 \end{note}
 
 \begin{definition}[Power Functions]
-    $\sum_{k = 0}^\infty c_k x^k$ has positive convergence radius if $\underset{k \to \infty}{\limsup}$.
+    $\sum_{k = 0}^\infty c_k x^k$ has positive convergence radius if $\underset{k \to \infty}{\limsup} \sqrt[k]{|c_k|}$ exists.
     $$\rho = \begin{cases}
         + \infty \quad \quad \quad \quad \text{, if} \ \underset{k \to \infty}{\limsup} \sqrt[k]{|c_k|} = 0 \\
         \frac{1}{\underset{k \to \infty}{\limsup} \sqrt[k]{|c_k|}} \quad \text{, if} \ \underset{k \to \infty}{\limsup} \sqrt[k]{|c_k|} > 0
@@ -1004,8 +1005,8 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     $\log_a(|x|)$ & $\frac{1}{x \ln(a)} = \log_a(e^\frac{1}{x})$ \\
     $\sin(x)$ & $\cos(x)$ \\
     $\cos(x)$ & $-\sin(x)$ \\
-    $\tan(x)$ & $\frac{1}{\cos^2(x) = 1 + \tan^2(x)}$ \\
-    $\cot(x)$ & $\frac{1}{-\sin^2(x)}$ \\
+    $\tan(x) = \frac{\sin(x)}{\cos(x)}$ & $\frac{1}{\cos^2(x) = 1 + \tan^2(x)}$ \\
+    $\cot(x) = \frac{\cos(x)}{\sin(x)}$ & $\frac{1}{-\sin^2(x)}$ \\
     $\arcsin(x)$ & $\frac{1}{\sqrt{1 - x^2}}$ \\
     $\arccos(x)$ & $\frac{-1}{\sqrt{1 - x^2}}$ \\
     $\arctan(x)$ & $\frac{1}{1 + x^2}$ \\
