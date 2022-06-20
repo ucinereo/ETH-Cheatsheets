@@ -1114,7 +1114,7 @@ class Queue {
 ```
 
 ### Reader/Writer lock
-The lock's states fall into three categories:
+The lock’s states fall into three categories:
 - not held
 - held for writing by one thread
 - held for reading by one or more threads
@@ -1262,7 +1262,7 @@ Locks are pessimistic by design
 Performance issues
 - Overhead for each lock taken even in uncontended case
 - Contended case leads to significant performance degradation
-- Amdahl's law!
+- Amdahl’s law!
 
 Blocking semantics (wait until acquire lock)
 - If a thread is delayed (e.g., scheduler) when in a critical section → all threads suffer
