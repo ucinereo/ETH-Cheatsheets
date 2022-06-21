@@ -519,8 +519,12 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \end{ntheorem}
 
 \begin{corollary}
-    $f$ diff. in $x_0 \iff f$ continuous in $x_0$
+    $f$ diff. in $x_0 \implies f$ continuous in $x_0$
 \end{corollary}
+
+\begin{theorem}
+    $f$ diff. in $x_0 \iff \exists \phi: D \rightarrow \R$ continuous in $x_0$ s.t. $\forall x \in D: f(x) = f(x_0) + \phi(x)(x - x_0)$. Then $\phi(x_0) = f'(x_0)$.
+\end{theorem}
 
 \begin{ntheorem}[Derivative rules]$\ $ \newline
     Linearity: $(\alpha \cdot f(x) + g(x))' = \alpha \cdot f'(x) + g'(x)$ \\
@@ -605,10 +609,6 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
     $f: I \to \R$. $f$ is convex $\iff \forall x_0 < x < x_1 \in I: \frac{f(x) - f(x_0)}{x - x_0} \leq \frac{f(x_1) - f(x)}{x_1 - x}$. Strictly convex if $<$.
 \end{lemma}
 
-\begin{theorem}
-    $f: ]a, b[ \to \R$ in $]a, b[$ diff. Function is (strictly) convex if $f'$ is (strictly) monotonically increasing.
-\end{theorem}
-
 \subsection{Higher Derivatives}
 \begin{enumerate}
     \item For $n \geq 2$ is $f$ $n$-times differentiable in $D$ if $f^{(n-1)}$ in $D$ is differentiable. Then $f^{(n)} := (f^{(n-1)})'$ and is the $n$-th derivative of $f$
@@ -638,7 +638,7 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
     Let $\sum_{k = 0}^\infty$ be a power series with convergent radius $p > 0$. Then $f(x) = \sum_{k = 0}^\infty c_k(x - x_0)^k$ is differentiable on $]x_0 - p , x_0 + p[$ and $\forall x \in ]x_0 - p , x_0 + p[: f'(x) = \sum_{k = 0}^\infty kc_k(x - x_0)^{k - 1}$
 \end{theorem}
 \begin{corollary}
-    $f^(j) = \sum_{k = j}^\infty c_k \frac{k!}{(k-j)!}(x - x_0)^{k - j}$. Furthermore $c_j = \frac{f^(j)(x_0)}{j!}$. Power series can be differentiated part by part in their converge area.
+    $f^{(j)} = \sum_{k = j}^\infty c_k \frac{k!}{(k-j)!}(x - x_0)^{k - j}$. Furthermore \\ $c_j = \frac{f^{(j)}(x_0)}{j!}$. Power series can be differentiated part by part in their converge area.
 \end{corollary}
 
 \begin{definition}[Taylor Polynomial]
@@ -651,7 +651,7 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \end{definition}
 
 \begin{note}
-    The error can be approximated as \\ 
+    The error can be approximated as
     $$|R_n(f, x, a)| \leq \sup_{a < c < x}|\frac{f^{(n + 1)(x)(x-a)^{n+1}}}{(n+1)!}|$$
 \end{note}
 
@@ -1005,7 +1005,7 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     $\log_a(|x|)$ & $\frac{1}{x \ln(a)} = \log_a(e^\frac{1}{x})$ \\
     $\sin(x)$ & $\cos(x)$ \\
     $\cos(x)$ & $-\sin(x)$ \\
-    $\tan(x) = \frac{\sin(x)}{\cos(x)}$ & $\frac{1}{\cos^2(x) = 1 + \tan^2(x)}$ \\
+    $\tan(x) = \frac{\sin(x)}{\cos(x)}$ & $\frac{1}{\cos^2(x)} = 1 + \tan^2(x)$ \\
     $\cot(x) = \frac{\cos(x)}{\sin(x)}$ & $\frac{1}{-\sin^2(x)}$ \\
     $\arcsin(x)$ & $\frac{1}{\sqrt{1 - x^2}}$ \\
     $\arccos(x)$ & $\frac{-1}{\sqrt{1 - x^2}}$ \\
