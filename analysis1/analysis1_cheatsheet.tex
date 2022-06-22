@@ -563,20 +563,20 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \end{ntheorem}
 
 \begin{corollary}
-    Let $f, g: [a, b] \to \R$ continuous and diff. in $]a, b[$.
+    Let $f, g: [a, b] \to \R$ cont. and diff. in $]a, b[$.
     \begin{enumerate}
         \item $\forall \xi \in ]a, b[: f'(\xi) = 0 \implies f$ is constant
         \item $\forall \xi \in ]a, b[: f'(\xi) = g'(x) \implies \exists c \in \R \forall x \in [a, b] : f(x) = g(x) + c$
-        \item $\forall \xi \in ]a, b[: f'(\xi) \geq 0 \implies f$ in $[a, b]$ mon. inc.
-        \item $\forall \xi \in ]a, b[: f'(\xi) \geq 0 \implies f$ in $[a, b]$ str. mon. inc.
-        \item $\forall \xi \in ]a, b[: f'(\xi) \leq 0 \implies f$ in $[a, b]$ mon. dec.
+        \item $\forall \xi \in ]a, b[: f'(\xi) \geq 0 \Rightarrow f$ in $[a, b]$ mon. inc. $\Rightarrow$ conv.
+        \item $\forall \xi \in ]a, b[: f'(\xi) > 0 \implies f$ in $[a, b]$ str. mon. inc.
+        \item $\forall \xi \in ]a, b[: f'(\xi) \leq 0 \Rightarrow f$ in $[a, b]$ mon. dec. $\Rightarrow$ conc.
         \item $\forall \xi \in ]a, b[: f'(\xi) < 0 \implies f$ in $[a, b]$ str. mon. dec.
         \item $\exists M \geq 0 \ \forall \xi \in ]a, b[ : |f'(\xi)| \leq M \implies$ \newline $\forall x_1, x_2 \in [a, b]: |f(x_1) - f(x_2)| \leq M |x_1 - x_2|$
     \end{enumerate}
 \end{corollary}
 
 \begin{ntheorem}[Cauchy]
-    $f, g,: [a, b] \to \R$ continuous and in $]a, b[$ diff. Then there exists $\xi \in ]a, b[$ with \\
+    $f, g: [a, b] \to \R$ continuous and in $]a, b[$ diff. Then there exists $\xi \in ]a, b[$ with \\
     $g'(\xi)(f(b) - f(a)) = f'(\xi)(g(b) - g(a))$.
 
     If $\forall x \in ]a, b[ : g'(x) \neq 0$ it implies that $g(a) \neq g(b)$ and $\frac{f(b) - f(a)}{g(b) - g(a)} = \frac{f'(\xi)}{g'(\xi)}$
@@ -635,24 +635,27 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \end{theorem}
 
 \begin{theorem}
-    Let $\sum_{k = 0}^\infty$ be a power series with convergent radius $p > 0$. Then $f(x) = \sum_{k = 0}^\infty c_k(x - x_0)^k$ is differentiable on $]x_0 - p , x_0 + p[$ and $\forall x \in ]x_0 - p , x_0 + p[: f'(x) = \sum_{k = 0}^\infty kc_k(x - x_0)^{k - 1}$
+    Let $\sum_{k = 0}^\infty$ be a power series with convergent radius $\rho > 0$. Then $f(x) = \sum_{k = 0}^\infty c_k(x - x_0)^k$ is differentiable on $]x_0 - \rho , x_0 + \rho[$ and $\forall x \in ]x_0 - \rho , x_0 + \rho[:$ \\
+    $f'(x) = \sum_{k = 0}^\infty kc_k(x - x_0)^{k - 1}$
 \end{theorem}
+
 \begin{corollary}
     $f^{(j)} = \sum_{k = j}^\infty c_k \frac{k!}{(k-j)!}(x - x_0)^{k - j}$. Furthermore \\ $c_j = \frac{f^{(j)}(x_0)}{j!}$. Power series can be differentiated part by part in their converge area.
 \end{corollary}
 
 \begin{definition}[Taylor Polynomial]
-    The $n$-th Taylor-polynomial of cont. $n + 1$ times diff. in $[c, d]$ $f$ is defined as $T_n(f, x, a)$ with center $a \in ]c, d[$ and error $R_n(f, x, a)$. $\forall x \in [a, b] \ \exists \xi \in ]x, a[ \ \cup \ ]a, x[$ : 
+    The $n$-th Taylor-polynomial of cont. $n + 1$ times diff. in $[c, d]$ $f$ is defined as $T_n(f, x, a)$ with center $a \in ]c, d[$ and error $R_n(f, x, a)$. \\ 
+    $\forall x \in [a, b] \ \exists \xi \in ]x, a[ \ \cup \ ]a, x[$ : 
     \begin{align*}
         T_n(f, x, a) &= \sum_{k = 0}^n \frac{f^{(k)}(a)}{k!} \cdot (x - a)^k \\
-        R_n(f, x, a) &= \frac{f^(n+1)(\xi)}{(n + 1)!}(x-a)^{n+1} \\
+        R_n(f, x, a) &= \frac{f^{(n+1)}(\xi)}{(n + 1)!}(x-a)^{n+1} \\
         f(x) &= T_n(f, x, a) + R_n(f, x, a)
     \end{align*}
 \end{definition}
 
 \begin{note}
     The error can be approximated as
-    $$|R_n(f, x, a)| \leq \sup_{a < c < x}|\frac{f^{(n + 1)(x)(x-a)^{n+1}}}{(n+1)!}|$$
+    $$|R_n(f, x, a)| \leq \sup_{a < c < x}\left|\frac{f^{(n + 1)(x)(x-a)^{n+1}}}{(n+1)!}\right|$$
 \end{note}
 
 \begin{definition}[Taylor Series]
@@ -722,8 +725,8 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \begin{enumerate}
     \item $f$ (bounded) cont. in $[a, b]$ $\implies$ $f$ int. over $[a, b]$
     \item $f$ monotone in $[a, b]$ $\implies$ $f$ int. over $[a, b]$
-    \item If $f, g$ bounded and int., then
-    $$f + g, \lambda \cdot f, f \cdot g, |f|, \max(f,g), \frac{f}{g}$$ are integrable.
+    \item If $f, g$ bounded and int., then integrable as well:
+    $$f + g, \lambda \cdot f, f \cdot g, |f|, \min(f, g), \max(f,g), \frac{f}{g}$$
     \item All polynomials are integrable, even $\frac{P(x)}{Q(x)}$ if $Q(x)$ has no root in $[a, b]$
 \end{enumerate}
 
@@ -740,6 +743,10 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 
 \begin{theorem}
     $f: [a, b] \to \R$ cont. $\implies$ $f$ is uni. cont. in $[a, b]$.
+\end{theorem}
+
+\begin{theorem}
+    $f$ uni. cont. $\implies$ $f$ cont.
 \end{theorem}
 
 \begin{theorem}
@@ -816,7 +823,7 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
     \item Choose $g'$: exp $\rightarrow$ trig $\rightarrow$ poly $\rightarrow$ inverse trig. $\rightarrow$ logs
     \item Choose $f$: logs $\rightarrow$ inverse trig. $\rightarrow$ poly $\rightarrow$ trig $\rightarrow$ exp
     \item Sometimes it is necessary to multiply by $1$. E.g.: $\int \ln x \ \,dx = \int \ln x \cdot 1 \ \,dx \implies f(x) = \ln x, \ g'(x) = 1$.
-    \item Sometimes it is necessary to to it multiple times
+    \item Sometimes it is necessary to do it multiple times
 \end{itemize}
 
 \begin{ntheorem}[Substitution]
@@ -828,7 +835,7 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \begin{ntheorem}[Partial Fraction Decomposition]
     Let $P(x)$, $Q(x)$ be two polynomials. $\int \frac{P(x)}{Q(x)}$ can be calculated as follows:
     \begin{enumerate}
-        \item If $\deg(P) \geq Q(P)$ use polynomial division to to get
+        \item If $\deg(P) \geq Q(P)$ use polynomial division to get
         $$\frac{P(x)}{Q(x)} = S(x) + \frac{\hat{P}(x)}{Q(x)}$$
         \item Calculate all roots of $Q(x)$
         \item Create a partial fraction per root
@@ -854,13 +861,14 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 
 \subsection{Integration of convergent series}
 \begin{theorem}
-    Let $f_n: [a, b] \to \R$ be a sequence of bounded, integrable functions which converges uniformly against a function $f: [a, b] \to \R$. Then $f$ is bounded and integrable and
+    Let $f_n: [a, b] \to \R$ be a sequence of bounded, integrable functions which converge uniformly against a function $f: [a, b] \to \R$. Then $f$ is bounded and integrable and
     $$\lim_{n \to \infty} \int_a^b f_n(x) \,dx = \int_a^b \lim_{n \to \infty}  f_n(x) \,dx = \int_a^b f(x) \,dx$$
+    $$\sum_{n=0}^\infty \int_a^b f_n(x)\,dx = \int_a^b\left(\sum_{n=0}^\infty f_n(x)\,dx\right)$$
 \end{theorem}
 
 \begin{theorem}
     Let $f(x) := \sum_{k=0}^\infty c_k x^k$ be a power series with positive convergence radius $p > 0$. Then $\forall 0 \leq r < p$ $f$ is integrable on $[-r, r]$ and $\forall x \in ]-p, p[$:
-    $$\int_0^x f(t) dt = \sum_{k=0}^\infty c_k \frac{x^{k + 1}}{k + 1}$$
+    $\int\limits_0^x f(t) dt = \sum\limits_{k=0}^\infty c_k \frac{x^{k + 1}}{k + 1}$
 \end{theorem}
 
 \subsection{Improper Integral}
@@ -876,7 +884,7 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
     Let $f: [a, \infty[ \to \R$ be bounded and integrable on $[a, b] \ \forall b \in \R, b > a$.
     \begin{enumerate}
         \item If $\forall x \geq a : |f(x)| \leq g(x)$ and $g(x)$ is integrable on $[a, \infty[$ $\implies f$ is integrable on $[a, \infty[$.
-        \item If $0 \leq g(x) \leq f(x)$ and $\int_a^\infty g(x) \,dx$ diverges $\implies \int_a^\infty g(x) \,dx$ diverges.
+        \item If $0 \leq g(x) \leq f(x)$ and $\int_a^\infty g(x) \,dx$ diverges $\implies \int_a^\infty f(x) \,dx$ diverges.
     \end{enumerate}
 \end{ntheorem}
 
@@ -885,10 +893,8 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
     $$\int_0^\infty e^{-x^2} \,dx = \int_0^1 e^{-x^2} \,dx + \int_1^\infty e^{-x^2} \,dx$$
 \end{note}
 
-$\, \\$
-
 \begin{ntheorem}[McLaurin]
-    Let $f: [1, \infty[ \to [0, \infty[$ be monotonically decreasing.
+    Let $f: [1, \infty[ \to [0, \infty[$ be mon. dec.
     $$\sum_{n=1}^\infty f(n) \ \text{converges} \iff \int_1^\infty f(x) \,dx \ \text{converges}.$$ 
     The following holds:
     $$0 \leq \sum_{k=1}^\infty f(k) - \int_1^\infty f(x) \,dx \leq f(1)$$
@@ -905,7 +911,7 @@ The indefinite integral is the inverse of the derivative.
 
 \begin{note}
     $\int_{-\infty}^\infty f(x) \,dx = \lim\limits_{b \to - \infty} \int_b^a f(x) \,dx + \lim\limits_{c \to \infty} \int_a^c f(x) \,dx$.
-    $$\int_{-infty}^\infty \ \text{conv.} \iff \int_{-\infty}^a f(x) \,dx \ \text{conv.} \land \int_a^\infty f(x) \,dx \ \text{conv.}$$
+    $$\int_{-\infty}^\infty \ \text{conv.} \iff \int_{-\infty}^a f(x) \,dx \ \text{conv.} \land \int_a^\infty f(x) \,dx \ \text{conv.}$$
     In general: Let $f: ]a, b[ \to \R$ such that it is integrable on each compact interval $[\tilde{a}, \tilde{b}]$. Then 
     $$\int_a^b f(x) \,dx := \lim\limits_{\tilde{a} \searrow a}\lim\limits_{\tilde{b} \nearrow b} \int_{\tilde{a}}^{\tilde{b}} f(x) \,dx$$
 \end{note}
@@ -946,7 +952,8 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     $\limxi \frac{\ln(x)}{x} = 0$ & $\limxi \frac{\log(x)}{x^\lambda} = 0$ \\
     $\limxi \frac{\lambda x}{\lambda^x} = 0$ & $\lim\limits_{x \to \frac{\pi}{2}^-} \tan(x) = +\infty$\\
     $\lim\limits_{x \to \frac{\pi}{2}^+} \tan(x) = -\infty$ & $\limxi \frac{\sin(x)}{x} = 0$ \\
-    $\lim\limits_{x \to 0^+} x \ln x = 0$
+    $\lim\limits_{x \to 0^+} x \ln x = 0$ & Strirling Formula \\
+    & $\limxi \frac{x!}{(\frac{x}{e})^x \sqrt[]{2 \pi x}} = 1$
 \end{tabularx}
 
 \subsection*{Series}
@@ -974,7 +981,7 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     \cosh(x) &= 1 + \frac{x^2}{2!} + \frac{x^4}{4!} + \BO(x^6) \\
     \tan(x) &= x + \frac{x^3}{3} + \frac{2x^5}{15} + \BO(x^7) \\
     \tanh(x) &= x - \frac{x^3}{3} + \frac{2x^5}{15} - \BO(x^7) \\
-    \log(1+x) &= x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{d} + \BO(x^5) \\
+    \log(1+x) &= x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \BO(x^5) \\
     \sqrt{1 + x} &= 1 + \frac{x}{2} - \frac{x^2}{8} + \frac{x^3}{16} - \BO(x^4)
 \end{align*}
 
@@ -1010,9 +1017,9 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     $\arcsin(x)$ & $\frac{1}{\sqrt{1 - x^2}}$ \\
     $\arccos(x)$ & $\frac{-1}{\sqrt{1 - x^2}}$ \\
     $\arctan(x)$ & $\frac{1}{1 + x^2}$ \\
-    $\sinh(x)$ & $\cosh(x)$ \\
-    $\cosh(x)$ & $\sinh(x)$ \\
-    $\tanh(x)$ & $\frac{1}{\cosh^2(x)} = 1 - \tanh^2(x)$ \\
+    $\sinh(x) = \frac{e^x + e^{-x}}{2}$ & $\cosh(x)$ \\
+    $\cosh(x) = \frac{e^x - e^{-x}}{2}$ & $\sinh(x)$ \\
+    $\tanh(x) = \frac{\sinh(x)}{\cosh(x)}$ & $\frac{1}{\cosh^2(x)} = 1 - \tanh^2(x)$ \\
     $\frac{1}{f(x)}$ & $\frac{-f'(x)}{(f(x))^2}$ \\
     $a^{cx}$ & $a^{ck} \cdot c \ln(a)$ \\
     $x^x$ & $x^x \cdot (1 + \ln(x)), \ x > 0$ \\
