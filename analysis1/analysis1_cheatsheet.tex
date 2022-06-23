@@ -417,6 +417,56 @@ $$\N \to \R^D = \{f: D \to \R\}, \quad n \mapsto f(n)$$
     Let $\sum_{k=0}^\infty c_kx^k$ be a power series with positive convergence radius $\rho > 0$ and let $f(x) = \sum_{k=0}^\infty c_kx^k, |x| < \rho$ Then: $\forall 0 \leq r < \rho$ converges $\sum_{k=0}^\infty c_kx^k$ uniformly on $[-r,r]$, furthermore  $f: ]-\rho, \rho[ \to \mathbb{R}$ is continuous.
 \end{theorem}
 
+\subsection{Trigonometric Functions}
+$\sin$ and $\cos$ are continuous functions $\R \to \R$
+$$\sin z = z - \frac{z^3}{3!} + \frac{z^5}{5!} - \cdots = \sum_{n = 0}^\infty \frac{(-1)^n z^{2n + 1}}{(2n + 1)!}$$
+$$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \frac{(-1)^n z^{2n}}{(2n)!}$$
+
+\begin{theorem}
+    \begin{enumerate}
+        \item $\exp(iz) = \cos(z) +i\sin(z) \quad \forall z \in \C$
+        \item $\cos z = \cos(-z) \text{ und } \sin(-z) = - \sin(z) \quad \forall z \in \C$
+        \item $\sin(z) = \frac{e^{iz}-e^{-iz}}{2i}, \cos(z) = \frac{e^{iz}+e^{-iz}}{2}$
+        \item $\sin(z+w) = \sin(z)\cos(w) + \cos(z)\sin(w)$ \\
+            $\cos(z+w) = \cos(z)\cos(w) - \sin(z)\sin(w)$
+        \item $\cos(z)^2+\sin(z)^2 = 1 \quad \forall z \in \mathbb{C}$
+    \end{enumerate}
+\end{theorem}
+
+\begin{corollary}
+    $$\sin(2z) = 2 \sin(z)\cos(z)$$
+    $$\cos(2z) = \cos(z)^2 - \sin(z)^2$$
+    $$\sin(x) - \sin(y) = 2 \sin\left(\frac{x + y}{2}\right)\cos\left(\frac{x - y}{2}\right)$$
+\end{corollary}
+
+\begin{definition}[$\pi$]
+    $\pi := \inf \{ t > 0 \ | \ \sin t = 0\}$
+    \begin{enumerate}[label=(\roman*)]
+        \item $\sin \pi = 0, \pi \in ]2, 4[$
+        \item $\forall x \in ]0, \pi[$: $\sin x > 0$
+        \item $e^{\frac{i \pi}{2}} = i$
+    \end{enumerate}
+\end{definition}
+
+\begin{corollary}
+    $x \geq \sin x \geq x - \frac{x^3}{3!} \quad \forall 0 \leq x \leq \sqrt{6}$
+\end{corollary}
+
+\begin{corollary}
+    \begin{enumerate}
+        \item $e^{i\pi}=-1, \qquad e^{2i\pi}=1$
+        \item $\sin(x+\frac{\pi}{2}) = \cos(x), \quad \cos(1+\frac{\pi}{2}) = -\sin(x) \quad \forall x \in \R$
+        \item $\sin(x+\pi)=-\sin(x), \quad \sin(x+2\pi) = \sin(x) \quad \forall x \in \R$
+        \item $\cos(x+\pi) = -\cos(x), \quad \cos(x+2\pi) = \cos(x) \quad \forall x \in \R$
+        \item Roots of sinus $= \{\pi \cdot k \ | \ k \in \Z \}$ \\ 
+        $\sin(x) > 0 \ \forall x \in ] 2k \pi, (2k + 1)\pi [, \quad k \in Z$ \\
+        $\sin(x) < 0 \ \forall x \in ] (2k + 1)\pi, (2k + 2) \pi [, \quad k \in \Z$
+        \item Roots of cosine $= \{\frac{\pi}{2} + k \cdot \pi \ | \ k \in \Z \}$ \\
+        $\cos(x) > 0 \ \forall x \in ] - \frac{\pi}{2} + 2k \pi, - \frac{\pi}{2} + (2k + 1)\pi [, \quad k \in \Z$ \\
+        $\cos(x) < 0 \ \forall x \in ] -\frac{\pi}{2} + (2k + 1) \pi, - \frac{\pi}{2} + (2k + 2) \pi [, \ k \in \Z$
+    \end{enumerate}
+\end{corollary}
+
 \subsection{Limit of Functions}
 \begin{definition}[accumulation point]
     $x_0 \in \R$ is an accumulation point of $D$ if $\forall \delta > 0$: $(]x_0 - \delta, x_0 + \delta[ \setminus \{x_0\}) \cap D \neq \varnothing$
@@ -956,6 +1006,7 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     $\frac{1}{a+1} x^{a + 1}$ & $x^a$ \\
     $\frac{1}{a \cdot (n + 1)} (ax + b)^{n + 1}$ & $(ax + b)^n$ \\
     $\frac{x^{a + 1}}{a + 1}$ & $x^a, \ a \neq -1$ \\
+    $\frac{1}{x}$ & $-\frac{1}{x^2}$ \\
     $\sqrt{x}$ & $\frac{1}{2\sqrt{x}}$ \\
     $\sqrt[n]{x}$ & $\frac{1}{n}x^{\frac{1}{n} - 1}$ \\
     $\frac{2}{3}x^{\frac{3}{2}}$ & $\sqrt{x}$ \\
@@ -980,63 +1031,69 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     $x^{x^x}$ & $x^{x^x} (x^{x - 1} + \ln(x) \cdot x^x (1 + \ln(x)))$ \\
 \end{tabularx}
 
-\subsection{Trigonometric Functions}
-$\sin$ and $\cos$ are continuous functions $\R \to \R$
-$$\sin z = z - \frac{z^3}{3!} + \frac{z^5}{5!} - \cdots = \sum_{n = 0}^\infty \frac{(-1)^n z^{2n + 1}}{(2n + 1)!}$$
-$$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \frac{(-1)^n z^{2n}}{(2n)!}$$
+\subsection*{Trigonometry}
 
-\begin{theorem}
-    \begin{enumerate}
-        \item $\exp(iz) = \cos(z) +i\sin(z) \quad \forall z \in \C$
-        \item $\cos z = \cos(-z) \text{ und } \sin(-z) = - \sin(z) \quad \forall z \in \C$
-        \item $\sin(z) = \frac{e^{iz}-e^{-iz}}{2i}, \cos(z) = \frac{e^{iz}+e^{-iz}}{2}$
-        \item $\sin(z+w) = \sin(z)\cos(w) + \cos(z)\sin(w)$ \\
-            $\cos(z+w) = \cos(z)\cos(w) - \sin(z)\sin(w)$
-        \item $\cos(z)^2+\sin(z)^2 = 1 \quad \forall z \in \mathbb{C}$
-    \end{enumerate}
-\end{theorem}
+\subsubsection*{Periodicity}
+\begin{tabularx}{\linewidth}{XX}
+    $\sin(x) = \sin(x + 2 \pi)$ & $\tan(x) = \cos(x + 2\pi)$ \\
+    $\tan(x) = \tan(x + \pi)$ & $\cot(x) = \cot(x + \pi)$
+\end{tabularx}
 
-\begin{corollary}
-    $$\sin(2z) = 2 \sin(z)\cos(z)$$
-    $$\cos(2z) = \cos(z)^2 - \sin(z)^2$$
-    $$\sin(x) - \sin(y) = 2 \sin\left(\frac{x + y}{2}\right)\cos\left(\frac{x - y}{2}\right)$$
-\end{corollary}
+\subsubsection*{Parity}
+\begin{tabularx}{\linewidth}{XX}
+    $\sin(-x) = - \sin(x)$ & $\cos(-x) = \cos(x)$ \\
+    $\tan(-x) = - \tan(x)$ & $\cot(-x) = -\cot(x)$
+\end{tabularx}
 
-\begin{definition}[$\pi$]
-    $\pi := \inf \{ t > 0 \ | \ \sin t = 0\}$
-    \begin{enumerate}[label=(\roman*)]
-        \item $\sin \pi = 0, \pi \in ]2, 4[$
-        \item $\forall x \in ]0, \pi[$: $\sin x > 0$
-        \item $e^{\frac{i \pi}{2}} = i$
-    \end{enumerate}
-\end{definition}
+\subsubsection*{Complement}
+\begin{tabularx}{\linewidth}{XX}
+    $\sin(\pi - x) = \sin(x)$ & $\cos(\pi - x) = -\cos(x)$ \\
+    $\tan(\pi - x) = - \tan(x)$ & $\cot(\pi - x) = -\cot(x)$
+\end{tabularx}
 
-\begin{corollary}
-    $x \geq \sin x \geq x - \frac{x^3}{3!} \quad \forall 0 \leq x \leq \sqrt{6}$
-\end{corollary}
+\subsubsection*{Multiple-angles formulae}
+\begin{tabularx}{\linewidth}{XX}
+    $\sin(2x) = 2 \sin x \cos x $ & $\cos(2x) = \cos^2x - \sin^2x$ \\
+    $\tan(2x) = \frac{2 \tan x}{1 - \tan^2x}$ & $\cot(2x) = \frac{\cot x - \tan x}{2}$ \\
+    $\sin(3x) = 3 \sin x - 4 \sin^3 x$ & $\cos(3x) = 3 \cos^3 x - 3 \cos x$
+\end{tabularx}
 
-\begin{corollary}
-    \begin{enumerate}
-        \item $e^{i\pi}=-1, \qquad e^{2i\pi}=1$
-        \item $\sin(x+\frac{\pi}{2}) = \cos(x), \quad \cos(1+\frac{\pi}{2}) = -\sin(x) \quad \forall x \in \R$
-        \item $\sin(x+\pi)=-\sin(x), \quad \sin(x+2\pi) = \sin(x) \quad \forall x \in \R$
-        \item $\cos(x+\pi) = -\cos(x), \quad \cos(x+2\pi) = \cos(x) \quad \forall x \in \R$
-        \item Roots of sinus $= \{\pi \cdot k \ | \ k \in \Z \}$ \\ 
-        $\sin(x) > 0 \ \forall x \in ] 2k \pi, (2k + 1)\pi [, \quad k \in Z$ \\
-        $\sin(x) < 0 \ \forall x \in ] (2k + 1)\pi, (2k + 2) \pi [, \quad k \in \Z$
-        \item Roots of cosine $= \{\frac{\pi}{2} + k \cdot \pi \ | \ k \in \Z \}$ \\
-        $\cos(x) > 0 \ \forall x \in ] - \frac{\pi}{2} + 2k \pi, - \frac{\pi}{2} + (2k + 1)\pi [, \quad k \in \Z$ \\
-        $\cos(x) < 0 \ \forall x \in ] -\frac{\pi}{2} + (2k + 1) \pi, - \frac{\pi}{2} + (2k + 2) \pi [, \ k \in \Z$
-    \end{enumerate}
-\end{corollary}
+\subsubsection*{Addition Theorems}
+\begin{tabularx}{\linewidth}{X}
+    $\sin(x \pm y) = \sin x \cos y \pm \cos x \sin x$ \\
+    $\cos(x \pm y) = \cos x \cos y \mp \sin x \sin y$ \\
+    $\tan(x \pm y) = \frac{\tan x \pm \tan y}{1 \mp \tan x \tan y}$ \\
+    $\cot(x \pm y) = \frac{\cot x \cot y \mp 1}{\cot y \pm \cot x}$
+\end{tabularx}
 
+\subsubsection*{Multiplication}
+\begin{tabularx}{\linewidth}{X}
+    $\sin x \sin y = \frac{1}{2}(\cos(x - y) - \cos(x + y))$ \\
+    $\cos x \cos y = \frac{1}{2}(\cos(x - y) + \cos(x + y))$ \\
+    $\sin x \cos y = \frac{1}{2}(\sin(x - y) + \sin(x + y))$ \\
+\end{tabularx}
+
+\subsubsection*{Powers}
+\begin{tabularx}{\linewidth}{XX}
+    $\sin^2 x = \frac{1 - \cos(2x)}{2}$ & $\sin^3 x = \frac{3 \sin x - \sin(3x)}{4}$ \\
+    $\cos^2 x = \frac{1 + \cos(2x)}{2}$ & $\cos^3 x = \frac{3 \cos x + \cos(4x)}{4}$ \\
+    $\tan^2 x = \frac{1 - \cos(2x)}{1 + \cos(2x)}$
+\end{tabularx}
+
+\subsubsection*{Miscellaneous}
+\begin{tabularx}{\linewidth}{XX}
+    $\sin^2 x + \cos^2 x = 1$ & $\cosh^2 x - \sinh^2 x = 1$ \\
+    $\sin x^{(n)} = \sin\left(x + \frac{n \pi}{2}\right)$ & $\cos x^{(n)} = \cos\left(x + \frac{n \pi}{2}\right)$
+\end{tabularx}
+
+\subsubsection*{Angles}
 \begin{tabularx}{\linewidth}{c|cccccccc}
     deg & 0° & 30° & 45° & 60° & 90° & 180° & 270° & 360° \\
     rad & 0 & $\frac{\pi}{6}$ & $\frac{\pi}{4}$ & $\frac{\pi}{3}$ & $\frac{\pi}{2}$ & $\pi$ & $\frac{3}{2}\pi$ & $2\pi$ \\
     \midrule
     $\sin(x)$ & $0$ & $\frac{1}{2}$ & $\frac{\sqrt{2}}{2}$ & $\frac{\sqrt{3}}{2}$ & $1$ & $0$ & $-1$ & $0$ \\
     $\cos(x)$ & $1$ & $\frac{\sqrt{3}}{2}$ & $\frac{\sqrt{2}}{2}$ & $\frac{1}{2}$ & $0$ & $-1$ & $0$ & $1$ \\
-    $\tan(x)$ & $0$ & $\frac{\sqrt{3}}{3}$ & $1$ & $\sqrt{3}$ & NaN & 0 & NaN & $45$ \\
+    $\tan(x)$ & $0$ & $\frac{\sqrt{3}}{3}$ & $1$ & $\sqrt{3}$ & NaN & 0 & NaN & $45$
 \end{tabularx}
 
 \end{document}
