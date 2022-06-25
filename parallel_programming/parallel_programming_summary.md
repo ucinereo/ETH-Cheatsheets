@@ -99,7 +99,7 @@ All screenshots are directly taken from the lecture notes. All copyrights belong
       - [Clock-based STM](#clock-based-stm)
     - [Isolation Methods](#isolation-methods)
     - [Nestings](#nestings)
-      - [Flattened nesting](#flattened-nesting)
+      - [Flattened Nesting](#flattened-nesting)
       - [Closed Nesting](#closed-nesting)
   - [Distributed Memory and Message Passing](#distributed-memory-and-message-passing)
     - [The Actor Model](#the-actor-model)
@@ -1528,7 +1528,7 @@ Requires that operations done by one thread respect program order.
 - Cannot re-order operations done by the same thread
 - Can re-order non-overlapping operations done by different threads
 
-> Sequential Consistency is not a local proparty and thus we lose composability.
+> Sequential Consistency is not a local property and thus we lose composability.
 
 ### Quiescent Consistency
 Programs should respect real-time order of algorithms separated by periods of quiescence. Non-overlapping methods required to take effect in their real-time order.
@@ -1544,7 +1544,7 @@ A class $C$ solves **n-thread consensus** if there exists a consensus protocol. 
 #### Requirements
 - **wait-free**: consensus returns in finite time for each thread
 - **consistent**: all threads decide the same value
-- **validb**: the common decision value is some thread's input
+- **valid**: the common decision value is some thread's input
 
 $\implies$ linearizability of consensus must be such that first thread's decision is adopted for all threads.
 
@@ -1567,7 +1567,7 @@ $\implies$ wait-free FIFO queues, wait-free RMW operations and CAS cannot be imp
 ##### CAS
 > **Theorem II**: Compare-And-Swap has infinite consensus number.
 
-Proof is done by construction, with an `AtomicIntegerArray` which stores all proposed inputs, then `AtomicInteger` which stores the decided value and an `int` which stores the thead ID of the first thread which set the consensus.
+Proof is done by construction, with an `AtomicIntegerArray` which stores all proposed inputs, then `AtomicInteger` which stores the decided value and an `int` which stores the thread ID of the first thread which set the consensus.
 
 ##### FIFO queue
 > **Theorem**: There is no wait-free implementation of a FIFO queue with atomic registers.
@@ -1687,7 +1687,7 @@ Transaction uses a local read-set and a local write-set holding all locally read
 **Weak Isolation**: transaction guarantees are not maintained.
 
 ### Nestings
-#### Flattened nesting
+#### Flattened Nesting
 ```
 atomic {
   atomic {
@@ -1716,11 +1716,11 @@ Concurrent Message Passing Methods:
 - MPI (Message Passing Interface)
 
 **Synchronous Messages**: Sender blocks until message is received
-**Asynchronous Mesages**: Sendes does not block (fire-and-forget) but are placed into buffer for receiver to get instead (mail-box analogy)
+**Asynchronous Mesages**: Sender does not block (fire-and-forget) but are placed into buffer for receiver to get instead (mail-box analogy)
 
 ### The Actor Model
 Provides dynamic interconnection topology with actors (agent that maps communication to a finite set of states/actors/communications)
-- dynamiccaly configure actor graph during runtime (add channels)
+- dynamically configure actor graph during runtime (add channels)
 - dynamically allocate resources
 - direct message sending by direct naming (without port/channel/queue/etc.)
 - Asynchronous Message Passing
@@ -1729,7 +1729,7 @@ Provides dynamic interconnection topology with actors (agent that maps communica
 Actors react to messages (events) with event listeners/handlers. E.g. graphical user interface (user presses OK Button $\to$ do something)
 
 ### Communicating Sequential Processes
-- Sunchronisation and communication between parallel processes with message passing
+- Synchronisation and communication between parallel processes with message passing
   - Symbolic channels between sender and receiver
   - Read/Write requires a rendevous (synchronous)
   - Intermediary entity (port / channel) to address send destination
@@ -1748,7 +1748,7 @@ Can either be used synchronous or asynchronous, which defines communication betw
 **Blocking**: Return after local actions are complete, thought the message transfer may not have been completed.
 **Non-Blocking**: Return immediately.
 
-> Blocking/Non-Blocking is about handling data to be sent / received. Default in MPI is **blocking** $/implies$ deadlock potential deadlock
+> Blocking/Non-Blocking is about handling data to be sent / received. Default in MPI is **blocking** $\implies$ deadlock potential deadlock
 ```
 Process 0           Process 1
 ----------------    ----------------
@@ -1779,7 +1779,7 @@ Waitall             Waitall         <== non-blocking
 
 #### MPI Communicators
 - Defines set of processes that are allowed to ocmmunicate with each other
-- The group of all processes is initialy given the name `MPI_COMM_WORLD`, which is the communicator all processer initially are.
+- The group of all processes is initialy given the name `MPI_COMM_WORLD`, which is the communicator all processes initially are.
 - MPI processes can be collected into groups.
 - **Comunicator = Group + Color**
 - A process is identified by its communicator dedicated **rank**.
@@ -1870,7 +1870,7 @@ P2 [C| | | ]                    [A+B+C+D]
 P3 [D| | | ]                    [A+B+C+D]
 ```
 
-> Allreduce $/neq$ Reduce + Broadcast, since Allreduce uses butterfly mechanism
+> Allreduce $\neq$ Reduce + Broadcast, since Allreduce uses butterfly mechanism
 
 ![](imgs/butterfly.png)
 
