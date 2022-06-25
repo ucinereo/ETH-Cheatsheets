@@ -699,7 +699,7 @@ lock (me) {
   for (int i = 1; i < n; i++) {
     level[me] = i;
     victim[i] = me;
-    while (Exists no k != me: level[k] >= i && victim[i] == me) {}
+    while (Exists k != me: level[k] >= i && victim[i] == me) {}
   }
 }
 
@@ -734,7 +734,7 @@ boolean[0..n-1] flag = {false, ..., false};
 lock(me):
   flag[me] = true;
   label[me] = max(label[0], ..., label[n - 1]) + 1;
-  while(Exists no k != me: flag[k] && (k, label[k]) < (me, label[me])) {}
+  while(Exists k != me: flag[k] && (k, label[k]) < (me, label[me])) {}
 
 unlock(me):
   flag[me] = false;
