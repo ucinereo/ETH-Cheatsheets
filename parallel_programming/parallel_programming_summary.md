@@ -52,7 +52,7 @@ All screenshots are directly taken from the lecture notes. All copyrights belong
     - [Spinlocks in Java](#spinlocks-in-java)
       - [TAS Lock](#tas-lock)
       - [TATAS Lock](#tatas-lock)
-      - [Lock with sequential Backoff](#lock-with-sequential-backoff)
+      - [Lock with exponential Backoff](#lock-with-exponential-backoff)
     - [Deadlock and Livelocks](#deadlock-and-livelocks)
     - [State Diagram](#state-diagram)
     - [Semaphores](#semaphores)
@@ -263,7 +263,7 @@ Faster memory is more expensive, hence smaller: L1 is 5x faster than L2, which i
 Computations get faster on hardware level by **parallel execution** (i.e. additional execution units)
 
 ### Vectorization
-Exposed to developers.
+Exposed to developers.  
 **SIMD** := Single Instruction (OP), applied to Multiple Data.
 
 Assembler Pseudo Code (Hardware vectorinstructions)
@@ -274,9 +274,9 @@ r3 = VADD   r1, r2
 VSTORE      c,  i, r3
 ```
 
-**Automated Vectorization**: C/C++ (Not vectorized) $\to$ vectorized machine code
-**Manual Vectorization**: C/C++ (using intrinsics) $\to$ vectorized machine code
-**Atomated Vectorization**: Java Code $\to$ bytecode $\overset{\text{JIT}}{\to}$ vectorized machine code
+**Automated Vectorization**: C/C++ (Not vectorized) $\to$ vectorized machine code  
+**Manual Vectorization**: C/C++ (using intrinsics) $\to$ vectorized machine code  
+**Atomated Vectorization**: Java Code $\to \ \text{bytecode} \ \overset{\text{JIT}}{\to}$ vectorized machine code
 
 ### Instruction Level Parallelism
 Inside CPU.
@@ -454,7 +454,7 @@ create a new collection of the same size
 - No combining results
 - For arrays, this is so trivial some hardware has direct support
 
-So an symptotically optimal execution would be:
+So an asymptotically optimal execution would be:
 $$T_p = \mathcal{O}((T_1 / p) + T_\infty)$$
 > First term dominates for small $p$, second for large $p$.
 
@@ -527,7 +527,7 @@ On `unlock(release)`:
 Race condition occurs when the computation result depends on the scheduling (how threads are intearleaved).
 
 **Data Race** [aka Low Level Race Condition, low semantic level]
-Erroneous program behavior caused by insufficiently synchronized accesses of a shared resource by multiple threads, e.g. Simultaneous read/write or write/write of the same memory locatio
+Erroneous program behavior caused by insufficiently synchronized accesses of a shared resource by multiple threads, e.g. Simultaneous read/write or write/write of the same memory location
 > (for mortals) always an error, due to compiler & HW
 
 **Bad Interleaving** [aka High Level Race Condition, high semantic level]
@@ -614,7 +614,7 @@ Critical Section:
 - Freedom from deadlock: One process in the critical section must eventually succeed
 - Freedom from starvation: If any process tries to enter its critical section, then that process must eventually succeed
 
-> Theorem 5.1: If S is a [atomic] read/writes system with at least two processes and S solves mutual exclusion with global progress [deadlock-freedom], then S must have at least as many variables a processes.
+> Theorem 5.1: If S is a [atomic] read/writes system with at least two processes and S solves mutual exclusion with global progress [deadlock-freedom], then S must have at least as many variables as processes.
 
 The following algorithms are not used for mutual exclusion
 - space lower bound linear in the number of maximum threads
@@ -775,7 +775,7 @@ public class TATASLock implements Lock {
 - many threads fight for access to the same resource
 - slows down progress globally and locally
 
-#### Lock with sequential Backoff
+#### Lock with exponential Backoff
 ```Java
 public void lock() {
   Backoff backoff = null;
@@ -831,14 +831,14 @@ initial: turn = 1
 
 P                           | Q
 p1: Non-critical section P  | q1: Non-critical section Q
-p2: while wutn != 1         | q2: while turn != 2
+p2: while turn != 1         | q2: while turn != 2
 p3: CS                      | q3: critical section
 p4: turn = 2                | q4: turn = 1
 ```
 
 - Mutual exclusion: state (p3, q3, _) is not reachable
 - Progress: There exists a path for P such that state (p3, _, _) is reachable from (p2, _, _). Typical counterexamples: Deadlocks and livelocks
-- No starvation: Possible staration reveals itself as cycles in the state diagram
+- No starvation: Possible starvation reveals itself as cycles in the state diagram
 
 ### Semaphores
 ```
@@ -1072,12 +1072,14 @@ class Queue {
 
 #### Producer / Consumer, Sleeping Barber Variant
 ```Java
-  class Queue {
+class Queue {
   int in=0, out=0, size;
   long buf[];
   final Lock lock = new ReentrantLock();
-  int n = 0; final Condition notFull = lock.newCondition();
-  int m; final Condition notEmpty = lock.newCondition();
+  int n = 0;
+  final Condition notFull = lock.newCondition();
+  int m;
+  final Condition notEmpty = lock.newCondition();
 
   Queue(int s) {
     size = s; m=size-1;
@@ -1086,28 +1088,32 @@ class Queue {
 
   void enqueue(long x) {
     lock.lock();
-    m--; if (m<0)
+    m--;
+    if (m<0)
       while (isFull())
         try { notFull.await(); }
         catch(InterruptedException e){}
     doEnqueue(x);
     n++;
-    if (n<=0) notEmpty.signal();
-      lock.unlock();
+    if (n<=0)
+      notEmpty.signal();
+    lock.unlock();
   }
 
 
   long dequeue() {
     long x;
     lock.lock();
-    n--; if (n<0)
+    n--;
+    if (n<0)
       while (isEmpty())
         try { notEmpty.await(); }
         catch(InterruptedException e){}
     x = doDequeue();
     m++;
-    if (m<=0) notFull.signal();
-      lock.unlock();
+    if (m<=0)
+      notFull.signal();
+    lock.unlock();
     return x;
   }
 }
@@ -1148,7 +1154,7 @@ public class Set<T> {
 }
 ```
 
-- Corase-grained locking
+- Coarsed-grained locking
 - Fine-grained locking
 - Optimistic synchronization
 - Lazy synchronization
@@ -1249,7 +1255,7 @@ Store predecessor and succesor for each node in each level.
 ![](imgs/skip_list_remove.jpeg)
 
 **Contains:**
-1. sequential `find|()` & not logically removed & fully linked
+1. sequential `find()` & not logically removed & fully linked
 2. even if other nodes are removed, it stays reachable
 3. contains is `wait-free` (while add and remove are not)
 
@@ -1334,8 +1340,8 @@ To remove an element from the list:
 - Redirect predecessor's pointer
 
 1. Find element and prev element from key
-2. If no such element -> return false
-3. Otherweise try to logically delete (set mark bit)
+2. If no such element $\rightarrow$ return false
+3. Otherwise try to logically delete (set mark bit)
 4. If no success, restart from the very beginning
 5. Try to physically delete the element, ignore result.
 
@@ -1489,13 +1495,13 @@ H|B <   B q.deq()
 
 
 ### Linearizability
-Each method should appear to take effect instantaneously between invocation and response events. An object for which this i sture for all possible executions is called **linearizable**.
+Each method should appear to take effect instantaneously between invocation and response events. An object for which this is true for all possible executions is called **linearizable**.
 
 The obejct is correct if the associated sequential behavior is correct.
 
 The **linearization points** can often be specified, but they may depend on the execution. Some linearization points are when locks are released. Most of the time when something locked or synchronized is accessed.
 
-> When the method shows effect (e.g., updates are gloabbly visible or visibale decisions are made).
+> When the method shows effect (e.g., updates are globally visible or visible decisions are made).
 
 History $H$ is linearizable if it can be extended to a history $G$
 - appending zero or more responses to pending invocations that took effect
@@ -1503,13 +1509,13 @@ History $H$ is linearizable if it can be extended to a history $G$
 
 Such that $G$ is equivalent to a legal sequential history $S$ with $\to_G \subset \to_S$. Which means
 $$
-\to_G = \{a \to c b \to c\} \\
+\to_G = \{a \to c, b \to c\} \\
 \to_S = \{a \to b, a\to c, b\to c\} \\
 \implies \to_G \subset \to_S
 $$
 
-> **Composability Theorem**: History $H$ is linearizable $\iff$ for every object $x$, $H|x$ is linearizable.
-> **Modularity**: Linearizability of obejcts can be proven in isolation. Independently implmeneted objects can be composed.
+> **Composability Theorem**: History $H$ is linearizable $\iff$ for every object $x$, $H|x$ is linearizable.  
+> **Modularity**: Linearizability of objects can be proven in isolation. Independently implemented objects can be composed.
 
 **Atomic Registers** have a single linearization point.
 $\implies$ Sequentially consistent; every read operation yields most recently written value.
@@ -1562,7 +1568,7 @@ $\implies$ wait-free FIFO queues, wait-free RMW operations and CAS cannot be imp
 
 ##### Atomic registers
 > **Theorem I**: Atomic Registers have consensus number 1
-> **Corolarry**: There is no wait-free implementation of n-thread consensus, $n > 1$, from read-write registers.
+> **Corollary**: There is no wait-free implementation of n-thread consensus, $n > 1$, from read-write registers.
 
 ##### CAS
 > **Theorem II**: Compare-And-Swap has infinite consensus number.
@@ -1591,7 +1597,7 @@ Let hardware / software handle synchronization. Programmer explicitly defines at
 - Atomicity 
 - Consistency (database remains in a consistent state)
 - Isolation (no mutual corruption of data)
-- *Durability(transaction effects will survive power loss)*
+- *Durability (transaction effects will survive power loss)*
 
 **Concurrency Control (CC)**: Handles transaction issues (aborting, retrying, etc.). When a transaction aborts, it can be retried automatically or the user is notified.
 
@@ -1677,13 +1683,13 @@ Transaction uses a local read-set and a local write-set holding all locally read
   - If object is not in write set, create a copy of it in the write set
 - **Commit**:
   - Lock all objects of read- and write-set
-  - Check that all objects in the sets provice a time stamp $\leq$ birthdate of the transaction, ortherwise abort
+  - Check that all objects in the sets provide a time stamp $\leq$ birthdate of the transaction, ortherwise abort
   - Increment and get the value $T$ of the current global lock
   - Copy each element of the write set back to global memory with timestamp $T$
   - Release all locks and return
 
 ### Isolation Methods
-**Strong Isolation**: transation guarantess are still maintained.
+**Strong Isolation**: transaction guarantess are still maintained.
 **Weak Isolation**: transaction guarantees are not maintained.
 
 ### Nestings
@@ -1748,7 +1754,7 @@ Can either be used synchronous or asynchronous, which defines communication betw
 **Blocking**: Return after local actions are complete, thought the message transfer may not have been completed.
 **Non-Blocking**: Return immediately.
 
-> Blocking/Non-Blocking is about handling data to be sent / received. Default in MPI is **blocking** $\implies$ deadlock potential deadlock
+> Blocking/Non-Blocking is about handling data to be sent / received. Default in MPI is **blocking** $\implies$ deadlock potential
 ```
 Process 0           Process 1
 ----------------    ----------------
@@ -1841,6 +1847,14 @@ P0 [A| | | ]       Reduce       [A+B+C+D]
 P1 [B| | | ]    ----------->    [ | | | ]
 P2 [C| | | ]                    [ | | | ]
 P3 [D| | | ]                    [ | | | ]
+```
+
+**Scan - Distributed Calculations**:
+```
+P0 [A| | | ]       Scan         [A| | | ]
+P1 [B| | | ]    ----------->    [A+B| | ]
+P2 [C| | | ]                    [A+B+C| ]
+P3 [D| | | ]                    [A+B+C+D]
 ```
 
 **Broadcast - Collective Data Movement**: Send data to all processes in the communicator.
