@@ -1103,30 +1103,39 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     \begin{tikzpicture}
         \begin{axis}[
             axis lines = middle,
-            domain = -2:6,
-            ymin = -1,
+            domain = -3:6,
+            ymin = -2,
             ymax = 3,
             width = \linewidth,
-            height = 6cm
+            height = 6cm,
+            style = very thick,
+            grid = both,
+            grid style = {line width=.1pt, draw=gray!10},
+            major grid style = {line width=.2pt,draw=gray!50},
+            minor tick num = 5,
+            restrict y to domain=-10:10,
         ]
         
-        \addplot[blue]{sin(deg(x))};
-        \addlegendentry{$\sin(x)$}
+        \addplot[red, smooth]{sin(deg(x))} node[pos=0.75] (endofplotsquare1) {};
+        \node [above,color=red] at (endofplotsquare1) {$\sin(x)$};
 
-        \addplot[red]{cos(deg(x))};
-        \addlegendentry{$\cos(x)$}
+        \addplot[green, smooth]{cos(deg(x))} node[pos=0.9] (endofplotsquare2) {};
+        \node [above,color=green] at (endofplotsquare2) {$\cos(x)$};
+
+        \addplot[blue, smooth, samples=51]{tan(deg(x))} node[pos=0.05] (endofplotsquare3) {};
+        \node [above,color=blue] at (endofplotsquare3) {$\tan(x)$};
         
-        \addplot[gray, samples=100]{tan(deg(x))};
-        \addlegendentry{$\tan(x)$}
+        \addplot[cyan, domain=-1:1]{acos(x)/180*pi} node[pos=0.2] (endofplotsquare4) {};
+        \node [above,color=cyan] at (endofplotsquare4) {$\arccos(x)$};
 
-        \addplot[green, domain=-1:1] {asin(x)/180*pi};
-        \addlegendentry{$\arcsin(x)$}
+        \addplot[magenta] {atan(x)/180*pi} node[pos=0.6] (endofplotsquare5) {};
+        \node [above,color=magenta] at (endofplotsquare5) {$\arctan(x)$};
 
-        \addplot[brown, domain=-1:1] {acos(x)/180*pi};
-        \addlegendentry{$\arccos(x)$}
+        \addplot[yellow, domain=-1:1]{asin(x)/180*pi} node[pos=1] (endofplotsquare6) {};
+        \node [above,color=yellow] at (endofplotsquare6) {$\arcsin(x)$};
 
-        \addplot[orange] {atan(x)/180*pi};
-        \addlegendentry{$\arctan(x)$}
+        \addplot[orange]{ln(x)} node[pos=0.8] (endofplotsquare7) {};
+        \node [above,color=orange] at (endofplotsquare7) {$\ln(x)$};
 
         \end{axis}
     \end{tikzpicture}
