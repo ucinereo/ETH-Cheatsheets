@@ -338,7 +338,7 @@ Different Task distributions:
   - $T_p = T_1 / p$ (perfection)
   - $T_p > T_1 / p$ (performance loss, what normally happens)
   - $T_p < T_1 / p$ (sorcery!)
-- $S_p$: Parallel speedup on $p$ CPUs. $S_p = T_1 / p$
+- $S_p$: Parallel speedup on $p$ CPUs. $S_p = T_1 / T_p$
   - $S_p = p \to$ Linear speedup (perfection)
   - $S_p < p \to$ sub-linear speedup (performance loss)
     - Programs may not contain enough parallelism
