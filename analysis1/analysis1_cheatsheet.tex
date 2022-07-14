@@ -90,6 +90,8 @@
 \setitemize{itemsep=0.5pt, topsep=0pt}
 \setenumerate{itemsep=0.75pt}
 
+\usepackage{graphics}
+
 % Custom commands
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Q}{\mathbb{Q}}
@@ -222,8 +224,8 @@ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \e
 \end{ntheorem}
 
 \begin{ntheorem}[Comparison Theorem]
-    Let $\sum_{k = 1}^\infty a_k$, $\sum_{k = 1}^\infty b_k$ series s.t. $0 \leq a_k \leq b_k \quad \forall k \geq 1$:
-    $$\sum_{k=1}^\infty b_k \ \text{converges} \implies \sum_{k = 1}^\infty a_k \ \text{converges}$$
+    Let $\sum_{k = 1}^\infty a_k$, $\sum_{k = 1}^\infty b_k$ series s.t. $0 \leq a_k \textcolor{cgreen}{\leq |a_k|} \leq b_k \quad \forall k \geq 1$:
+    $$\sum_{k=1}^\infty b_k \ \text{converges} \implies \sum_{k = 1}^\infty a_k \ \text{converges \textcolor{cgreen}{absolute}}$$
     $$\sum_{k = 1}^\infty  a_k \ \text{diverges} \implies \sum_{k = 1}^\infty  b_k \ \text{diverges}$$
 \end{ntheorem}
 
@@ -245,10 +247,9 @@ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \e
 \end{theorem}
 
 \begin{ntheorem}[Leibniz]
-    $(a_n)_{n\geq1}$ monotone decreasing s.t. $a_n \geq 0 \, \forall n \geq 1$ and $\lim a_n = 0$:
+    $(a_n)$ mon. dec. s.t. $a_n \geq 0 \, \forall n \geq 1 \land \lim a_n = 0$:
     $$S := \sum_{k=1}^\infty (-1)^{k + 1} a_k \ \text{converges.}$$
     Furthermore: $a_1 - a_2 \leq S \leq a_1$
-    
 \end{ntheorem}
 
 \begin{ntheorem}[Ratio Test]
@@ -300,8 +301,8 @@ $\iff \forall \epsilon > 0 \ \exists N \in \N \ \forall n > N \ (|a_n - L | < \e
 \begin{note}[Strategy: Convergence of Series]
     $\,$
     \begin{enumerate}
-        \item Check for known types (Telescope, Geometric, etc.)
-        \item $\lim a_n \neq 0 \implies$ divergence
+        \item Check for known types. Telescope, Geometric, etc.
+        \item $\lim |a_n| \neq 0 \implies$ divergence
         \item Ratio Test
         \item Root Test
         \item Search convergent majors: $0 \leq a_n \leq b_n$
@@ -1028,7 +1029,7 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     $\cosh(x) = \frac{e^x - e^{-x}}{2}$ & $\sinh(x)$ \\
     $\tanh(x) = \frac{\sinh(x)}{\cosh(x)}$ & $\frac{1}{\cosh^2(x)} = 1 - \tanh^2(x)$ \\
     $\frac{1}{f(x)}$ & $\frac{-f'(x)}{(f(x))^2}$ \\
-    $a^{cx}$ & $a^{ck} \cdot c \ln(a)$ \\
+    $a^{cx}$ & $a^{cx} \cdot c \ln(a)$ \\
     $x^x$ & $x^x \cdot (1 + \ln(x)), \ x > 0$ \\
     $(x^x)^x$ & $(x^x)^x (x + 2x \ln(x)), \ x > 0$ \\
     $x^{x^x}$ & $x^{x^x} (x^{x - 1} + \ln(x) \cdot x^x (1 + \ln(x)))$ \\
@@ -1038,7 +1039,7 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
 
 \subsubsection*{Periodicity}
 \begin{tabularx}{\linewidth}{XX}
-    $\sin(x) = \sin(x + 2 \pi)$ & $\tan(x) = \cos(x + 2\pi)$ \\
+    $\sin(x) = \sin(x + 2 \pi)$ & $\cos(x) = \cos(x + 2\pi)$ \\
     $\tan(x) = \tan(x + \pi)$ & $\cot(x) = \cot(x + \pi)$
 \end{tabularx}
 
@@ -1079,7 +1080,7 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
 \subsubsection*{Powers}
 \begin{tabularx}{\linewidth}{XX}
     $\sin^2 x = \frac{1 - \cos(2x)}{2}$ & $\sin^3 x = \frac{3 \sin x - \sin(3x)}{4}$ \\
-    $\cos^2 x = \frac{1 + \cos(2x)}{2}$ & $\cos^3 x = \frac{3 \cos x + \cos(4x)}{4}$ \\
+    $\cos^2 x = \frac{1 + \cos(2x)}{2}$ & $\cos^3 x = \frac{3 \cos x + \cos(3x)}{4}$ \\
     $\tan^2 x = \frac{1 - \cos(2x)}{1 + \cos(2x)}$
 \end{tabularx}
 
@@ -1090,14 +1091,16 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
 \end{tabularx}
 
 \subsubsection*{Angles}
-\begin{tabularx}{\linewidth}{c|cccccccc}
-    deg & 0° & 30° & 45° & 60° & 90° & 180° & 270° & 360° \\
-    rad & 0 & $\frac{\pi}{6}$ & $\frac{\pi}{4}$ & $\frac{\pi}{3}$ & $\frac{\pi}{2}$ & $\pi$ & $\frac{3}{2}\pi$ & $2\pi$ \\
-    \midrule
-    $\sin(x)$ & $0$ & $\frac{1}{2}$ & $\frac{\sqrt{2}}{2}$ & $\frac{\sqrt{3}}{2}$ & $1$ & $0$ & $-1$ & $0$ \\
-    $\cos(x)$ & $1$ & $\frac{\sqrt{3}}{2}$ & $\frac{\sqrt{2}}{2}$ & $\frac{1}{2}$ & $0$ & $-1$ & $0$ & $1$ \\
-    $\tan(x)$ & $0$ & $\frac{\sqrt{3}}{3}$ & $1$ & $\sqrt{3}$ & NaN & 0 & NaN & $45$
-\end{tabularx}
+\resizebox{.835\linewidth}{!}{
+    \begin{tabularx}{\linewidth}{c|ccccccccccc}
+        deg & 0 & 30 & 45 & 60 & 90 & 120 & 135 & 150 & 180 & 270 & 360 \\
+        rad & 0 & $\frac{\pi}{6}$ & $\frac{\pi}{4}$ & $\frac{\pi}{3}$ & $\frac{\pi}{2}$ & $\frac{2\pi}{3}$ & $\frac{3\pi}{4}$ & $\frac{5\pi}{6}$ & $\pi$ & $\frac{3\pi}{2}$ & $2\pi$ \\
+        \cmidrule{1-12}
+        $\sin$ & $0$ & $\frac{1}{2}$ & $\frac{\sqrt{2}}{2}$ & $\frac{\sqrt{3}}{2}$ & $1$ & $\frac{\sqrt{3}}{2}$ & $\frac{1}{\sqrt{2}}$ & $\frac{1}{2}$ & 0 & -$1$ & $0$\\
+        $\cos$ & $1$ & $\frac{\sqrt{3}}{2}$ & $\frac{\sqrt{2}}{2}$ & $\frac{1}{2}$ & $0$ & -$\frac{1}{2}$ & -$\frac{1}{\sqrt{2}}$ & -$\frac{\sqrt{3}}{2}$ & -$1$ & $0$ & $1$ \\
+        $\tan$ & $0$ & $\frac{1}{\sqrt{3}}$ & $1$ & $\sqrt{3}$ & - & -$\sqrt{3}$ & $-1$ & -$\frac{1}{\sqrt{3}}$ & 0 & - & 0
+    \end{tabularx}
+}
 
 \begin{center}
     \begin{tikzpicture}
@@ -1108,7 +1111,7 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
             ymax = 3,
             width = \linewidth,
             height = 6cm,
-            style = very thick,
+            style = thick,
             grid = both,
             grid style = {line width=.1pt, draw=gray!10},
             major grid style = {line width=.2pt,draw=gray!50},
@@ -1131,10 +1134,10 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
         \addplot[magenta] {atan(x)/180*pi} node[pos=0.6] (endofplotsquare5) {};
         \node [above,color=magenta] at (endofplotsquare5) {$\arctan(x)$};
 
-        \addplot[yellow, domain=-1:1]{asin(x)/180*pi} node[pos=1] (endofplotsquare6) {};
-        \node [above,color=yellow] at (endofplotsquare6) {$\arcsin(x)$};
+        \addplot[olive, domain=-1:1, samples=51, style=very thick]{asin(x)/180*pi} node[pos=1] (endofplotsquare6) {};
+        \node [above,color=olive] at (endofplotsquare6) {$\arcsin(x)$};
 
-        \addplot[orange]{ln(x)} node[pos=0.8] (endofplotsquare7) {};
+        \addplot[orange, domain=0.001:6, samples=51]{ln(x)} node[pos=0.8] (endofplotsquare7) {};
         \node [above,color=orange] at (endofplotsquare7) {$\ln(x)$};
 
         \end{axis}
@@ -1143,7 +1146,8 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
 
 \subsection*{More Integrals}
 \begin{tabularx}{\linewidth}{XX}
-    $\int_1^\infty \frac{1}{x^3} \sqrt{\frac{x}{x + 1}}\,dx$ & $2 \left[-\frac{1}{3}t^{-3} + t^-1\right]_{1/\sqrt{2}}^{\sqrt{\frac{a}{1 + a}}}$
+    $\int_1^\infty \frac{1}{x^3} \sqrt{\frac{x}{x + 1}}\,dx$ & $2 \left[-\frac{1}{3}t^{-3} + t^{-1}\right]_{1/\sqrt{2}}^{\sqrt{\frac{a}{1 + a}}}$ \\
+    $\int f(x) \,dx$ & $F(x)$
 \end{tabularx}
 
 \end{document}
