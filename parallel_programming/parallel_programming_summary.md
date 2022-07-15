@@ -22,6 +22,7 @@ All screenshots are directly taken from the lecture notes. All copyrights belong
   - [Algorithms](#algorithms)
     - [Divide and Conquer (Fork/Join)](#divide-and-conquer-forkjoin)
       - [ForkJoin Framework](#forkjoin-framework)
+        - [ForkJoin Java Template optimized for given number of processors](#forkjoin-java-template-optimized-for-given-number-of-processors)
     - [Parallel Patterns](#parallel-patterns)
       - [Reduction and Maps](#reduction-and-maps)
       - [Prefix](#prefix)
@@ -443,6 +444,29 @@ Don't have a topmost call to `run` $\to$ Do create a pool and `invoke`
 - Sequential threshold
 - Library needs to "warm up"
 - Beware memory-hierarchy issues
+
+##### ForkJoin Java Template optimized for given number of processors
+```Java
+private ReduceClass (..., int processors) {
+  ...
+  this.processors = processors;
+}
+
+protected Integer compute(){
+	if ( processors == 1 ) {
+		// cutoff: do sequential stuff
+	}
+
+	int p1 = processors / 2;
+	ReduceClass t1 = new ReduceClass(..., p1);
+	ReduceClass t2 = new ReduceClass(..., processors - p1);
+	
+  t1.fork();
+	Integer r2 = t2.compute();
+
+	return r2 + t1.join();
+}
+```
 
 ### Parallel Patterns
 #### Reduction and Maps
@@ -1171,7 +1195,7 @@ public synchronized boolean contains(T x) {...};
 #### Fine-grained locking (hand over hand locking)
 Split object into pieces with separate locks. No mutual exclusion for algorithms on disjoint pieces. Requires careful consideration of special cases.
 
-When deleteing, the next field of next is ead, i.e., next also has to be proteced. A thread needs to lock both, predecessor and the node to be deleted.
+When deleting, the next field of next is ead, i.e., next also has to be proteced. A thread needs to lock both, predecessor and the node to be deleted.
 
 Disadvantages:
 - Potentially long sequence of acquire / release before the intended action can take place
@@ -1303,7 +1327,7 @@ int CAS (memref a, int old, int new):
 > Both operations are atomically executed in hardware!
 
 ### Non-blocking Stack
-To make a non-blocking stack one can use the `Atomicreference<T>` class from java.
+To make a non-blocking stack one can use the `AtomicReference<T>` class from java.
 
 ```Java
 public class ConcurrentStack {
@@ -1316,6 +1340,8 @@ public class ConcurrentStack {
       head = top.get();
       newi.next = head;
     } while (!top.compareAndSet(head, newi));
+    // be aware that compareAndSet from Java returns
+    // false if the update did not succeed
   }
 
   public Long pop() {
