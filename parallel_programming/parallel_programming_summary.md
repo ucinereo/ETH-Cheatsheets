@@ -56,6 +56,7 @@ All screenshots are directly taken from the lecture notes. All copyrights belong
       - [Lock with exponential Backoff](#lock-with-exponential-backoff)
     - [Deadlock and Livelocks](#deadlock-and-livelocks)
     - [State Diagram](#state-diagram)
+      - [Hot to find Deadlocks/Livelocks/Starvation-Freedom in State Diagrams](#hot-to-find-deadlockslivelocksstarvation-freedom-in-state-diagrams)
     - [Semaphores](#semaphores)
       - [Semaphores without Spinning](#semaphores-without-spinning)
     - [Barries (Two-Phase Barrier)](#barries-two-phase-barrier)
@@ -317,6 +318,8 @@ $$tp = \frac{1}{\max(\text{computationtime}(\text{stages}))}$$
 - **Balanced/Unbalanced Pipeline**: a pipeline is balanced if it has constant latency. If the first computation step is the longest, the pipeline is always balanced.
 > all stages require the same time $\implies$ balanced.
 > balanced $\nRightarrow$ all stages require the same time
+- **Speedup**: How much faster work can be done with pipelining.
+$$S_p = \frac{l^{-1}}{tp}$$
 
 **Calculate the complete processing length**:
 $$t_f = l + (n-1) \cdot \frac{1}{tp}$$
@@ -845,8 +848,6 @@ $$
 - two-phase locking with retry (release when failed)
 - resource ordering (global state)
 
-TODO: State diagrams for deadlocks, starvation and livelocks
-
 ### State Diagram
 ![](imgs/state_diagram.jpeg)
 
@@ -863,6 +864,12 @@ p4: turn = 2                | q4: turn = 1
 - Mutual exclusion: state (p3, q3, _) is not reachable
 - Progress: There exists a path for P such that state (p3, _, _) is reachable from (p2, _, _). Typical counterexamples: Deadlocks and livelocks
 - No starvation: Possible starvation reveals itself as cycles in the state diagram
+
+#### Hot to find Deadlocks/Livelocks/Starvation-Freedom in State Diagrams
+
+**Deadlocks**: Contains a sink (node with no further edges) in the state diagram graph.
+**Livelock**: when there is a cycle of states where no process enters a critical section
+**Starvation**: Cycle in the state diagram
 
 ### Semaphores
 ```
@@ -936,6 +943,7 @@ If a condition does not hold, it allows the following operations:
 ### Java Interface Lock
 Java offers the Lock interface for more flexibility.
 ```Java
+// Methods lock.lock() and lock.unlock()
 final Lock lock = new ReentrantLock();
 ```
 Java locks provice conditions thatn can be instantiated:
@@ -1558,7 +1566,7 @@ such that $G$ is equivalent to a legal sequential history $S$.
 
 Requires that operations done by one thread respect program order.
 - Cannot re-order operations done by the same thread
-- Can re-order non-overlapping operations done by different threads
+- Can re-order operations done by different threads
 
 > Sequential Consistency is not a local property and thus we lose composability.
 
