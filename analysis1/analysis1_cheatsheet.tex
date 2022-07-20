@@ -30,6 +30,10 @@
 \newtheorem*{definition}{Def}
 \newtheorem*{note_wrapper}{Hint}
 
+\newtheoremstyle{ex}{2pt}{5pt}{}{}{\bf}{}{0pt}{{\thmnote{(#3) }}}
+\theoremstyle{ex}
+\newtheorem*{exercise}{}
+
 \newtheoremstyle{named}{}{}{}{}{\bfseries}{.}{.5em}{\thmnote{#3}}
 \theoremstyle{named} 
 \newtheorem*{ntheorem_wrapper}{Theorem}
@@ -960,7 +964,7 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     $\limxi \frac{\lambda x}{\lambda^x} = 0$ & $\lim\limits_{x \to \frac{\pi}{2}^-} \tan(x) = +\infty$\\
     $\lim\limits_{x \to \frac{\pi}{2}^+} \tan(x) = -\infty$ & $\limxi \frac{\sin(x)}{x} = 0$ \\
     $\lim\limits_{x \to 0^+} x \ln x = 0$ & Strirling Formula \\
-    & $\limxi \frac{x!}{(\frac{x}{e})^x \sqrt[]{2 \pi x}} = 1$
+    $\lim\limits_{h \to 0} (1 + \frac{h}{x})^{\frac{x}{h}} = e$ & $\limxi \frac{x!}{(\frac{x}{e})^x \sqrt[]{2 \pi x}} = 1$
 \end{tabularx}
 
 \subsection*{Series}
@@ -979,7 +983,7 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     \bottomrule
 \end{tabularx}
 
-\subsection*{Taylor Polynomials}
+\subsection*{Taylor Series}
 \begin{align*}
     e^x &= 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \BO(x^5) \\
     \sin(x) &= x - \frac{x^3}{3!} + \frac{x^5}{5!} - \BO(x^7) \\
@@ -1149,5 +1153,49 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     $\int_1^\infty \frac{1}{x^3} \sqrt{\frac{x}{x + 1}}\,dx$ & $2 \left[-\frac{1}{3}t^{-3} + t^{-1}\right]_{1/\sqrt{2}}^{\sqrt{\frac{a}{1 + a}}}$ \\
     $\int f(x) \,dx$ & $F(x)$
 \end{tabularx}
+
+\newpage
+\section*{Tips and Tricks from PVW script}
+\begin{exercise}[Inductive sequences]
+    $a_1 := C, \ a_{n+1} := f(a_n) \ (\forall n > 1)$
+    \begin{enumerate}
+        \item Show monotonicity (either by induction over $\N$ or show $b_n = a_{n+1} - a_n$ (strictly) pos/neg $\forall n > 1$)
+        \item Show that the sequence is bounded (by induction)
+        \item Monotone convergence theorem $\implies$ $\exists \lim\limits_{n\to\infty} a_n$
+        \item $\lim\limits_{n\to\infty} a_n = a \implies \forall\text{subseq.} \ l(n) : \lim\limits_{n\to\infty} a_{l(n)} = a$ \\
+        Choose $l(n) = n + 1 \implies \lim\limits_{n\to\infty} a_{n+1} = a$ \\
+        And thus $a = \lim\limits_{n\to\infty} a_{n+1} = \lim\limits_{n\to\infty} f(a_n) = f(\lim\limits_{n\to\infty} a_n)$
+    \end{enumerate}
+\end{exercise}
+
+\begin{note}
+    Do no forget to write: $f$ as composition of two continuous functions is continuous when using the mean value theorem.
+\end{note}
+
+\begin{exercise}[Change of variables]
+    Let $f$ and $g$ be functions with $f$ continuous in $y_0$ and $g$ continuous in $x_0$ with $y_0 = \lim\limits_{x \to x_0} g(x)$:
+    $$\lim_{x \to x_0} f(g(x)) = \lim_{y \to y_0} f(y)$$
+\end{exercise}
+
+\begin{exercise}[Powerrule]
+    Let $f, g: D \to \R$ be cont. in $x_0$ with \\
+    $\lim\limits_{x \to x_0} f(x) = f(x_0) > 0$ and $\lim\limits_{x \to x_0} g(x) = g(x_0)$ (both exist), then:
+    $$\lim_{x \to x_0} f(x)^{g(x)} = f(x_0)^{g(x_0)}$$
+\end{exercise}
+
+\begin{exercise}[Taylor Polynomial with precision]
+    Calculate $\sin(4)$ with a max error of $d = 0.01$.
+    \begin{enumerate}
+        \item Choose a fitting center and denote the new function
+        \begin{itemize}
+            \item $f(x) = \sin(x)$ with $x_0 = 4$, $a = \pi$ \textbf{or}
+            \item $f(x) = sin(\pi + x)$ with $x_0 = 4 - \pi$, $a = 0$
+        \end{itemize}
+        \item Calculate the $(N + 1)$-th derivative of $f(x)$
+        \item Calculate the error $|R_n(f,x_0,a)|$
+        \item Solve the inequality $|R_n(f, x_0, a)| < d$ to $N$.
+        \item Solve the taylor polynomial for the given $N$.
+    \end{enumerate}
+\end{exercise}
 
 \end{document}
