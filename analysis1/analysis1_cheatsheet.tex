@@ -350,7 +350,7 @@ $\R^D = \{f: D \to \R \ | \ f \ \text{is function} \}$, $(\R^D; +, \cdot)$ is V.
 \end{theorem}
 
 \begin{ntheorem}[Bolzano (Intermediate value theorem)]
-    Let $I \subseteq \R$, $f : I \to \R$ and $a, b \in I$. For each $c$ between $f(a)$ and $f(b)$ there is a $z \in [a, b]$ with $f(z) = c$
+    Let $I \subseteq \R$, $f : I \to \R$ continuous and $a, b \in I$. For each $c$ between $f(a)$ and $f(b)$ there is a $z \in [a, b]$ with $f(z) = c$
 \end{ntheorem}
 
 \begin{ntheorem}[Min-Max]
@@ -463,7 +463,7 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 \begin{corollary}
     \begin{enumerate}
         \item $e^{i\pi}=-1, \qquad e^{2i\pi}=1$
-        \item $\sin(x+\frac{\pi}{2}) = \cos(x), \quad \cos(1+\frac{\pi}{2}) = -\sin(x) \quad \forall x \in \R$
+        \item $\sin(x+\frac{\pi}{2}) = \cos(x), \quad \cos(x+\frac{\pi}{2}) = -\sin(x) \quad \forall x \in \R$
         \item $\sin(x+\pi)=-\sin(x), \quad \sin(x+2\pi) = \sin(x) \quad \forall x \in \R$
         \item $\cos(x+\pi) = -\cos(x), \quad \cos(x+2\pi) = \cos(x) \quad \forall x \in \R$
         \item Roots of sinus $= \{\pi \cdot k \ | \ k \in \Z \}$ \\ 
@@ -551,7 +551,7 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
     \item $x_0$ is local maximum if $f'(x_0) = 0 \land f''(x_0) < 0$ or the sign of $f'$ changes from $+$ to $-$.
     \item $x_0$ is local extremum if $f'(x_0) = 0 \land f''(x_0) \neq 0$
     \item $x_0$ is a saddle point if $f'(x_0) = 0$ and $f''(x_0) = 0$
-    \item $x_0$ is a inflection point if $f''(x_0) = 0$
+    \item $x_0$ is a inflection point if $f''(x_0) = 0 \land f^{(3)}(x_0) \neq 0$
     \item $f'(x_0) = f^{(2)}(x_0) = \ldots = f^{(n)}(x_0) = 0$
     \begin{enumerate}
         \item $n$ odd and $f^{(n+1)}(x_0) > 0$ $\implies$ $x_0$ strict local minimum
@@ -845,14 +845,15 @@ $$\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \f
 
 \begin{ntheorem}[Partial Fraction Decomposition]
     Let $P(x)$, $Q(x)$ be two polynomials. $\int \frac{P(x)}{Q(x)}$ can be calculated as follows:
-    \begin{enumerate}
-        \item If $\deg(P) \geq Q(P)$ use polynomial division to get
-        $$\frac{P(x)}{Q(x)} = S(x) + \frac{\hat{P}(x)}{Q(x)}$$
+    \begin{enumerate}[leftmargin=5mm]
+        \item If $\deg(P) \geq Q(P) \Rightarrow$ poly. div. $\frac{P(x)}{Q(x)} = a(x) + \frac{r(x)}{Q(x)}$
         \item Calculate all roots of $Q(x)$
         \item Create a partial fraction per root
-        \begin{itemize}
+        \begin{itemize}[leftmargin=1mm]
             \item Simple real root: $x_1 \to \frac{A}{x - x_1}$
             \item $n$-fold real root: $x_1 \to \frac{A_1}{x - x_1} + \ldots + \frac{A_r}{(x - x_1)^r}$
+            \item Simple $i$-root: $x^2 + px + q \to \frac{Ax + B}{x^2 + px + q}$
+            \item $n$-fold $i$-root: $x^2 + px + q \to \frac{A_1x + B_1}{x^2 + px + q} + \ldots + \frac{A_rx + B_r}{(x^2 + px + q)^r}$
         \end{itemize}
         \item Calculate parameters $A_1, \ldots, A_n$. (Insert the root as $s$, transform and solve)
     \end{enumerate}
@@ -922,7 +923,7 @@ The indefinite integral is the inverse of the derivative.
 
 \begin{note}
     $\int_{-\infty}^\infty f(x) \,dx = \lim\limits_{b \to - \infty} \int_b^a f(x) \,dx + \lim\limits_{c \to \infty} \int_a^c f(x) \,dx$.
-    $$\int_{-\infty}^\infty \ \text{conv.} \iff \int_{-\infty}^a f(x) \,dx \ \text{conv.} \land \int_a^\infty f(x) \,dx \ \text{conv.}$$
+    $$\int\displaylimits_{-\infty}^\infty f(x) \,dx \ \text{conv.} \iff \int\displaylimits_{-\infty}^a f(x) \,dx \ \text{conv.} \land \int\displaylimits_a^\infty f(x) \,dx \ \text{conv.}$$
     In general: Let $f: ]a, b[ \to \R$ such that it is integrable on each compact interval $[\tilde{a}, \tilde{b}]$. Then 
     $$\int_a^b f(x) \,dx := \lim\limits_{\tilde{a} \searrow a}\lim\limits_{\tilde{b} \nearrow b} \int_{\tilde{a}}^{\tilde{b}} f(x) \,dx$$
 \end{note}
@@ -1189,7 +1190,7 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
         \item Choose a fitting center and denote the new function
         \begin{itemize}
             \item $f(x) = \sin(x)$ with $x_0 = 4$, $a = \pi$ \textbf{or}
-            \item $f(x) = sin(\pi + x)$ with $x_0 = 4 - \pi$, $a = 0$
+            \item $f(x) = \sin(\pi + x)$ with $x_0 = 4 - \pi$, $a = 0$
         \end{itemize}
         \item Calculate the $(N + 1)$-th derivative of $f(x)$
         \item Calculate the error $|R_n(f,x_0,a)|$
