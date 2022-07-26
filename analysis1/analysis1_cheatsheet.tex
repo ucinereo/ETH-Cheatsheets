@@ -96,6 +96,11 @@
 
 \usepackage{graphics}
 
+\newlist{exanswers}{itemize}{2}
+\setlist[exanswers]{itemsep=2pt, topsep=2pt}
+\setlist[exanswers,1]{label=$\diamond$,leftmargin=5mm}
+\setlist[exanswers,2]{label=\textbullet,leftmargin=1mm}
+
 % Custom commands
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Q}{\mathbb{Q}}
@@ -322,7 +327,7 @@ $\R^D = \{f: D \to \R \ | \ f \ \text{is function} \}$, $(\R^D; +, \cdot)$ is V.
     A function $f$ is continuous in $x_0$ if:
     $$\forall \epsilon > 0 \ \exists \delta > 0 \ \forall x \in D \ (|x - x_0| < \delta \implies |f(x) - f(x_0)| < \epsilon)$$
     $$\iff$$
-    $$\forall (a_n)_{n \geq 1} \ \text{with} \ \lim a_n = x_0 \ \text{holds} \ \lim f(a_n) = f(\lim a_n)$$
+    $$\forall (a_n) \ \text{with}  \lim\limits_{n\to\infty} a_n = x_0 : \lim\limits_{n\to\infty} f(a_n) = f(\lim\limits_{n\to\infty} a_n) = f(x_0)$$
 \end{definition}
 
 \begin{definition}
@@ -955,17 +960,17 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     $\limx (1 + \frac{1}{x})^x = e$ & $\limxi (1 - \frac{1}{x})^x = \frac{1}{e}$ \\
     $\limx (1 + \frac{\lambda}{x})^{\alpha x} = e^{\lambda \alpha}$ & $\limxz \frac{\sin(x)}{x} = 1$ \\
     $\limxz \frac{1}{\cos(x)} = 1$ & $\limxz \frac{\cos(x) - 1}{x} = 0$ \\
-    $\limxz \frac{\log(1) - x}{x} = -1$ & $\limxz x \log x = 0$ \\
+    $\limxz \frac{\log(1) - x}{x} = -1$ & $\limxi \frac{\sin(x)}{x} = 0$ \\
     $\limxz \frac{1 - \cos(x)}{x^2} = \frac{1}{2}$ & $\limxz \frac{e^x - 1}{x} = 1$ \\
     $\limxz \frac{x}{\arctan(x)} = 1$ & $\limxi \arctan(x) = \frac{\pi}{2}$ \\
-    $\limxi (\frac{x}{x + \lambda})^x = e^{-\lambda}$ & $\limxz \frac{e^x - 1}{x} = 1$ \\
+    $\limxi (\frac{x}{x + \lambda})^x = e^{-\lambda}$ & $\lim\limits_{h \to 0} (1 + \frac{h}{x})^{\frac{x}{h}} = e$ \\
     $\limxz \frac{\lambda^x - 1}{x} = \ln(\lambda), \lambda > 0$ & $\limxz \frac{e^{\lambda x} - 1}{x} = \lambda$ \\
     $\limxz \frac{\ln(x+1)}{x} = 1$ & $\lim\limits_{x \to 1} \frac{\ln(x)}{x - 1} = 1$ \\
     $\limxi \frac{\ln(x)}{x} = 0$ & $\limxi \frac{\log(x)}{x^\lambda} = 0$ \\
     $\limxi \frac{\lambda x}{\lambda^x} = 0$ & $\lim\limits_{x \to \frac{\pi}{2}^-} \tan(x) = +\infty$\\
-    $\lim\limits_{x \to \frac{\pi}{2}^+} \tan(x) = -\infty$ & $\limxi \frac{\sin(x)}{x} = 0$ \\
-    $\lim\limits_{x \to 0^+} x \ln x = 0$ & Strirling Formula \\
-    $\lim\limits_{h \to 0} (1 + \frac{h}{x})^{\frac{x}{h}} = e$ & $\limxi \frac{x!}{(\frac{x}{e})^x \sqrt[]{2 \pi x}} = 1$
+    $\lim\limits_{x \to \frac{\pi}{2}^+} \tan(x) = -\infty$ & $\limxz x \log x = 0$ \\
+    $\lim\limits_{x \to 0^+} x \ln x = 0$ & Stirling Formula \\
+    & $\limxi \frac{x!}{(\frac{x}{e})^x \sqrt[]{2 \pi x}} = 1$
 \end{tabularx}
 
 \subsection*{Series}
@@ -1005,40 +1010,52 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     Chaining odd functions results in an odd function.
 \end{note}
 
-\subsection*{Common Derivatives and Integrals}
-\renewcommand{\arraystretch}{1.5}
-\begin{tabularx}{\linewidth}{>{\hsize=.6\hsize\centering\arraybackslash}X|>{\centering\arraybackslash}XX}
-    $\mathbf{F(x)}$ & $\mathbf{f(x)}$ \\
-    \midrule
-    $c$ & $0$ \\
-    $x^a$ & $a \cdot x^{a - 1}$ \\
-    $\frac{1}{a+1} x^{a + 1}$ & $x^a$ \\
-    $\frac{1}{a \cdot (n + 1)} (ax + b)^{n + 1}$ & $(ax + b)^n$ \\
-    $\frac{x^{a + 1}}{a + 1}$ & $x^a, \ a \neq -1$ \\
-    $\frac{1}{x}$ & $-\frac{1}{x^2}$ \\
-    $\sqrt{x}$ & $\frac{1}{2\sqrt{x}}$ \\
-    $\sqrt[n]{x}$ & $\frac{1}{n}x^{\frac{1}{n} - 1}$ \\
-    $\frac{2}{3}x^{\frac{3}{2}}$ & $\sqrt{x}$ \\
-    $\frac{n}{n+1} x^{\frac{1}{n} + 1}$ & $\sqrt[n]{x}$ \\
-    $e^x$ & $e^x$ \\
-    $\ln(|x|)$ & $\frac{1}{x}$ \\
-    $\log_a(|x|)$ & $\frac{1}{x \ln(a)} = \log_a(e^\frac{1}{x})$ \\
-    $\sin(x)$ & $\cos(x)$ \\
-    $\cos(x)$ & $-\sin(x)$ \\
-    $\tan(x) = \frac{\sin(x)}{\cos(x)}$ & $\frac{1}{\cos^2(x)} = 1 + \tan^2(x)$ \\
-    $\cot(x) = \frac{\cos(x)}{\sin(x)}$ & $\frac{1}{-\sin^2(x)}$ \\
-    $\arcsin(x)$ & $\frac{1}{\sqrt{1 - x^2}}$ \\
-    $\arccos(x)$ & $\frac{-1}{\sqrt{1 - x^2}}$ \\
-    $\arctan(x)$ & $\frac{1}{1 + x^2}$ \\
-    $\sinh(x) = \frac{e^x + e^{-x}}{2}$ & $\cosh(x)$ \\
-    $\cosh(x) = \frac{e^x - e^{-x}}{2}$ & $\sinh(x)$ \\
-    $\tanh(x) = \frac{\sinh(x)}{\cosh(x)}$ & $\frac{1}{\cosh^2(x)} = 1 - \tanh^2(x)$ \\
-    $\frac{1}{f(x)}$ & $\frac{-f'(x)}{(f(x))^2}$ \\
-    $a^{cx}$ & $a^{cx} \cdot c \ln(a)$ \\
-    $x^x$ & $x^x \cdot (1 + \ln(x)), \ x > 0$ \\
-    $(x^x)^x$ & $(x^x)^x (x + 2x \ln(x)), \ x > 0$ \\
-    $x^{x^x}$ & $x^{x^x} (x^{x - 1} + \ln(x) \cdot x^x (1 + \ln(x)))$ \\
-\end{tabularx}
+\section*{Tips and Tricks from PVW script}
+\begin{exercise}[Inductive sequences]
+    $a_1 := C, \ a_{n+1} := f(a_n) \ (\forall n > 1)$
+    \begin{enumerate}
+        \item Show monotonicity (either by induction over $\N$ or show $b_n = a_{n+1} - a_n$ (strictly) pos/neg $\forall n > 1$)
+        \item Show that the sequence is bounded (by induction)
+        \item Monotone convergence theorem $\implies$ $\exists \lim\limits_{n\to\infty} a_n$
+        \item $\lim\limits_{n\to\infty} a_n = a \implies \forall\text{subseq.} \ l(n) : \lim\limits_{n\to\infty} a_{l(n)} = a$ \\
+        Choose $l(n) = n + 1 \implies \lim\limits_{n\to\infty} a_{n+1} = a$ \\
+        And thus $a = \lim\limits_{n\to\infty} a_{n+1} = \lim\limits_{n\to\infty} f(a_n) = f(\lim\limits_{n\to\infty} a_n)$
+    \end{enumerate}
+\end{exercise}
+
+\begin{note}
+    Do no forget to write: $f$ as composition of two continuous functions is continuous when using MVT.
+\end{note}
+
+\begin{exercise}[Change of variables]
+    Let $f$ and $g$ be functions with $f$ continuous in $y_0$ and $g$ continuous in $x_0$ with $y_0 = \lim\limits_{x \to x_0} g(x)$:
+    $$\lim_{x \to x_0} f(g(x)) = \lim_{y \to y_0} f(y)$$
+\end{exercise}
+
+\begin{exercise}[Powerrule]
+    Let $f, g: D \to \R$ be cont. in $x_0$ with \\
+    $\lim\limits_{x \to x_0} f(x) = f(x_0) > 0$ and $\lim\limits_{x \to x_0} g(x) = g(x_0)$ (both exist), then:
+    $$\lim_{x \to x_0} f(x)^{g(x)} = f(x_0)^{g(x_0)}$$
+\end{exercise}
+
+\begin{exercise}[Taylor Polynomial $sin(4)$ with precision $d$] $\,$
+    \begin{enumerate}
+        \item Choose a fitting center and denote the new function
+        \begin{itemize}
+            \item $f(x) = \sin(x)$ with $x_0 = 4$, $a = \pi$ \textbf{or}
+            \item $f(x) = \sin(\pi + x)$ with $x_0 = 4 - \pi$, $a = 0$
+        \end{itemize}
+        \item Calculate the $(N + 1)$-th derivative of $f(x)$
+        \item Calculate the error $|R_n(f,x_0,a)|$
+        \item Solve the inequality $|R_n(f, x_0, a)| < d$ to $N$.
+        \item Solve the taylor polynomial for the given $N$.
+    \end{enumerate}
+\end{exercise}
+
+\begin{note}[Convergence of integrals]
+    An integral does not converge if it is not bounded in the given interval.
+    $$\lim_{x\to2} \frac{1}{(x-2)^2} = \infty \implies\int_0^\infty \frac{1}{(x-2)^2}\,dx \ \text{diverges}$$
+\end{note}
 
 \subsection*{Trigonometry}
 
@@ -1064,12 +1081,12 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
 \begin{tabularx}{\linewidth}{XX}
     $\sin(2x) = 2 \sin x \cos x $ & $\cos(2x) = \cos^2x - \sin^2x$ \\
     $\tan(2x) = \frac{2 \tan x}{1 - \tan^2x}$ & $\cot(2x) = \frac{\cot x - \tan x}{2}$ \\
-    $\sin(3x) = 3 \sin x - 4 \sin^3 x$ & $\cos(3x) = 3 \cos^3 x - 3 \cos x$
+    $\sin(3x) = 3 \sin x - 4 \sin^3 x$ & $\cos(3x) = 4 \cos^3 x - 3 \cos x$
 \end{tabularx}
 
 \subsubsection*{Addition Theorems}
 \begin{tabularx}{\linewidth}{X}
-    $\sin(x \pm y) = \sin x \cos y \pm \cos x \sin x$ \\
+    $\sin(x \pm y) = \sin x \cos y \pm \cos x \sin y$ \\
     $\cos(x \pm y) = \cos x \cos y \mp \sin x \sin y$ \\
     $\tan(x \pm y) = \frac{\tan x \pm \tan y}{1 \mp \tan x \tan y}$ \\
     $\cot(x \pm y) = \frac{\cot x \cot y \mp 1}{\cot y \pm \cot x}$
@@ -1089,10 +1106,18 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     $\tan^2 x = \frac{1 - \cos(2x)}{1 + \cos(2x)}$
 \end{tabularx}
 
+\subsubsection*{Sum of functions}
+\begin{tabularx}{\linewidth}{X}
+    $\sin x + \sin y = 2 \sin\frac{x + y}{2} \cos\frac{x - y}{2}$ \\
+    $\sin x - \sin y = 2 \cos\frac{x + y}{2} \sin\frac{x - y}{2}$ \\
+    $\cos x + \cos y = 2 \cos\frac{x + y}{2} \cos\frac{x - y}{2}$ \\
+    $\cos x - \cos y = 2 \sin\frac{x + y}{2} \sin\frac{x - y}{2}$
+\end{tabularx}
+
 \subsubsection*{Miscellaneous}
 \begin{tabularx}{\linewidth}{XX}
     $\sin^2 x + \cos^2 x = 1$ & $\cosh^2 x - \sinh^2 x = 1$ \\
-    $\sin x^{(n)} = \sin\left(x + \frac{n \pi}{2}\right)$ & $\cos x^{(n)} = \cos\left(x + \frac{n \pi}{2}\right)$
+    $\sin x^{(n)} = \sin\left(x + \frac{n \pi}{2}\right)$ & $\cos x^{(n)} = \cos\left(x + \frac{n \pi}{2}\right)$ \\
 \end{tabularx}
 
 \subsubsection*{Angles}
@@ -1107,6 +1132,7 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     \end{tabularx}
 }
 
+\subsubsection*{Important Functions}
 \begin{center}
     \begin{tikzpicture}
         \begin{axis}[
@@ -1115,7 +1141,7 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
             ymin = -2,
             ymax = 3,
             width = \linewidth,
-            height = 6cm,
+            height = 5.5cm,
             style = thick,
             grid = both,
             grid style = {line width=.1pt, draw=gray!10},
@@ -1149,54 +1175,183 @@ $\ $ \newline The gamma function interpolates the function $n \mapsto (n-1)!$. I
     \end{tikzpicture}
 \end{center}
 
-\subsection*{More Integrals}
-\begin{tabularx}{\linewidth}{XX}
-    $\int_1^\infty \frac{1}{x^3} \sqrt{\frac{x}{x + 1}}\,dx$ & $2 \left[-\frac{1}{3}t^{-3} + t^{-1}\right]_{1/\sqrt{2}}^{\sqrt{\frac{a}{1 + a}}}$ \\
-    $\int f(x) \,dx$ & $F(x)$
-\end{tabularx}
+\subsubsection*{Useful bound for $\sin$}
+$$\forall x \in \R^+_0: \sin(x) \leq x$$
+\begin{proof}
+    Let $g(x) = x - \sin(x)$ with $g'(x) = 1 - \cos(x) \geq 0$
+\end{proof}
 
-\newpage
-\section*{Tips and Tricks from PVW script}
-\begin{exercise}[Inductive sequences]
-    $a_1 := C, \ a_{n+1} := f(a_n) \ (\forall n > 1)$
-    \begin{enumerate}
-        \item Show monotonicity (either by induction over $\N$ or show $b_n = a_{n+1} - a_n$ (strictly) pos/neg $\forall n > 1$)
-        \item Show that the sequence is bounded (by induction)
-        \item Monotone convergence theorem $\implies$ $\exists \lim\limits_{n\to\infty} a_n$
-        \item $\lim\limits_{n\to\infty} a_n = a \implies \forall\text{subseq.} \ l(n) : \lim\limits_{n\to\infty} a_{l(n)} = a$ \\
-        Choose $l(n) = n + 1 \implies \lim\limits_{n\to\infty} a_{n+1} = a$ \\
-        And thus $a = \lim\limits_{n\to\infty} a_{n+1} = \lim\limits_{n\to\infty} f(a_n) = f(\lim\limits_{n\to\infty} a_n)$
-    \end{enumerate}
+\framebreak
+\subsection*{Derivatives and Integrals (\href{https://n.ethz.ch/~dcamenisch/summaries/}{src: dcamenisch})}
+\renewcommand{\arraystretch}{1.5}
+\begin{center}
+\begin{tabular}{c|c}
+    $\mathbf{F(x)}$ & $\mathbf{f(x)}$ \\
+    \midrule
+    $c$ & $0$ \\
+    $x^a$ & $a \cdot x^{a - 1}$ \\
+    $\frac{1}{a+1} x^{a + 1}$ & $x^a$ \\
+    $\frac{1}{a \cdot (n + 1)} (ax + b)^{n + 1}$ & $(ax + b)^n$ \\
+    $\frac{x^{a + 1}}{a + 1}$ & $x^a, \ a \neq -1$ \\
+    $\frac{1}{x}$ & $-\frac{1}{x^2}$ \\
+    $\sqrt{x}$ & $\frac{1}{2\sqrt{x}}$ \\
+    $\sqrt[n]{x}$ & $\frac{1}{n}x^{\frac{1}{n} - 1}$ \\
+    $\frac{2}{3}x^{\frac{3}{2}}$ & $\sqrt{x}$ \\
+    $\frac{n}{n+1} x^{\frac{1}{n} + 1}$ & $\sqrt[n]{x}$ \\
+    $e^x$ & $e^x$ \\
+    $\ln(|x|)$ & $\frac{1}{x}$ \\
+    $\log_a(|x|)$ & $\frac{1}{x \ln(a)} = \log_a(e^\frac{1}{x})$ \\
+    $\sin(x)$ & $\cos(x)$ \\
+    $\cos(x)$ & $-\sin(x)$ \\
+    $\tan(x) = \frac{\sin(x)}{\cos(x)}$ & $\frac{1}{\cos^2(x)} = 1 + \tan^2(x)$ \\
+    $\cot(x) = \frac{\cos(x)}{\sin(x)}$ & $\frac{1}{-\sin^2(x)}$ \\
+    $\arcsin(x)$ & $\frac{1}{\sqrt{1 - x^2}}$ \\
+    $\arccos(x)$ & $\frac{-1}{\sqrt{1 - x^2}}$ \\
+    $\arctan(x)$ & $\frac{1}{1 + x^2}$ \\
+    $\sinh(x) = \frac{e^x + e^{-x}}{2}$ & $\cosh(x)$ \\
+    $\cosh(x) = \frac{e^x - e^{-x}}{2}$ & $\sinh(x)$ \\
+    $\tanh(x) = \frac{\sinh(x)}{\cosh(x)}$ & $\frac{1}{\cosh^2(x)} = 1 - \tanh^2(x)$ \\
+    $\frac{1}{f(x)}$ & $\frac{-f'(x)}{(f(x))^2}$ \\
+    $a^{cx}$ & $a^{cx} \cdot c \ln(a)$ \\
+    $x^x$ & $x^x \cdot (1 + \ln(x)), \ x > 0$ \\
+    $(x^x)^x$ & $(x^x)^x (x + 2x \ln(x)), \ x > 0$ \\
+    $x^{x^x}$ & $x^{x^x} (x^{x - 1} + \ln(x) \cdot x^x (1 + \ln(x)))$ \\
+\end{tabular}
+
+\begin{tabular}{c|c}
+    $\mathbf{F(x)}$ & $\mathbf{f(x)}$ \\
+    \midrule
+    $\frac{1}{a} \ln(ax + b)$ & $\frac{1}{ax + b}$ \\
+    $\frac{ax}{c} - \frac{ad - bc}{c^2} \ln(|cx + d|)$ & $\frac{ax + b}{cx + d}$ \\
+    $\frac{1}{2a} \ln\left(\left| \frac{x-a}{x+a} \right|\right)$ & $\frac{1}{x^2 - a^2}$ \\
+    $\frac{x}{2} \sqrt{a^2 + x^2} + \frac{a^2}{2} \ln(x + \sqrt{a^2 + x^2}) $ & $ \sqrt{a^2 + x^2} $ \\
+    $\frac{x}{2} \sqrt{a^2 - x^2} - \frac{a^2}{2} \arcsin\left(\frac{x}{|a|}\right)$ & $\sqrt{a^2 - x^2}$ \\
+    $\frac{x}{2} \sqrt{x^2 - a^2} - \frac{a^2}{2} \ln(x + \sqrt{x^2 - a^2}) $ & $\sqrt{x^2 - a^2}$ \\
+    $\ln(x + \sqrt{x^2 \pm a^2})$ & $\frac{1}{\sqrt{x^2 \pm a^2}}$ \\
+    $\arcsin\left(\frac{x}{|a|}\right)$ & $\frac{1}{\sqrt{a^2 - x^2}}$ \\
+    $\frac{1}{a} \arctan\left(\frac{x}{a}\right)$ & $\frac{1}{x^2 + a^2}$ \\
+    $-\frac{1}{a} \cos(ax + b)$ & $\sin(ax + b)$ \\
+    $\frac{1}{a} \sin(ax + b)$ & $\cos(ax + b)$ \\
+    $-\ln(|\cos(x)|)$ & $\tan(x)$ \\
+    $\ln (|\sin(x)|)$ & $\cot(x)$ \\
+    $\ln\left(\left|\tan\left(\frac{x}{2}\right)\right|\right)$ & $\frac{1}{\sin(x)}$ \\
+    $\ln\left(\left|\tan(\frac{x}{2} + \frac{\pi}{4})\right|\right)$ & $\frac{1}{\cos(x)}$ \\
+    $\frac{1}{2} (x - \sin(x) \cos(x))$ & $\sin^2(x)$ \\
+    $\frac{1}{2} (x + \sin(x) \cos(x))$ & $\cos^2(x)$ \\
+    $\tan(x) - x$ & $\tan^2(x)$ \\
+    $-\cot(x) - x$ & $\cot^2(x)$ \\
+    $x \arcsin(x) + \sqrt{1 - x^2}$ & $\arcsin(x)$ \\
+    $x \arccos(x) - \sqrt{1 - x^2}$ & $\arccos(x)$ \\
+    $x \arctan(x) - \frac{1}{2} \ln (1 + x^2)$ & $\arctan(x)$ \\
+    $\ln(\cosh(x))$ & $\tanh(x)$ \\
+    $\ln(| f(x) |)$ & $\frac{f'(x)}{f(x)}$ \\
+    $x  (\ln(|x|) - 1)$ & $\ln(|x|)$ \\
+    $\frac{1}{n+1} (\ln x)^{n+1} \quad \quad n \neq -1 $ & $ \frac{1}{x}(\ln x)^n$ \\
+    $\frac{1}{2n} (\ln x^n)^{2} \quad \quad n \neq 0 $ & $ \frac{1}{x}\ln x^n$ \\
+    $\ln(|\ln(x)|) \quad \quad x > 0, x \neq 1$ & $\frac{1}{x \ln(x)}$ \\
+\end{tabular}
+
+\begin{tabular}{c|c}
+    $\mathbf{F(x)}$ & $\mathbf{f(x)}$ \\
+    \midrule
+    $\frac{1}{b \ln(a)} a^{bx}$ & $a^{bx}$ \\
+    $\frac{cx - 1}{c^2} \cdot e^{cx}$ & $x \cdot e^{cx}$ \\
+    $\frac{x^{n + 1}}{n + 1} \left(\ln(x) - \frac{1}{n + 1}\right) \quad n \neq -1 $ & $x^n \ln(x)$ \\
+    $\frac{e^{cx} \left(c \sin(ax + b) - a \cos(ax + b) \right)}{a^2 + c^2}$ & $\quad e^{cx} \sin (ax + b) $ \\
+    $\frac{e^{cx} \left(c \cos (ax + b) + a \sin(ax + b) \right)}{a^2 + c^2}$ & $\quad e^{cx} \cos (ax+b)$ \\
+    $\frac{\sin^2(x)}{2}$ & $\sin(x)\cos(x)$ \\
+\end{tabular}
+\end{center}
+
+\framebreak
+\section*{Multiple Choice Questions}
+
+This section contains only the correct answers.
+\subsection*{Sequences and Series}
+\begin{exercise}
+    $\sum_{k = 1}^\infty$ converges absolute and $\sum_{k=1}^\infty$ converges:
+    \begin{exanswers}
+        \item $\sum_{k=1}^\infty |a_k|^2$ converges \textbf{always} absolute.
+        \item $\sum_{k=1}^\infty a_k b_k$ converges \textbf{always} absolute.
+    \end{exanswers}
 \end{exercise}
 
-\begin{note}
-    Do no forget to write: $f$ as composition of two continuous functions is continuous when using the mean value theorem.
-\end{note}
-
-\begin{exercise}[Change of variables]
-    Let $f$ and $g$ be functions with $f$ continuous in $y_0$ and $g$ continuous in $x_0$ with $y_0 = \lim\limits_{x \to x_0} g(x)$:
-    $$\lim_{x \to x_0} f(g(x)) = \lim_{y \to y_0} f(y)$$
+\begin{exercise}
+    Let $f, g$ be monotonically increasing functions
+    \begin{exanswers}
+        \item[$\not\Rightarrow$] $f \cdot g$ monotonically increasing
+        \item[$\not\Rightarrow$] $\frac{f}{g}$ or $\frac{g}{f}$ monotonically increasing
+    \end{exanswers}
 \end{exercise}
 
-\begin{exercise}[Powerrule]
-    Let $f, g: D \to \R$ be cont. in $x_0$ with \\
-    $\lim\limits_{x \to x_0} f(x) = f(x_0) > 0$ and $\lim\limits_{x \to x_0} g(x) = g(x_0)$ (both exist), then:
-    $$\lim_{x \to x_0} f(x)^{g(x)} = f(x_0)^{g(x_0)}$$
+\subsection*{Functions}
+\begin{exercise}
+    $f: X \to Y, g: Y \to Z$ and $g \circ f : X \to Z$ bijective:
+    \begin{exanswers}
+        \item $f$ is injective, $g$ is surjective
+    \end{exanswers}
 \end{exercise}
 
-\begin{exercise}[Taylor Polynomial with precision]
-    Calculate $\sin(4)$ with a max error of $d = 0.01$.
-    \begin{enumerate}
-        \item Choose a fitting center and denote the new function
-        \begin{itemize}
-            \item $f(x) = \sin(x)$ with $x_0 = 4$, $a = \pi$ \textbf{or}
-            \item $f(x) = \sin(\pi + x)$ with $x_0 = 4 - \pi$, $a = 0$
-        \end{itemize}
-        \item Calculate the $(N + 1)$-th derivative of $f(x)$
-        \item Calculate the error $|R_n(f,x_0,a)|$
-        \item Solve the inequality $|R_n(f, x_0, a)| < d$ to $N$.
-        \item Solve the taylor polynomial for the given $N$.
-    \end{enumerate}
+\begin{exercise}
+    Let $a, b \in \R$ with $a < b$ and $f: ]a, b[ \to \R$:
+    \begin{exanswers}
+        \item $|f|$ cont. $\not\Rightarrow$ $f$ cont. (\textbf{CE} $f: -1 \ x \leq 0$, $1 \ x > 0$)
+        \item If $f^2$ and $f^3$ diff. in $]a, b[$ and $f(x) \neq 0 \forall x \implies f$ diff. since $\frac{h}{g}$ is diff. if both $h = f^3$ and $g = f^2$ are diff.
+    \end{exanswers}
+\end{exercise}
+
+\begin{exercise}
+    Let $f: [a, b] \to \R$ be a function and $f_n$ a function sequence with converges uniformly to $f$:
+    \begin{exanswers}
+        \item If $f_n$ for all $n \geq 1$ in $x_0 \in [a, b]$ bounded, then for all partitions $P$ der limit of lower sums exists \\
+        $\lim_{n\to\infty} \underline{S}(f_n, P) = \underline{S}(f, P)$
+        \item If $f_n$ for all $n \geq 1$ in $x_0$ is continuous, then $f$ is uniformly continuous
+        \item If $f_n$ for all $n \geq 1$ in $x_0$ convex, then $f$ is convex.
+        \item If $f_n$ for all $n \geq 1$ is diff. in $x_0 \not\Rightarrow f$ is diff. in $x_0$
+    \end{exanswers}
+\end{exercise}
+
+\section*{General Exercises}
+\subsection*{Sequences and Series}
+\begin{exercise}
+    Investigate if $\sum_{n=1}^\infty \log(\frac{n}{n+1})$ converges:
+    \begin{exanswers}
+        \item $\sum_{n=1}^\infty \log(\frac{n}{n+1}) = (\log(1) - \log(2)) + (\log(2) - \log(3)) + \ldots$. This is a telescopic series and thus alle terms cancel out except for $\log(1) - \log(n + 1)$ and thus for $n \to \infty$ it the series must diverge. 
+    \end{exanswers}
+\end{exercise}
+
+\begin{exercise}
+    Let $\sum_{k = 1}^\infty a_k$ be abs. conv. and $\sum_{k=1}^\infty b_k$ conv. does \\
+    $\sum_{k = 1}^\infty b_k \sin(a_k)$ converge?
+    \begin{exanswers}
+        \item Proof $\lim_{k \to \infty } b_k = 0$ by using $c_k$ where $c_1 = 0$ and $c_k = b_{k-1}$ for $k \geq 2$.
+        \item $\lim\limits_{n\to\infty} \sum\limits_{k=1}^n b_k = \lim\limits_{n\to\infty} \sum\limits_{k=1}^n c_k \implies $ \\
+        $\lim\limits_{n\to\infty} b_k = \lim\limits_{n\to\infty} (\sum\limits_{k=1}^n b_k - \sum\limits_{k=1}^n c_k) = 0$
+        \item Since $|\sin(x)| \leq |x|$, then by comparison theorem \\ 
+        $\sum_{k=1}^\infty \sin(a_k)$ converges absolutely.
+        \item Since $b_k$ is bounded by constant $C$: $|b_n \sin(a_n)| \leq C|a_n|$.
+    \end{exanswers}
+\end{exercise}
+
+\subsection*{Functions}
+\begin{exercise}
+    Show that $f(x) = \begin{cases}
+        x^x, & x > 0 \\
+        1, & x = 0 \\
+        (-x)^{-x}  & x < 0
+    \end{cases}$ is continuous.
+    \begin{exanswers}
+        \item Because $x^x$ is cont. for $x > 0$ and $(-x)^{-x}$ is cont. for $x < 0$ it suffices to prove $\lim_{x \to 0} f(x) = 1$.
+        \item $\lim\limits_{x \to 0^+} x \ln x = \lim\limits_{x \to 0^+} \frac{\ln(x)}{1 / x} \overset{H}{=} \lim\limits_{x \to 0^+} \frac{1 / x}{-1 / x^2} = 0 \Rightarrow x^x \overset{\lim}{\to} 1$
+        \item Since the function is even, we have $\lim_{x \to 0^-} x^x = 1$.
+    \end{exanswers}
+\end{exercise}
+
+\begin{exercise}
+    Show that $f(x) = \tan(x^3)$, $x \in ]((-\frac{\pi}{2})^\frac{1}{3}), (\frac{\pi}{2})^\frac{1}{3})[$ is monotone and calculate its inverse:
+    \begin{exanswers}
+        \item $f'(x) = \tan'(x^3)3x^3 = \frac{3x^2}{\cos(x^3)^2} > 0$ since $\cos(y)$ is strictly positive for $-\frac{\pi}{2} < y < \frac{\pi}{2}$. $x = 0$ does not break the monotonicity. $f^{-1}(x) = \arctan(x)^\frac{1}{3}$.
+    \end{exanswers}
 \end{exercise}
 
 \end{document}
