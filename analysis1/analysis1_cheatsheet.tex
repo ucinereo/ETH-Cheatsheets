@@ -1181,6 +1181,38 @@ $$\forall x \in \R^+_0: \sin(x) \leq x$$
     Let $g(x) = x - \sin(x)$ with $g'(x) = 1 - \cos(x) \geq 0$
 \end{proof}
 
+\subsection*{Natural Logarithm Rules}
+\begin{tabularx}{\linewidth}{XX}
+    $\ln(1) = 0$ & $\ln(e) = 1$ \\
+    $\ln(xy) = \ln(x) + \ln(y)$ & $\ln(x/y) = \ln(x) - \ln(y)$ \\
+    $\ln(x^y) = y \cdot \ln(x)$ & $x^\alpha \cdot x^\beta = x^{\alpha + \beta}$ \\
+    $(x^\alpha)^\beta = x^{\alpha \cdot \beta}$ & $\frac{x - 1}{x} \leq \ln(x) \leq x - 1$ \\
+    $\ln(1 + x^\alpha) \leq \alpha x$ & $\log_\alpha(x) = \frac{\ln(x)}{\ln(\alpha)}$
+\end{tabularx}
+
+\subsection*{Function Properties}
+Consider an arbitrary function $f: X \to Y$
+\begin{definition}[Injectiv]
+    $\forall x, y \in X: f(x) = f(y) \implies x + y$ \\
+    \textit{Proof strategies:}
+    \begin{itemize}
+        \item Assume $f(x)= f(y)$ and then show that $x = y$
+        \item Assume $x \neq y$ and show that $f(x) \neq f(y)$
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Surjective]
+    $\forall y \in Y \ \exists x \in X: f(x) = y$ \\
+    \textit{Proof strategies:}
+    \begin{itemize}
+        \item Take arbitrary $y \in Y$ and show that there is an element $x \in X$. Consider $f(x) = y$ and solve for $x$ and check whether or not $x \in X$.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Bijective]
+    $f$ injective and surjective $\implies f$ bijective
+\end{definition}
+
 \framebreak
 \subsection*{Derivatives and Integrals (\href{https://n.ethz.ch/~dcamenisch/summaries/}{src: dcamenisch})}
 \renewcommand{\arraystretch}{1.5}
