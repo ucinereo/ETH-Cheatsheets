@@ -1192,8 +1192,8 @@ $$\forall x \in \R^+_0: \sin(x) \leq x$$
 
 \subsection*{Function Properties}
 Consider an arbitrary function $f: X \to Y$
-\begin{definition}[Injectiv]
-    $\forall x, y \in X: f(x) = f(y) \implies x + y$ \\
+\begin{definition}[Injective]
+    $\forall x, y \in X: f(x) = f(y) \implies x = y$ \\
     \textit{Proof strategies:}
     \begin{itemize}
         \item Assume $f(x)= f(y)$ and then show that $x = y$
@@ -1365,6 +1365,16 @@ This section contains only the correct answers.
     \end{exanswers}
 \end{exercise}
 
+\begin{exercise}
+    Calculate $\lim\limits_{x \to 0} x^4 \sin(\frac{1}{x})$
+    \begin{exanswers}
+        \item $x \mapsto |\sin(\frac{1}{x})|$ is bounded by $1$
+        \item $0 \leq |x^4\cdot\sin(\frac{1}{x})| \leq x^4$
+        \item Both left and right handside functions have limit 0.
+        \item Thus by sandwich theorem it converges to 0.
+    \end{exanswers}
+\end{exercise}
+
 \subsection*{Functions}
 \begin{exercise}
     Show that $f(x) = \begin{cases}
@@ -1383,6 +1393,17 @@ This section contains only the correct answers.
     Show that $f(x) = \tan(x^3)$, $x \in ]((-\frac{\pi}{2})^\frac{1}{3}), (\frac{\pi}{2})^\frac{1}{3})[$ is monotone and calculate its inverse:
     \begin{exanswers}
         \item $f'(x) = \tan'(x^3)3x^3 = \frac{3x^2}{\cos(x^3)^2} > 0$ since $\cos(y)$ is strictly positive for $-\frac{\pi}{2} < y < \frac{\pi}{2}$. $x = 0$ does not break the monotonicity. $f^{-1}(x) = \arctan(x)^\frac{1}{3}$.
+    \end{exanswers}
+\end{exercise}
+
+\framebreak
+\subsection*{Derivatives and integrals}\
+\begin{exercise}
+    $f(x) = \int_x^2 \frac{e^{t^2}}{t}\,dt + \log(\frac{x}{2})$. Calculate $f'$é
+    \begin{exanswers}
+        \item Let $g(x) = \frac{e^{t^2}}{t}$ thus $f(x) = G(2) - G(x) + \log(\frac{x}{2})$
+        \item It follows $f'(x) = G'(x) + \frac{1}{x}$ since $G(2) = C \in \R$
+        \item Thus $f'(x) = g(x) - \frac{1}{x} = \frac{-e^{x^2} + 1}{x}$
     \end{exanswers}
 \end{exercise}
 
