@@ -436,12 +436,12 @@ exs.shutdown(); // initiate shutdown, does not wait, but can’t submit more tas
 ```
 
 #### ForkJoin Framework
-`Thread` $\to$ `RecursiveTask<V>`
-`run` $\to$ `compute`
-`start` $\to$ `fork`
-`join` $\to$ `join` with return value
-Don't call `run` to hand-optimize $\to$ Do call `compute` to hand-optimize
-Don't have a topmost call to `run` $\to$ Do create a pool and `invoke`
+`Thread` $\to$ `RecursiveTask<V>`  
+`run` $\to$ `compute`  
+`start` $\to$ `fork`  
+`join` $\to$ `join` with return value  
+Don't call `run` to hand-optimize $\to$ Do call `compute` to hand-optimize  
+Don't have a topmost call to `run` $\to$ Do create a pool and `invoke`  
 ![](imgs/forkjoin.jpeg)
 
 - Sequential threshold
@@ -455,25 +455,25 @@ private ReduceClass (..., int processors) {
   this.processors = processors;
 }
 
-protected Integer compute(){
-	if ( processors == 1 ) {
-		// cutoff: do sequential stuff
-	}
+protected Integer compute(){ 
+  if ( processors == 1 ) {
+    // cutoff: do sequential stuff
+  }
 
-	int p1 = processors / 2;
-	ReduceClass t1 = new ReduceClass(..., p1);
-	ReduceClass t2 = new ReduceClass(..., processors - p1);
-	
+  int p1 = processors / 2;
+  ReduceClass t1 = new ReduceClass(..., p1);
+  ReduceClass t2 = new ReduceClass(..., processors - p1);
+
   t1.fork();
-	Integer r2 = t2.compute();
+  Integer r2 = t2.compute();
 
-	return r2 + t1.join();
+  return r2 + t1.join();
 }
 ```
 
 ### Parallel Patterns
 #### Reduction and Maps
-Produce single answer from collection via an associative operator: `max`, `count`, `rightmost`, `sum`, etc.
+Produce single answer from collection via an associative operator: `max`, `count`, `rightmost`, `sum`, etc.  
 Non-examples: `median`, `subtraction`, `exponentiation`
 
 A map operates on each element of a collection independently to
@@ -1853,7 +1853,7 @@ void Communicator.send(
 
 **Receive Message**
 ```Java
-void Communicator.send(
+void Communicator.recv(
   Object buffer,         // Pointer to the buffer to receive to
   int offset,
   int count,             // number of items to be received
