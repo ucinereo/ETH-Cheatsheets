@@ -1317,15 +1317,15 @@ This section contains only the correct answers.
     \end{exanswers}
 \end{exercise}
 
+\subsection*{Functions}
 \begin{exercise}
     Let $f, g$ be monotonically increasing functions
-    \begin{exanswers}
+    \begin{exanswers}[leftmargin=7mm]
         \item[$\not\Rightarrow$] $f \cdot g$ monotonically increasing
         \item[$\not\Rightarrow$] $\frac{f}{g}$ or $\frac{g}{f}$ monotonically increasing
     \end{exanswers}
 \end{exercise}
 
-\subsection*{Functions}
 \begin{exercise}
     $f: X \to Y, g: Y \to Z$ and $g \circ f : X \to Z$ bijective:
     \begin{exanswers}
@@ -1349,6 +1349,13 @@ This section contains only the correct answers.
         \item If $f_n$ for all $n \geq 1$ in $x_0$ is continuous, then $f$ is uniformly continuous
         \item If $f_n$ for all $n \geq 1$ in $x_0$ convex, then $f$ is convex.
         \item If $f_n$ for all $n \geq 1$ is diff. in $x_0 \not\Rightarrow f$ is diff. in $x_0$
+    \end{exanswers}
+\end{exercise}
+
+\begin{exercise}
+    Let $f: [-1, 1] \to \R$ be an even, two times diff. function. Does $\forall x \in ]0, 1[ \, \exists \mu \in ]0, x[ : f(x) - f(0) = \frac{f''(\mu)x^2}{2}$ hold?
+    \begin{exanswers}
+        \item Yes. $f'$ is diff. and cont. on $]-1, 1[$. Thus using MVT $\forall x \in ]0, 1[ \ \exists \mu \in ]0, x[ : f'(x) - f'(0) = f''(\mu)(x - 0) \implies f'(x) = f''(\mu) x$. Thus $\int_0^x f'(x) \,dx = f''(\mu) \int_0^x x \,dx$. Using fundamental theorem of calculus, we have $f(x) - f(0) = \frac{f''(\mu)x^2}{2}$.
     \end{exanswers}
 \end{exercise}
 
@@ -1405,7 +1412,6 @@ This section contains only the correct answers.
     \end{exanswers}
 \end{exercise}
 
-\framebreak
 \subsection*{Derivatives and integrals}\
 \begin{exercise}
     $f(x) = \int_x^2 \frac{e^{t^2}}{t}\,dt + \log(\frac{x}{2})$. Calculate $f'$é
