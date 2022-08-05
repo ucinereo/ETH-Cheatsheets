@@ -62,6 +62,7 @@
     {\end{ntheorem_wrapper}\end{mdframed}}
 
 \definecolor{cgreen}{HTML}{2ecc71} 
+\definecolor{bgreen}{HTML}{8de3b1}
 \mdfdefinestyle{trick}{
     linecolor=yellow,
     linewidth=0pt,
@@ -72,7 +73,7 @@
     leftmargin=0pt,
     rightmargin=0pt,
     outerlinewidth=0pt,
-    backgroundcolor=cgreen,
+    backgroundcolor=bgreen,
 }
 
 \newenvironment{note}%
@@ -1307,11 +1308,18 @@ $$\binom{n}{k} = \frac{n!}{k! \cdot (n-k)!}$$
     $\ln(|\ln(x)|) \quad \quad x > 0, x \neq 1$ & $\frac{1}{x \ln(x)}$ \\
     $\frac{1}{b \ln(a)} a^{bx}$ & $a^{bx}$ \\
     $\frac{cx - 1}{c^2} \cdot e^{cx}$ & $x \cdot e^{cx}$ \\
+    $\frac{1}{c}e^{cx}$ & $e^{cx}$ \\
     $\frac{x^{n + 1}}{n + 1} \left(\ln(x) - \frac{1}{n + 1}\right) \quad n \neq -1 $ & $x^n \ln(x)$ \\
     $\frac{e^{cx} \left(c \sin(ax + b) - a \cos(ax + b) \right)}{a^2 + c^2}$ & $\quad e^{cx} \sin (ax + b) $ \\
     $\frac{e^{cx} \left(c \cos (ax + b) + a \sin(ax + b) \right)}{a^2 + c^2}$ & $\quad e^{cx} \cos (ax+b)$ \\
-    $\frac{\sin^2(x)}{2}$ & $\sin(x)\cos(x)$ \\
-    $\frac{1}{c}e^{cx}$ & $e^{cx}$ \\
+    $\sin(x)\cos(x)$ & $\frac{\sin^2(x)}{2}$ \\
+    $\frac{1}{2}(f(x))^2$ & $f'(x) f(x)$ \\
+    $\sqrt{\pi}$ & $\int_{-\infty}^\infty e^{-x^2} \,dx$ \\
+    $\frac{1}{a(n+1)}(ax+b)^{n+1}$ & $(ax+b)^n$ \\
+    $\frac{(ax+b)^{n+2}}{(n+2)a^2} - \frac{b(ax+b)^{n+1}}{(n+1)a^2}$ & $x(ax)^n$ \\
+    $\frac{(ax^p+b)^{n+1}}{ap(n+1)}$ & $(ax^p+b)^n x^{p-1}$ \\
+    $\frac{1}{ap} \ln |ax^p + b|$ & $(ax^p + b)^{-1} x^{p-1}$ \\
+    $\frac{ax}{c} - \frac{ad-bc}{c^2} \ln |cx +d|$ & $\frac{ax+b}{cx+d}$ \\
 \end{tabular}
 \end{center}
 
@@ -1434,7 +1442,7 @@ This section contains only the correct answers.
         \item $\cos(x) = 1 - \frac{x^2}{2} + \BO(x^4)$ and $\log(1 + x) = x + \BO(x^2)$ hold $\forall t \in \R$ if $n \to \infty$
     \end{exanswers}
     \begin{align*}
-        \cos\left(\frac{t}{\sqrt{n}}^n\right) &= \exp\left(n \log \left(\cos \left(\frac{t}{\sqrt{n}}\right)\right)\right) \\
+        \cos\left(\frac{t}{\sqrt{n}}\right)^n &= \exp\left(n \log \left(\cos \left(\frac{t}{\sqrt{n}}\right)\right)\right) \\
         &= \exp\left(n \log \left(1 - \frac{t^2}{2n} + \BO\left(\frac{1}{n^2}\right)\right)\right) \\
         &= \exp\left(n\left(-\frac{t^2}{2n} + \BO\left(\frac{1}{n^2}\right)\right)\right) \\
         &= \exp\left(-\frac{t^2}{2} + \BO\left(\frac{1}{n}\right)\right) \\
@@ -1442,7 +1450,22 @@ This section contains only the correct answers.
     \end{align*}
 \end{exercise}
 
-\framebreak
+\begin{exercise}
+    Let $f: \R \to \R$, $f(x) = \frac{\cos(x) - sin(x)^2}{4}$.
+    \begin{exanswers}
+        \item Show that $|f'(x)| \leq \frac{3}{4}$ for all $ \in \R$. Since $f'(x) = \frac{sin(x)(-1 - 2 \cos(x))}{4} \implies |f'(x)| \leq \frac{|-1| + |2\cos(x)|}{4} \leq \frac{3}{4}$
+        \item Let $(x_n)_{n \geq 1}$ be a sequence such that $x_1 = 0$ and \\
+        $x_{n+1} = f(x_n)$. Show that $|x_{n+1} - x_n| \leq (\frac{3}{4})^{n - 1} \frac{1}{4}$. \\
+        Since $x_2 = f(x_1) = f(0) = \frac{1}{4}$ we have $|x_2 - x_1| = \frac{1}{4}$. That means it hold for $n = 1$. Per induction we assume $|x_{n+1} - x_n| \leq (\frac{3}{4})^{n-1} \frac{1}{4} \quad \forall n < N$. Because of the mean value theorem of diff. it exists a $t$ between $x_N$ and $x_{N - 1}$ such that $|x_{N + 1} - x_N| = |f(x_N) - f(x_{N - 1})| $ \\
+        $\leq f'(t)|x_N - x_{N - 1}|$ $\leq \frac{3}{4}|x_N - x_{N - 1}| \leq (\frac{3}{4})^{N - 1} \frac{1}{4}$.
+        \framebreak
+        \item Show that $x_n$ is a cauchy sequence. For $m \geq 0$ we have because of the triangle inequalitiy: $|x_{n + m} - x_n| \leq \sum\limits_{k=1}^m |x_{n + k} - x_{n + k - 1}| \leq \sum\limits_{k=1}^m (\frac{3}{4})^{n + k - 2} \frac{1}{4} = (\frac{3}{4})^{n - 2} \frac{1}{4} \sum\limits_{k=1}^m (\frac{3}{4})^k$ \\
+        $\leq (\frac{3}{4})^{n - 2} \frac{1}{4} (-1 + \sum\limits_{k = 0}^\infty (\frac{3}{4})^k) = (\frac{3}{4}^{n - 2}) \frac{1}{4} (-1 + \frac{1}{1 - \frac{3}{4}})$ \\
+        $= (\frac{3}{4})^{n - 1}$ That means for a given $\epsilon > 0$ we choose $N(\epsilon) \in \N$, such that $(\frac{3}{4})^{n + 1} < \epsilon \quad \forall n \geq N$. Then it holds that $|x_{n + m} - x_n| \leq \epsilon \quad \forall n \geq N, m \geq 0$. Which implies that it is indeed a cauchy sequence.
+        \item Show that $x_n \to y$ for $n \to \infty$. Since the sequence is cauchy, it converges and because of continuity it follows $y = \lim_{n \to \infty} x_n = \lim_{n\to\infty} f(x_{n-1}) = f(y)$.
+    \end{exanswers}
+\end{exercise}
+
 \subsection*{Functions}
 \begin{exercise}
     Show that $f(x) = \begin{cases}
@@ -1464,6 +1487,20 @@ This section contains only the correct answers.
     \end{exanswers}
 \end{exercise}
 
+\begin{exercise}
+    Calculate all cont. points of $f: \R \to \R$ with \\
+    $f(x) := \begin{cases}
+        1 - 2x, & x \in \Q \\
+        x - 3, & x \in \R \setminus \Q
+    \end{cases}$:
+    \begin{exanswers}
+        \item The graphs for intersect in only one point: $1 - 2x = x - 3 \iff x_0 = \frac{4}{3}$
+        \item Proof continuity of $x_0$ with $y \in \R \setminus \Q$ by $|f(x_0) - f(y)| = |1 - \frac{8}{3} - y + 3| = |\frac{4}{3} - y| = |x_0 - y| < \delta$
+        \item Set $\delta = \epsilon$ then it shows that $f$ is continuous at $x_0$.
+        \item To proof that it is the only continuous point in the function an each $x \in \Q$ lies between irrational numbers, we can take $\epsilon$ as the half of the distance between $f(x) = 1-2x$ and $x-3$ and then it is clear that for $\delta$ small we have that if $y \in (x - \delta, x + \delta) \cap \R \setminus \Q$ then $|f(x) - f(y)| \geq \epsilon$. The existence of $\delta$ follows from the fact that the distance between the two lines varies continuously.
+    \end{exanswers}
+\end{exercise}
+
 \subsection*{Derivatives and integrals}\
 \begin{exercise}
     $f(x) = \int_x^2 \frac{e^{t^2}}{t}\,dt + \log(\frac{x}{2})$. Calculate $f'(x)$:
@@ -1473,5 +1510,36 @@ This section contains only the correct answers.
         \item Thus $f'(x) = g(x) - \frac{1}{x} = \frac{-e^{x^2} + 1}{x}$
     \end{exanswers}
 \end{exercise}
+
+\begin{exercise}
+    Let $f: [a, b] \to \R$, $G: [a, b] \to \R$ be integrable with $G$ continuous and $F > 0$. Show that $c \in [a, b]$ exists such that $\int_a^b F(x)G(x) \,dx = G(c)\int_a^b F(x) \,dx$:
+    \begin{exanswers}
+        \item Because $F > 0$: \\
+        $(\inf_{[a, b]} G) F(x) \leq G(x) F(x) \leq (\sup_{[a, b]} G) F(x)$ for all $x \in [a, b]$
+        \item Thus by monotonicity of integrals: \\
+        \resizebox{\linewidth}{!}{
+            $(\inf_{[a, b]} G) \int_a^b F(x) \,dx \leq \int_a^b G(x) F(x) \,dx \leq (\sup_{[a, b]} G) \int_a^b F(x) \,dx$
+        }
+        \item because $F > 0$, it follows $\int_a^b F(x) \,dx > 0$ and thus we can write \\
+        $\inf_{[a, b]} G \leq \frac{\int_a^b G(x)F(x) \,dx}{\int_a^b F(x) \,dx} \leq \sup_{[a, b]} G$.
+        \item Because $G$ is continuous we can use the mean value theorem such that $\exists c \in [a, b] : G(c) = \frac{\int_a^b G(x) F(x) \,dx}{\int_a^b F(x) \,dx}$
+    \end{exanswers}
+\end{exercise}
+
+\framebreak
+\section*{Undergraduate approved theorems}
+\begin{center}
+    \begin{tabular}{ccc}
+        \$ To-Ye & \textdagger \ Cryptric & $\ddagger$ ucinereo
+    \end{tabular}
+\end{center}
+\begin{itemize}
+    \item[\textdagger:] $\cos(1)= 1$ 
+    \item[$\ddagger$:] $e^0 = 0$
+    \item[\textdagger, \$:] $\frac{\ln(x)}{\ln(y)} = \ln(x - y)$
+    \item[\textdagger, \$:] $x^\alpha \cdot x^\beta = x^{\alpha \cdot \beta}$
+    \item[$\ddagger$:] $x = \lambda \implies x^2 = |x^2| = \lambda^2 \implies |x| = \lambda$
+    \item[\$:] $\int \frac{1}{2}g(x) \cdot \frac{1}{2}f(x) \,dx = \frac{1}{2}\int g(x) f(x) \,dx$
+\end{itemize}
 
 \end{document}
