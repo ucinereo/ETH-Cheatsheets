@@ -116,7 +116,7 @@ All screenshots are directly taken from the lecture notes. All copyrights belong
   - [Keywords](#keywords)
 
 ## Java Threads
-![](imgs/threadstatediagram.png)
+![](imgs/threadstatediagram.png)  
 Multiple threads share the same address space. That means threads are not shielded from each other and share resources and can communicate more easily. The context switching between threads is efficient, because of the same address space and no automatic scheduling. No saving / reloading of PCB (OS process) state.
 
 - Thread is created when an object derived from the Thread class is created. At this point, the thread is not executable, it is in a **new** state.
