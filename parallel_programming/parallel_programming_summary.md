@@ -1500,9 +1500,9 @@ H <   B p.enq(4)  \
    \
 ```
 
-**Sequential Histories**: Method calls of different threads do not interleave. A final pending invocations is ok.
-**Well formed histories**: Per thread projections are sequential.
-**Equivalent histories**: $H|A = G|A \land H|B = G|B \implies H \equiv B$
+**Sequential Histories**: Method calls of different threads do not interleave. A final pending invocations is ok.  
+**Well formed histories**: Per thread projections are sequential.  
+**Equivalent histories**: $H|A = G|A \land H|B = G|B \implies H \equiv B$  
 **Legal histories**: If for every object $x$, $H|x$ adheres to the sequential specification of $x$.
 
 #### Projections
