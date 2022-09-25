@@ -1,0 +1,179 @@
+% Configuration
+\documentclass[a4paper, 10pt]{article}
+
+% Formatting
+\usepackage[landscape, left=0.75cm, top=1.0cm, right=0.75cm, bottom=1.5cm, footskip=15pt]{geometry}
+\setlength{\columnsep}{0.5cm}
+\usepackage{flowfram}
+\ffvadjustfalse
+\Ncolumn{3}
+\usepackage[compact]{titlesec}
+
+% ------------------------
+% Imports and commands
+% ------------------------
+
+% Language stuff
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+% Math stuff
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+
+\newtheorem*{corollary}{Cor}
+\newtheorem*{lemma}{Lemma}
+
+\theoremstyle{definition}
+\newtheorem*{theorem}{Thm}
+\newtheorem*{definition}{Def}
+
+\newtheoremstyle{colored}{}{}{}{}{\bf}{}{.5em}{{\thmnote{(#3) }}}
+\theoremstyle{colored}
+\newtheorem*{note_wrapper}{}
+
+\newtheoremstyle{ex}{2pt}{5pt}{}{}{\bf}{}{0pt}{{\thmnote{(#3) }}}
+\theoremstyle{ex}
+\newtheorem*{exercise}{}
+
+\newtheoremstyle{named}{}{}{}{}{\bfseries}{.}{.5em}{\thmnote{#3}}
+\theoremstyle{named} 
+\newtheorem*{ntheorem_wrapper}{Theorem}
+
+% Colored boxes
+\usepackage{xcolor}
+\usepackage{mdframed}
+\mdfsetup{skipabove=-2pt,skipbelow=-2pt}
+
+\definecolor{cwhite}{HTML}{d7dbd7}
+\mdfdefinestyle{important}{
+    linecolor=yellow,
+    linewidth=0pt,
+    innertopmargin=-6pt,
+    innerbottommargin=2pt,
+    innerrightmargin=2pt,
+    innerleftmargin=2pt,
+    leftmargin=0pt,
+    rightmargin=0pt,
+    outerlinewidth=0pt,
+    backgroundcolor=cwhite,
+}
+
+\newenvironment{ntheorem}%
+    {\begin{mdframed}[style=important]\begin{ntheorem_wrapper}}%
+    {\end{ntheorem_wrapper}\end{mdframed}}
+
+\definecolor{cgreen}{HTML}{2ecc71} 
+\definecolor{bgreen}{HTML}{FFED8A}
+\mdfdefinestyle{trick}{
+    linecolor=yellow,
+    linewidth=0pt,
+    innertopmargin=-6pt,
+    innerbottommargin=2pt,
+    innerrightmargin=2pt,
+    innerleftmargin=2pt,
+    leftmargin=0pt,
+    rightmargin=0pt,
+    outerlinewidth=0pt,
+    backgroundcolor=bgreen,
+}
+
+\newenvironment{note}%
+    {\begin{mdframed}[style=trick]\begin{note_wrapper}}%
+    {\end{note_wrapper}\end{mdframed}}
+
+% Table stuff
+\usepackage{tabularx} % tabularx since the width should be handled automatically
+\usepackage{booktabs}
+
+% Graph stuff
+\usepackage{pgfplots}
+
+% Miscellaneous
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue}
+
+\usepackage{enumitem}
+\setitemize{itemsep=0.5pt, topsep=0pt}
+\setenumerate{itemsep=0.75pt, topsep=0pt}
+
+\usepackage{graphics}
+
+\newlist{exanswers}{itemize}{2}
+\setlist[exanswers]{itemsep=2pt, topsep=2pt}
+\setlist[exanswers,1]{label=$\diamond$,leftmargin=5mm}
+\setlist[exanswers,2]{label=\textbullet,leftmargin=1mm}
+
+% Custom commands
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\BO}{\mathcal{O}}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+
+% Metadata
+\title{Analysis II Summary}
+\author{Nicola Studer \\ \href{mailto:nicstuder@student.ethz.ch}{nicstuder@student.ethz.ch}}
+\date{\vspace{-5ex}}
+
+
+% ------------------------
+% Document
+% ------------------------
+
+\begin{document}
+\maketitle
+
+\section{Ordinary differential equations}
+\[F(x, y(x), y'(x), \ldots, y^{(n)}) = 0\]
+Given a function \(F\) of \(x, y\), where \(x\) and \(y\) are functions themselves. \(F\) is an implicit ODE of \textbf{order} \(n\).
+
+\begin{note}[Linear ODE's]
+    Linear ODE with \(a_{k-1}, \ldots, a_0, b\) as cont. functions of \(x\) in \(I \subset \R\):
+    \[y^{(k)} + a_{k-1}(x)y^{(k-1)} + \ldots + a_1(x)y' + a_0(x)y = b(x)\]
+    If \(\bm{b = 0}\) then the ODE is called \textbf{homogeneous}.
+\end{note}
+
+\begin{ntheorem}[Properties of linear ODEs]
+    \(\;\)
+    \begin{enumerate}
+        \item no coefficients before the highest derivative
+        \item all coefficients are continuous functions
+        \item no products of \(y\) and its derivatives
+        \item no powers of \(y\) and its derivatives
+        \item no functions which depend on \(y\) or its derivatives
+    \end{enumerate}
+\end{ntheorem}
+
+\begin{theorem}[Main result about linear ODEs]
+    \(\;\)
+    \begin{enumerate}
+        \item Let \(\mathcal{S}_0\) be the set of solutions when \(b = 0\). Then \(\mathcal{S}_0\) is a vector space of dimension \(k\). If \(f_1, \ldots, f_k\) are the solutions, then so is \(a_1f_1+ \ldots a_kf_k\).
+        \item For any \textbf{initial condition} (i.e. for any choice of \(x_0 \in I\)) there is a unique solution \(f \in \mathcal{S}_0\) such that: \\
+        \(f(x_0) = y_0, f'(x_0) = y_1, \ldots, f^{(k-1)}(x_0) = y_{k-1}\)
+        \item For any arbitrary \(b(x)\), the set of solutions of the ODE is \(\mathcal{S}_b = \{f + f_p \ | \ f \in \mathcal{S}_0\}\) where \(f_p\) is a particular solution of the ODE.
+        \item For any initial condition there is a unique solution \(f \in \mathcal{S}_b\).
+    \end{enumerate}
+\end{theorem}
+
+\subsection{Linear ODE of order 1}
+\[y' + a(x)y = b(x)\]
+\begin{note}[How to solve]
+    \(\;\)
+    \begin{enumerate}
+        \item Solve the homogeneous ODE:
+        \begin{flalign*}
+            && y' + ay &= 0 & \\
+            &\implies & y' = - ay & \\
+            &\implies & \tfrac{y'}{y} &= -a & (\text{assume \(y \neq 0\) no \(I\)}) \\
+            &\implies & \ln(|y|) &= -A + C & (A(x) = \smallint a(x) \,dx) \\
+            &\implies & y &= e^{-A + C} = z\cdot e^-A & (\text{simplify})
+        \end{flalign*}
+        \item Find a particular solution \(f_p: I \to \C\) with either an educated guess or variation of parameters such that \(f'_p + af_p = b\).
+    \end{enumerate}
+\end{note}
+\end{document}
