@@ -1,0 +1,163 @@
+% Configuration
+\documentclass[a4paper, 10pt]{article}
+
+% Formatting
+\usepackage[landscape, left=0.75cm, top=1.0cm, right=0.75cm, bottom=1.5cm, footskip=15pt]{geometry}
+\setlength{\columnsep}{0.5cm}
+\usepackage{flowfram}
+\ffvadjustfalse
+\Ncolumn{3}
+\usepackage[compact]{titlesec}
+
+% ------------------------
+% Imports and commands
+% ------------------------
+
+% Language stuff
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+
+% Math stuff
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{bm}
+
+\newtheorem*{corollary}{Cor}
+
+% Enumerated math stuff
+\theoremstyle{definition}
+\newtheorem{definition}{Def}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}{Thm}[section]
+\newtheorem{note}{Bmk}[section]
+
+% Math stuff without enumeration
+\newtheorem*{definition*}{Def}
+\newtheorem*{example}{Bsp}
+
+% Miscellaneous
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue}
+
+\usepackage{enumitem}
+\setitemize{itemsep=0.5pt, topsep=0pt}
+\setenumerate{itemsep=0.75pt, topsep=0pt}
+
+% Custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\words}{\Sigma^*}
+\newcommand{\A}{\Sigma}
+\newcommand{\Kon}{\text{Kon}}
+
+% Metadata
+\title{Theoretische Informatik}
+\author{Nicola Studer \\ \href{mailto:nicstuder@student.ethz.ch}{nicstuder@student.ethz.ch}}
+\date{\today}
+
+
+% ------------------------
+% Document
+% ------------------------
+
+\begin{document}
+\maketitle
+
+\section{Gruppentheorie}
+\begin{definition}[Monoid]
+    \(\langle M; *, e\rangle\) mit \(*\) assoziativ und \(e\) als neutrales Element.
+\end{definition}
+
+\begin{definition}[Gruppe]
+    \(\langle G; *, ^, e\rangle\) mit \(*\) assoziativ, \(e\) als neutrales Element und jedes element \(x \in G\) hat Inverses \(\hat{x}\).
+\end{definition}
+
+\section{Alphabete, Wörter, Sprachen und die Darstellung von Problemen}
+
+\begin{definition}
+    Eine endliche nichtleere Menge \(\A\) heisst \textbf{Alphabet}. Die Elemente eines Alphabets heissen \textbf{Buchstaben} (\textbf{Zeichen}, \textbf{Symbole}).
+\end{definition}
+
+\begin{example}
+    \(\A_{\text{bool}} = \{0, 1\}\), \(\A_{\text{lat}} = \{a, b, c, \ldots, z\}\), \\
+    \(\A_{\text{Keyboard}} = \A_{\text{lat}} \cup \{A, B, \ldots, Z, \text{\textvisiblespace}, >, <, (, ), \ldots, !\}\), \\
+    \(\A_{\text{logic}} = \{0, 1, x, (, ), \land, \lor, \lnot \}\)
+\end{example}
+
+\begin{definition}
+    Ein \textbf{Wort} über \(\A\) ist eine endliche (eventuell leere) Folge von Buchstaben aus \(\A\). Das \textbf{leere Wort} \(\lambda\) ist die leere Buchstabenfolge. \(|\lambda| = 0\). \\
+    \(\bm{\words}\) ist die Menge aller Wörter über \(\A\), \(\A^+ = \words - \{\lambda\}\). \\
+    \(\bm{\A^i} = \{x \in \words \ | \ |x| = i\}\)
+\end{definition}
+
+\begin{definition}[Verkettung]
+    \(\Kon: \words \times \words \to \words\).
+    \[\Kon(x, y) = x \cdot y = xy\]
+\end{definition}
+
+\begin{note}
+\((\words, \Kon)\) ist Monoid mit neutralem Element $\lambda$.
+\end{note}
+
+\begin{note}
+    \(\forall x,y \in \words: |xy| = |x \cdot y| = |x| + |y|\).
+\end{note}
+
+\begin{definition}[Umkehrung]
+    \(a^\text{R} = a_na_{n-1} \ldots a_1\)
+\end{definition}
+
+\begin{definition}
+    \(i\)-te Iteration \(x^i\) von \(x \in \A\) wird definiert als \(x^0 = \lambda\), \(x^1 = x\) und \(x^i = xx^{i-1}\).
+\end{definition}
+
+\begin{definition}\(\;\)
+    \begin{itemize}
+        \item \(v\) heisst \textbf{Teilwort} von \(w \iff \exists x,y \in \words: w = xvy\).
+        \item \(v\) heisst \textbf{Präfix} von \(w \iff \exists y \in \words: w = vy\).
+        \item \(v\) heisst \textbf{Suffix} von \(w \iff \exists x \in \words: w = xv\).
+        \item \(v \neq \lambda\) heisst \textbf{echtes Teilwort} (Präfix, Suffix) von \(w\) genau dann, wenn \(v \neq w\) und \(v\) ein Teilwort (Präfix, Suffix) von \(w\) ist.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}
+    \(|x|_a\) Anzahl der Vorkommen von \(a\) in \(x\).
+\end{definition}
+
+\begin{definition}
+    \(\A = \{s_1, s_2, \ldots, s_m\}\), \(m \geq 1\) mit \(s_1 < s_2 \ldots < s_m\) als Ordnung auf \(\A\). Wir definieren die \textbf{kanonische Ordnung} auf \(\words\) für \(u, v \in \words\):
+    \[u < v \iff |u| < |v| \lor |u| = |v| \land u = x \cdot s_i \cdot u' \land v = x \cdot s_j \cdot v'\] für irgendwelche \(x, u', v' \in \words\) und \(s_i < s_j\).
+\end{definition}
+
+\begin{definition}[Sprache]
+    \(L \subseteq \words\) mit Komplement \(L^\text{C} = \words - L\).
+    \begin{itemize}
+        \item \(\bm{L_\emptyset} = \emptyset\) ist die \textbf{leere Sprache}
+        \item \(\bm{L_1 \cdot L_2 = L_1 L_2} = \{vw \ | \ v \in L_1 \ \text{und} \ w \in L_2\}\)
+        \item \(\bm{L^0} := L_\lambda\) und \(\bm{L^{i + 1}} = L^i \cdot L\) für alle \(i \in \N\)
+        \item \(\bm{L^*} = \bigcup\limits_{i \in \N} L^i\) und \(\bm{L^+} = \bigcup\limits_{i \in \N - \{0\}} L^i = L \cdot L^*\)
+    \end{itemize}
+\end{definition}
+
+\begin{lemma}
+    \(L_1 L_2 \cup L_1 L_3 = L_1 (L_2 \cup L_3)\)
+\end{lemma}
+
+\begin{lemma}
+    \(L_1 (L_2 \cap L_3) \subseteq L_1 L_2 \cap L_1 L_3\)
+\end{lemma}
+
+\begin{lemma}
+    Es existieren \(U_1 , U_2, U_3 \in (\A_{\text{bool}})^*\), so dass \(U_1(U_2 \cap U_3) \subsetneq U_1 U_2 \cap U_1 U_3\)
+\end{lemma}
+
+\begin{definition}
+    \(\A_1, \A_2\) zwei beliebige Alphabete. Homomorphismus: \(h : \A_1^* \to \A_2^*\) mit:
+    \begin{enumerate}
+        \item \(h(\lambda) = \lambda\)
+        \item \(h(uv) = h(u) \cdot h(v)\) für alle \(u, v \in \words_1\).
+    \end{enumerate} 
+\end{definition}
+
+\end{document}
