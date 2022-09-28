@@ -47,9 +47,14 @@
 
 % Custom commands
 \newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
 \newcommand{\words}{\Sigma^*}
 \newcommand{\A}{\Sigma}
 \newcommand{\Kon}{\text{Kon}}
+\newcommand{\op}{\mathcal{U}}
+\newcommand{\cost}{\text{cost}}
+\newcommand{\opm}{\mathcal{M}}
+\newcommand{\goal}{\text{goal}}
 
 % Metadata
 \title{Theoretische Informatik}
@@ -159,5 +164,88 @@
         \item \(h(uv) = h(u) \cdot h(v)\) für alle \(u, v \in \words_1\).
     \end{enumerate} 
 \end{definition}
+
+\begin{definition}
+    Das \textbf{Entscheidungsproblem} (\(\bm{\A, L}\)) ist, für jedes \(x \in \words\) zu entscheiden, ob \(x \in L\) oder \(x \not\in L\).
+
+    Ein Algorithmus \(A\) löst das Entscheidungsproblem (\textbf{erkennt} \(L\)), falls \(\forall x \in \words\):
+    \[A(x) = \begin{cases}
+        1, & \text{falls} \ x \in L \\
+        0, & \text{falls} \ x \not\in L
+    \end{cases}\]
+\end{definition}
+
+\begin{definition}
+    \(\A, \Gamma\) zwei Alphabete. Algorithmus \(A\) \textbf{berechnet (realisiert)} eine \textbf{Funktion (Transformation)} \(\bm{f: \words \to \Gamma^*}\) falls \(\forall x \in \words: A(x) = f(x)\).
+\end{definition}
+
+\begin{definition}
+    \(\A, \Gamma\) zwei Alphabete, \(R \subseteq \words \times \Gamma^*\) eine Relation. Ein Algorithmus \(\bm{A}\) \textbf{berechnet} \(\bm{R}\) (oder löst das Relationsproblem \(R\)), falls für alle \(x \in \words\), für das ein \(y \in \Gamma^*\) nut \((x, y) \in R\) exisitert gilt: \((x, A(x)) \in R\).
+\end{definition}
+
+\begin{definition}[Optimierungsproblem]
+    Ist ein 6-Tupel \\
+    \(\op = (\A_1, \A_0, L, \opm, \cost, \goal)\), wobei:
+    \begin{enumerate}
+        \item \(\A_1\) ist das Eingabealphabet
+        \item \(\A_2\) ist das Ausgabealphabet
+        \item \(L \subseteq \words\) ist die Sprache der \textbf{zulässigen Eingaben}. \(x \in L\) ist ein \textbf{Problemfall (Instanz) von} \(\bm{\op}\).
+        \item \(\opm : L \to \mathcal{P}(\words_0)\) und für jedes \(x \in L\) ist \(\opm(x)\) die \textbf{Menge der zulässigen Lösungen für} \(\bm{x}\).
+        \item \textbf{Kostenfunktion} \(\cost: \bigcup_{x \in L}(\opm(x) \times \{x\}) \to \R^+\)
+        \item \textbf{Optimierungsziel} \(goal \in \{Minimum, Maximum\}\) 
+    \end{enumerate}
+\end{definition}
+
+\begin{definition*}
+    Eine zulässige Lösung \(\alpha \in \opm(x)\) heisst \textbf{optimal} für den Problemfall \(x\), falls \(\cost(\alpha, x) = \textbf{Opt}_\op(x) = \goal\{\cost(\beta, x) \ | \ \beta \in \opm(x)\}\).
+\end{definition*}
+
+\begin{definition*}
+    Ein Algorithmus \(A\) \textbf{löst} \(\op\), falls für jedes \(x \in L\)
+    \begin{enumerate}
+        \item \(A(x) \in \opm(x)\)
+        \item \(\cost(A(x), x) = \goal\{\cost(\beta, x) \ | \ \beta \in \opm(x)\}\)
+    \end{enumerate}
+\end{definition*}
+
+\begin{definition}
+    Algorithmus \(A\) \textbf{generiert} das Wort \(x\), falls \(A\) für die Eingabe \(\lambda\) die Ausgabe \(x\) liefert.
+\end{definition}
+
+\begin{definition}
+    \(A\) ist ein \textbf{Auszählungsalgorithmus für} \(L\), falls \(A\) für jede Eingabe \(n \in \N\) die Wortfolge \(x_1, x_2, \ldots, x_n\) ausgibt, wobei das die kanonisch \(n\) erster Wörter in \(L\) sind.
+\end{definition}
+
+\subsection*{Shannon Entropie}
+Claude Shannon versuche den Informationsgehalt von String herauszufinden, hat es aber nicht geschafft Positionen darzustellen.
+
+Betrachte das Alphabet \(\A = \{a, b, c, d\}\) und das Wort mit Vorkommen \(a \times 16, b \times 8, c \times 4, d \times 4\). Seine Codierung ist \(a \mapsto 0, b \mapsto 10, c \mapsto 110, d \mapsto 111\). Man erkennt das nur die Präfixe erweitert werden.
+
+Die Codierung hat nun die Folgende Länge mit \(|w|\) als Wortlänge, \(H_a\) Häufigkeit von \(a\), \(h_a\) relative Häufigkeit und \(p_a\) die Wahrscheinlichkeit:
+\begin{align*}
+    56 &= 16 \cdot 1 + 8 \cdot 2 + 4 \cdot 3 + 4 \cdot 3 \\
+    &= H_a \log_2\frac{|w|}{H_a} +  H_b \log_2\frac{|w|}{H_b} + \ldots \\
+    &= H_a \cdot (- \log_2 \frac{H_a}{|w|}) + \ldots \\
+    &= H_a \cdot (- \log_2 h_a) + \ldots \\
+    &= H_a \cdot (- \log_2 p_a) + \ldots \\
+    &= - \sum_{a \in \A} H_a \cdot \log_2 p_a
+\end{align*}
+
+\subsection*{Kolmogorov-Komplexität}
+\begin{definition}
+    Für jedes Wort \(x \in \{0, 1\}^*\) ist die \(K(x)\) des Wortes das Minimum der binären Länge der Pascal-Programme, die \(x\) generieren.
+\end{definition}
+
+\begin{lemma}
+    \(\exists d \in \N \ \forall x \in \{0, 1\}^* : K(x) \leq |x| + d\)
+\end{lemma}
+
+\begin{definition}
+    \(\forall n \in \N: K(n) = K(\text{Bin}(n))\)
+\end{definition}
+
+\begin{lemma}
+    \(\forall n \in \N - \{0\}: \exists w_n \in \{0, 1\}^n: K(w_n) \geq |w| = n\)
+\end{lemma}
 
 \end{document}
