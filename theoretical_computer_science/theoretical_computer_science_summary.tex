@@ -168,7 +168,8 @@
 \begin{definition}
     Das \textbf{Entscheidungsproblem} (\(\bm{\A, L}\)) ist, für jedes \(x \in \words\) zu entscheiden, ob \(x \in L\) oder \(x \not\in L\).
 
-    Ein Algorithmus \(A\) löst das Entscheidungsproblem (\textbf{erkennt} \(L\)), falls \(\forall x \in \words\):
+    Ein Algorithmus \(A\) löst das Entscheidungsproblem \\
+    (\textbf{erkennt} \(L\)), falls \(\forall x \in \words\):
     \[A(x) = \begin{cases}
         1, & \text{falls} \ x \in L \\
         0, & \text{falls} \ x \not\in L
@@ -197,9 +198,8 @@
 \end{definition}
 
 \begin{definition*}
-    Eine zulässige Lösung \(\alpha \in \opm(x)\) heisst \textbf{optimal} für den Problemfall \(x\), falls \(\cost(\alpha, x) = \textbf{Opt}_\op(x) = \goal\{\cost(\beta, x) \ | \ \beta \in \opm(x)\}\).
+    Eine zulässige Lösung \(\alpha \in \opm(x)\) heisst \textbf{optimal} für den Problemfall \(x\), falls \[\cost(\alpha, x) = \textbf{Opt}_\op(x) = \goal\{\cost(\beta, x) \ | \ \beta \in \opm(x)\}\]
 \end{definition*}
-
 \begin{definition*}
     Ein Algorithmus \(A\) \textbf{löst} \(\op\), falls für jedes \(x \in L\)
     \begin{enumerate}
@@ -245,7 +245,34 @@ Die Codierung hat nun die Folgende Länge mit \(|w|\) als Wortlänge, \(H_a\) H�
 \end{definition}
 
 \begin{lemma}
-    \(\forall n \in \N - \{0\}: \exists w_n \in \{0, 1\}^n: K(w_n) \geq |w| = n\)
+    \(\forall n \in \N_1 \ \exists w_n \in \{0, 1\}^n: K(w_n) \geq |w| = n\)
 \end{lemma}
+
+\begin{theorem}
+    Sei \(A\) und \(B\) Programmiersprachen. Es existiert eine Konstante \(c_{A, B}\) die nur von \(A\) und \(B\) abhängt, so dass \(\forall x \in \{0, 1\}^*: |K_A(x) - K_B(x)| \leq c_{A, B}\)
+\end{theorem}
+
+\begin{definition}
+    \(x \in \{0, 1\}^*\) heisst zufällig \(\iff K(x) \geq |x|\).
+    
+    Eine Zahl \(n\) heisst zufällig \(\iff K(n) = K(\text{Bin}(n)) \geq \lceil \log_2(n + 1)\rceil - 1\). Die \(-1\) kommt von der führenden \(1\), welche bei jeder Binären Zahl führend ist.
+\end{definition}
+
+\begin{theorem}
+    \(L \subseteq \{0, 1\}^*\), sei \(z_n\) das kanonisch \(n\)-te Wort in \(L\).  Wenn ein Programm \(A_L\) existiert, das das \(\{0, 1\}^*, L\) löst, dann gilt für alle \(n \in \N - \{0\}\): \(K(z_n) \leq \lceil \log_2(n + 1) \rceil + c\), wobei \(c\) eine von \(n\) unabhängige Konstante ist.
+\end{theorem}
+
+\begin{theorem}[Primzahlsatz]
+    \[\lim_{n\to\infty} \frac{\text{Prim}(n)}{n / \ln n} = 1\]
+\end{theorem}
+
+\begin{lemma}
+    Sei \(n_1, n_2, n_3, \ldots\) eine steigende unendliche folge natürlicher Zahlen mit \(K(n_i) \geq \lceil \log_2 n_i \rceil / 2\). Für jedes \(i \in \N - \{0\}\) sei \(q_i\) die grösste Primzahl, die die Zahl \(n_i\) teilt. Dann ist die Menge \(Q = \{q_i \ | \ i \in \N - \{0\}\}\) unendlich.
+\end{lemma}
+
+\begin{theorem}
+    Für unendlich viele \(k \in \N\) gilt
+    \[\text{Prim(k)} \geq \frac{k}{2^{17}} \log_2 k \cdot (\log_2\log_2k)^2\]
+\end{theorem}
 
 \end{document}
