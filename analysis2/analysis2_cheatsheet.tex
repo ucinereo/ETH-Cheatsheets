@@ -45,6 +45,7 @@
 % Colored boxes
 \usepackage{xcolor}
 \usepackage{mdframed}
+\usepackage{framed}
 \mdfsetup{skipabove=-2pt,skipbelow=-2pt}
 
 \definecolor{cwhite}{HTML}{d7dbd7}
@@ -87,6 +88,7 @@
 % Table stuff
 \usepackage{tabularx} % tabularx since the width should be handled automatically
 \usepackage{booktabs}
+\usepackage{makecell}
 
 % Graph stuff
 \usepackage{pgfplots}
@@ -141,11 +143,11 @@ Given a function \(F\) of \(x, y\), where \(x\) and \(y\) are functions themselv
 \begin{ntheorem}[Properties of linear ODEs]
     \(\;\)
     \begin{enumerate}
-        \item no coefficients before the highest derivative
         \item all coefficients are continuous functions
         \item no products of \(y\) and its derivatives
         \item no powers of \(y\) and its derivatives
         \item no functions which depend on \(y\) or its derivatives
+        \item no leading coefficient in front of the highest derivative
     \end{enumerate}
 \end{ntheorem}
 
@@ -161,19 +163,92 @@ Given a function \(F\) of \(x, y\), where \(x\) and \(y\) are functions themselv
 \end{theorem}
 
 \subsection{Linear ODE of order 1}
-\[y' + a(x)y = b(x)\]
+\(y' + a(x)y = b(x)\) 
+
 \begin{note}[How to solve]
-    \(\;\)
-    \begin{enumerate}
-        \item Solve the homogeneous ODE:
-        \begin{flalign*}
+        \(1.\) Solve the homogeneous ODE:
+        \begin{align*}
             && y' + ay &= 0 & \\
-            &\implies & y' = - ay & \\
+            &\implies & y' &= - ay & \\
             &\implies & \tfrac{y'}{y} &= -a & (\text{assume \(y \neq 0\) no \(I\)}) \\
             &\implies & \ln(|y|) &= -A + C & (A(x) = \smallint a(x) \,dx) \\
             &\implies & y &= e^{-A + C} = z\cdot e^-A & (\text{simplify})
-        \end{flalign*}
-        \item Find a particular solution \(f_p: I \to \C\) with either an educated guess or variation of parameters such that \(f'_p + af_p = b\).
-    \end{enumerate}
+        \end{align*}
+        \(2.\) Find a particular solution \(f_p: I \to \C\) with either an educated guess, variation of parameters or integration factor such that \(f'_p + a(x)f_p = b(x)\).
 \end{note}
+
+\subsubsection{Educated guess}
+\begin{tabular}{c|c}
+    \(\bm{b(x)}\) & \textbf{Guess} \\
+    \hline
+    \(a e^{\alpha x}\) & \(c e^{\alpha x}\) \\
+    \hline
+    \makecell{\(a \sin(\beta x)\) \\ \(a \cos(\beta x)\)} & \(D \sin(\beta x) + E \cos(\beta x)\) \\
+    \hline
+    \makecell{\(a e^{\alpha x} \sin(\beta x)\) \\ \(a e^{\alpha x} \cos(\beta x)\)} & \(D e^{\alpha x} \sin(\beta x) + E e^{\alpha x} \cos(\beta x)\) \\
+    \(P_n(x) e^{\alpha x}\) & \(Q_n(x) e^{\alpha x}\) \\
+    \hline
+    \makecell{\(P_n(x) e^{\alpha x} \sin(\beta x)\) \\ \(P_n(x) e^{\alpha x} \cos(\beta x)\)} & \(e^{\alpha x} (Q_n(x) \sin(\beta x) + R_n(x) \cos(\beta x))\) \\
+\end{tabular}
+
+\begin{enumerate}
+    \item If \(b(x)\) is a linear combination of the basis functions, try a linear combination.
+    \item If \(f_p = f_0\), try to multiply it with \(x^m\) where \(m\) denotes the multiplicity of the root.
+\end{enumerate}
+
+\subsubsection{Variation of parameters}
+\begin{enumerate}
+    \item Assume \(f_p = z(x) \cdot e^{-A(x)}\) for a function \(z: I \to \C\)
+    \item Insert the equation and construct \(z\):
+    \begin{align*}
+        &&y' + ay &= b \\
+        &\implies& z'e^{-A} &= b \\
+        &\implies& z' &= be^{A} \\
+        &\implies& z &= \smallint_{x_0}^x b(t)e^{A(t)}\,dt \\
+        &\implies& f_p &= \smallint_{x_0}^x b(t) e^{A(t)}\,dt \cdot e^{-A(x)}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Integration Factor}
+\begin{align}
+    \tag{\(\dagger\)} \frac{dy}{dx} + a(x) y = b(x)
+\end{align}
+\begin{enumerate}
+    \item Multiply both sides of (\(\dagger\)) with \(e^{A(x)} = e^{\smallint a(x)\,dx}\) \par
+    \centering
+    \(\frac{dy}{dx} e^{\smallint a(x)\,dx} + ya(x)e^{\smallint a(x)\,dx} = b(x)e^{\smallint a(x)\,dx}\)
+    \item \raggedright Observe the product rule on the left hand side: \par
+    \centering
+    \(\frac{d}{dx}ye^{\smallint a(x)\,dx} = b(x)e^{\smallint a(x)\,dx}\)
+    \item \raggedright Call \(y e^{\smallint a(x)\,dx}:=z(x) \implies y = z(x)e^{-A(x)}\) (\(\ddagger\)) \par
+    \centering
+    \(\frac{d}{dx}z(x) = b(x)e^{\smallint a(x)\,dx}\)
+    \item \raggedright Solve for \(z(x)\) \par
+    \centering
+    \(z(x) = \int b(x) e^{A(x)}\,dx\)
+    \item \raggedright Insert (\(\ddagger\)):
+    \(y = \left(\int b(x)e^{A(x)} \,dx\right) e^{-A(x)}\)
+\end{enumerate}
+
+\subsection{Linear ODE with constant coefficients}
+\[Dy = b(x) \quad D = \frac{d^k}{dx^k} + a_{k - 1} \frac{d^{k-1}}{dx^{k-1}} + \ldots + a_0\]
+
+\subsubsection*{1. Solve homogeneous equation}
+Assume \(y = e^{\lambda x}\) for some \(\lambda \in \C\). We put that guess in the initial formula and get the following (simplified) form:
+\[e^{\lambda x}(\lambda^k + a_{k-1}\lambda^{k-1} + a_{k-2}\lambda^{k-2} + \ldots + a_0) = e^{\lambda x} \cdot P(\lambda) = 0\]
+Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must be \(0\). \(P(\lambda)\) is called the \textbf{characteristic polynomial} with its roots called \textbf{eigenvalues}.
+
+\begin{theorem}
+    \(D e^{\lambda x} = 0 \iff \lambda\) is a root of \(P_D(\lambda)\)
+\end{theorem}
+
+\begin{note}[Solutions]
+    The functions \(f_{i, m}: x \mapsto x^m e^{\lambda_i x}\) span the solution space \(S_0\) with \(m\) as the multiplicity of \(\lambda_i\).
+
+    \begin{itemize}
+        \item If \(\lambda = a + ib\) is root \(P(\lambda)\), then \(P(\overline{\lambda})\) is a root as well.
+        \item 
+    \end{itemize}
+\end{note}
+
 \end{document}
