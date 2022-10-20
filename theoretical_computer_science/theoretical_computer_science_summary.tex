@@ -339,11 +339,91 @@ Die Codierung hat nun die Folgende Länge mit \(|w|\) als Wortlänge, \(H_a\) H�
     \begin{enumerate}[label=(\roman*)]
         \item \(Q = Q_1 \times Q_2\)
         \item \(q_0 = (q_{01}, q_{02})\)
-        \item \(\forall q \in Q_1 p \in Q_2 a \in \A: \delta((q, p), a) = (\delta_1(q, a), \delta_2(p, a))\)
+        \item \(\forall q \in Q_1 p \in Q_2 \, a \in \A: \delta((q, p), a) = (\delta_1(q, a), \delta_2(p, a))\)
         \item \(\odot = \cup \implies F = F_1 \times Q_2 \cup Q_1 \times F_2\) \\
         \(\odot = \cap \implies F = F_1 \times F_2\) \\
         \(\odot = - \implies F = F_1 \times (Q_2 - F_2)\)
     \end{enumerate}
+\end{lemma}
+
+\begin{lemma}
+    \(\forall A = (Q, \A, \delta_A, q_0, F) \, \forall x, y \in \words, x \neq y: \)
+    \begin{align*}
+        &(q_0, x) \vdash_A^* (p, \lambda) \land (q_0, y) \vdash_A^* (p, \lambda)\\  
+        \implies &\forall z \in \words \, \exists r \in Q: xz \in \text{Kl}[r] \land yz \in \text{Kl}[r] \\
+        \implies &xy \in L(A) \iff yz \in L(A)
+    \end{align*}
+\end{lemma}
+
+\begin{lemma}[Pumping-Lemma] \ \\ 
+    \(\forall L \in \mathcal{L}_{EA} \, \exists n_0 \in \N \, \forall w \in \words, |w| \geq n_0 \, \exists yxz = wl:\)
+    \begin{enumerate}
+        \item \(|yx| \leq n_0\)
+        \item \(|x| \geq 1\)
+        \item \(\{yx^k \ | \ k \in \N\} \lor \{yx^kz \ | \ k \in \N\} \cup L = \emptyset\)
+    \end{enumerate}
+\end{lemma}
+
+\begin{theorem}
+    \(\forall L \subset \{0, 1\}^* \in \mathcal{L}_{EA}\, \forall x \in \{0, 1\}^* \, \exists c : \forall n\)-te Wort \(y\) in \(L_x: K(y) \leq \lceil \log_2(n + 1)\rceil + c\) mit \(L_x = \{y \in \words \ | \ xy \in L\}\)
+\end{theorem}
+
+\begin{corollary}
+    \(\forall L \subset \{0, 1\}^* \in \mathcal{L}_{EA} \, \forall x \in \{0, 1\}^* \, \exists c: \forall\)erste Wörter \(y\) in \(L_x\): \(K(y) \leq c\)
+\end{corollary}
+
+\pagebreak
+\subsection*{Nichtdeterminismus}
+\begin{definition}[\textit{nicht deterministischer} endlicher Automat] \(\;\) \\
+    \(M = (q, \A, \delta, q_0, F)\) mit:
+    \begin{enumerate}
+        \item \(Q\): endliche Menge von Zuständen
+        \item \(\A\): Eingabealphabet
+        \item \(q_0 \in Q\): der Anfangszustand
+        \item \(F \subseteq Q\): Menge der akzeptierenden Zustände
+        \item \(\delta: Q \times \A \to \mathcal{P}(Q)\): Übergangsfunktion
+    \end{enumerate}
+\end{definition}
+
+\begin{definition*}[Weitere Terminologie] \(\;\)
+    \begin{enumerate}
+        \item \textbf{Konfiguration} von \(M\) ist \(x \in Q \times \words\).
+        \item \textbf{Startkonfiguration} von \(M\) auf \(x\) ist \((q_0, x) \in \{q_0\}\)
+        \item \textbf{Endkonfiguration}: Jede Konfiguration von \(Q \times \{\lambda\}\)
+        \item \textbf{Schritt} von \(M\): Relation \(\vdash_M \subseteq (Q \times \words) \times (Q \times \words)\) definiert durch: \\ \((q, w) \vdash_M (p, x) \iff w = ax, a \in \A\) und \(p \bm{\in} \delta(q, a)\)
+        \item \textbf{Berechnung} \(C\) von \(M\): Folge Folge von Konfigurationen \(C = C_0, \ldots, C_n\) so dass \(\forall 0 \leq i < n: C_i \vdash_M C_{i+1}\)
+        \item \textbf{Berechnung von} \(\bm{M}\) \textbf{auf Eingabe} \(\bm{x \in \words}\) : Falls \(C_0 = (q_0, x)\) und \(C_n \in Q \times \{\lambda\}\)
+        \item \textbf{Akzeptierende Berechnung von \(M\) auf \(x\)}: Falls \(C_n = (p, \lambda), p \in F \) und \(M\) das Wort \(x\) akzeptiert.
+        \item \textbf{Verwerfende Berechnung von \(M\) auf \(x\)}: Falls \\ \(C_n \in (Q - F) \times \{\lambda\}\) und \(M\) das Wort \(x\) verwirft. 
+        \item \textbf{Die von \(M\) akzeptierte Sprache}
+            \(L(M) = \{w \in \words \ | \ (q_0, w) \vdash_M^* (p, \lambda) \ \text{für ein} \ p \in F \}\)
+        \item \(\hat{\delta}: Q \times \words \to \mathcal{P}(q)\)
+        \begin{enumerate}
+            \item \(\hat{\delta}(q, \lambda) = \{q\}\)
+            \item \(\hat{\delta}(q, wa) = \{p \ | \ \exists r \in \hat{\delta}(q, w) : p \in \delta(r, a)\}\)
+            \item \(\hat{\delta}(q, wa) = \bigcup_{r \in \hat{\delta}(q, w)}\delta(r, a)\) für alle \(q \in Q, a \in \A, w \in \words\)
+        \end{enumerate}
+    \end{enumerate}
+\end{definition*}
+
+\begin{theorem}
+    Zu jedem \textit{NEA} \(M\) existiert ein \textit{EA} \(A\), so dass \(L(M) = L(A)\)
+    \begin{enumerate}
+        \item \(Q_A = \{\langle P \rangle \ | \ P \subseteq Q\}\)
+        \item \(\A_A = \A\)
+        \item \(q_{0A} = \langle \{q_0\} \rangle\)
+        \item \(F_A = \{\langle P \rangle P \ | \ P \subseteq Q \ \land \ P \cap F \neq \emptyset\}\)
+        \item \begin{itemize}
+            \item \(\delta_A = Q_A \times \A \times Q_A\)
+            \item \(\delta_A(\langle P \rangle, a) = \left\langle \bigcup_{p \in P} \delta_M(p, q) \right\rangle = \langle\{p \in Q \ | \ \exists p \in P \ \land \ q \in \delta_M(p, a)\}\rangle\)
+        \end{itemize}
+    \end{enumerate}
+\end{theorem}
+
+Zahlen nachkorrigieren
+\begin{lemma}
+    \(L_k = \{x1y \ | \ x \in \{0, 1\}^*, y \in \{0, 1\}^{k - 1}\}\) \\
+    Für alle \(k \in \N_1\) muss jeder EA, der \(L_k\) akzeptiert, mindestens \(2^k\) Zustände haben.
 \end{lemma}
 
 \end{document}
