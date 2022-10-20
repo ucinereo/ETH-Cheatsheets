@@ -177,7 +177,7 @@ Given a function \(F\) of \(x, y\), where \(x\) and \(y\) are functions themselv
         \(2.\) Find a particular solution \(f_p: I \to \C\) with either an educated guess, variation of parameters or integration factor such that \(f'_p + a(x)f_p = b(x)\).
 \end{note}
 
-\subsubsection{Educated guess}
+\subsubsection*{Method of undetermined coefficients}
 \begin{tabular}{c|c}
     \(\bm{b(x)}\) & \textbf{Guess} \\
     \hline
@@ -186,6 +186,7 @@ Given a function \(F\) of \(x, y\), where \(x\) and \(y\) are functions themselv
     \makecell{\(a \sin(\beta x)\) \\ \(a \cos(\beta x)\)} & \(D \sin(\beta x) + E \cos(\beta x)\) \\
     \hline
     \makecell{\(a e^{\alpha x} \sin(\beta x)\) \\ \(a e^{\alpha x} \cos(\beta x)\)} & \(D e^{\alpha x} \sin(\beta x) + E e^{\alpha x} \cos(\beta x)\) \\
+    \hline
     \(P_n(x) e^{\alpha x}\) & \(Q_n(x) e^{\alpha x}\) \\
     \hline
     \makecell{\(P_n(x) e^{\alpha x} \sin(\beta x)\) \\ \(P_n(x) e^{\alpha x} \cos(\beta x)\)} & \(e^{\alpha x} (Q_n(x) \sin(\beta x) + R_n(x) \cos(\beta x))\) \\
@@ -196,7 +197,7 @@ Given a function \(F\) of \(x, y\), where \(x\) and \(y\) are functions themselv
     \item If \(f_p = f_0\), try to multiply it with \(x^m\) where \(m\) denotes the multiplicity of the root.
 \end{enumerate}
 
-\subsubsection{Variation of parameters}
+\subsubsection*{Variation of parameters}
 \begin{enumerate}
     \item Assume \(f_p = z(x) \cdot e^{-A(x)}\) for a function \(z: I \to \C\)
     \item Insert the equation and construct \(z\):
@@ -209,7 +210,7 @@ Given a function \(F\) of \(x, y\), where \(x\) and \(y\) are functions themselv
     \end{align*}
 \end{enumerate}
 
-\subsubsection{Integration Factor}
+\subsubsection*{Integration Factor}
 \begin{align}
     \tag{\(\dagger\)} \frac{dy}{dx} + a(x) y = b(x)
 \end{align}
@@ -247,8 +248,84 @@ Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must b
 
     \begin{itemize}
         \item If \(\lambda = a + ib\) is root \(P(\lambda)\), then \(P(\overline{\lambda})\) is a root as well.
-        \item 
+        \item Root complex: \(e^{(a + bi) \cdot x} = e^{ax}[\cos(bx) + i \sin(bx)]\)
+        \item The particular solution can be guessed
+        \item If in the "undetermined coefficients" method \(b = e^{\alpha x}\), but \(\alpha\) is a root of \(P(\lambda)\) with \(m = k\), then we try \(zx^k \cdot e^{\alpha x}\)
     \end{itemize}
+\end{note}
+
+\begin{theorem}
+    \(D(y_1 + y_2) = D(y_1) + D(y_2) = b_1 + b_2\)
+\end{theorem}
+
+\section{Differential calculus in \(\R^n\)}
+\begin{definition}[Vector Field]
+    \(f: \R^n \to \R^m \quad (m > 1)\)
+\end{definition}
+
+\begin{definition}[Scalar Field]
+    \(f: \R^n \to \R\)
+\end{definition}
+
+\begin{definition}[Monomial]
+    \[f :\begin{cases}
+        \R^n \to \R \\
+        (x_1, x_2, \ldots, x_n) \mapsto \alpha x_1^{d_1} x_2^{d_2} \ldots x_n^{d_n}
+    \end{cases}\]
+\end{definition}
+
+\begin{definition}[Converges of sequences]
+    Let \((x_k)_k \subset \R^n\) be a sequence.
+     and \(y \in \R^n\). \(\lim\limits_{k \to \infty}x_k = y \iff\)
+    \begin{enumerate}
+        \item \(\forall \epsilon > 0 \, \exists N \geq 1 \, \forall k \geq N: ||x_k - y|| < \epsilon\)
+        \item For each \(i\), \(1 \leq i \leq n\) the sequence \((x_{k, i}) \subset \R\) fo real numbers converges to \(y_i \in \R\)
+        \item The sequence of real numbers \(||x_k - y|| \to 0\)
+    \end{enumerate}
+        
+\end{definition}
+
+\begin{definition}
+    \(f: X \subset \R^n \to \R^m\), \(x_0 \in X\).
+    \(f\) has a limit \(y \in \R^m\) as \(x \to x_0\) (with \(x \neq x_0\)) if
+    \begin{enumerate}
+        \item \(\forall \epsilon > 0 \, \exists \delta > 0 \, \forall x \in X, x \neq x_0: ||f(x) - y|| < \epsilon\)
+        \item \(\forall\) sequences \((x_k)\) in \(X\) with \(\lim x_k = x_0\) and \(x_k \neq x_0\) converges the sequence \(f(x_k)\) to \(y\).
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Continuitity]
+    \(f: X \to \R^m\) cont. at \(x_0\) if
+    \begin{enumerate}
+        \item \(\forall \epsilon > 0 \, \exists \delta > 0 \, \forall x \in X : \)
+        \[||x-x_0|| < \delta \implies ||f(x) - f(x_0)|| < \epsilon\]
+        \item \(\forall\)seq. \((x_k)\) with \(\lim x_k = x_0: \lim f(x_k) = f(x_0)\)
+    \end{enumerate}
+    \(f\) cont. on \(X\)if it is cont. \(\forall x_0 \in X\).
+\end{definition}
+
+\begin{corollary}
+    \begin{enumerate}
+        \item \(f_1: \R^n \to \R^m, f_2: \R^n \to \R^s\) cont., then \(f: (f_1, f_2): \R^n \to \R^{m + s}, x \mapsto (f_1(x), f_2(x))\) is cont.
+        \item \(f: \R^n \to \R^m, x \mapsto (f_1(x), f_2(x), \ldots)\) cont.\\  \(\iff  \forall 1 \leq i \leq m f_i: \R^n \to \R\) are cont.
+        \item \(f: \R^n \to \R^m, x \mapsto Ax\) and polynomials are cont.
+        \item Sums/products of cont. functions are cont.
+        \item Functions with separated variables are cont. if each variable is cont.
+        \item Composition of cont. functions are cont.
+        \item If \(f: \R^2 \to \R\) is cont. Fix \(y_0 \in \R\). \\ Define \(g_{y_0}(x) := f(x, y_0)\). Then \(g_{y_0}: \R \to \R\) is cont.
+        \[\not\Rightarrow f: \R^2 \to \R \ \text{is cont.}\]
+    \end{enumerate}
+\end{corollary}
+
+\begin{ntheorem}[Squeeze]
+    \(f, g, h : \R^n \to \R\), \(\forall x \in \R^n: f(x) < g(x) < h(x)\)
+    \[\lim_{x \to a} f(x) = L = \lim_{x \to a} h(x) \implies \lim_{x \to a}g(x) = L\]
+\end{ntheorem}
+
+\begin{note}[Polar Coordinates]
+    For \(f: \R^2 \to \R\) polar coordinates are sometimes helpful.
+    \(x = r \cos \theta \quad y = r \sin \theta\)
+    \[\lim_{(x, y) \to (0, 0)}f(x, y) = \lim_{(r\cos\theta, r\sin\theta)  \to (0,0)}f(x, y) = \ldots = \lim_{r \to 0} \zeta\]
 \end{note}
 
 \end{document}
