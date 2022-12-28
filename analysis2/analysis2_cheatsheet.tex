@@ -8,6 +8,8 @@
 \ffvadjustfalse
 \Ncolumn{3}
 \usepackage[compact]{titlesec}
+\usepackage{parskip}
+\setlength{\parskip}{2pt}
 
 % ------------------------
 % Imports and commands
@@ -22,6 +24,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{bm}
+\usepackage{centernot}
 
 \newtheorem*{corollary}{Cor}
 \newtheorem*{lemma}{Lemma}
@@ -31,60 +34,137 @@
 \newtheorem*{theorem}{Thm}
 \newtheorem*{definition}{Def}
 
-\newtheoremstyle{colored}{}{}{}{}{\bf}{}{.5em}{{\thmnote{(#3) }}}
-\theoremstyle{colored}
-\newtheorem*{note_wrapper}{}
-
-\newtheoremstyle{ex}{2pt}{5pt}{}{}{\bf}{}{0pt}{{\thmnote{(#3) }}}
-\theoremstyle{ex}
-\newtheorem*{exercise}{}
-
-\newtheoremstyle{named}{}{}{}{}{\bfseries}{.}{.5em}{\thmnote{#3}}
-\theoremstyle{named} 
-\newtheorem*{ntheorem_wrapper}{Theorem}
-
 % Colored boxes
 \usepackage{xcolor}
 \usepackage{mdframed}
 \usepackage{framed}
-\mdfsetup{skipabove=-2pt,skipbelow=-2pt}
+\mdfsetup{skipabove=2pt,skipbelow=2pt}
+
+% Fix for MDFramed
+\makeatletter
+\DeclareDocumentCommand{\mdtheorem}{ O{} m o m o }%
+ {\ifcsdef{#2}%
+   {\mdf@PackageWarning{Environment #2 already exits\MessageBreak}}%
+   {%
+    \IfNoValueTF {#3}%
+     {%#3 not given -- number relationship
+      \IfNoValueTF {#5}%
+        {%#3+#5 not given
+        \@definecounter{#2}%
+        \expandafter\xdef\csname the#2\endcsname{\@thmcounter{#2}}%
+        \newenvironment{#2}[1][]{%
+          \refstepcounter{#2}%
+          \ifstrempty{##1}%
+            {\let\@temptitle\relax}%
+            {%
+             \def\@temptitle{\mdf@theoremseparator%
+                             \mdf@theoremspace%
+                             \mdf@theoremtitlefont%
+                             ##1}%
+             \mdf@thm@caption{#2}{{#4}{\csname the#2\endcsname}{##1}}%
+             }%
+          \begin{mdframed}[#1,frametitle={\strut#4\ \csname the#2\endcsname%
+                                          \@temptitle}]}%
+          {\end{mdframed}}%
+        \newenvironment{#2*}[1][]{%
+          \ifstrempty{##1}{\let\@temptitle\relax}{\def\@temptitle{\mdf@theoremseparator \mdf@theoremspace ##1}}% <- the problem was here
+          \begin{mdframed}[#1,frametitle={\strut#4\@temptitle}]}%
+          {\end{mdframed}}%
+        }%
+        {%#5 given -- reset counter
+        \@definecounter{#2}\@newctr{#2}[#5]%
+        \expandafter\xdef\csname the#2\endcsname{\@thmcounter{#2}}%
+        \expandafter\xdef\csname the#2\endcsname{%
+               \expandafter\noexpand\csname the#5\endcsname \@thmcountersep%
+                  \@thmcounter{#2}}%
+        \newenvironment{#2}[1][]{%
+          \refstepcounter{#2}%
+          \ifstrempty{##1}%
+            {\let\@temptitle\relax}%
+            {%
+             \def\@temptitle{\mdf@theoremseparator%
+                             \mdf@theoremspace%
+                             \mdf@theoremtitlefont%
+                             ##1}%
+             \mdf@thm@caption{#2}{{#4}{\csname the#2\endcsname}{##1}}%
+             }
+          \begin{mdframed}[#1,frametitle={\strut#4\ \csname the#2\endcsname%
+                                          \@temptitle}]}%
+          {\end{mdframed}}%
+        \newenvironment{#2*}[1][]{%
+          \ifstrempty{##1}%
+            {\let\@temptitle\relax}%
+            {%
+             \def\@temptitle{\mdf@theoremseparator%
+                             \mdf@theoremspace%
+                             \mdf@theoremtitlefont%
+                             ##1}%
+             \mdf@thm@caption{#2}{{#4}{\csname the#2\endcsname}{##1}}%
+             }%
+          \begin{mdframed}[#1,frametitle={\strut#4\@temptitle}]}%
+          {\end{mdframed}}%
+        }%
+     }%
+     {%#3 given -- number relationship
+        \global\@namedef{the#2}{\@nameuse{the#3}}%
+        \newenvironment{#2}[1][]{%
+          \refstepcounter{#3}%
+          \ifstrempty{##1}%
+            {\let\@temptitle\relax}%
+            {%
+             \def\@temptitle{\mdf@theoremseparator%
+                             \mdf@theoremspace%
+                             \mdf@theoremtitlefont%
+                             ##1}%
+             \mdf@thm@caption{#2}{{#4}{\csname the#2\endcsname}{##1}}%
+             }
+          \begin{mdframed}[#1,frametitle={\strut#4\ \csname the#2\endcsname%
+                                          \@temptitle}]}%
+          {\end{mdframed}}%
+        \newenvironment{#2*}[1][]{%
+          \ifstrempty{##1}{\let\@temptitle\relax}{\def\@temptitle{:\ ##1}}%
+          \begin{mdframed}[#1,frametitle={\strut#4\@temptitle}]}%
+          {\end{mdframed}}%
+     }%
+   }%
+ }
+\makeatother
 
 \definecolor{cwhite}{HTML}{d7dbd7}
 \mdfdefinestyle{important}{
     linecolor=yellow,
     linewidth=0pt,
-    innertopmargin=-6pt,
+    innertopmargin=0pt,
     innerbottommargin=2pt,
     innerrightmargin=2pt,
     innerleftmargin=2pt,
     leftmargin=0pt,
     rightmargin=0pt,
-    outerlinewidth=0pt,
     backgroundcolor=cwhite,
+    frametitleaboveskip=1pt,
+    frametitlebelowskip=1pt,
+    theoremseparator={},
+    theoremspace={},
 }
+\mdtheorem[style=important]{ntheorem}{}
 
-\newenvironment{ntheorem}%
-    {\begin{mdframed}[style=important]\begin{ntheorem_wrapper}}%
-    {\end{ntheorem_wrapper}\end{mdframed}}
-
-\definecolor{cgreen}{HTML}{2ecc71} 
-\definecolor{bgreen}{HTML}{FFED8A}
+\definecolor{bgold}{HTML}{FFED8A}
 \mdfdefinestyle{trick}{
     linecolor=yellow,
     linewidth=0pt,
-    innertopmargin=-6pt,
+    innertopmargin=0pt,
     innerbottommargin=2pt,
     innerrightmargin=2pt,
     innerleftmargin=2pt,
     leftmargin=0pt,
     rightmargin=0pt,
-    outerlinewidth=0pt,
-    backgroundcolor=bgreen,
+    backgroundcolor=bgold,
+    frametitleaboveskip=1pt,
+    frametitlebelowskip=1pt,
+    theoremseparator={},
+    theoremspace={},
 }
-
-\newenvironment{note}%
-    {\begin{mdframed}[style=trick]\begin{note_wrapper}}%
-    {\end{note_wrapper}\end{mdframed}}
+\mdtheorem[style=trick]{note}{}
 
 % Table stuff
 \usepackage{tabularx} % tabularx since the width should be handled automatically
@@ -99,8 +179,8 @@
 \hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue}
 
 \usepackage{enumitem}
-\setitemize{itemsep=0.5pt, topsep=0pt}
-\setenumerate{itemsep=0.75pt, topsep=0pt}
+\setitemize{itemsep=0.5pt, topsep=0.5pt}
+\setenumerate{itemsep=0.75pt, topsep=0.5pt}
 
 \usepackage{graphics}
 
@@ -115,8 +195,11 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\C}{\mathbb{C}}
+\newcommand{\J}{\mathcal{J}}
 \newcommand{\BO}{\mathcal{O}}
+\newcommand{\Hess}{\text{Hess}}
 \renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+\newcommand{\defi}{\stackrel{\text{def}}{\iff}}
 
 % Metadata
 \title{Analysis II Summary}
@@ -133,16 +216,14 @@
 
 \section{Ordinary differential equations}
 \[F(x, y(x), y'(x), \ldots, y^{(n)}) = 0\]
-Given a function \(F\) of \(x, y\), where \(x\) and \(y\) are functions themselves. \(F\) is an implicit ODE of \textbf{order} \(n\).
+Given a function \(F\) of \(x, y\), where \(y\) is a function itself. \(F\) is an implicit ODE of \textbf{order} \(n\).
 
-\begin{note}[Linear ODE's]
-    Linear ODE with \(a_{k-1}, \ldots, a_0, b\) as cont. functions of \(x\) in \(I \subset \R\):
-    \[y^{(k)} + a_{k-1}(x)y^{(k-1)} + \ldots + a_1(x)y' + a_0(x)y = b(x)\]
-    If \(\bm{b = 0}\) then the ODE is called \textbf{homogeneous}.
-\end{note}
+\begin{note*}[Linear ODE's]
+    \(y^{(k)} + a_{k-1}(x)y^{(k-1)} + \ldots + a_1(x)y' + a_0(x)y = b(x)\)
+    with \(a_{k-1}, \ldots, a_0, b\) as cont. functions of \(x\) in \(I \subset \R\). If \(\bm{b = 0}\) then the ODE is called \textbf{homogeneous}.
+\end{note*}
 
-\begin{ntheorem}[Properties of linear ODEs]
-    \(\;\)
+\begin{ntheorem*}[Properties of linear ODEs]
     \begin{enumerate}
         \item all coefficients are continuous functions
         \item no products of \(y\) and its derivatives
@@ -150,7 +231,7 @@ Given a function \(F\) of \(x, y\), where \(x\) and \(y\) are functions themselv
         \item no functions which depend on \(y\) or its derivatives
         \item no leading coefficient in front of the highest derivative
     \end{enumerate}
-\end{ntheorem}
+\end{ntheorem*}
 
 \begin{theorem}[Main result about linear ODEs]
     \(\;\)
@@ -163,26 +244,27 @@ Given a function \(F\) of \(x, y\), where \(x\) and \(y\) are functions themselv
     \end{enumerate}
 \end{theorem}
 
+\pagebreak
 \subsection{Linear ODE of order 1}
-\(y' + a(x)y = b(x)\) 
-
-\begin{note}[How to solve]
+\begin{note*}[Solution and derivation]
         \(1.\) Solve the homogeneous ODE:
         \begin{align*}
             && y' + ay &= 0 & \\
             &\implies & y' &= - ay & \\
             &\implies & \tfrac{y'}{y} &= -a & (\text{assume \(y \neq 0\) no \(I\)}) \\
             &\implies & \ln(|y|) &= -A + C & (A(x) = \smallint a(x) \,dx) \\
-            &\implies & y &= e^{-A + C} = z\cdot e^-A & (\text{simplify})
+            &\implies & y &= e^{-A + C} = z\cdot e^{-A} & (\text{simplify})
         \end{align*}
-        \(2.\) Find a particular solution \(f_p: I \to \C\) with either an educated guess, variation of parameters or integration factor such that \(f'_p + a(x)f_p = b(x)\).
-\end{note}
+        \(2.\) Find \(f_p: I \to \C\) such that \(f'_p + a(x)f_p = b(x)\).
+\end{note*}
 
 \subsubsection*{Method of undetermined coefficients}
-\begin{tabular}{c|c}
+\begin{tabular}{|c|c|}
+    \hline
     \(\bm{b(x)}\) & \textbf{Guess} \\
     \hline
     \(a e^{\alpha x}\) & \(c e^{\alpha x}\) \\
+    \(P_n(x)\) & \(Q_n(x)\) \\
     \hline
     \makecell{\(a \sin(\beta x)\) \\ \(a \cos(\beta x)\)} & \(D \sin(\beta x) + E \cos(\beta x)\) \\
     \hline
@@ -191,11 +273,12 @@ Given a function \(F\) of \(x, y\), where \(x\) and \(y\) are functions themselv
     \(P_n(x) e^{\alpha x}\) & \(Q_n(x) e^{\alpha x}\) \\
     \hline
     \makecell{\(P_n(x) e^{\alpha x} \sin(\beta x)\) \\ \(P_n(x) e^{\alpha x} \cos(\beta x)\)} & \(e^{\alpha x} (Q_n(x) \sin(\beta x) + R_n(x) \cos(\beta x))\) \\
+    \hline
 \end{tabular}
 
 \begin{enumerate}
-    \item If \(b(x)\) is a linear combination of the basis functions, try a linear combination.
-    \item If \(f_p = f_0\), try to multiply it with \(x^m\) where \(m\) denotes the multiplicity of the root.
+    \item If \(b(x)\) is a linear combination of the basis functions, use corresponding linear combination of the functions.
+    \item If \(f_p = f_0\), try to multiply it with \(x^m\) where \(m\) denotes the multiplicity of the eigenvalue.
 \end{enumerate}
 
 \subsubsection*{Variation of parameters}
@@ -225,9 +308,7 @@ Given a function \(F\) of \(x, y\), where \(x\) and \(y\) are functions themselv
     \item \raggedright Call \(y e^{\smallint a(x)\,dx}:=z(x) \implies y = z(x)e^{-A(x)}\) (\(\ddagger\)) \par
     \centering
     \(\frac{d}{dx}z(x) = b(x)e^{\smallint a(x)\,dx}\)
-    \item \raggedright Solve for \(z(x)\) \par
-    \centering
-    \(z(x) = \int b(x) e^{A(x)}\,dx\)
+    \item \raggedright Solve for \(z(x)\): \(z(x) = \int b(x) e^{A(x)}\,dx\)
     \item \raggedright Insert (\(\ddagger\)):
     \(y = \left(\int b(x)e^{A(x)} \,dx\right) e^{-A(x)}\)
 \end{enumerate}
@@ -244,71 +325,76 @@ Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must b
     \(D e^{\lambda x} = 0 \iff \lambda\) is a root of \(P_D(\lambda)\)
 \end{theorem}
 
-\begin{note}[Solutions]
+\begin{note*}[Solutions]
     The functions \(f_{i, m}: x \mapsto x^m e^{\lambda_i x}\) span the solution space \(S_0\) with \(m\) as the multiplicity of \(\lambda_i\).
 
     \begin{itemize}
         \item If \(\lambda = a + ib\) is root \(P(\lambda)\), then \(P(\overline{\lambda})\) is a root as well.
-        \item Root complex: \(e^{(a + bi) \cdot x} = e^{ax}[\cos(bx) + i \sin(bx)]\)
-        \item The particular solution can be guessed
-        \item If in the "undetermined coefficients" method \(b = e^{\alpha x}\), but \(\alpha\) is a root of \(P(\lambda)\) with \(m = k\), then we try \(zx^k \cdot e^{\alpha x}\)
+        \item Complex root: \(e^{(a + bi) \cdot x} = e^{ax}[\cos(bx) + i \sin(bx)]\)
+        \item If \(b = e^{\alpha x}\), but \(\alpha\) is a root of \(P(\lambda)\) with \(m = k\), then try \(zx^k \cdot e^{\alpha x}\)
     \end{itemize}
-\end{note}
+\end{note*}
 
-\begin{theorem}
+\begin{ntheorem*}[Superposition Principle]
     \(D(y_1 + y_2) = D(y_1) + D(y_2) = b_1 + b_2\)
-\end{theorem}
+\end{ntheorem*}
 
+\pagebreak
 \section{Differential calculus in \(\R^n\)}
-\begin{definition}[Vector Field]
-    \(f: \R^n \to \R^m \quad (m > 1)\)
-\end{definition}
-
-\begin{definition}[Scalar Field]
-    \(f: \R^n \to \R\)
-\end{definition}
-
-\begin{definition}[Monomial]
-    \[f :\begin{cases}
+\subsection*{Terminology}
+\begin{tabular}{>{\bfseries}l l}
+    Vector Field & \(f: \R^n \to \R^m \quad (m > 1)\) \\
+    Scalar Field & \(f: \R^n \to \R\) \\
+    Monomial & \(f :\begin{cases}
         \R^n \to \R \\
         (x_1, x_2, \ldots, x_n) \mapsto \alpha x_1^{d_1} x_2^{d_2} \ldots x_n^{d_n}
-    \end{cases}\]
-\end{definition}
+    \end{cases}\) \\
+    Linear Map & \(f :\begin{cases}
+        \R^n \to \R \\
+        x \mapsto Ax \quad (A \in \C^{m \times n})
+    \end{cases}\) \\
+    Affine Map & \(f :\begin{cases}
+        \R^n \to \R \\
+        x \mapsto Ax + y_p \quad (y_p \in \R^m)
+    \end{cases}\) \\
+    Cart. Prod. & \(f :\begin{cases}
+        \R^n \to \R^{s + t} \\
+        x \mapsto (f_1(x), f_2(x))
+    \end{cases}\) \\
+\end{tabular}
 
-\begin{definition}[Converges of sequences]
-    Let \((x_k)_k \subset \R^n\) be a sequence.
-     and \(y \in \R^n\). \(\lim\limits_{k \to \infty}x_k = y \iff\)
-    \begin{enumerate}
-        \item \(\forall \epsilon > 0 \, \exists N \geq 1 \, \forall k \geq N: ||x_k - y|| < \epsilon\)
-        \item For each \(i\), \(1 \leq i \leq n\) the sequence \((x_{k, i}) \subset \R\) fo real numbers converges to \(y_i \in \R\)
-        \item The sequence of real numbers \(||x_k - y|| \to 0\)
-    \end{enumerate}
-        
-\end{definition}
+\begin{ntheorem*}[Converges of sequences]
+    \((x_k)_{k \in \N} \subset \R^n, \ y \in \R^n\). \(\lim\limits_{k \to \infty}x_k = y\)
+    \begin{itemize}
+        \item[\(\Leftrightarrow\)] \(\forall \epsilon > 0 \, \exists N \geq 1 \, \forall k \geq N: ||x_k - y|| < \epsilon\)
+        \item[\(\Leftrightarrow\)] For each \(i\), \(1 \leq i \leq n\) the sequence \((x_{k, i}) \subset \R\) of real numbers converges to \(y_i \in \R\)
+        \item[\(\Leftrightarrow\)] The sequence of real numbers \(||x_k - y|| \to 0\)
+    \end{itemize}
+\end{ntheorem*}
 
 \begin{definition}
     \(f: X \subset \R^n \to \R^m\), \(x_0 \in X\).
-    \(f\) has a limit \(y \in \R^m\) as \(x \to x_0\) (with \(x \neq x_0\)) if
+    \(f\) \textbf{has a limit} \(y \in \R^m\) as \(x \to x_0\) (with \(x \neq x_0\)) if
     \begin{enumerate}
         \item \(\forall \epsilon > 0 \, \exists \delta > 0 \, \forall x \in X, x \neq x_0: ||f(x) - y|| < \epsilon\)
         \item \(\forall\) sequences \((x_k)\) in \(X\) with \(\lim x_k = x_0\) and \(x_k \neq x_0\) converges the sequence \(f(x_k)\) to \(y\).
     \end{enumerate}
 \end{definition}
 
-\begin{definition}[Continuitity]
+\begin{ntheorem*}[Continuity]
     \(f: X \to \R^m\) cont. at \(x_0\) if
     \begin{enumerate}
         \item \(\forall \epsilon > 0 \, \exists \delta > 0 \, \forall x \in X : \)
         \[||x-x_0|| < \delta \implies ||f(x) - f(x_0)|| < \epsilon\]
         \item \(\forall\)seq. \((x_k)\) with \(\lim x_k = x_0: \lim f(x_k) = f(x_0)\)
     \end{enumerate}
-    \(f\) cont. on \(X\)if it is cont. \(\forall x_0 \in X\).
-\end{definition}
+    \(f\) cont. on \(X\) if it is cont. \(\forall x_0 \in X\).
+\end{ntheorem*}
 
 \begin{corollary}
     \begin{enumerate}
         \item \(f_1: \R^n \to \R^m, f_2: \R^n \to \R^s\) cont., then \(f: (f_1, f_2): \R^n \to \R^{m + s}, x \mapsto (f_1(x), f_2(x))\) is cont.
-        \item \(f: \R^n \to \R^m, x \mapsto (f_1(x), f_2(x), \ldots)\) cont.\\  \(\iff  \forall 1 \leq i \leq m f_i: \R^n \to \R\) are cont.
+        \item \(f: \R^n \to \R^m, x \mapsto (f_1(x), f_2(x), \ldots)\) cont.\\  \(\iff  \forall 1 \leq i \leq m \ f_i: \R^n \to \R\) are cont.
         \item \(f: \R^n \to \R^m, x \mapsto Ax\) and polynomials are cont.
         \item Sums/products of cont. functions are cont.
         \item Functions with separated variables are cont. if each variable is cont.
@@ -318,176 +404,232 @@ Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must b
     \end{enumerate}
 \end{corollary}
 
-\begin{ntheorem}[Squeeze]
+\begin{ntheorem*}[Sandwich lemma]
     \(f, g, h : \R^n \to \R\), \(\forall x \in \R^n: f(x) < g(x) < h(x)\)
     \[\lim_{x \to a} f(x) = L = \lim_{x \to a} h(x) \implies \lim_{x \to a}g(x) = L\]
-\end{ntheorem}
+\end{ntheorem*}
 
-\begin{note}[Polar Coordinates]
+\begin{note*}[Polar Coordinates]
     For \(f: \R^2 \to \R\) polar coordinates are sometimes helpful.
     \(x = r \cos \theta \quad y = r \sin \theta\)
     \[\lim_{(x, y) \to (0, 0)}f(x, y) = \lim_{(r\cos\theta, r\sin\theta)  \to (0,0)}f(x, y) = \ldots = \lim_{r \to 0} \zeta\]
-\end{note}
+\end{note*}
 
-\begin{definition}[Bounded]
-    \begin{enumerate}
-        \item \(X \subseteq \R^n\) is bounded if \(\{||x|| \ | \ x \in X\}\) is bounded in \(\R\).
-        \item \(X \subseteq \R^n\) is closed if \(\forall (x_k) \subset X\) that converges in \(\R^n\) to some vector \(y \in \R^n\), we have that \(y \in X\).
-        \item \(X \subseteq \R^n\) is compact if it is closed and bounded.
-    \end{enumerate}
-\end{definition}
+\subsection*{Sets Bounds \(M \subseteq \R^n\)}
+\vspace{-8pt}
+\begin{align*}
+    M \ \textbf{is bounded} \defi & \{||x|| \in \R \mid x \in M\} \ \text{is bounded} \\
+    M \ \textbf{is open} \defi & \forall p \in M: \exists r \in \R^{>0}: B_p(r) \subseteq M \\
+    \defi & \R^n \setminus M \ \text{is closed}\\
+    M \ \textbf{is closed} \defi & \forall (x_k)_{k \in \N} \subseteq M \ \text{that converge to} \\
+    & x \in \R^n: x \in M \\
+    M \ \textbf{is compact} \defi& M \ \text{closed and bounded}
+\end{align*}
+
+\begin{note*}[Special Sets]
+    \begin{itemize}
+        \item \(\R^n\) and \(\emptyset\) are the \textbf{only} open and  closed sets of \(\R^n\).
+        \item The open disc \(B_r(x_0) = \{x \in \R^n \mid |x - x_0| < r\}\) is bounded and open.
+        \item The closed disc \(\overline{B_r(x_0)} = \{x \in \R^n \mid |x - x_0| < r\}\) is closed.
+        \item \(I_1 \times \ldots I_n\) is closed (compact) if each interval \(I_i\) is closed (compact)
+    \end{itemize}
+\end{note*}
 
 \begin{theorem}
-    \(f: \R^n \to \R^m\) cont. \(\forall Y \subseteq \R^m\) closed, the set \(f^{-1}(Y)\) is closed.
+    \(f: \R^n \to \R^m\) cont. \(\forall Y \subseteq \R^m\) \textbf{closed}, the set \(f^{-1}(Y) = \{x \in \R^n \mid f(x) \in Y\}\) is closed.
 \end{theorem}
 
-\begin{theorem}[Min-Max]
-    \(X \subseteq \R^n\) compact. \(f: X \to \R\) cont. \(\implies \exists x_+, x_- \in X: f(x_+) = \sup_{x \in X}(f(x)) \quad f(x_-) - \inf_{x \in X} f(x)\)
+\begin{theorem}
+    \(f: \R^n \to \R^m\) cont. \(\forall Y \subseteq \R^m\) \textbf{open}, the set \(f^{-1}(Y) = \{x \in \R^n \mid f(x) \in Y\}\) is open.
 \end{theorem}
 
-\begin{definition}
-    open interval... todo
-\end{definition}
+\begin{ntheorem*}[Min-Max theorem]
+    \(X \subseteq \R^n\) compact. \(f: X \to \R\) cont. \(\implies\)
+    \[\exists x_+, x_- \in X: f(x_+) = \sup_{x \in X}(f(x)), \quad f(x_-) = \inf_{x \in X} f(x)\]
+\end{ntheorem*}
 
 \subsection{Partial derivatives}
-\ldots
-
 \begin{definition}
-    \(f: \R^n \to \R^m\) is diff. at \(x_0\), with differential \(u\), if there exists a linear map \(u: \R^n \to \R^m\) such that
-    \[\lim_{\substack{x \to x_0 \\ x \neq x_0}} \frac{f(x) - (f(x_0) + u(x - x_0))}{||x-x_0||} = 0\]
+    \(f: X \subseteq \R^n \to \R\), \(X\) open. The \textbf{partial derivative} of \(f\) with respect to \(x_i\) at the point \(a \in \R^n\) is
+    \[\frac{\partial f}{\partial x_i}(a) = \lim_{h \to 0} \frac{f(a + h e_i) - f(a)}{h} \hfill \ \ ((e_i)_j = \delta_{ji}, j = 1, \ldots, n)\]
 
-    The linear map \(u: \R^n \to \R^m\) is called (total) \textbf{differential} of \(f\) at \(x_0\), denoted by \(df(x_0), d_xf\)
+    If \(f: X \to \R^m\) for \(x_0 \in \R^n\), then
+    \[\frac{\partial f}{\partial x_i}(a) = \begin{bmatrix}
+        \frac{\partial f_1}{\partial x_i}(a) \\
+        \vdots \\
+        \frac{\partial f_m}{\partial x_i}(a)
+    \end{bmatrix}\]
 \end{definition}
 
-\begin{note}[Warning]
-    For \(f: \R^n \to \R^m\) the differential \(df(x_0)\) is not a number but is a linear map. 
-\end{note}
+\begin{corollary}
+    \(X \subseteq \R^n\) open, \(f, g: X \to \R^m\):
+    \begin{itemize}
+        \item \(\partial_{x_i}(f + g) = \partial_{x_i}(f) + \partial_{x_i}(g)\)
+        \item \(\partial_{x_i}(f \cdot g) = \partial_{x_i}(f) \cdot g + f \cdot \partial_{x_i}(g)\) if \(m = 1\)
+        \item \(\partial_{x_i}(f / g) = (\partial_{x_i}(f) \cdot g - f \cdot \partial_{x_i}(g)) / g^2\) if \(m = 1, g \not\equiv 0\)
+    \end{itemize}
+\end{corollary}
+
+\begin{definition}
+    The \textbf{Jacobi Matrix} of \(f: X \subset \R^n \to \R^M\) at \(x \in X\):
+    \[\J_f(x) = \begin{bmatrix}
+        \frac{\partial f_i}{\partial x_j}(x)
+    \end{bmatrix}_{\substack{1 \leq i \leq m \\ 1 \leq j \leq n}}\]
+\end{definition}
+
+\begin{definition}
+    \(f: X \subseteq \R^n \to \R\), \(X\) open. The \textbf{gradient} of \(f\):
+    \[\nabla f(x) = \J_f(x)^\top\]
+    The gradient points in the direction of greatest increase and is perpendicular to the level set.
+\end{definition}
+
+\subsection{The differential}
+\begin{definition}
+    \(f: \R^n \to \R^m\) is diff. at \(x_0\), with \textbf{differential} \(u\), if there exists a linear map \(u: \R^n \to \R^m\) such that
+    \[\lim_{\substack{x \to x_0 \\ x \neq x_0}} \frac{f(x) - (f(x_0) + u(x - x_0))}{||x-x_0||} = 0\]
+
+    The linear map \(u: \R^n \to \R^m\) is called (total) \textbf{differential} of \(f\) at \(x_0\), denoted by \(df(x_0), d_{x_0}f\)
+\end{definition}
 
 \begin{theorem}
-    \(f: \R^n \to \R^m\) diff. at \(x_0\)
+    \(f, g: \R^n \to \R^m\) diff. at \(x_0 \implies\)
     \begin{enumerate}
         \item \(f\) is cont. at \(x_0\)
-        \item \(f\) has all partial derivatives at \(x_0\)
-        \item The matrix that represents the differential in the standard basis is \(J_f(x_0) = \left(\frac{\partial f_i}{\partial x_j} (x_0)\right)\)
+        \item \(f\) admits partial derivatives on \(x_0\) w.r.t each variable
+        \item The matrix that represents the differential in the standard basis is \(\J_f(x_0)\)
+        \item \(d_{x_0}(f \pm g) = d_{x_0}f \pm d_{x_0}g\)
+        \item \(d_{x_0}(f \cdot g) = (d_{x_0}f)g(x_0) + f(x_0) \cdot (d_{x_0} g)\) if \(m = 1\)
+        \item If \(m = 1\) and \(g \not\equiv 0\), the \(f / g\) is diff.
     \end{enumerate}
 \end{theorem}
 
+\begin{ntheorem*}[Multivaraible Chain Rule]
+    Let \(X \subseteq \R^n\) and \(Y \subseteq \R^m\) be open \(f: X \to Y, g: T \to \R^p\) diff functions, then
+    \[d_{x_0}(g \circ f) = d(g \circ f)(x_0) = dg(f(x_0)) \circ df(x_0)\]
+    In particular, the Jacobi matrix satisfies
+    \[\J_{g \circ f}(x_0) = \J_g(f(x_0)) \cdot \J_f(x_0)\]
+\end{ntheorem*}
+
+\begin{ntheorem*}[Partial Convergence]
+    If \(f : X \to \R^m\) has all partial derivatives \(\frac{\partial f_i}{\partial x_j}: X \to \R^m\) and if these functions are cont. in \(X\) \(\implies\) \(f\) is diff. on \(X\).
+\end{ntheorem*}
+
 \begin{definition}
-    \(f: \R^n \to \R^m\) diff. at \(x_0\) with differential \(d_{x_0}f = U: \R^n \to \R^m\). The graph of the affine linear map \(g(x) = f(x_0) + u(x - x_0)\) is called ht etangend space at \(x_0\) to the graph of \(f\).
+    The \textbf{tangent space} at \(x_0\) is the graph of the affine linear map
+    \[g(x) = f(x_0) + (d_{x_0}f)(x - x_0) \ \text{i.e} \ \{(x, g(x)) \in \R^n \times \R^m\}\]
 \end{definition}
 
-\begin{note}[Properties of the differential]
-    \begin{enumerate}
-        \item if \(f, g: X \subset \R^n \to \R^m\) diff. in \(x_0\), then so is \(f + g\) and \(d_{x_0}(f + g) = d_{x_0}f + d_{x_0}g\)
-        \item If \(f, g: \R^n \to \R\) diff. at \(x_0\) then so is \(fg\). If \(g\) is non-zero, then also \(\frac{f}{g}\). \(d_{x_0}(fg) = (d_{x_0}f)g(x_0) + f(x_0)(d_{x_0}g)\)
-        \item 
-    \end{enumerate}
-\end{note}
+\begin{definition}
+    \(X \subseteq \R^n\) open, \(f: X \to \R^m\), \(v \in \R^n \neq 0\), \(x_0 \in X\). The \textbf{directional derivative} in direction \(v\) is
+    \[\lim_{t \to 0} \frac{f(x_0 + tv) - f(x_0)}{t} = d_vf(x_0) = df(v;x_0) = df(x_0)[v]\]
+    The directional derivative be calculated using the Jacobian:
+    \[\frac{d}{dt} f(x_0 + tv) |_{t=0} = d_vf(x_0) = \J_f(x_0) \cdot v\]
+\end{definition}
 
-\begin{ntheorem}[Partial Convergence]
-    if \(f : X \to \R^m\) has all partial derivatives \(\frac{\partial f_i}{\partial x_j}: X \to \R^m\) and if these functions are cont. in \(X\) then \(f\) is differentiable on \(X\).
-\end{ntheorem}
+\begin{note*}[Summed up]
+    \begin{itemize}
+        \item \(f\) diff \(\implies f\) cont.
+        \item \(f\) has all partial derivatives \(\centernot\implies f\) cont.
+    \end{itemize}
+\end{note*}
 
-\ldots add the stuff from the last lectures
-
-\begin{note}[Parameterized curve]
+\begin{note*}[Parameterized curve]
     \(\gamma: [a, b] \to \R^n\), cont. and piecewise \(C^1\). \(\gamma\) is a parameterized curve, \(\gamma(t)\) is a parameterization of the curve \(\Im \gamma = \gamma([a, b])\).
-\end{note}
+\end{note*}
 
-\subsection*{Higher order partial derivatives}
+\subsection{Change of variables}
 \begin{definition}[Change of variables]
     \(X \subset \R^n\) open, \(f: X \to \R^n\) diff. \(f\) is a change of variables around \(x_0\) if there is a radius \(r > 0\), such that the restriction of \(f\) to Ball \(B_r(x_0) := \{x \in \R^n \ | \ ||x - x_0|| < r\}\) has the property that the image \(Y = f(B_r(x_0))\) is open in \(\R^n\) and \(\exists\) diff. map \(g: Y \to B\) s.t. \(f \circ g = id = g \circ f\).
 \end{definition}
 
-\begin{ntheorem}[Inveres function theorem]
-    \(X \subseteq \R^n\) open, \(f: X \to \R^n\) diff. If \(x_0 \in X\) is such that \(\det(J_f(x_0)) \neq 0\), then \(f\) is a change of variables around \(x_0\). Moreover the Jacobian of \(g\) is determined by \(J_g(f(x_0)) = J_f(x_0)^{-1}\).
-\end{ntheorem}
+\begin{ntheorem*}[Inveres function theorem]
+    \(X \subseteq \R^n\) open, \(f: X \to \R^n\) diff. If \(x_0 \in X\) is such that \(\det(\J_f(x_0)) \neq 0\), then \(f\) is a change of variables around \(x_0\). Moreover the Jacobian of \(g\) is determined by \(\J_g(f(x_0)) = \J_f(x_0)^{-1}\).
 
-\begin{note}
     This is the analog of the fact that in \(n = 1\) for a function \(f : I \to \R\) \(f\) is bijective from \(I\) to its image if \(f' > 0\) (or \(f' < 0\))
-\end{note}
+\end{ntheorem*}
 
+\subsection{Higher order partial derivatives}
 \begin{definition}
     \(X \subset \R^n\) open, \(f: X \to \R^m\). We say \(f\) is diff. of class \(C^1\) if \(f\) is diff. on \(X\) and all its partial derivatives are continuous.
 
     The set of all \(C^1\) functions are denoted by \(C^1(X ; \R^m)\).
 
-    Let \(k \geq 2\), \(f \in C^k(X; R^m)\) if its diff. and each \(\partial_{x_i}f: X \to \R^m\) with \(1 \leq i \leq n\) is of class \(C^{k - 1}\).
+    Let \(k \geq 2\), then \(f \in C^k(X; R^m)\) if its diff. and each \(\partial_{x_i}f \in C^{k - 1}(X; \R^m)\).
 
-    \(f\) is smooth or \(C^\infty\) if \(f \in C^k \forall k\).
+    \(f\) is smooth or \(C^\infty\) if \(f \in C^k(X; \R^m) \ \forall k\).
 \end{definition}
 
-\begin{note}
-    All polynomials, trig. functions, exponential functions are of class \(C^\infty\)
-\end{note}
+\begin{note*}[Known \(C^\infty\) functions]
+    All polynomials, trigonometric functions, exponential functions are of class \(C^\infty\)
+\end{note*}
 
-\begin{ntheorem}[Mixed derivatives commute]
+\begin{ntheorem*}[Mixed derivatives commute]
     If \(f \in C^k\), \(k \geq 2\) then the partial derivatives of oder \(\leq k\) are independent of the order of differentiation.
-    \[\frac{\partial}{\partial x_{i_k}} \dots (\frac{\partial}{\partial x_{i_2}}(\frac{\partial f}{\partial x_{i_1}})) = \frac{\partial^k}{\partial x_{i_k} \cdot \ldots \cdot \partial x_{i_2} \cdot \partial x_{x_{i_1}}}\]
-\end{ntheorem}
+    \[\frac{\partial}{\partial x_{i_k}} \dots \left(\frac{\partial}{\partial x_{i_2}}\left(\frac{\partial f}{\partial x_{i_1}}\right)\right) = \frac{\partial^k}{\partial x_{i_k} \cdot \ldots \cdot \partial x_{i_2} \cdot \partial x_{x_{i_1}}}\]
+\end{ntheorem*}
 
 \begin{definition}[Hessian]
-    \(f: X \to \R, X \subset \R^n\). If \(f \in C^2(X;\R)\), \(x_0 \in X\).
-    \[\text{Hess}_f(x_0) = \nabla^2 f(x_0) = \left(\frac{\partial^2 f(x_0)}{\partial x_i \partial x_j}\right)_{1 \leq i,j \leq n}\]
+    \(f: X \to \R, X \subset \R^n\). If \(f \in C^2(X;\R)\), \(x_0 \in X\) the Hessian matrix of \(f\) at \(x\) is the symmetric square matrix
+    \[\Hess_f(x_0) = \nabla^2 f(x_0) = \begin{bmatrix}
+        \frac{\partial^2 f(x_0)}{\partial x_i \partial x_j}
+    \end{bmatrix}_{\substack{1 \leq i \leq n \\ 1 \leq j \leq n}}\]
 \end{definition}
 
-\begin{definition}[Taylor polynomial of order 1]
-    For \(f: \R^n \to \R\) an approximation to \(f(y)\) for \(y\) close to \(x_0\):
+\begin{ntheorem*}[Taylor Polynomial for \(f: \R^n \to \R\)]
+    Approximation of \(f(y)\) for \(y\) close to \(x_0\).
     \begin{align*}
         T_1 f(x_0; y) &= f(x_0) + \nabla f(x_0) \cdot y \\
         &= f(x_0) + \frac{\partial f}{\partial x_1} (x_0) y_1 + \ldots \frac{\partial f}{\partial x_n} (x_0) y_n
     \end{align*}
-\end{definition}
-
-\begin{note}
-    Add the taylor polynomial for order 2 expliciiiit
-\end{note}
-
-\begin{definition}[\(k\)-th order Taylor polynomials]
+    \begin{align*}
+        T_2 f(x_0; y) = & f(x_0) + \nabla f(x_0) \cdot y \\
+        & \frac{1}{2!} y \cdot \Hess_f(x_0) \cdot y^\top
+    \end{align*}
     \begin{multline*}
         T_kf(x_0;y) = f(x_0) + \sum_{i = 1}^n \frac{\partial f}{\partial x_i} (x_0) y_i + \ldots + \\ \sum_{m_1 + \ldots m_n = k} \frac{1}{m_1! \cdot m_2! \cdot m_n!} \frac{\partial^k f}{\partial x_1^{m_1} \ldots \partial x_n^{m_n}}(x_0) \cdot y_1^{m_1 \ldots y_n^{m_n}}
     \end{multline*}
-\end{definition}
+\end{ntheorem*}
 
-\begin{ntheorem}[Taylor Approximation]
+\begin{ntheorem*}[Taylor Approximation]
     Let \(f \in C^k(X; \R), x_0 \in X\)
     \[f(x) = T_k f(x_0, x - x_0) + E_k(f, x, x_0)\]
     which implies
     \[\lim_{x \to x_0} \frac{E_k(f, x, x_0)}{||x - x_0||^2} = 0\]
-\end{ntheorem}
+\end{ntheorem*}
 
+\subsection{Critical points}
 \begin{definition}
-    Add the stuff for minima and maxima
+    \(x \in X\) is called a critical point of \(f\) if \(\nabla f(x_0) = 0\)
 \end{definition}
 
 \begin{theorem}
-    \(f: X \subset R^n \to \R\) diff. If \(X\) closed and bounded, then every global extrema of \(f\) exists and is either at a point \(x_0 \in\) interior of \(x\) for which \(\nabla f(x_0) = 0\) or \(x_0 \in\) boundary of \(x\).
+    \(f: X \subset R^n \to \R\) diff. If \(X\) closed and bounded, then a global extrema of \(f\) exists and is either at a point \(x_0 \in\) interior of \(X\) for which \(\nabla f(x_0) = 0\) or \(x_0 \in\) boundary of \(x\).
 \end{theorem}
 
 \begin{definition}[Non-degenerate critical point of \(f \in C^2(X, \R)\)]
-    \[\det(\text{Hess}_f(x_0)) \neq 0\]
+    \[\det(\Hess_f(x_0)) \neq 0\]
 \end{definition}
 
 \begin{theorem}
     \(f: X \subset \R^n \to \R\), \(f \in C^2(X, \R)\). Let \(x_0 \in X\) be a critical point of \(f, \nabla f(x_0) = 0\). Then
     \begin{enumerate}
-        \item \(\text{Hess}_f(x_0) > 0 (\text{pos. def.}) \implies\) loc. min.
-        \item \(\text{Hess}_f(x_0) < 0 (\text{neg. def.}) \implies\) loc. max.
-        \item \(\text{Hess}_f(x_0)\) indefinite \(\implies\) saddle point.
+        \item \(\Hess_f(x_0)\) pos. def. \(\implies\) loc. min.
+        \item \(\Hess_f(x_0)\) neg. def. \(\implies\) loc. max.
+        \item \(\Hess_f(x_0)\) indefinite \(\implies\) saddle point.
     \end{enumerate}
 \end{theorem}
 
-\begin{note}
-    If \(\nabla f(x_0) = 0\), but also \(\det \text{Hess}_f(x_0) = 0\), the we have to calculate each case individually.
-\end{note}
+\begin{note*}
+    If \(\nabla f(x_0) = 0\), but also \(\det \Hess_f(x_0) = 0\), the we have to calculate each case individually.
+\end{note*}
 
-\begin{note}[General recipe for finding \textbf{global} extrema:]
+\begin{note*}[General recipe for finding \textbf{global} extrema:]
     Let \(f: X \subseteq \R^n \to \R\), compact and \(f \in C^2(X)\).
     \begin{enumerate}
-        \item Calculate \(\nabla f(x)\) and \(\text{Hess}_f(x)\)
+        \item Calculate \(\nabla f(x)\) and \(\Hess_f(x)\)
         \item Find all solutions of \(\nabla_f(x) = 0\), \(S := \{\)
     \end{enumerate}
-\end{note}
+\end{note*}
 
 \section*{Integration in \(\R^n\)}
 \subsection*{Line Integrals}
@@ -498,19 +640,19 @@ Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must b
     is called the line or path integral of \(v\) along \(\gamma\)
 \end{definition}
 
-\begin{note}[Other notations] \ \\
+\begin{note*}[Other notations] \ \\
     \begin{itemize}
         \item \(\int\limits_\gamma v \,ds\) if \(v = (v_1(x), v_2(x), \ldots, v_n(x))\) and \(\gamma(t) = (\gamma_1(t), \gamma_2(t), \ldots \gamma_n(t))\) then \(ds\) represents \(\gamma'(t) \,dt\), multiplied by scalar product.
     \end{itemize}
-\end{note}
+\end{note*}
 
-\begin{ntheorem}[Properties of the line intergral] \ \\
+\begin{ntheorem*}[Properties of the line intergral] \ \\
     \begin{itemize}
         \item It is independent of orientation preserving reparametrization of the curve.
         
         Reparametrization: if \(\gamma: [a, b] \to \R^n\), \(\sigma: [c, d] \to [a, b]\) which is \(C^1\) s.t. \(\sigma(c) = a\) and \(\sigma(d) = b\) and \(\sigma'(t) > 0\) then \(\tilde{\gamma} = \gamma \circ \sigma: [c, d] \to \R^n\)
     \end{itemize}
-\end{ntheorem}
+\end{ntheorem*}
 
 Suppose \(f: X \to \R^n\), a vector field such that \(\exists g: X \to \R^n\), \(g \in C^1\), ...
 
@@ -535,9 +677,9 @@ Suppose \(f: X \to \R^n\), a vector field such that \(\exists g: X \to \R^n\), \
     \(f: \R^3 \to \R^3\) \(f\) cons. \(\implies \text{curl}(f) = 0\)
 \end{theorem}
 
-\begin{note}
+\begin{note*}
     If \(f\) cons. \(\implies\) sym. of partials. But \(\not\Leftarrow\) whether the symmetry implies conservative or not depends on where \(f\) is defined.
-\end{note}
+\end{note*}
 
 \begin{definition}
     A subset \(X \subseteq \R^n\) is start shaped if \(\exists x_0 \in X\) such that \(\forall x \in X\) the line segment joining the \(x\) to \(x_0\) is contained in \(X\).
@@ -566,5 +708,37 @@ t.b.d. riemann inteagral defintions
     \[Y \subseteq \bigcup_{i = 1}^k \phi_i(x_i)\]
     where \(\phi_i: x_i \to \R^n\)
 \end{definition}
+
+\begin{theorem}
+    If \(Y \subseteq \R^n\) is negligible closed bounded then
+    \[\int_Y f(x_1, \ldots, x_n) \, dx_1 \, \ldots dx_n = 0\]
+    \(\forall f: Y \to \R\) continuous
+\end{theorem}
+
+\subsection*{Improper Integrals}
+\begin{definition}
+    We say \(f\) is integrable on \(I \times J\) if
+    \[\lim_{b \to \infty} \int_a^b \int_I f(x, y) \,dx \,dy = \lim_{b \to \infty} \int_I \int_a^b f \, dy \, dx\]
+    exists and denote the limit with
+    \[\int_a^\infty \int_I f \,dx \,dy = \int_{I \times J} f \,dx \,dy\]
+\end{definition}
+
+\begin{ntheorem*}[Change of variable]
+    In \(\R^n\), we have \(\phi: X \to Y\) with \(X\) bounded and closed and \(Y\) bounded and closed.
+\end{ntheorem*}
+
+\subsection*{The Green formula}
+
+\begin{ntheorem*}[Green's formula]
+    \[\int_X (\frac{\partial f_2}{\partial x} - \frac{\partial f_1}{y}) \, dx dy = \int_{\partial X} f \cdot ds \quad (f = (f_1, f_2))\]
+    We made assumptions \(f = (f_1, f_2)\) is \(C^1\) in the region \(X\). so that \(curl f = \frac{\partial f_2}{\partial x } - \frac{\partial f_1}{\partial y}\) is integrable.
+
+    \noindent The region \(X\) is closed and bounded and its boundary is a simple closed cure if \(\gamma[a, b] \to \R^2\) is the curve which is the boundary of \(X\).
+\end{ntheorem*}
+
+\begin{ntheorem*}
+    let \(f: X \to \R^2\) \(C^1\) vector field, \(X\) closed and bounded where \(\partial X = \bigcup_{i = 1}^n \gamma_i\) union of simple close curves so that \(X\)  is always to the left of the curve \(\gamma = \bigcup_{i = 1}^n \gamma_i\) then
+    \[\iint_{X} \left(\frac{\partial f_2}{\partial x} - \frac{\partial f_1}{y}\right) \, dx dy = \int_\gamma f \, ds\]
+\end{ntheorem*}
 
 \end{document}
