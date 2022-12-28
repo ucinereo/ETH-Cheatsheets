@@ -173,6 +173,8 @@
 
 % Graph stuff
 \usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
 
 % Miscellaneous
 \usepackage{hyperref}
@@ -618,6 +620,62 @@ Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must b
         \item \(\Hess_f(x_0)\) indefinite \(\implies\) saddle point.
     \end{enumerate}
 \end{theorem}
+
+\begin{note*}[Definiteness of matrices]
+    A matrix \(A\) is \textbf{positive definite}
+    
+    \(\iff xAx^\top > 0 \quad \forall x \in \R^n\)
+
+    \(\iff\) all eigenvalues of \(A\) are positive
+
+    \(\iff\) all principal minors of \(A\) are positive:
+
+    \begin{tabular}{c m{4cm}}
+        \begin{tikzpicture}[baseline,>=latex]
+            \matrix[
+                matrix of math nodes,
+                nodes in empty cells,
+                left delimiter={[},
+                right delimiter={]},
+                nodes={text height=8pt,text depth=2pt,text width=10pt}
+            ] (mat)
+            {
+            a & b & c  \\
+            b & d & e  \\
+            c & e & f  \\
+            };
+            \foreach \Valor in {1,...,3}
+            \draw (mat-\Valor-1.south west) -| (mat-1-\Valor.north east);
+        \end{tikzpicture}
+        & \begin{enumerate}
+            \vspace{15pt}
+            \item \(a > 0\)
+            \item \(ae - b^2 > 0\)
+            \item \(\det(A) > 0\)
+        \end{enumerate} \\
+    \end{tabular}
+
+    \(A\) is \textbf{negative definite} \(\iff -A\) positive definite
+
+    \(A\) is \textbf{indefinite} \(\iff\) \(A\) neither pos. nor neg. def.
+\end{note*}
+
+\resizebox{\linewidth}{!}{
+    \(\det \begin{bmatrix}
+        a & b & c  \\
+        d & e & f  \\
+        g & h & i  \\
+    \end{bmatrix} = a \cdot \det \begin{bmatrix}
+        e & f \\
+        h & i \\
+    \end{bmatrix} - b \cdot \det \begin{bmatrix}
+        d & f \\
+        g & i \\
+    \end{bmatrix} + c \cdot \det \begin{bmatrix}
+        d & e \\
+        g & h
+    \end{bmatrix}\)
+}
 
 \begin{note*}
     If \(\nabla f(x_0) = 0\), but also \(\det \Hess_f(x_0) = 0\), the we have to calculate each case individually.
