@@ -257,7 +257,9 @@ Given a function \(F\) of \(x, y\), where \(y\) is a function itself. \(F\) is a
             &\implies & \ln(|y|) &= -A + C & (A(x) = \smallint a(x) \,dx) \\
             &\implies & y &= e^{-A + C} = z\cdot e^{-A} & (\text{simplify})
         \end{align*}
-        \(2.\) Find \(f_p: I \to \C\) such that \(f'_p + a(x)f_p = b(x)\).
+        \(2.\) Find \(f_p: I \to \C\) such that \(f'_p + a(x)f_p = b(x)\) with variation of parameters or undetermined coefficients.
+
+        \(3.\) General solution: \(f(x) = f_h(x) + f_p(x)\)
 \end{note*}
 
 \subsubsection*{Method of undetermined coefficients}
@@ -291,8 +293,8 @@ Given a function \(F\) of \(x, y\), where \(y\) is a function itself. \(F\) is a
         &&y' + ay &= b \\
         &\implies& z'e^{-A} &= b \\
         &\implies& z' &= be^{A} \\
-        &\implies& z &= \smallint_{x_0}^x b(t)e^{A(t)}\,dt \\
-        &\implies& f_p &= \smallint_{x_0}^x b(t) e^{A(t)}\,dt \cdot e^{-A(x)}
+        &\implies& z &= \smallint b(x)e^{A(x)}\,dx \\
+        &\implies& f_p &= \smallint b(t) e^{A(x)}\,dx \cdot e^{-A(x)}
     \end{align*}
 \end{enumerate}
 
@@ -321,7 +323,7 @@ Given a function \(F\) of \(x, y\), where \(y\) is a function itself. \(F\) is a
 \subsubsection*{1. Solve homogeneous equation}
 Assume \(y = e^{\lambda x}\) for some \(\lambda \in \C\). We put that guess in the initial formula and get the following (simplified) form:
 \[e^{\lambda x}(\lambda^k + a_{k-1}\lambda^{k-1} + a_{k-2}\lambda^{k-2} + \ldots + a_0) = e^{\lambda x} \cdot P(\lambda) = 0\]
-Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must be \(0\). \(P(\lambda)\) is called the \textbf{characteristic polynomial} with its roots called \textbf{eigenvalues}.
+Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(\lambda)\) is the \textbf{characteristic polynomial} with its roots called \textbf{eigenvalues}.
 
 \begin{theorem}
     \(D e^{\lambda x} = 0 \iff \lambda\) is a root of \(P_D(\lambda)\)
@@ -331,7 +333,7 @@ Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must b
     The functions \(f_{i, m}: x \mapsto x^m e^{\lambda_i x}\) span the solution space \(S_0\) with \(m\) as the multiplicity of \(\lambda_i\).
 
     \begin{itemize}
-        \item If \(\lambda = a + ib\) is root \(P(\lambda)\), then \(P(\overline{\lambda})\) is a root as well.
+        \item If \(\lambda = a + ib\) is EV of \(P(\lambda)\), then \(P(\overline{\lambda})\) is an EV.
         \item Complex root: \(e^{(a + bi) \cdot x} = e^{ax}[\cos(bx) + i \sin(bx)]\)
         \item If \(b = e^{\alpha x}\), but \(\alpha\) is a root of \(P(\lambda)\) with \(m = k\), then try \(zx^k \cdot e^{\alpha x}\)
     \end{itemize}
@@ -341,7 +343,10 @@ Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must b
     \(D(y_1 + y_2) = D(y_1) + D(y_2) = b_1 + b_2\)
 \end{ntheorem*}
 
-\pagebreak
+\begin{ntheorem*}[Separation of variables]
+    ODE separable if \(\frac{dy}{dx} = b(x)g(y) \implies \frac{dy}{g(y)} = b(x) \,dx\). If \(g(y) = 0\), then \(y = y_h\) otherwise integrate both sides.
+\end{ntheorem*}
+
 \section{Differential calculus in \(\R^n\)}
 \subsection*{Terminology}
 \begin{tabular}{>{\bfseries}l l}
@@ -498,7 +503,7 @@ Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must b
     \begin{enumerate}
         \item \(f\) is cont. at \(x_0\)
         \item \(f\) admits partial derivatives on \(x_0\) w.r.t each variable
-        \item The matrix that represents the differential in the standard basis is \(\J_f(x_0)\)
+        \item \(\J_f(x_0)\) is the differential w.r.t the standard basis.
         \item \(d_{x_0}(f \pm g) = d_{x_0}f \pm d_{x_0}g\)
         \item \(d_{x_0}(f \cdot g) = (d_{x_0}f)g(x_0) + f(x_0) \cdot (d_{x_0} g)\) if \(m = 1\)
         \item If \(m = 1\) and \(g \not\equiv 0\), the \(f / g\) is diff.
@@ -508,8 +513,7 @@ Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must b
 \begin{ntheorem*}[Multivaraible Chain Rule]
     Let \(X \subseteq \R^n\) and \(Y \subseteq \R^m\) be open \(f: X \to Y, g: T \to \R^p\) diff functions, then
     \[d_{x_0}(g \circ f) = d(g \circ f)(x_0) = dg(f(x_0)) \circ df(x_0)\]
-    In particular, the Jacobi matrix satisfies
-    \[\J_{g \circ f}(x_0) = \J_g(f(x_0)) \cdot \J_f(x_0)\]
+    The Jacobian satisfies: \(\J_{g \circ f}(x_0) = \J_g(f(x_0)) \cdot \J_f(x_0)\)
 \end{ntheorem*}
 
 \begin{ntheorem*}[Partial Convergence]
@@ -523,32 +527,18 @@ Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must b
 
 \begin{definition}
     \(X \subseteq \R^n\) open, \(f: X \to \R^m\), \(v \in \R^n \neq 0\), \(x_0 \in X\). The \textbf{directional derivative} in direction \(v\) is
-    \[\lim_{t \to 0} \frac{f(x_0 + tv) - f(x_0)}{t} = d_vf(x_0) = df(v;x_0) = df(x_0)[v]\]
-    The directional derivative be calculated using the Jacobian:
-    \[\frac{d}{dt} f(x_0 + tv) |_{t=0} = d_vf(x_0) = \J_f(x_0) \cdot v\]
+
+    \resizebox{\linewidth}{!}{
+        \(\lim_{t \to 0} \frac{f(x_0 + tv) - f(x_0)}{t} = \frac{d}{dt} f(x_0 + tv) \bigg|_{t=0} = d_vf(x_0) = \J_f(x_0) \cdot v\)
+    }
 \end{definition}
 
 \begin{note*}[Summed up]
     \begin{itemize}
-        \item \(f\) diff \(\implies f\) cont.
-        \item \(f\) has all partial derivatives \(\centernot\implies f\) cont.
+        \item \(f\) differentiable \(\implies f\) continuous
+        \item \(f\) has all partial derivatives \(\centernot\implies f\) continuous
     \end{itemize}
 \end{note*}
-
-\begin{note*}[Parameterized curve]
-    \(\gamma: [a, b] \to \R^n\), cont. and piecewise \(C^1\). \(\gamma\) is a parameterized curve, \(\gamma(t)\) is a parameterization of the curve \(\Im \gamma = \gamma([a, b])\).
-\end{note*}
-
-\subsection{Change of variables}
-\begin{definition}[Change of variables]
-    \(X \subset \R^n\) open, \(f: X \to \R^n\) diff. \(f\) is a change of variables around \(x_0\) if there is a radius \(r > 0\), such that the restriction of \(f\) to Ball \(B_r(x_0) := \{x \in \R^n \ | \ ||x - x_0|| < r\}\) has the property that the image \(Y = f(B_r(x_0))\) is open in \(\R^n\) and \(\exists\) diff. map \(g: Y \to B\) s.t. \(f \circ g = id = g \circ f\).
-\end{definition}
-
-\begin{ntheorem*}[Inveres function theorem]
-    \(X \subseteq \R^n\) open, \(f: X \to \R^n\) diff. If \(x_0 \in X\) is such that \(\det(\J_f(x_0)) \neq 0\), then \(f\) is a change of variables around \(x_0\). Moreover the Jacobian of \(g\) is determined by \(\J_g(f(x_0)) = \J_f(x_0)^{-1}\).
-
-    This is the analog of the fact that in \(n = 1\) for a function \(f : I \to \R\) \(f\) is bijective from \(I\) to its image if \(f' > 0\) (or \(f' < 0\))
-\end{ntheorem*}
 
 \subsection{Higher order partial derivatives}
 \begin{definition}
@@ -562,7 +552,7 @@ Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must b
 \end{definition}
 
 \begin{note*}[Known \(C^\infty\) functions]
-    All polynomials, trigonometric functions, exponential functions are of class \(C^\infty\)
+    All polynomials, trigonometric and exponential functions
 \end{note*}
 
 \begin{ntheorem*}[Mixed derivatives commute]
@@ -599,18 +589,27 @@ Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must b
     \[\lim_{x \to x_0} \frac{E_k(f, x, x_0)}{||x - x_0||^2} = 0\]
 \end{ntheorem*}
 
+\pagebreak
 \subsection{Critical points}
 \begin{definition}
-    \(x \in X\) is called a critical point of \(f\) if \(\nabla f(x_0) = 0\)
+    \(x_0 \in X\) of \(f: X \subseteq \R^n \to \R\) is a \textbf{local} maximum if there is a neighborhood \(B_{x_0}(r) := \{x \in \R^n \mid ||x - x_0|| < r\} \subseteq X \) such that \(\forall x \in B_{x_0}(r): f(x) \leq f(x_0)\). Vice versa for minimum.
+\end{definition}
+
+\begin{definition}
+    \(x \in X\) is called a \textbf{critical point} of \(f\) if \(\nabla f(x_0) = 0\). These are candidates for local extrema. A critical point which is not an extrema is called  \textbf{saddle point}.
 \end{definition}
 
 \begin{theorem}
-    \(f: X \subset R^n \to \R\) diff. If \(X\) closed and bounded, then a global extrema of \(f\) exists and is either at a point \(x_0 \in\) interior of \(X\) for which \(\nabla f(x_0) = 0\) or \(x_0 \in\) boundary of \(x\).
+    \(f: X \subset R^n \to \R\) diff. on the interior of \(X\) and \(X\) closed and bounded, then a \textbf{global} extrema of \(f\) exists and is either at a point \(x_0 \in\) interior of \(X\) for which \(\nabla f(x_0) = 0\) or \(x_0 \in\) boundary of \(x\).
 \end{theorem}
 
 \begin{definition}[Non-degenerate critical point of \(f \in C^2(X, \R)\)]
     \[\det(\Hess_f(x_0)) \neq 0\]
 \end{definition}
+
+\begin{note*}[Special case for non-degenerate points]
+    If \(\nabla f(x_0) = 0\), but also \(\det \Hess_f(x_0) = 0\), then we have to calculate each case individually.
+\end{note*}
 
 \begin{theorem}
     \(f: X \subset \R^n \to \R\), \(f \in C^2(X, \R)\). Let \(x_0 \in X\) be a critical point of \(f, \nabla f(x_0) = 0\). Then
@@ -660,95 +659,172 @@ Since \(e^{\lambda x}\) can never be \(0\) it follows that \(P(\lambda)\) must b
     \(A\) is \textbf{indefinite} \(\iff\) \(A\) neither pos. nor neg. def.
 \end{note*}
 
-\resizebox{\linewidth}{!}{
-    \(\det \begin{bmatrix}
-        a & b & c  \\
-        d & e & f  \\
-        g & h & i  \\
-    \end{bmatrix} = a \cdot \det \begin{bmatrix}
-        e & f \\
-        h & i \\
-    \end{bmatrix} - b \cdot \det \begin{bmatrix}
-        d & f \\
-        g & i \\
-    \end{bmatrix} + c \cdot \det \begin{bmatrix}
-        d & e \\
-        g & h
-    \end{bmatrix}\)
-}
 
-\begin{note*}
-    If \(\nabla f(x_0) = 0\), but also \(\det \Hess_f(x_0) = 0\), the we have to calculate each case individually.
-\end{note*}
+\begin{corollary}[Closed form expression for \(3 \times 3\) matrix] \ \\
+    \resizebox{\linewidth}{!}{
+        \(\det \begin{bmatrix}
+            a & b & c  \\
+            d & e & f  \\
+            g & h & i  \\
+        \end{bmatrix} = a \cdot \det \begin{bmatrix}
+            e & f \\
+            h & i \\
+        \end{bmatrix} - b \cdot \det \begin{bmatrix}
+            d & f \\
+            g & i \\
+        \end{bmatrix} + c \cdot \det \begin{bmatrix}
+            d & e \\
+            g & h
+        \end{bmatrix}\)
+    }
+\end{corollary}
 
-\begin{note*}[General recipe for finding \textbf{global} extrema:]
-    Let \(f: X \subseteq \R^n \to \R\), compact and \(f \in C^2(X)\).
-    \begin{enumerate}
-        \item Calculate \(\nabla f(x)\) and \(\Hess_f(x)\)
-        \item Find all solutions of \(\nabla_f(x) = 0\), \(S := \{\)
-    \end{enumerate}
-\end{note*}
-
-\section*{Integration in \(\R^n\)}
-\subsection*{Line Integrals}
-
-\begin{definition}
-    Let \(\gamma: [a, b] \to \R^n\) be a curve in \(\R^n\). \(X \subset \R^n\) a subset of \(\R^n\) which contains the image of \(\gamma\). \(v: X \to \R^n\) a continuous function. The integral
-    \[\int_a^b (v(\gamma(t)) \cdot \gamma'(t)) \, dt\]
-    is called the line or path integral of \(v\) along \(\gamma\)
+\subsection{Change of variables}
+\begin{definition}[Change of variables]
+    \(X \subset \R^n\) open, \(f: X \to \R^n\) diff. \(f\) is a change of variables around \(x_0\) if there is a radius \(r > 0\), such that the restriction of \(f\) to the ball \(B_r(x_0) := \{x \in \R^n \ | \ ||x - x_0|| < r\}\) has the property that the image \(Y = f(B_r(x_0))\) is open in \(\R^n\) and there exists a differentiable map \(g: Y \to B\) s.t. \(f \circ g = id = g \circ f\).
 \end{definition}
 
-\begin{note*}[Other notations] \ \\
-    \begin{itemize}
-        \item \(\int\limits_\gamma v \,ds\) if \(v = (v_1(x), v_2(x), \ldots, v_n(x))\) and \(\gamma(t) = (\gamma_1(t), \gamma_2(t), \ldots \gamma_n(t))\) then \(ds\) represents \(\gamma'(t) \,dt\), multiplied by scalar product.
-    \end{itemize}
-\end{note*}
-
-\begin{ntheorem*}[Properties of the line intergral] \ \\
-    \begin{itemize}
-        \item It is independent of orientation preserving reparametrization of the curve.
-        
-        Reparametrization: if \(\gamma: [a, b] \to \R^n\), \(\sigma: [c, d] \to [a, b]\) which is \(C^1\) s.t. \(\sigma(c) = a\) and \(\sigma(d) = b\) and \(\sigma'(t) > 0\) then \(\tilde{\gamma} = \gamma \circ \sigma: [c, d] \to \R^n\)
-    \end{itemize}
+\begin{ntheorem*}[Inveres function theorem]
+    \(X \subseteq \R^n\) open, \(f: X \to \R^n\) diff. If \(x_0 \in X\) is such that \(\det(\J_f(x_0)) \neq 0\), then \(f\) is a change of variables around \(x_0\). Moreover the Jacobian of \(g\) is determined by
+    \[\J_g(f(x_0)) = \J_f(x_0)^{-1}\]
+    Analogous of the fact that if \(f' > 0\) (or \(f' < 0\)) for a function \(f: I \subseteq \R \to \R\), then \(f\) is bijective.
 \end{ntheorem*}
 
-Suppose \(f: X \to \R^n\), a vector field such that \(\exists g: X \to \R^n\), \(g \in C^1\), ...
+\subsubsection*{Important change of variables (coordinates)}
+\begin{enumerate}[leftmargin=0pt]
+    \item \textbf{Polar}  \(f :\begin{cases}
+        [0, \infty) \times [0, 2\pi) \to \R^2 \\
+        (r, \theta) \mapsto (r \cos \theta, r \sin \theta)^\top
+    \end{cases}\)
+    
+    The Jacobian of the change of variable is given by:
+    \[\J_f(r, \theta) = \begin{bmatrix}
+        \cos \theta & -r \sin \theta \\
+        \sin \theta & r \cos \theta
+    \end{bmatrix} \quad \det \J_f(r, \theta) = r\]
 
+    \item \textbf{Cylindrical}  \(f :\begin{cases}
+        [0, \infty) \times [0, 2\pi) \times \R \to \R^3 \\
+        (r, \theta, z) \mapsto (r \cos \theta, r \sin \theta, z)^\top
+    \end{cases}\)
+    
+    The Jacobian of the change of variable is given by:
+    \[\J_f(r, \theta, z) = \begin{bmatrix}
+        \cos \theta & -r \sin \theta & 0\\
+        \sin \theta & r \cos \theta & 0 \\
+        0 & 0 & 1 \\
+    \end{bmatrix} \quad \det \J_f(r, \theta) = r\]
+
+    \item \textbf{Spherical} \(f :\begin{cases}
+        [0, \infty) \times [0, 2\pi) \times [0, \pi] \to \R^3 \\
+        (r, \theta, \varphi) \mapsto (r \cos \theta \sin \phi, r \sin \theta \sin \phi, r \cos \phi)
+    \end{cases}\)
+    
+    The Jacobian of the change of variable is given by:
+    \begin{gather*}
+        \J_f(r, \theta, z) = \begin{bmatrix}
+            \cos \theta \sin \varphi & -r \sin \theta \sin \varphi & r \cos \theta \cos \varphi \\
+            \sin \theta \sin \varphi & r \cos \theta \sin \varphi & r \sin \theta \cos \varphi \\
+            \cos \varphi & 0 & -r \sin \varphi
+        \end{bmatrix} \\
+        \det \J_f(r, \theta) = r^2 \sin \varphi
+    \end{gather*}
+\end{enumerate}
+
+\section{Integration in \(\R^n\)}
 \begin{definition}
-    A diff. function \(g: X \subset \R^n \to \R\), such that \(\nabla g = f\) is called a potential for \(f\).
+    \(\int_a^b f(x) \, dx = \begin{bmatrix}
+        \int_a^b f_1(x) \, dx \\
+        \vdots \\
+        \int_a^b f_n(x) \, dx \\
+    \end{bmatrix}\) for \(f: \R \to \R^n\)
 \end{definition}
 
+\subsection{Line Integrals}
+\begin{definition}
+    A \textbf{parameterized curve} \(\gamma: [a, b] \to \R^n\) is a continuous map and piecewise in \(C^1\) i.e. \(\exists k > 1\) and a partition \(a = t_0 < t_1 < \ldots < t_k = b\) s.t. \(\gamma \big|_{]t_{j-1}, t_j[}\) is \(C^1\) for \(1 \leq j \leq k\). \(\gamma(t)\) is a parameterization of the curve \(\text{Im} \gamma = \gamma([a, b])\).
+\end{definition}
+
+\begin{definition}
+    Let \(\gamma: [a, b] \to \R^n\) be a parameterized curve in \(\R^n\). \(X \subset \R^n\) a subset of \(\R^n\) which contains the image of \(\gamma\). \(f: X \to \R^n\) a continuous function. The integral
+    \[\int_a^b \langle f(\gamma(t)), \gamma'(t)\rangle \, dt \quad \text{denoted} \ \int_\gamma f(s) \cdot \, ds\]
+    is called the line or path integral of \(f\) along \(\gamma\).
+\end{definition}
+
+\begin{definition}
+    Let \(\gamma: [a, b] \to \R^n\) be a parameterized curve. An \textbf{oriented reparameterization} of \(\gamma\) is a parameterized curve \(\sigma: [c, d] \to \R^n\) such that \(\sigma = \gamma \circ \varphi\), where \(\varphi: [c, d] \to [a, b]\) is a cont. map, diff. on \(]a, b[\) that is strictly increasing and satisfies \(\varphi(a) = c\) and \(\varphi(b) = d\). Also \(\gamma = \sigma \circ \varphi^{-1}\)
+\end{definition}
+
+\begin{ntheorem*}[Properties of the line intergral]
+    \begin{enumerate}[leftmargin=15pt]
+        \item Only dependent on the image of the curve \(\gamma\). If \(\sigma\) is an oriented reparameterization of \(\gamma\), then
+        \[\int_\gamma f(s) \cdot ds = \int_\sigma f(s) \cdot ds\]
+        \item Let \(\gamma_1 + \gamma_2\) be the concatenation of these two curves. \((\gamma_1 + \gamma_2)(t) := \begin{cases}
+            \gamma_1(t) & t \in [a, b] \\
+            \gamma_2(t - b + c) & t \in [b, d + b - c]
+        \end{cases}\)
+        \[\int_{\gamma_1 + \gamma_2} f(s) \cdot ds = \int_{\gamma_1} f(s) \cdot ds + \int_{\gamma_2} f(s) \cdot ds\]
+        \item Let \(-\gamma: t \mapsto \gamma(a + b - t)\) be the line in opposite direction
+        \[\int_{-\gamma} f(s) \cdot ds = - \int_\gamma f(s) \cdot ds\]
+    \end{enumerate}
+\end{ntheorem*}
+
+\begin{definition}
+    A differentiable function \(g: X \subset \R^n \to \R\), such that \(\nabla g = f, f : X \to \R^n\) is called a \textbf{potential} for \(f\).
+\end{definition}
+
+\begin{note*}[Usefulness of potentials]
+    Let \(g\) be a potential of \(f\), then
+    \[\int_\gamma f(s) \cdot ds = \int_\gamma \nabla g(s) \cdot ds = g(\gamma(b)) - g(\gamma(a)).\]
+    Thus the path integral of \(f\) only depends on the values of \(g\) at the end points of the curve.
+\end{note*}
+
+\begin{definition}
+    Let \(X \subseteq \R^n\) and \(f: X \to \R^n\) a continuous vector field. If for any \(x_1, x_2 \in X\) the line integral \(\int_\gamma f(s) \cdot ds\) is independent of the choice of the curve \(\gamma\), then \(f\) is called \textbf{conservative}.
+\end{definition}
+
+\begin{ntheorem*}[Important equivalences]
+    \(f: X \to \R^n\) is conservative
+    \begin{enumerate}
+        \item[\(\stackrel{\text{def}}{\iff}\)] The line integral of \(f\) is independent of the path
+        \item[\(\iff\)] \(f = \nabla g\) for a \(g: X \to \R\) (i.e. \(f\) has a potential)
+        \item[\(\iff\)] \(\int_\gamma f(s) \cdot ds = 0\) for any closed \(\gamma\)
+    \end{enumerate}
+\end{ntheorem*}
+
 \begin{theorem}
-    \(f: X \subseteq \R^n \to \R^n, C^1\) vector field. If \(f\) conservative then \(\frac{\partial f_j}{\partial x_i} = \frac{\partial f_i}{\partial x_j}\) for \(1 \leq i, j \leq n\)
+    \(f: X \subseteq \R^n \to \R^n, C^1\) vector field and \(X\) open.
+    \[f \ \text{conservative} \implies \frac{\partial f_j}{\partial x_i} = \frac{\partial f_i}{\partial x_j} \ \text{for} \ 1 \leq i, j \leq n\]
 \end{theorem}
 
 \begin{definition}
     \(f: X \subseteq \R^3 \to \R^3, C^1\), then the curl of \(f\) is defined as
     \[\text{curl}(f) := \begin{pmatrix}
-        \partial_y f_4 - \partial_z f_2 \\
+        \partial_y f_3 - \partial_z f_2 \\
         \partial_z f_1 - \partial_x f_3 \\
         \partial_x f_2 - \partial_y f_1
     \end{pmatrix}\]
 \end{definition}
 
 \begin{theorem}
-    \(f: \R^3 \to \R^3\) \(f\) cons. \(\implies \text{curl}(f) = 0\)
+    \(f: \R^3 \to \R^3\) \(f\) conservative \(\implies \text{curl}(f) = 0\)
 \end{theorem}
 
-\begin{note*}
-    If \(f\) cons. \(\implies\) sym. of partials. But \(\not\Leftarrow\) whether the symmetry implies conservative or not depends on where \(f\) is defined.
-\end{note*}
-
 \begin{definition}
-    A subset \(X \subseteq \R^n\) is start shaped if \(\exists x_0 \in X\) such that \(\forall x \in X\) the line segment joining the \(x\) to \(x_0\) is contained in \(X\).
+    A subset \(X \subseteq \R^n\) is \textbf{star shaped} if \(\exists x_0 \in X\) such that \(\forall x \in X\) the line segment of \(x\) to \(x_0\) is contained in \(X\).
 \end{definition}
 
 \begin{definition}
-    A subset \(X \subseteq \R^n\) is convex, when for any \(x, y \in X\) the line segment from \(x\) to \(y\) is contained in \(X\). convex \(\implies\) star-shaped
+    A subset \(X \subseteq \R^n\) is convex, when for any \(x, y \in X\) the line segment from \(x\) to \(y\) is contained in \(X\).
+    \[\text{convex} \implies \text{star-shaped}\]
 \end{definition}
 
 \begin{theorem}
-    If \(X\) start-shaped open and \(f \in C^1\) vector field. Then \(\frac{\partial f_i}{\partial x_j} = \frac{\partial f_j}{\partial x_i}\) for \(\forall 1 \leq i, j \leq n\). Implies that \(f\) is conservative.
+    If \(X\) star-shaped open and \(f \in C^1\) vector field. Then
+    \begin{gather*}
+        \frac{\partial f_i}{\partial x_j} = \frac{\partial f_j}{\partial x_i} \ \forall 1 \leq i, j \leq n \implies f \ \text{is conservative} \\
+        \text{curl}(f) = 0 \implies f \ \text{is conservative}
+    \end{gather*}
 \end{theorem}
 
 t.b.d. riemann inteagral defintions
