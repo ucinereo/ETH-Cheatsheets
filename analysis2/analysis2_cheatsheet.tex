@@ -25,6 +25,7 @@
 \usepackage{amsmath}
 \usepackage{bm}
 \usepackage{centernot}
+\usepackage{esint}
 
 \newtheorem*{corollary}{Cor}
 \newtheorem*{lemma}{Lemma}
@@ -262,7 +263,7 @@ Given a function \(F\) of \(x, y\), where \(y\) is a function itself. \(F\) is a
         \(3.\) General solution: \(f(x) = f_h(x) + f_p(x)\)
 \end{note*}
 
-\subsubsection*{Method of undetermined coefficients}
+\subsubsection{Method of undetermined coefficients}
 \begin{tabular}{|c|c|}
     \hline
     \(\bm{b(x)}\) & \textbf{Guess} \\
@@ -348,7 +349,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 \end{ntheorem*}
 
 \section{Differential calculus in \(\R^n\)}
-\subsection*{Terminology}
+\subsection{Terminology}
 \begin{tabular}{>{\bfseries}l l}
     Vector Field & \(f: \R^n \to \R^m \quad (m > 1)\) \\
     Scalar Field & \(f: \R^n \to \R\) \\
@@ -422,7 +423,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
     \[\lim_{(x, y) \to (0, 0)}f(x, y) = \lim_{(r\cos\theta, r\sin\theta)  \to (0,0)}f(x, y) = \ldots = \lim_{r \to 0} \zeta\]
 \end{note*}
 
-\subsection*{Sets Bounds \(M \subseteq \R^n\)}
+\subsection{Sets Bounds \(M \subseteq \R^n\)}
 \vspace{-8pt}
 \begin{align*}
     M \ \textbf{is bounded} \defi & \{||x|| \in \R \mid x \in M\} \ \text{is bounded} \\
@@ -690,7 +691,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
     Analogous of the fact that if \(f' > 0\) (or \(f' < 0\)) for a function \(f: I \subseteq \R \to \R\), then \(f\) is bijective.
 \end{ntheorem*}
 
-\subsubsection*{Important change of variables (coordinates)}
+\subsubsection{Important change of variables (coordinates)}
 \begin{enumerate}[leftmargin=0pt]
     \item \textbf{Polar}  \(f :\begin{cases}
         [0, \infty) \times [0, 2\pi) \to \R^2 \\
@@ -827,20 +828,68 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
     \end{gather*}
 \end{theorem}
 
-t.b.d. riemann inteagral defintions
+\subsection{Riemann Integrals}
+\begin{definition}
+    A \textbf{rectangle} in \(\R^n\) is a product
+    \[Q := [a_1, b_1] \times \ldots \times [a_n, b_n] = \prod_{j=1}^n I_i\]
+    of \(n\) intervals \(I_i = [a_i, b_i]\) (not necessarily closed), and
+    \[\text{vol}(Q) := \int_Q 1 \,dx = \prod_{i=1}^n (b_i - a_i).\]
+\end{definition}
+
+\begin{definition}
+    Let \(P\) be a partition (collection) of \(Q = Q_1, \ldots, Q_k\) s.t. \(Q = \bigcup_{i=1}^k Q_i\) and all \(Q_i\) are pairwise disjoint and consider \(f: \R^n \to \R\).
+    The upper/lower Riemann sum are defined as:
+    \[L(P, f) = \sum_{j = 1}^k (\inf_{Q_j} f) \cdot \text{vol}(Q_j), \ U(P, f) = \sum_{j = 1}^k (\sup_{Q_j} f) \cdot \text{vol}(Q_j)\]
+    and we define the lower and upper Riemann integral as
+    \[\underline{\text{I}}(f) := \sup_P \{L(P, f)\}, \ \overline{\text{I}}(f) = \inf_P \{U(P, f)\}\]
+\end{definition}
+
+\begin{definition}
+    \(f: Q \to \R\) is called \textbf{integrable} if \(\underline{\text{I}}(f) = \overline{\text{I}}(f)\).
+    \[\int_Q f \,dx = \int_Q f(x_1, \ldots, x_n) \, dx_1 \ldots dx_n\]
+\end{definition}
 
 \begin{theorem}
     \(f\) is cont. and bounded on \(Q\), then \(f\) is integrable.
 \end{theorem}
 
+\begin{ntheorem*}[Properties] \(f,g : Q \subseteq \R^n \to \R\) integrable and \(\alpha, \beta \in \R\)
+    \begin{enumerate}[leftmargin=15pt]
+        \item \textbf{Linearity}: \(\int_Q(\alpha f + \beta g) \, dx = \alpha \int_Q f \, dx + \beta \int_Q g \,dx\)
+        \item \textbf{Positivity}: If \(f \leq g\), then \(\int_Q f \, dx \leq \int_Q g \, dx\)
+        \item \textbf{Upper bound}: \(| \int_Q f \, dx | \leq \int_Q |f| \, dx\)
+        \item \textbf{Zero}: If \(f \geq 0\), then \(\int_Q f \, dx \geq 0\)
+        \item \textbf{Triangle Ine.:} \(| \int_Q (f + g) \, dx | \leq \int_Q |f| \, dx + \int_Q |g| \, dx\)
+        \item \textbf{Domain additivity}: If \(X_1\) and \(X_2\) are compact subsets of \(\R^n\) and \(f\) is continuous on \(X_1 \cup X_2\), then
+        \[\int_{X_1 \cup X_2} f \, dx = \int_{X_1} f \, dx + \int_{X_2} f \, dx - \int_{X_1 \cap X_2} f \, dx\]
+    \end{enumerate}
+\end{ntheorem*}
+
+\begin{ntheorem*}[Fubini's theorem]
+    If \(Q = [a_1, b_1] \times \ldots \times [a_n, b_n]\), \(f: Q \to \R\) cont, then
+    \[\int_Q f(x) \, dx = \int_{a_1}^{b_1} \left(\int_{a_2}^{b_2} \ldots \left( \int_{a_n}^{b_n} f(x) \, dx_1 \right) \ldots dx_2\right) dx_1\]
+    The order of integration is irrelevant.
+\end{ntheorem*}
+
+\begin{ntheorem*}[Fubini's theorem for general regions]
+    \(X \subseteq \R_n\), \(f: X \to \R\), \(n_1, n_2 \geq 1\) and \(n = n_1 + n_2\), then for \(x \in \R^n = (x_1 \in \R^{n_1}, x_2 \in \R^{n_2})\), define
+    \begin{align*}
+        X_{x_1} &:= \{x_2 \in \R^{n_2} \mid (x_1, x_2) \in X\} \subseteq \R^{n_2} \\
+        X_1 &:= \{x_1 \in \R^{n_1} \mid X_{x_1} \neq \emptyset\} \subseteq \R^{n_1}
+    \end{align*}
+    If \(g(x_1):= \int_{X_{x_1}} f(x_1, x_2) \, dx_2\) is continuous on \(X_1\), then
+    \[\int_X f(x) \, dx = \int_{X_1} g(x_1) \, dx_1 = \int_{X_1}\int_{X_{x_1}} f(x_1, x_2) \, dx_2 \, dx_1\]
+\end{ntheorem*}
+
 \begin{definition}
-    For \(1 \leq m \leq n\) a \(m\)-parameterized set or parameterized \(m\)-set is a continuous function \(\phi: [a_1, b_1] \times \ldots \times [a_m, b_m] \to \R^n\) which is \(C^1\) on \((a_1, b_1) \times \ldots \times (a_m, b_m)\)
+    For \(1 \leq m \leq n\) a \(m\)-parameterized set or parameterized \(m\)-set is a continuous function \(\varphi: [a_1, b_1] \times \ldots \times [a_m, b_m] \to \R^n\) which is \(C^1\) on \((a_1, b_1) \times \ldots \times (a_m, b_m)\).
+    If \(m = 1\) then \(\varphi\) is a parameterized curve in \(\R^n\).
 \end{definition}
 
 \begin{definition}
-    A set \(Y \subseteq \R^n\) is called negligible if \(\exists\)finitely mani \(\phi_i\), parameterized \(m_i\)-sets with \(m_i \leq n\) such that \(1 \leq i \leq k\)
-    \[Y \subseteq \bigcup_{i = 1}^k \phi_i(x_i)\]
-    where \(\phi_i: x_i \to \R^n\)
+    A set \(Y \subseteq \R^n\) is called negligible if \(\exists\)finitely many \(\varphi_i\), parameterized \(m_i\)-sets with \(m_i \leq n\) such that \(1 \leq i \leq k\)
+    \[Y \subseteq \bigcup_{i = 1}^k \varphi_i(x_i)\]
+    where \(\varphi_i: x_i \to \R^n\)
 \end{definition}
 
 \begin{theorem}
@@ -849,7 +898,7 @@ t.b.d. riemann inteagral defintions
     \(\forall f: Y \to \R\) continuous
 \end{theorem}
 
-\subsection*{Improper Integrals}
+\subsection{Improper Integrals}
 \begin{definition}
     We say \(f\) is integrable on \(I \times J\) if
     \[\lim_{b \to \infty} \int_a^b \int_I f(x, y) \,dx \,dy = \lim_{b \to \infty} \int_I \int_a^b f \, dy \, dx\]
@@ -857,22 +906,51 @@ t.b.d. riemann inteagral defintions
     \[\int_a^\infty \int_I f \,dx \,dy = \int_{I \times J} f \,dx \,dy\]
 \end{definition}
 
-\begin{ntheorem*}[Change of variable]
-    In \(\R^n\), we have \(\phi: X \to Y\) with \(X\) bounded and closed and \(Y\) bounded and closed.
+\begin{definition}
+    Let \(f: X \subseteq \R^n \to \R^n\) be a non compact set and \(f\) a function such that \(\int_K f \, dx\) exists for every compact set \(K \subset X\) and suppose \(f \geq 0\). Finally we have a sequence of regions \(X_k \ k = 1, 2, \ldots\) s.t.
+    \begin{enumerate}
+        \item \(X_k \subset X\) bounded and closed
+        \item \(X_k \subseteq X_{k+1}\)
+        \item \(\bigcup_{k=1}^\infty X_k = X\)
+    \end{enumerate}
+    Then if the following limit exists, the integral converges:
+    \[\int_X f \, dx := \lim_{n\to\infty} \int_{X_n}f \, dx\]
+\end{definition}
+
+\begin{ntheorem*}[Change of variables]
+    Let \(\overline{X} \subseteq \R^n, \ \overline{Y} \subseteq \R^n\) be compact subsets. Let \(\varphi: \overline{X} \to \overline{Y}\) be a continuous map with \(\overline{X} = X \cup B, \ \overline{Y} = Y \cup C\) where \(X\) and \(Y\) are open, \(B\) and \(C\) negligible. The restriction \(\varphi: X \to Y\) is a bijective map of class \(C^1\) such that for all \(x \in X\) it holds \(\det \J_\varphi(x) \neq 0\). Assume \(f: \overline{Y} \to \R\) then:
+    \[\int_{\overline{X}} f(\varphi(x)) \left|\det \J_\varphi(x)\right| \,dx = \int_{\overline{Y}} f(y) \,dy\]
 \end{ntheorem*}
 
-\subsection*{The Green formula}
+\begin{note*}[Shortcuts for change of variables]
+    The substitutions are listed in the section of coordinates.
+    \begin{itemize}[leftmargin=15pt]
+        \item Polar Coordinates: \(dx \, dy = r \, dr \, d\theta\)
+        \item Cylindrical coordinates: \(dx \, dy \, dz = r \, dr \, d\theta \, dz\)
+        \item Spherical coordinates: \(dx \, dy \, dz = r^2 \sin(\varphi) \, dr \, d\theta \, d\varphi\)
+    \end{itemize}
+    \vspace{5pt}
+    \textbf{Example}: Let \(X\) be a quarter circle and \(z = \frac{1}{1 + x^2 + y^2}\):
+    \[\iint\displaylimits_X \frac{dx \, dy}{1 + x^2 + y^2} = \int_0^{\frac{\pi}{2}} \int_0^1 \frac{1}{1 + r^2} \cdot r \, dr \, d\theta\]
+\end{note*}
 
-\begin{ntheorem*}[Green's formula]
-    \[\int_X (\frac{\partial f_2}{\partial x} - \frac{\partial f_1}{y}) \, dx dy = \int_{\partial X} f \cdot ds \quad (f = (f_1, f_2))\]
-    We made assumptions \(f = (f_1, f_2)\) is \(C^1\) in the region \(X\). so that \(curl f = \frac{\partial f_2}{\partial x } - \frac{\partial f_1}{\partial y}\) is integrable.
+\pagebreak
+\subsection{The Green formula}
 
-    \noindent The region \(X\) is closed and bounded and its boundary is a simple closed cure if \(\gamma[a, b] \to \R^2\) is the curve which is the boundary of \(X\).
+\begin{definition}
+    A \textbf{simple closed parameterized curve} \(\gamma:[a, b] \to \R^2\) is a closed parameterized curve such that \(\gamma(t) \neq \gamma(s)\) unless \(t = s\) or \(\{s, t\} = \{a, b\}\) and such that \(\gamma'(t) \neq 0\) for \(a < t < b\). If \(\gamma\) is only piecewise \(C^1\) inside \(]a, b[\), this condition only applies where \(\gamma'(t)\) exists.
+\end{definition}
+
+\begin{ntheorem*}[Green's Theorem]
+    Let \(f: X \to \R^2\) \(C^1\) vector field, \(X\) closed and bounded where \(\partial X = \bigcup_{i = 1}^n \gamma_i\) union of simple closed curves so that \(X\)  is always to the left of the curve \(\gamma = \bigcup_{i = 1}^n \gamma_i\) then
+    \[\iint\displaylimits_{X} \left(\frac{\partial f_2}{\partial x} - \frac{\partial f_1}{y}\right) \, dx \, dy = \sum_{i =1}^n \int_{\gamma_i} f \cdot ds = \int_\gamma f \cdot ds\]
 \end{ntheorem*}
 
-\begin{ntheorem*}
-    let \(f: X \to \R^2\) \(C^1\) vector field, \(X\) closed and bounded where \(\partial X = \bigcup_{i = 1}^n \gamma_i\) union of simple close curves so that \(X\)  is always to the left of the curve \(\gamma = \bigcup_{i = 1}^n \gamma_i\) then
-    \[\iint_{X} \left(\frac{\partial f_2}{\partial x} - \frac{\partial f_1}{y}\right) \, dx dy = \int_\gamma f \, ds\]
-\end{ntheorem*}
+\begin{note*}[Both directions]
+    \begin{enumerate}
+        \item Use the double integral to calculate the line integral
+        \item Use the line integral to calculate a double integral
+    \end{enumerate}
+\end{note*}
 
 \end{document}
