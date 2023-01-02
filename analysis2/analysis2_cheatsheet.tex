@@ -331,7 +331,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 \end{theorem}
 
 \begin{note*}[Solutions]
-    The functions \(f_{i, m}: x \mapsto x^m e^{\lambda_i x}\) span the solution space \(S_0\) with \(m\) as the multiplicity of \(\lambda_i\).
+    The functions \(f_{i, l}: x \mapsto x^l e^{\lambda_i x}\) span the solution space \(S_0\) with \(0 \leq l < m\), \(m\) as the multiplicity of \(\lambda_i\).
 
     \begin{itemize}
         \item If \(\lambda = a + ib\) is EV of \(P(\lambda)\), then \(P(\overline{\lambda})\) is an EV.
@@ -1160,6 +1160,63 @@ Consider an arbitrary function $f: X \to Y$.
         \end{axis}
     \end{tikzpicture}
 \end{center}
+
+\begin{tikzpicture}[scale=3,cap=round,>=latex]
+    \draw[->] (-1.5cm,0cm) -- (1.5cm,0cm) node[right,fill=white] {$x$}; % x axis
+    \draw[->] (0cm,-1.5cm) -- (0cm,1.5cm) node[above,fill=white] {$y$}; % y axis
+    
+    % draw the unit circle
+    \draw[thick] (0cm,0cm) circle(1cm);
+    
+    \foreach \x in {45,135, 225,315,0,30,...,360} { % <-- bissectrices added
+      \draw[gray] (0cm,0cm) -- (\x:1cm); % lines from center to point
+      \filldraw[black] (\x:1cm) circle(0.4pt); % dots at each point
+    }
+    
+    % for the first and fourth quadrants
+    \foreach \adeg/\radtext/\xc/\yc in {
+      30/\frac{\pi}{6}/\frac{\sqrt{3}}{2}/\frac{1}{2},
+      45/\frac{\pi}{4}/\frac{\sqrt{2}}{2}/\frac{\sqrt{2}}{2},
+      60/\frac{\pi}{3}/\frac{1}{2}/\frac{\sqrt{3}}{2},
+      300/\frac{5\pi}{3}/\frac{1}{2}/-\frac{\sqrt{3}}{2},
+      315/\frac{7\pi}{4}/\frac{\sqrt{2}}{2}/-\frac{\sqrt{2}}{2},
+      330/\frac{11\pi}{6}/\frac{\sqrt{3}}{2}/-\frac{1}{2}
+    }
+    {
+      \draw (\adeg:0.6cm) node[rotate around={\adeg:(0,0)}] {$\adeg^\circ$}; % <-- rotate around key used
+      \draw (\adeg:0.85cm) node[rotate around={\adeg:(0,0)}] {$\radtext$}; % <-- rotate around key used
+      \draw (\adeg:1.025cm) node[rotate around={\adeg:(0,0)}, anchor=west] {$\left(\xc,\yc\right)$}; % <-- rotate around key used, radius changed, anchor key used
+    }
+  
+    % for the second and third quadrants
+    \foreach \adeg/\radtext/\xc/\yc in {
+      120 / \frac{2\pi}{3} / -\frac{1}{2} / \frac{\sqrt{3}}{2},
+      135 / \frac{3\pi}{4} / -\frac{\sqrt{2}}{2} / \frac{\sqrt{2}}{2},
+      150 / \frac{5\pi}{6} / -\frac{\sqrt{3}}{2} / \frac{1}{2},
+      210 / \frac{7\pi}{6} / -\frac{\sqrt{3}}{2} / -\frac{1}{2},
+      225 / \frac{5\pi}{4} / -\frac{\sqrt{2}}{2} / -\frac{\sqrt{2}}{2},
+      240 / \frac{4\pi}{3} / -\frac{1}{2} / -\frac{\sqrt{3}}{2}
+    }
+    {
+      \draw (\adeg:0.6cm) node[rotate around={\adeg+180:(0,0)}] {$\adeg^\circ$}; % <-- rotate around key used
+      \draw (\adeg:0.85cm) node[rotate around={\adeg+180:(0,0)}] {$\radtext$}; % <-- rotate around key used
+      \draw (\adeg:1.025cm) node[rotate around={\adeg+180:(0,0)}, anchor=east] {$\left(\xc,\yc\right)$}; % <-- rotate around key used, radius changed, anchor key used
+    }
+    
+    \foreach \adeg/\radtext/\xc/\yc in {0 / 2\pi / 1 / 0, 180 / \pi / -1 / 0}
+    {
+      \draw (\adeg:0.6cm) node[above=1pt] {$\adeg^\circ$};
+      \draw (\adeg:0.85cm) node[above=1pt] {$\radtext$};
+      \draw (\adeg:1.15cm) node[above=1pt] {$\left(\xc,\yc\right)$}; % <-- radius changed
+    }
+    
+    \foreach \adeg/\radtext/\xc/\yc in {90 / \frac{\pi}{2} / 0 / 1, 270 / \frac{3\pi}{2} / 0 / -1}
+    {
+      \draw (\adeg:0.6cm) node[right=1pt] {$\adeg^\circ$};
+      \draw (\adeg:0.85cm) node[right=1pt] {$\radtext$};
+      \draw (\adeg:1.1cm) node[right=1pt] {$\left(\xc,\yc\right)$}; % <-- radius changed
+    }
+  \end{tikzpicture}
 
 \subsection*{Derivatives and Integrals (\href{https://n.ethz.ch/~dcamenisch/summaries/}{src: dcamenisch})}
 \renewcommand{\arraystretch}{1.5}
