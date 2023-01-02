@@ -218,7 +218,7 @@
 \maketitle
 
 \section{Ordinary differential equations}
-\[F(x, y(x), y'(x), \ldots, y^{(n)}) = 0\]
+\[F(x, y^{(n)}, \ldots, y'(x), y(x)) = 0\]
 Given a function \(F\) of \(x, y\), where \(y\) is a function itself. \(F\) is an implicit ODE of \textbf{order} \(n\).
 
 \begin{note*}[Linear ODE's]
@@ -295,7 +295,7 @@ Given a function \(F\) of \(x, y\), where \(y\) is a function itself. \(F\) is a
         &\implies& z'e^{-A} &= b \\
         &\implies& z' &= be^{A} \\
         &\implies& z &= \smallint b(x)e^{A(x)}\,dx \\
-        &\implies& f_p &= \smallint b(t) e^{A(x)}\,dx \cdot e^{-A(x)}
+        &\implies& f_p &= \smallint b(t) e^{A(t)}\,dt \cdot e^{-A(x)}
     \end{align*}
 \end{enumerate}
 
@@ -413,14 +413,14 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 \end{corollary}
 
 \begin{ntheorem*}[Sandwich lemma]
-    \(f, g, h : \R^n \to \R\), \(\forall x \in \R^n: f(x) < g(x) < h(x)\)
+    \(f, g, h : \R^n \to \R\), \(\forall x \in \R^n: f(x) \leq g(x) \leq h(x)\)
     \[\lim_{x \to a} f(x) = L = \lim_{x \to a} h(x) \implies \lim_{x \to a}g(x) = L\]
 \end{ntheorem*}
 
 \begin{note*}[Polar Coordinates]
     For \(f: \R^2 \to \R\) polar coordinates are sometimes helpful.
-    \(x = r \cos \theta \quad y = r \sin \theta\)
-    \[\lim_{(x, y) \to (0, 0)}f(x, y) = \lim_{(r\cos\theta, r\sin\theta)  \to (0,0)}f(x, y) = \ldots = \lim_{r \to 0} \zeta\]
+    \(p = r \cos \theta \quad q = r \sin \theta\)
+    \[\lim_{(x, y) \to (0, 0)}f(x, y) = \lim_{(r\cos\theta, r\sin\theta) \to (0,0)}f(p, q) = \ldots = \lim_{r \to 0} \zeta\]
 \end{note*}
 
 \subsection{Sets Bounds \(M \subseteq \R^n\)}
@@ -438,7 +438,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
     \begin{itemize}
         \item \(\R^n\) and \(\emptyset\) are the \textbf{only} open and  closed sets of \(\R^n\).
         \item The open disc \(B_r(x_0) = \{x \in \R^n \mid |x - x_0| < r\}\) is bounded and open.
-        \item The closed disc \(\overline{B_r(x_0)} = \{x \in \R^n \mid |x - x_0| < r\}\) is closed.
+        \item The closed disc \(\overline{B_r(x_0)} = \{x \in \R^n \mid |x - x_0| \leq r\}\) is closed.
         \item \(I_1 \times \ldots I_n\) is closed (compact) if each interval \(I_i\) is closed (compact)
     \end{itemize}
 \end{note*}
@@ -952,5 +952,306 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
         \item Use the line integral to calculate a double integral
     \end{enumerate}
 \end{note*}
+
+\pagebreak
+\section*{Analysis I Stuff}
+\begin{ntheorem*}[Derivative rules]
+    Linearity: \((\alpha \cdot f(x) + g(x))' = \alpha \cdot f'(x) + g'(x)\) \\
+    Product rule: \((f \cdot g)'(x) = f'(x)\cdot g(x) + f(x)\cdot g'(x)\) \\
+    Quotient rule: \(\left(\frac{f}{g}\right)'(x) = \frac{f'(x)\cdot g(x) - f(x)\cdot g'(x)}{g(x)^2}\) \\
+    Chain rule: \((f \circ g)'(x) = f'(g(x))\cdot g'(x)\) \\
+    Inverse: \((f^{-1})'(y_0) = \frac{1}{f'(x_0)} = \frac{1}{f'(f^{-1}(y_0))}, \ y_0 = f(x_0)\)
+\end{ntheorem*}
+
+\subsection*{Trigonometric functions}
+\[\sin z = z - \frac{z^3}{3!} + \frac{z^5}{5!} - \cdots = \sum_{n = 0}^\infty \frac{(-1)^n z^{2n + 1}}{(2n + 1)!} = \frac{e^{iz}-e^{-iz}}{2i}\]
+\[\cos z = 1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots = \sum_{n = 0}^\infty \frac{(-1)^n z^{2n}}{(2n)!} = \frac{e^{iz}+e^{-iz}}{2}\]
+\[\tan x = \frac{\sin x}{\cos x} \qquad \cot x = \frac{\cos x}{\sin x}\]
+\textbf{Useful bound for \(\sin\)}:\(\forall x \in \R^+_0: \sin(x) \leq x\)
+\begin{proof}
+    Let \(g(x) = x - \sin(x)\) with \(g'(x) = 1 - \cos(x) \geq 0\)
+\end{proof}
+
+\subsection*{Natural Logarithm Rules}
+\begin{tabularx}{\linewidth}{XX}
+    $\ln(1) = 0$ & $\ln(e) = 1$ \\
+    $\ln(xy) = \ln(x) + \ln(y)$ & $\ln(x/y) = \ln(x) - \ln(y)$ \\
+    $\ln(x^y) = y \cdot \ln(x)$ & $x^\alpha \cdot x^\beta = x^{\alpha + \beta}$ \\
+    $(x^\alpha)^\beta = x^{\alpha \cdot \beta}$ & $\frac{x - 1}{x} \leq \ln(x) \leq x - 1$ \\
+    $\ln(1 + x^\alpha) \leq \alpha x$ & $\log_\alpha(x) = \frac{\ln(x)}{\ln(\alpha)}$
+\end{tabularx}
+
+\subsection*{Function Properties}
+Consider an arbitrary function $f: X \to Y$.
+\begin{definition}[Well defined]
+    $f$ is well defined if $f(x)$ exists $\forall x \in D$.
+\end{definition}
+
+\begin{definition}[Injective]
+    $\forall x, y \in X: f(x) = f(y) \implies x = y$
+    \begin{itemize}
+        \item Assume $f(x)= f(y)$ and then show that $x = y$
+        \item Assume $x \neq y$ and show that $f(x) \neq f(y)$
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Surjective]
+    $\forall y \in Y \ \exists x \in X: f(x) = y$
+    \begin{itemize}
+        \item Take arbitrary $y \in Y$ and show that there is an element $x \in X$. Consider $f(x) = y$ and solve for $x$ and check whether or not $x \in X$.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Bijective]
+    $f$ injective and surjective $\implies f$ bijective
+\end{definition}
+
+\subsection*{Integration Methods}
+\begin{ntheorem*}[Partial Inegration]
+    \begin{align*}
+        \int_a^b f(x) g'(x) \,dx &= f(b)g(b) - f(a)g(a) - \int_a^b f'(x)g(x) \,dx \\
+        \int_a^b f(x) g'(x) \,dx &= (f \cdot g)|_a^b - \int_a^b f'(x)g(x) \,dx \\
+        \int f(x)g'(x) \,dx &= f(x) g(x) - \int f'(x) g(x) \,dx
+    \end{align*}
+\end{ntheorem*}
+\begin{itemize}
+    \item Choose $g'$: exp $\rightarrow$ trig $\rightarrow$ poly $\rightarrow$ inverse trig. $\rightarrow$ logs
+    \item Choose $f$: logs $\rightarrow$ inverse trig. $\rightarrow$ poly $\rightarrow$ trig $\rightarrow$ exp
+    \item Sometimes it is necessary to multiply by $1$. E.g.: $\int \ln x \ \,dx = \int \ln x \cdot 1 \ \,dx \implies f(x) = \ln x, \ g'(x) = 1$.
+    \item Sometimes it is necessary to do it multiple times
+\end{itemize}
+
+\begin{ntheorem*}[Substitution]
+    Let $a < b$, $\phi: [a, b] \to \R$, cont. diff, $I \subseteq \R$ with $\phi([a, b]) \subseteq I$ and $f: I \to \R$ a cont. function. Then it follows:
+    $$\int_{\phi(a)}^{\phi(b)} f(x) \,dx = \int_a^b f(\phi(t)) \phi'(t) dt = (F \circ \phi)(b) - (F \circ \phi)(a)$$
+    since $F'=f$ then $f(\phi(t))\phi'(t) = (F \circ \phi)'(t)$.
+\end{ntheorem*}
+
+\begin{ntheorem*}[Partial Fraction Decomposition]
+    Let $P(x)$, $Q(x)$ be two polynomials. $\int \frac{P(x)}{Q(x)}$ can be calculated as follows:
+    \begin{enumerate}[leftmargin=5mm]
+        \item If $\deg(P) \geq Q(P) \Rightarrow$ poly. div. $\frac{P(x)}{Q(x)} = a(x) + \frac{r(x)}{Q(x)}$
+        \item Calculate all roots of $Q(x)$
+        \item Create a partial fraction per root
+        \begin{itemize}[leftmargin=1mm]
+            \item Simple real root: $x_1 \to \frac{A}{x - x_1}$
+            \item $n$-fold real root: $x_1 \to \frac{A_1}{x - x_1} + \ldots + \frac{A_r}{(x - x_1)^r}$
+            \item Simple $i$-root: $x^2 + px + q \to \frac{Ax + B}{x^2 + px + q}$
+            \item $n$-fold $i$-root: $x^2 + px + q \to \frac{A_1x + B_1}{x^2 + px + q} + \ldots + \frac{A_rx + B_r}{(x^2 + px + q)^r}$
+        \end{itemize}
+        \item Calculate parameters $A_1, \ldots, A_n$. (Insert the root as $s$, transform and solve)
+    \end{enumerate}
+\end{ntheorem*}
+
+\subsection*{Trigonometry}
+
+\subsubsection*{Periodicity}
+\begin{tabularx}{\linewidth}{XX}
+    $\sin(x) = \sin(x + 2 \pi)$ & $\cos(x) = \cos(x + 2\pi)$ \\
+    $\tan(x) = \tan(x + \pi)$ & $\cot(x) = \cot(x + \pi)$
+\end{tabularx}
+
+\subsubsection*{Parity}
+\begin{tabularx}{\linewidth}{XX}
+    $\sin(-x) = - \sin(x)$ & $\cos(-x) = \cos(x)$ \\
+    $\tan(-x) = - \tan(x)$ & $\cot(-x) = -\cot(x)$
+\end{tabularx}
+
+\subsubsection*{Complement}
+\begin{tabularx}{\linewidth}{XX}
+    $\sin(\pi - x) = \sin(x)$ & $\cos(\pi - x) = -\cos(x)$ \\
+    $\tan(\pi - x) = - \tan(x)$ & $\cot(\pi - x) = -\cot(x)$
+\end{tabularx}
+
+\subsubsection*{Multiple-angles formulae}
+\begin{tabularx}{\linewidth}{XX}
+    $\sin(2x) = 2 \sin x \cos x $ & $\cos(2x) = \cos^2x - \sin^2x$ \\
+    $\tan(2x) = \frac{2 \tan x}{1 - \tan^2x}$ & $\cot(2x) = \frac{\cot x - \tan x}{2}$ \\
+    $\sin(3x) = 3 \sin x - 4 \sin^3 x$ & $\cos(3x) = 4 \cos^3 x - 3 \cos x$
+\end{tabularx}
+
+\subsubsection*{Addition Theorems}
+\begin{tabularx}{\linewidth}{X}
+    $\sin(x \pm y) = \sin x \cos y \pm \cos x \sin y$ \\
+    $\cos(x \pm y) = \cos x \cos y \mp \sin x \sin y$ \\
+    $\tan(x \pm y) = \frac{\tan x \pm \tan y}{1 \mp \tan x \tan y}$ \\
+    $\cot(x \pm y) = \frac{\cot x \cot y \mp 1}{\cot y \pm \cot x}$
+\end{tabularx}
+
+\subsubsection*{Multiplication}
+\begin{tabularx}{\linewidth}{X}
+    $\sin x \sin y = \frac{1}{2}(\cos(x - y) - \cos(x + y))$ \\
+    $\cos x \cos y = \frac{1}{2}(\cos(x - y) + \cos(x + y))$ \\
+    $\sin x \cos y = \frac{1}{2}(\sin(x - y) + \sin(x + y))$ \\
+\end{tabularx}
+
+\subsubsection*{Powers}
+\begin{tabularx}{\linewidth}{XX}
+    $\sin^2 x = \frac{1 - \cos(2x)}{2}$ & $\sin^3 x = \frac{3 \sin x - \sin(3x)}{4}$ \\
+    $\cos^2 x = \frac{1 + \cos(2x)}{2}$ & $\cos^3 x = \frac{3 \cos x + \cos(3x)}{4}$ \\
+    $\tan^2 x = \frac{1 - \cos(2x)}{1 + \cos(2x)}$
+\end{tabularx}
+
+\subsubsection*{Sum of functions}
+\begin{tabularx}{\linewidth}{X}
+    $\sin x + \sin y = 2 \sin\frac{x + y}{2} \cos\frac{x - y}{2}$ \\
+    $\sin x - \sin y = 2 \cos\frac{x + y}{2} \sin\frac{x - y}{2}$ \\
+    $\cos x + \cos y = 2 \cos\frac{x + y}{2} \cos\frac{x - y}{2}$ \\
+    $\cos x - \cos y = 2 \sin\frac{x + y}{2} \sin\frac{x - y}{2}$
+\end{tabularx}
+
+\subsubsection*{Miscellaneous}
+\begin{tabularx}{\linewidth}{XX}
+    $\sin^2 x + \cos^2 x = 1$ & $\cosh^2 x - \sinh^2 x = 1$ \\
+    $\sin x^{(n)} = \sin\left(x + \frac{n \pi}{2}\right)$ & $\cos x^{(n)} = \cos\left(x + \frac{n \pi}{2}\right)$ \\
+\end{tabularx}
+
+\subsubsection*{Angles}
+\resizebox{.835\linewidth}{!}{
+    \begin{tabularx}{\linewidth}{c|ccccccccccc}
+        deg & 0 & 30 & 45 & 60 & 90 & 120 & 135 & 150 & 180 & 270 & 360 \\
+        rad & 0 & $\frac{\pi}{6}$ & $\frac{\pi}{4}$ & $\frac{\pi}{3}$ & $\frac{\pi}{2}$ & $\frac{2\pi}{3}$ & $\frac{3\pi}{4}$ & $\frac{5\pi}{6}$ & $\pi$ & $\frac{3\pi}{2}$ & $2\pi$ \\
+        \cmidrule{1-12}
+        $\sin$ & $0$ & $\frac{1}{2}$ & $\frac{\sqrt{2}}{2}$ & $\frac{\sqrt{3}}{2}$ & $1$ & $\frac{\sqrt{3}}{2}$ & $\frac{1}{\sqrt{2}}$ & $\frac{1}{2}$ & 0 & -$1$ & $0$\\
+        $\cos$ & $1$ & $\frac{\sqrt{3}}{2}$ & $\frac{\sqrt{2}}{2}$ & $\frac{1}{2}$ & $0$ & -$\frac{1}{2}$ & -$\frac{1}{\sqrt{2}}$ & -$\frac{\sqrt{3}}{2}$ & -$1$ & $0$ & $1$ \\
+        $\tan$ & $0$ & $\frac{1}{\sqrt{3}}$ & $1$ & $\sqrt{3}$ & - & -$\sqrt{3}$ & $-1$ & -$\frac{1}{\sqrt{3}}$ & 0 & - & 0
+    \end{tabularx}
+}
+
+\subsubsection*{Important Functions}
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            axis lines = middle,
+            domain = -3:6,
+            ymin = -2,
+            ymax = 3,
+            width = \linewidth,
+            height = 5.5cm,
+            style = thick,
+            grid = both,
+            grid style = {line width=.1pt, draw=gray!10},
+            major grid style = {line width=.2pt,draw=gray!50},
+            minor tick num = 5,
+            restrict y to domain=-10:10,
+        ]
+        
+        \addplot[red, smooth]{sin(deg(x))} node[pos=0.75] (endofplotsquare1) {};
+        \node [above,color=red] at (endofplotsquare1) {$\sin(x)$};
+
+        \addplot[green, smooth]{cos(deg(x))} node[pos=0.9] (endofplotsquare2) {};
+        \node [above,color=green] at (endofplotsquare2) {$\cos(x)$};
+
+        \addplot[blue, smooth, samples=51]{tan(deg(x))} node[pos=0.05] (endofplotsquare3) {};
+        \node [above,color=blue] at (endofplotsquare3) {$\tan(x)$};
+        
+        \addplot[cyan, domain=-1:1]{acos(x)/180*pi} node[pos=0.2] (endofplotsquare4) {};
+        \node [above,color=cyan] at (endofplotsquare4) {$\arccos(x)$};
+
+        \addplot[magenta] {atan(x)/180*pi} node[pos=0.6] (endofplotsquare5) {};
+        \node [above,color=magenta] at (endofplotsquare5) {$\arctan(x)$};
+
+        \addplot[olive, domain=-1:1, samples=51, style=very thick]{asin(x)/180*pi} node[pos=1] (endofplotsquare6) {};
+        \node [above,color=olive] at (endofplotsquare6) {$\arcsin(x)$};
+
+        \addplot[orange, domain=0.001:6, samples=51]{ln(x)} node[pos=0.8] (endofplotsquare7) {};
+        \node [above,color=orange] at (endofplotsquare7) {$\ln(x)$};
+
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+\subsection*{Derivatives and Integrals (\href{https://n.ethz.ch/~dcamenisch/summaries/}{src: dcamenisch})}
+\renewcommand{\arraystretch}{1.5}
+\begin{center}
+\begin{tabular}{c|c}
+    $\mathbf{F(x)}$ & $\mathbf{f(x)}$ \\
+    \midrule
+    $c$ & $0$ \\
+    $x^a$ & $a \cdot x^{a - 1}$ \\
+    $\frac{1}{a+1} x^{a + 1}$ & $x^a$ \\
+    $\frac{1}{a \cdot (n + 1)} (ax + b)^{n + 1}$ & $(ax + b)^n$ \\
+    $\frac{x^{a + 1}}{a + 1}$ & $x^a, \ a \neq -1$ \\
+    $\frac{1}{x}$ & $-\frac{1}{x^2}$ \\
+    $\sqrt{x}$ & $\frac{1}{2\sqrt{x}}$ \\
+    $\sqrt[n]{x}$ & $\frac{1}{n}x^{\frac{1}{n} - 1}$ \\
+    $\frac{2}{3}x^{\frac{3}{2}}$ & $\sqrt{x}$ \\
+    $\frac{n}{n+1} x^{\frac{1}{n} + 1}$ & $\sqrt[n]{x}$ \\
+    $e^x$ & $e^x$ \\
+    $\ln(|x|)$ & $\frac{1}{x}$ \\
+    $\log_a(|x|)$ & $\frac{1}{x \ln(a)} = \log_a(e^\frac{1}{x})$ \\
+    $\sin(x)$ & $\cos(x)$ \\
+    $\cos(x)$ & $-\sin(x)$ \\
+    $\tan(x) = \frac{\sin(x)}{\cos(x)}$ & $\frac{1}{\cos^2(x)} = 1 + \tan^2(x)$ \\
+    $\cot(x) = \frac{\cos(x)}{\sin(x)}$ & $\frac{1}{-\sin^2(x)}$ \\
+    $\arcsin(x)$ & $\frac{1}{\sqrt{1 - x^2}}$ \\
+    $\arccos(x)$ & $\frac{-1}{\sqrt{1 - x^2}}$ \\
+    $\arctan(x)$ & $\frac{1}{1 + x^2}$ \\
+    $\sinh(x) = \frac{e^x + e^{-x}}{2}$ & $\cosh(x)$ \\
+    $\cosh(x) = \frac{e^x - e^{-x}}{2}$ & $\sinh(x)$ \\
+    $\tanh(x) = \frac{\sinh(x)}{\cosh(x)}$ & $\frac{1}{\cosh^2(x)} = 1 - \tanh^2(x)$ \\
+    $\frac{1}{f(x)}$ & $\frac{-f'(x)}{(f(x))^2}$ \\
+    $a^{cx}$ & $a^{cx} \cdot c \ln(a)$ \\
+    $x^x$ & $x^x \cdot (1 + \ln(x)), \ x > 0$ \\
+    $(x^x)^x$ & $(x^x)^x (x + 2x \ln(x)), \ x > 0$ \\
+    $x^{x^x}$ & $x^{x^x} (x^{x - 1} + \ln(x) \cdot x^x (1 + \ln(x)))$ \\
+\end{tabular}
+
+\begin{tabular}{c|c}
+    $\mathbf{F(x)}$ & $\mathbf{f(x)}$ \\
+    \midrule
+    $\frac{1}{a} \ln(|ax + b|)$ & $\frac{1}{ax + b}$ \\
+    $\frac{ax}{c} - \frac{ad - bc}{c^2} \ln(|cx + d|)$ & $\frac{ax + b}{cx + d}$ \\
+    $\frac{1}{2a} \ln\left(\left| \frac{x-a}{x+a} \right|\right)$ & $\frac{1}{x^2 - a^2}$ \\
+    $\frac{x}{2} \sqrt{a^2 + x^2} + \frac{a^2}{2} \ln(x + \sqrt{a^2 + x^2}) $ & $ \sqrt{a^2 + x^2} $ \\
+    $\frac{x}{2} \sqrt{a^2 - x^2} - \frac{a^2}{2} \arcsin\left(\frac{x}{|a|}\right)$ & $\sqrt{a^2 - x^2}$ \\
+    $\frac{x}{2} \sqrt{x^2 - a^2} - \frac{a^2}{2} \ln(x + \sqrt{x^2 - a^2}) $ & $\sqrt{x^2 - a^2}$ \\
+    $\ln(x + \sqrt{x^2 \pm a^2})$ & $\frac{1}{\sqrt{x^2 \pm a^2}}$ \\
+    $\arcsin\left(\frac{x}{|a|}\right)$ & $\frac{1}{\sqrt{a^2 - x^2}}$ \\
+    $\frac{1}{a} \arctan\left(\frac{x}{a}\right)$ & $\frac{1}{x^2 + a^2}$ \\
+    $-\frac{1}{a} \cos(ax + b)$ & $\sin(ax + b)$ \\
+    $\cos(ax + b)$ & $-a\sin(ax + b)$ \\
+    $\frac{1}{a} \sin(ax + b)$ & $\cos(ax + b)$ \\
+    $\sin(ax + b)$ & $a\cos(ax + b)$ \\
+    $-\ln(|\cos(x)|)$ & $\tan(x)$ \\
+    $\ln (|\sin(x)|)$ & $\cot(x)$ \\
+    $\ln\left(\left|\tan\left(\frac{x}{2}\right)\right|\right)$ & $\frac{1}{\sin(x)}$ \\
+    $\ln\left(\left|\tan(\frac{x}{2} + \frac{\pi}{4})\right|\right)$ & $\frac{1}{\cos(x)}$ \\
+    $\frac{1}{2} (x - \sin(x) \cos(x))$ & $\sin^2(x)$ \\
+    $\frac{1}{2} (x + \sin(x) \cos(x))$ & $\cos^2(x)$ \\
+    $\frac{1}{4}(\frac{1}{3}\cos(3x) - 3\cos(x))$ & $\sin^3(x)$ \\
+    $\frac{1}{4}(\frac{1}{3}\sin(3x) + 3\sin(x))$ & $\cos^3(x)$ \\
+    $\tan(x) - x$ & $\tan^2(x)$ \\
+    $-\cot(x) - x$ & $\cot^2(x)$ \\
+    $x \arcsin(x) + \sqrt{1 - x^2}$ & $\arcsin(x)$ \\
+    $x \arccos(x) - \sqrt{1 - x^2}$ & $\arccos(x)$ \\
+    $x \arctan(x) - \frac{1}{2} \ln (1 + x^2)$ & $\arctan(x)$ \\
+    $\ln(\cosh(x))$ & $\tanh(x)$ \\
+    $\ln(| f(x) |)$ & $\frac{f'(x)}{f(x)}$ \\
+\end{tabular}
+
+\begin{tabular}{c|c}
+    $\mathbf{F(x)}$ & $\mathbf{f(x)}$ \\
+    \midrule
+    $x  (\ln(|x|) - 1)$ & $\ln(|x|)$ \\
+    $\frac{1}{n+1} (\ln x)^{n+1} \quad \quad n \neq -1 $ & $ \frac{1}{x}(\ln x)^n$ \\
+    $\frac{1}{2n} (\ln x^n)^{2} \quad \quad n \neq 0 $ & $ \frac{1}{x}\ln x^n$ \\
+    $\ln(|\ln(x)|) \quad \quad x > 0, x \neq 1$ & $\frac{1}{x \ln(x)}$ \\
+    $\frac{1}{b \ln(a)} a^{bx}$ & $a^{bx}$ \\
+    $\frac{cx - 1}{c^2} \cdot e^{cx}$ & $x \cdot e^{cx}$ \\
+    $\frac{1}{c}e^{cx}$ & $e^{cx}$ \\
+    $\frac{x^{n + 1}}{n + 1} \left(\ln(x) - \frac{1}{n + 1}\right) \quad n \neq -1 $ & $x^n \ln(x)$ \\
+    $\frac{e^{cx} \left(c \sin(ax + b) - a \cos(ax + b) \right)}{a^2 + c^2}$ & $\quad e^{cx} \sin (ax + b) $ \\
+    $\frac{e^{cx} \left(c \cos (ax + b) + a \sin(ax + b) \right)}{a^2 + c^2}$ & $\quad e^{cx} \cos (ax+b)$ \\
+    $\sin(x)\cos(x)$ & $\frac{\sin^2(x)}{2}$ \\
+    $\frac{1}{2}(f(x))^2$ & $f'(x) f(x)$ \\
+    $\sqrt{\pi}$ & $\int_{-\infty}^\infty e^{-x^2} \,dx$ \\
+    $\frac{1}{a(n+1)}(ax+b)^{n+1}$ & $(ax+b)^n$ \\
+    $\frac{(ax+b)^{n+2}}{(n+2)a^2} - \frac{b(ax+b)^{n+1}}{(n+1)a^2}$ & $x(ax)^n$ \\
+    $\frac{(ax^p+b)^{n+1}}{ap(n+1)}$ & $(ax^p+b)^n x^{p-1}$ \\
+    $\frac{1}{ap} \ln |ax^p + b|$ & $(ax^p + b)^{-1} x^{p-1}$ \\
+    $\frac{ax}{c} - \frac{ad-bc}{c^2} \ln |cx +d|$ & $\frac{ax+b}{cx+d}$ \\
+\end{tabular}
+\end{center}
 
 \end{document}
