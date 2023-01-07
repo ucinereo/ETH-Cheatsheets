@@ -247,6 +247,13 @@ Given a function \(F\) of \(x, y\), where \(y\) is a function itself. \(F\) is a
     \end{enumerate}
 \end{theorem}
 
+\begin{note*}[Solve initial value problem]
+    \begin{enumerate}
+        \item Solve ODE
+        \item With initial values create LSE
+    \end{enumerate}
+\end{note*}
+
 \pagebreak
 \subsection{Linear ODE of order 1}
 \begin{note*}[Solution and derivation]
@@ -336,7 +343,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
     \begin{itemize}
         \item If \(\lambda = a + ib\) is EV of \(P(\lambda)\), then \(P(\overline{\lambda})\) is an EV.
         \item Complex root: \(e^{(a + bi) \cdot x} = e^{ax}[\cos(bx) + i \sin(bx)]\)
-        \item If \(b = e^{\alpha x}\), but \(\alpha\) is a root of \(P(\lambda)\) with \(m = k\), then try \(zx^k \cdot e^{\alpha x}\)
+        \item If \(b = e^{\alpha x}\), but \(\alpha\) is a root of \(P(\lambda)\) with \(m = k\), then try \(zx^k \cdot e^{\alpha x}\) for \(y_p\)
     \end{itemize}
 \end{note*}
 
@@ -558,7 +565,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 
 \begin{ntheorem*}[Mixed derivatives commute]
     If \(f \in C^k\), \(k \geq 2\) then the partial derivatives of oder \(\leq k\) are independent of the order of differentiation.
-    \[\frac{\partial}{\partial x_{i_k}} \dots \left(\frac{\partial}{\partial x_{i_2}}\left(\frac{\partial f}{\partial x_{i_1}}\right)\right) = \frac{\partial^k}{\partial x_{i_k} \cdot \ldots \cdot \partial x_{i_2} \cdot \partial x_{x_{i_1}}}\]
+    \[\frac{\partial}{\partial x_{i_k}} \dots \left(\frac{\partial}{\partial x_{i_2}}\left(\frac{\partial f}{\partial x_{i_1}}\right)\right) = \frac{\partial^k f}{\partial x_{i_k} \cdot \ldots \cdot \partial x_{i_2} \cdot \partial x_{x_{i_1}}}\]
 \end{ntheorem*}
 
 \begin{definition}[Hessian]
@@ -867,7 +874,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 
 \begin{ntheorem*}[Fubini's theorem]
     If \(Q = [a_1, b_1] \times \ldots \times [a_n, b_n]\), \(f: Q \to \R\) cont, then
-    \[\int_Q f(x) \, dx = \int_{a_1}^{b_1} \left(\int_{a_2}^{b_2} \ldots \left( \int_{a_n}^{b_n} f(x) \, dx_1 \right) \ldots dx_2\right) dx_1\]
+    \[\int_Q f(x) \, dx = \int_{a_1}^{b_1} \left(\int_{a_2}^{b_2} \ldots \left( \int_{a_n}^{b_n} f(x) \, dx_n \right) \ldots dx_2\right) dx_1\]
     The order of integration is irrelevant.
 \end{ntheorem*}
 
@@ -951,6 +958,19 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
         \item Use the double integral to calculate the line integral
         \item Use the line integral to calculate a double integral
     \end{enumerate}
+\end{note*}
+
+\subsection*{General tips and tricks}
+\begin{note*}[How to find the potential of a function]
+    Let \(h:=g(x_1, \dots, x_n)\) and \(\nabla g = f\). 
+    To find \(g\), construct the following system of equation:
+    \begin{itemize}
+        \item[\((1)\)] \(\partial_{x_1} g = f_1(x_1, \ldots, x_n) \iff h = \int f_1(x_1, \ldots x_n) \,dx_1\)
+        \item[\((2)\)] \(\partial_{x_2} g = f_2(x_1, \ldots, x_n) \implies \partial_{x_2} h = f_2(x_1, \ldots, x_n)\)
+        \item[\(\vdots\)]
+        \item[\((n)\)]  \(\partial_{x_n} g = f_n(x_1, \ldots x_n) \implies \partial_{x_n} h = f_n(x_1, \ldots, x_n)\)
+    \end{itemize}
+    When integrating \(f_1(x_1, \dots, x_n)\) do not forget to carry a function \(\tilde{z}(x_2, \ldots, x_n)\) depending only on \(x_2, \ldots, x_n\). With the other conditions it is possible to find a unique \(\tilde{z}\).
 \end{note*}
 
 \pagebreak
@@ -1308,6 +1328,8 @@ Consider an arbitrary function $f: X \to Y$.
     $\frac{(ax^p+b)^{n+1}}{ap(n+1)}$ & $(ax^p+b)^n x^{p-1}$ \\
     $\frac{1}{ap} \ln |ax^p + b|$ & $(ax^p + b)^{-1} x^{p-1}$ \\
     $\frac{ax}{c} - \frac{ad-bc}{c^2} \ln |cx +d|$ & $\frac{ax+b}{cx+d}$ \\
+    $- x \cos (x)$ & $x \sin (x)$ \\
+    $x \sin(x) + \cos (x)$ & $x \cos (x)$ \\
 \end{tabular}
 \end{center}
 
