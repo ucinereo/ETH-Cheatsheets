@@ -591,9 +591,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 \end{ntheorem*}
 
 \begin{note*}[Taylor Polynomials w/ Einstein Sum Convention]
-    % \resizebox{\linewidth}{!}{
     \(T_kf(x_0;y) = f(x_0) + (\partial_if)(x_0)y_i + \frac{1}{2!}(\partial_{ij}f)(x_0)y_iy_j \newline + \frac{1}{3!}(\partial_{ijk}f)y_iy_jy_k + \cdots\)
-    % }
 \end{note*}
 
 \begin{ntheorem*}[Taylor Approximation]
@@ -956,7 +954,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 
 \begin{ntheorem*}[Green's Theorem]
     Let \(f: X \to \R^2\) \(C^1\) vector field, \(X\) closed and bounded where \(\partial X = \bigcup_{i = 1}^n \gamma_i\) union of simple closed curves so that \(X\)  is always to the left of the curve \(\gamma = \bigcup_{i = 1}^n \gamma_i\) then
-    \[\iint\displaylimits_{X} \left(\frac{\partial f_2}{\partial x} - \frac{\partial f_1}{y}\right) \, dx \, dy = \sum_{i =1}^n \int_{\gamma_i} f \cdot ds = \int_\gamma f \cdot ds\]
+    \[\iint\displaylimits_{X} \left(\frac{\partial f_2}{\partial x} - \frac{\partial f_1}{\partial y}\right) \, dx \, dy = \sum_{i =1}^n \int_{\gamma_i} f \cdot ds = \int_\gamma f \cdot ds\]
 \end{ntheorem*}
 
 \begin{note*}[Both directions]
@@ -977,6 +975,14 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
         \item[\((n)\)]  \(\partial_{x_n} g = f_n(x_1, \ldots x_n) \implies \partial_{x_n} h = f_n(x_1, \ldots, x_n)\)
     \end{itemize}
     When integrating \(f_1(x_1, \dots, x_n)\) do not forget to carry a function \(\tilde{z}(x_2, \ldots, x_n)\) depending only on \(x_2, \ldots, x_n\). With the other conditions it is possible to find a unique \(\tilde{z}\).
+\end{note*}
+
+\begin{note*}[How to find global maxima/minima]
+    \begin{enumerate}
+        \item Find the candidates in the interior
+        \item Bounded \(\Rightarrow\) Use parameterization (\(\gamma\)) of the bound. To calculate the candidates use \(g := f(\gamma(t))\) and \(g'\).
+        \item Evaluate candidates + all corners of the bound
+    \end{enumerate}
 \end{note*}
 
 \pagebreak
