@@ -583,7 +583,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
     \end{align*}
     \begin{align*}
         T_2 f(x_0; y) = & f(x_0) + \nabla f(x_0) \cdot y \\
-        & \frac{1}{2!} y \cdot \Hess_f(x_0) \cdot y^\top
+        & + \frac{1}{2!} y \cdot \Hess_f(x_0) \cdot y^\top
     \end{align*}
     \begin{multline*}
         T_kf(x_0;y) = f(x_0) + \sum_{i = 1}^n \frac{\partial f}{\partial x_i} (x_0) y_i + \ldots + \\ \sum_{m_1 + \ldots m_n = k} \frac{1}{m_1! \cdot m_2! \cdot m_n!} \frac{\partial^k f}{\partial x_1^{m_1} \ldots \partial x_n^{m_n}}(x_0) \cdot y_1^{m_1 \ldots y_n^{m_n}}
