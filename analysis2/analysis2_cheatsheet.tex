@@ -240,7 +240,7 @@ Given a function \(F\) of \(x, y\), where \(y\) is a function itself. \(F\) is a
     \(\;\)
     \begin{enumerate}
         \item Let \(\mathcal{S}_0\) be the set of solutions when \(b = 0\). Then \(\mathcal{S}_0\) is a vector space of dimension \(k\). If \(f_1, \ldots, f_k\) are the solutions, then so is \(a_1f_1+ \ldots a_kf_k\).
-        \item For any \textbf{initial condition} (i.e. for any choice of \(x_0 \in I\)) there is a unique solution \(f \in \mathcal{S}_0\) such that: \\
+        \item For any \textbf{initial condition} (i.e. for any \(x_0 \in I\), \(y \in \C^k\), \(y = y_0, \ldots, y_{k-1}\)) there is a unique solution \(f \in \mathcal{S}_0\) such that: \\
         \(f(x_0) = y_0, f'(x_0) = y_1, \ldots, f^{(k-1)}(x_0) = y_{k-1}\)
         \item For any arbitrary \(b(x)\), the set of solutions of the ODE is \(\mathcal{S}_b = \{f + f_p \ | \ f \in \mathcal{S}_0\}\) where \(f_p\) is a particular solution of the ODE.
         \item For any initial condition there is a unique solution \(f \in \mathcal{S}_b\).
@@ -576,7 +576,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 \end{definition}
 
 \begin{ntheorem*}[Taylor Polynomial for \(f: \R^n \to \R\)]
-    Approximation of \(f(y)\) for \(y\) close to \(x_0\).
+    \(\approx f(y)\) for \(y\) close to \(x_0\). To calculate use \(y = x - x_0\).
     \begin{align*}
         T_1 f(x_0; y) &= f(x_0) + \nabla f(x_0) \cdot y \\
         &= f(x_0) + \frac{\partial f}{\partial x_1} (x_0) y_1 + \ldots \frac{\partial f}{\partial x_n} (x_0) y_n
@@ -661,7 +661,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
         & \begin{enumerate}
             \vspace{15pt}
             \item \(a > 0\)
-            \item \(ae - b^2 > 0\)
+            \item \(ad - b^2 > 0\)
             \item \(\det(A) > 0\)
         \end{enumerate} \\
     \end{tabular}
@@ -703,6 +703,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 \end{ntheorem*}
 
 \subsubsection{Important change of variables (coordinates)}
+\label{coords}
 \begin{enumerate}[leftmargin=0pt]
     \item \textbf{Polar}  \(f :\begin{cases}
         [0, \infty) \times [0, 2\pi) \to \R^2 \\
@@ -892,6 +893,13 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
     \[\int_X f(x) \, dx = \int_{X_1} g(x_1) \, dx_1 = \int_{X_1}\int_{X_{x_1}} f(x_1, x_2) \, dx_2 \, dx_1\]
 \end{ntheorem*}
 
+\begin{note*}[Integrals with separated variables]
+    Suppose \(X = [a_1, b_1] \times \ldots \times [a_n, b_n] \subseteq \R^n\), and \(f\) is a function with separated variables given by \(f(x_1, \ldots, x_n) = f_1(x_1) \cdots f_n(x_n)\) where each function \(f_i\) is continuous (so \(f\) is continuous). Then:
+
+    \resizebox{\linewidth}{!}{
+    \(\int_X f(x_1, \ldots, x_n) \, dx_1 \ldots dx_n = \left(\int_{a_1}^{b_1} f_1(x) \,dx\right) \cdots \left(\int_{a_n}^{b_n} f_n(x) \, dx\right)\)}
+\end{note*}
+
 \begin{definition}
     For \(1 \leq m \leq n\) a \(m\)-parameterized set or parameterized \(m\)-set is a continuous function \(\varphi: [a_1, b_1] \times \ldots \times [a_m, b_m] \to \R^n\) which is \(C^1\) on \((a_1, b_1) \times \ldots \times (a_m, b_m)\).
     If \(m = 1\) then \(\varphi\) is a parameterized curve in \(\R^n\).
@@ -918,7 +926,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 \end{definition}
 
 \begin{definition}
-    Let \(f: X \subseteq \R^n \to \R^n\) be a non compact set and \(f\) a function such that \(\int_K f \, dx\) exists for every compact set \(K \subset X\) and suppose \(f \geq 0\). Finally we have a sequence of regions \(X_k \ k = 1, 2, \ldots\) s.t.
+    Let \(f: X \subseteq \R^n \to \R^n\) be a non compact set and \(f\) a function such that \(\int_K f \, dx\) exists for every compact set \(K \subset X\) and suppose \(f \geq 0\). Consider the sequence \(X_k \ k = 1, 2, \ldots\) s.t.
     \begin{enumerate}
         \item \(X_k \subset X\) bounded and closed
         \item \(X_k \subseteq X_{k+1}\)
@@ -933,8 +941,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
     \[\int_{\overline{X}} f(\varphi(x)) \left|\det \J_\varphi(x)\right| \,dx = \int_{\overline{Y}} f(y) \,dy\]
 \end{ntheorem*}
 
-\begin{note*}[Shortcuts for change of variables]
-    The substitutions are listed in the section of coordinates.
+\begin{note*}[Shortcuts (substitutions from \ref{coords})]
     \begin{itemize}[leftmargin=15pt]
         \item Polar Coordinates: \(dx \, dy = r \, dr \, d\theta\)
         \item Cylindrical coordinates: \(dx \, dy \, dz = r \, dr \, d\theta \, dz\)
@@ -966,7 +973,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 
 \subsection*{General tips and tricks}
 \begin{note*}[How to find the potential of a function]
-    Let \(h:=g(x_1, \dots, x_n)\) and \(\nabla g = f\). 
+    Let \(h:=g(x_1, \dots, x_n)\) and \(\nabla g = f\).
     To find \(g\), construct the following system of equation:
     \begin{itemize}
         \item[\((1)\)] \(\partial_{x_1} g = f_1(x_1, \ldots, x_n) \iff h = \int f_1(x_1, \ldots x_n) \,dx_1\)
@@ -984,6 +991,37 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
         \item Evaluate candidates + all corners of the bound
     \end{enumerate}
 \end{note*}
+
+\begin{corollary}[Inverse \(2 \times 2\) matrix]
+    \[A^{-1} = \begin{bmatrix}
+        a & b \\
+        c & d
+    \end{bmatrix}^{-1} = \frac{1}{|A|} \begin{bmatrix}
+        d & -b \\
+        -c & a
+    \end{bmatrix}\]
+\end{corollary}
+
+\begin{ntheorem*}[Taylor polynomials with \(\BO\)-Notation]
+    \textbf{Example 1}: Compute Taylor polynomial of order 2 of \\
+    \(f(x, y, z) = \cos(\frac{x}{1 + y^2} - \frac{y}{1 + z^2})\) at \((x, y, z) = (0, 0)\). We can use \(\cos(t) = 1 - \frac{t^2}{2} + \BO(t^4)\). Thus \(f(x, y, z)\)
+    \begin{align*}
+        =& \ 1 - \frac{1}{2}\left(\frac{x^2}{(1 + y^2)^2} + \frac{y^2}{(1 + z^2)^2}- \frac{2xy}{(1+y^2)(1+z^2)}\right) \\
+        & \ + \BO((x^2 + y^2 + z^2)^2) \\
+        =& \ 1 - \frac{1}{2}x^2 - \frac{1}{2}y^2 + xy + \BO((x^2 + y^2 + z^2)^2)
+    \end{align*}
+    And thus \(T_2f((0, 0, 0), (x, y, z)) = 1 - \frac{1}{2}x^2 - \frac{1}{2}y^2 + xy\).
+
+    \vspace{5pt}
+    \textbf{Example 2}: Compute Taylor polynomial of order 2 of \\
+    \(f(x, y, z) = 2 \exp(x + y^2 + z^3)\) at \((x, y, z) = (0, 0, 0)\).
+    We can use \(e^t = 1 + t + \frac{t^2}{2} + \BO(t^3)\). Thus \(f(x, y, z)\)
+    \begin{align*}
+        =& \ 2(1 + x + y^2 + z^3 + \frac{1}{2}(x + y^2 + z^3)^2 + \BO(|(x, y, z)^3|)) \\
+        =& \ 2 + 2x + x^2 + 2y^2 + \BO(|(x, y, z)|^3)
+    \end{align*}
+    And thus \(T_2f((0, 0, 0), (x, y, z)) = 2 + 2x + x^2 + 2y^2\).
+\end{ntheorem*}
 
 \pagebreak
 \section*{Analysis I Stuff}
@@ -1340,7 +1378,7 @@ Consider an arbitrary function $f: X \to Y$.
     $\frac{(ax^p+b)^{n+1}}{ap(n+1)}$ & $(ax^p+b)^n x^{p-1}$ \\
     $\frac{1}{ap} \ln |ax^p + b|$ & $(ax^p + b)^{-1} x^{p-1}$ \\
     $\frac{ax}{c} - \frac{ad-bc}{c^2} \ln |cx +d|$ & $\frac{ax+b}{cx+d}$ \\
-    $- x \cos (x)$ & $x \sin (x)$ \\
+    $- x \cos (x) + \sin(x)$ & $x \sin (x)$ \\
     $x \sin(x) + \cos (x)$ & $x \cos (x)$ \\
 \end{tabular}
 \end{center}
