@@ -175,7 +175,9 @@
 % Graph stuff
 \usepackage{pgfplots}
 \usepackage{tikz}
-\usetikzlibrary{matrix}
+\usepackage{tikz-3dplot}
+\usepackage{physics}
+\usetikzlibrary{matrix, angles, quotes, intersections}
 
 % Miscellaneous
 \usepackage{hyperref}
@@ -619,7 +621,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
     \[\det(\Hess_f(x_0)) \neq 0\]
 \end{definition}
 
-\begin{note*}[Special case for non-degenerate points]
+\begin{note*}[Special case for degenerate critical points]
     If \(\nabla f(x_0) = 0\), but also \(\det \Hess_f(x_0) = 0\), then we have to calculate each case individually.
 \end{note*}
 
@@ -952,7 +954,8 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
     \[\iint\displaylimits_X \frac{dx \, dy}{1 + x^2 + y^2} = \int_0^{\frac{\pi}{2}} \int_0^1 \frac{1}{1 + r^2} \cdot r \, dr \, d\theta\]
 \end{note*}
 
-\pagebreak
+\input{coords}
+
 \subsection{The Green formula}
 
 \begin{definition}
@@ -1380,6 +1383,9 @@ Consider an arbitrary function $f: X \to Y$.
     $\frac{ax}{c} - \frac{ad-bc}{c^2} \ln |cx +d|$ & $\frac{ax+b}{cx+d}$ \\
     $- x \cos (x) + \sin(x)$ & $x \sin (x)$ \\
     $x \sin(x) + \cos (x)$ & $x \cos (x)$ \\
+    $\text{arccot}(x)$ & $- \frac{1}{1 + x^2}$ \\
+    $\text{coth}(x)$ & $1 - \text{coth}^2 x = - \frac{1}{\sinh^2(x)}$ \\
+    $\text{arcoth}(x)$ & $\frac{1}{1 - x^2}$ \\
 \end{tabular}
 \end{center}
 
