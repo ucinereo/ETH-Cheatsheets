@@ -670,7 +670,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 
     \(A\) is \textbf{negative definite} \(\iff -A\) positive definite
 
-    \(A\) is \textbf{indefinite} \(\iff\) \(A\) neither pos. nor neg. def.
+    \(A\) is \textbf{indefinite} \(\iff\) \(A\) neither pos. semi- nor neg. semi-def.
 \end{note*}
 
 
@@ -732,12 +732,12 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 
     \item \textbf{Spherical} \(f :\begin{cases}
         [0, \infty) \times [0, 2\pi) \times [0, \pi] \to \R^3 \\
-        (r, \theta, \varphi) \mapsto (r \cos \theta \sin \phi, r \sin \theta \sin \phi, r \cos \phi)
+        (r, \theta, \varphi) \mapsto (r \cos \theta \sin \varphi, r \sin \theta \sin \varphi, r \cos \varphi)
     \end{cases}\)
     
     The Jacobian of the change of variable is given by:
     \begin{gather*}
-        \J_f(r, \theta, z) = \begin{bmatrix}
+        \J_f(r, \theta, \varphi) = \begin{bmatrix}
             \cos \theta \sin \varphi & -r \sin \theta \sin \varphi & r \cos \theta \cos \varphi \\
             \sin \theta \sin \varphi & r \cos \theta \sin \varphi & r \sin \theta \cos \varphi \\
             \cos \varphi & 0 & -r \sin \varphi
@@ -745,6 +745,41 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
         \det \J_f(r, \theta) = r^2 \sin \varphi
     \end{gather*}
 \end{enumerate}
+
+\input{coords}
+
+\begin{ntheorem*}[Partial derivatives after a change of variable]
+    Consider \(f: X \subseteq \R^n \to \R\) and a change of variables \(g: U \to X\) that expresses the variables \((x_1, \ldots, x_n)\) in terms of \((y_1, \ldots, y_n)\), such that \(x_i = g_i(y_1, \ldots, y_n)\). Thus the composite \(h = f \circ g: U \to \R\) is the function \(f\) expressed in terms of the "new" variables \(y\). By chain rule:
+    \[d_{y}h = df(g(y)) \circ dg(y) = \nabla f(x)^\top \circ dg(y) = (\partial_{y_1}h \ \cdots \ \partial_{y_n}h)\]
+    where we used that \(df(g(y)) = df(x) = \nabla f(x)^\top\).
+    \[\partial_{y_i} h = \frac{\partial f}{\partial x_1} \frac{\partial g_1}{\partial y_i} + \cdots + \frac{\partial f}{\partial x_n} \frac{\partial g_n}{\partial y_i}\]
+
+    \textbf{Abuse of notation}
+    \begin{enumerate}[leftmargin=15pt]
+        \item One thinks of \(f\) and \(h\) as being the same function, simply expressed in different coordinate systems. Thus
+        \[\partial y_i f = \partial_{x_1}f \, \partial_{y_i}g_1 + \ldots + \partial_{x_n}f \, \partial{y_i}g_n\]
+        \item One thinks of \(g_i\) as being the variable \(x_i\), expressed in terms of the new variables \(y\). Thus
+        \[\partial y_i f = \partial_{x_1}f \, \partial_{y_i}x_1 + \ldots + \partial_{x_n}f \, \partial{y_i}x_n\]
+    \end{enumerate}
+\end{ntheorem*}
+
+\begin{ntheorem*}[Change of variables for integration]
+    Let \(\overline{X} \subseteq \R^n, \ \overline{Y} \subseteq \R^n\) be compact subsets. Let \(\varphi: \overline{X} \to \overline{Y}\) be a continuous map with \(\overline{X} = X \cup B, \ \overline{Y} = Y \cup C\) where \(X\) and \(Y\) are open, \(B\) and \(C\) negligible. The restriction \(\varphi: X \to Y\) is a bijective map of class \(C^1\) such that for all \(x \in X\) it holds \(\det \J_\varphi(x) \neq 0\). Assume \(f: \overline{Y} \to \R\) then:
+    \[\int_{\overline{X}} f(\varphi(x)) \left|\det \J_\varphi(x)\right| \,dx = \int_{\overline{Y}} f(y) \,dy\]
+\end{ntheorem*}
+
+\begin{note*}[Shortcuts (substitutions from \ref{coords})]
+    \begin{itemize}[leftmargin=15pt]
+        \item Polar Coordinates: \(dx \, dy = r \, dr \, d\theta\)
+        \item Cylindrical coordinates: \(dx \, dy \, dz = r \, dr \, d\theta \, dz\)
+        \item Spherical coordinates: \(dx \, dy \, dz = r^2 \sin(\varphi) \, dr \, d\theta \, d\varphi\)
+    \end{itemize}
+    \vspace{5pt}
+    \textbf{Example}: Let \(X\) be a quarter circle and \(z = \frac{1}{1 + x^2 + y^2}\):
+    \[\iint\displaylimits_X \frac{dx \, dy}{1 + x^2 + y^2} = \int_0^{\frac{\pi}{2}} \int_0^1 \frac{1}{1 + r^2} \cdot r \, dr \, d\theta\]
+\end{note*}
+
+\pagebreak
 
 \section{Integration in \(\R^n\)}
 \begin{definition}
@@ -938,24 +973,6 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
     \[\int_X f \, dx := \lim_{n\to\infty} \int_{X_n}f \, dx\]
 \end{definition}
 
-\begin{ntheorem*}[Change of variables]
-    Let \(\overline{X} \subseteq \R^n, \ \overline{Y} \subseteq \R^n\) be compact subsets. Let \(\varphi: \overline{X} \to \overline{Y}\) be a continuous map with \(\overline{X} = X \cup B, \ \overline{Y} = Y \cup C\) where \(X\) and \(Y\) are open, \(B\) and \(C\) negligible. The restriction \(\varphi: X \to Y\) is a bijective map of class \(C^1\) such that for all \(x \in X\) it holds \(\det \J_\varphi(x) \neq 0\). Assume \(f: \overline{Y} \to \R\) then:
-    \[\int_{\overline{X}} f(\varphi(x)) \left|\det \J_\varphi(x)\right| \,dx = \int_{\overline{Y}} f(y) \,dy\]
-\end{ntheorem*}
-
-\begin{note*}[Shortcuts (substitutions from \ref{coords})]
-    \begin{itemize}[leftmargin=15pt]
-        \item Polar Coordinates: \(dx \, dy = r \, dr \, d\theta\)
-        \item Cylindrical coordinates: \(dx \, dy \, dz = r \, dr \, d\theta \, dz\)
-        \item Spherical coordinates: \(dx \, dy \, dz = r^2 \sin(\varphi) \, dr \, d\theta \, d\varphi\)
-    \end{itemize}
-    \vspace{5pt}
-    \textbf{Example}: Let \(X\) be a quarter circle and \(z = \frac{1}{1 + x^2 + y^2}\):
-    \[\iint\displaylimits_X \frac{dx \, dy}{1 + x^2 + y^2} = \int_0^{\frac{\pi}{2}} \int_0^1 \frac{1}{1 + r^2} \cdot r \, dr \, d\theta\]
-\end{note*}
-
-\input{coords}
-
 \subsection{The Green formula}
 
 \begin{definition}
@@ -974,6 +991,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
     \end{enumerate}
 \end{note*}
 
+\pagebreak
 \subsection*{General tips and tricks}
 \begin{note*}[How to find the potential of a function]
     Let \(h:=g(x_1, \dots, x_n)\) and \(\nabla g = f\).
@@ -1005,6 +1023,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
     \end{bmatrix}\]
 \end{corollary}
 
+\pagebreak
 \begin{ntheorem*}[Taylor polynomials with \(\BO\)-Notation]
     \textbf{Example 1}: Compute Taylor polynomial of order 2 of \\
     \(f(x, y, z) = \cos(\frac{x}{1 + y^2} - \frac{y}{1 + z^2})\) at \((x, y, z) = (0, 0)\). We can use \(\cos(t) = 1 - \frac{t^2}{2} + \BO(t^4)\). Thus \(f(x, y, z)\)
@@ -1057,7 +1076,7 @@ Since \(e^{\lambda x}\) can never be \(0\) \(\implies\) \(P(\lambda) = 0\). \(P(
 \subsection*{Function Properties}
 Consider an arbitrary function $f: X \to Y$.
 \begin{definition}[Well defined]
-    $f$ is well defined if $f(x)$ exists $\forall x \in D$.
+    $f$ is well defined if $f(x)$ exists $\forall x \in X$.
 \end{definition}
 
 \begin{definition}[Injective]
