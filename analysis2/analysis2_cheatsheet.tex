@@ -1308,7 +1308,44 @@ Consider an arbitrary function $f: X \to Y$.
       \draw (\adeg:0.85cm) node[right=1pt] {$\radtext$};
       \draw (\adeg:1.1cm) node[right=1pt] {$\left(\xc,\yc\right)$}; % <-- radius changed
     }
-  \end{tikzpicture}
+\end{tikzpicture}
+
+\subsection*{Series}
+\begin{itemize}
+    \item Geometric: $\sum_{n = 0}^\infty q^n = \frac{1}{1 - q}$ if $|q| < 1$
+    \item Harmonic: $\sum_{n = 1}^\infty \frac{1}{n}$ diverges
+    \item Telescope: $\sum_{n = 0}^\infty \frac{1}{n(n + 1)} = 1$
+    \item $\exp(z) := \sum_{n = 0}^\infty \frac{z^n}{n!} = \lim_{n\to\infty}(1 + \frac{z}{n})^n = e^z$
+    \item $\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}$ converges $s > 1 \ (\frac{1}{1 - \frac{1}{2^{s-1}}})$
+    \item $\text{p}(z) = \sum_{k = 0}^\infty c_kz^k$ conv. abs. $|z| < \rho = \frac{1}{\limsup |c_k|^{1/k}}$
+\end{itemize}
+\begin{tabularx}{\linewidth}{XX}
+    \toprule
+    $\sum\limits_{i=1}^n i = \frac{n(n+1)}{2}$ & $\sum\limits_{i=1}^n i^2 = \frac{n(n+1)(2n + 1)}{6}$ \\
+    $\sum\limits_{i=1}^n i^3 = \frac{n^2(n+1)^2}{4}$ & $\sum\limits_{i=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$ \\
+    \bottomrule
+\end{tabularx}
+
+\subsection*{Taylor Series}
+\begin{align*}
+    e^x &= 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \BO(x^5) \\
+    \sin(x) &= x - \frac{x^3}{3!} + \frac{x^5}{5!} - \BO(x^7) \\
+    \sinh(x) &= x + \frac{x^3}{3!} + \frac{x^5}{5!} + \BO(x^7) \\
+    \cos(x) &= 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \BO(x^6) \\
+    \cosh(x) &= 1 + \frac{x^2}{2!} + \frac{x^4}{4!} + \BO(x^6) \\
+    \tan(x) &= x + \frac{x^3}{3} + \frac{2x^5}{15} + \BO(x^7) \\
+    \tanh(x) &= x - \frac{x^3}{3} + \frac{2x^5}{15} - \BO(x^7) \\
+    \log(1+x) &= x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \BO(x^5) \\
+    \sqrt{1 + x} &= 1 + \frac{x}{2} - \frac{x^2}{8} + \frac{x^3}{16} - \BO(x^4)
+\end{align*}
+
+\subsection*{Parity of Functions}
+\textbf{Even:} $f(-x) = f(x) \quad \forall x \in D \hfill |x|, \ \cos x, \ x^2$ \\
+\textbf{Odd:} $f(-x) = -f(x) \quad \forall x \in D \hfill x, \sin, \tan, x^3$
+
+\begin{note*}[Chaining of odd functions]
+    Chaining odd functions results in an odd function.
+\end{note*}
 
 \subsection*{Derivatives and Integrals (\href{https://n.ethz.ch/~dcamenisch/summaries/}{src: dcamenisch})}
 \renewcommand{\arraystretch}{1.5}
