@@ -1,0 +1,41 @@
+\section{Vector Space in probability}
+\begin{definition*}[Atoms of \(\F\)]
+  \[\Atom(\F) := \{A \in \F_{\emptyset} \mid \not \exists B \in \F_{\emptyset} \ B \subset A\}\]
+  where \(\F_{\emptyset} = \F \setminus \{\emptyset\}\).
+\end{definition*}
+\begin{itemize}
+  \item Atoms are pairwise disjoint
+  \item \(\bigcup_{A \in \Atom(\F) A = \O}\)
+  \item A random variable \(X\) admits the same value for all samples in \(A \in \Atom(\F)\).
+\end{itemize}
+
+
+Lets define the vector space \(\L^2((\O, \F, \P); \R)\) over square integrable random variables, i.e. \(\E(X^2) < \infty\). Furthermore assume \(\forall A \in \F, A \neq \emptyset: \P(A) > 0\).
+
+\textbf{Basis}: The set \(\{\I_A\}_{A \in \Atom(\F)}\) forms a basis for the vector space \(\L^2((\O, \F, \P); \R) \Rightarrow \text{dim} \, \L^2((\O, \F, \P); \R) = |\Atom(\F)|\)
+
+\textbf{Inner product}: Let \(X, Y\) be random variables. The inner product is defined as
+\[\langle X, Y \rangle := \E(XY) = \sum_{x, y \in \R} xy \P(XY = xy)\]
+With this definition we have some new consequences:
+\begin{itemize}
+  \item \(\E(X) = \langle X, \I_\O \rangle\)
+  \item \(||X||_{\L^2} = \sqrt{\E(X^2)}\)
+  \item \(\Cov(X, Y) = \E(XY) = \langle X, Y \rangle\)
+  \item \(\sigma_X = ||X||_{\L^2}\)
+  \item \(\text{Cor}(X, Y) = \frac{\Cov(X, Y)}{\sigma_X \cdot \sigma_Y} = \frac{\langle X, Y \rangle}{||X|| \cdot ||Y||} = \cos \angle (X, Y)\)
+\end{itemize}
+The last bullet point implies that if \(\text{Cor}(X, Y) = 0\), then \(X\) and \(Y\) are orthogonal. Furthermore as the atoms forms are basis of \(\L^2((\O, \F, \P); \R)\), we can check that the basis is orthogonal: \(\langle \I_A, \I_B \rangle = \E(\I_A \I_B) = \E(\I_{A \cap B}) = 0\), where \(A, B \in \Atom(\F)\) arbitrary.
+
+\textbf{Subspaces}: Let \(\mathcal{G} \subset \F\) be a new \(\sigma\)-Algebra and hence it forms a new subspace of \(\L^2((\O, \F, \P); \R)\).
+
+\pagebreak
+We can now look at a new random variable "\textit{Conditional expectation of \(Y\), given the information in the subspace \(\mathcal{G}\)}" denoted by \(\E(Y \mid \mathcal{G})\). Thus we project \(Y\) onto \(\mathcal{G}\) orthogonally to get the best \(Y\) approximation.
+\begin{align*}
+  \E(Y \mid \mathcal{G}) &= \sum_{A \in \Atom(\mathcal{G})}\langle Y, \I_A \rangle \frac{\I_A}{||\I_A||^2} \\
+  &= \sum_{A \in \Atom(\mathcal{G})}\langle Y, \I_A \rangle \frac{\I_A}{\E(\I_A^2)}  \\
+  &= \sum_{A \in \Atom(\mathcal{G})} \E(Y \cdot \I_A) \cdot \frac{\I_A}{\P(A)}
+\end{align*}
+
+Now for the final climax let's consider \(\E(\I_A \mid \mathcal{G})\):
+\[\E(\I_A \mid \mathcal{G}) = \smashoperator[r]{\sum_{B \in \Atom(\mathcal{G})}} \E(\I_A \cdot \I_B) \cdot \frac{\I_B}{\P(B)} = \smashoperator[r]{\sum_{B \in \Atom(\mathcal{G})}} \frac{\P(A \cap B)}{\P(B)} \cdot \I_B\]
+Where the conditional probabilities \(\P(A \mid B)\) are the coefficients of the orthogonal projection.

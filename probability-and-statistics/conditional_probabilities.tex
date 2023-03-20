@@ -1,0 +1,25 @@
+\section{Conditional probabilities}
+
+\begin{definition*}[Conditional probability]
+  Let \((\O, \F, \P)\) be some probability space and \(A, B \in \F\) with \(\P(B) > 0\). Then the \textbf{conditional probability of \(A\) given \(B\)} is defined by:
+  \[\P(A \mid B) = \frac{\P(A \cup B)}{\P(B)}\]
+\end{definition*}
+
+\begin{proposition}
+  Let \((\O, \F, \P)\) be some probability space and \(B \in \F\). then \(\P(\cdot \mid B)\) is a probability measure on \((\O, \F)\).
+\end{proposition}
+
+\begin{theorem*}[Law of total probability]
+  Let \(\B = (B_i)_{i \in I}\) be a countable partition of \(\O\). Then
+  \[\forall A \in \F \quad \P(A) = \sum_{i \in I: \P(B_i) > 0} \P(A \mid B_i) \cdot \P(B_i)\]
+\end{theorem*}
+
+\begin{lemma}
+  For arbitrary \(A_1, \ldots, A_n\)when the left site \(> 0\): \(\P(\bigcup_{i=1}^n) = \P(A_1) \P(A_2 \mid A_1) \ldots \P(A_n \mid A_1 \cup \ldots \cup A_{n-1})\)
+\end{lemma}
+
+\begin{theorem*}[Bayes' theorem]
+  Let \(\B = (B_i)_{i \in I}\) be a countable partition of \(\O\) where \(\P(B_i) > 0\) for all \(i\). Then for all \(A \in \F\) with \(\P(A) > 0\):
+  \[\P(B_i \mid A) = \frac{\P(A \mid B_i) \cdot \P(B_i)}{\sum_{j \in I} \P(A \mid B_j) \cdot \P(B_j)}\]
+\end{theorem*}
+
