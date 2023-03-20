@@ -1,0 +1,130 @@
+\documentclass[a4paper, 10pt]{article}
+
+% ------------------------------------------------------------------
+% Imports
+% ------------------------------------------------------------------
+
+% Formatting
+\usepackage[landscape, left=0.75cm, top=1.0cm, right=0.75cm, bottom=1.5cm, footskip=15pt]{geometry}
+\setlength{\columnsep}{0.5cm}
+\usepackage{flowfram}
+\ffvadjustfalse
+\Ncolumn{3}
+\usepackage[compact]{titlesec}
+\usepackage{parskip}
+\setlength{\parskip}{3pt}
+
+% Language stuff
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+% Math imports
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{centernot}
+\usepackage{esint}
+\usepackage{mathtools}
+
+% Colored boxes
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{framed}
+
+% Fix for MDFramed
+\input{md_fix.tex}
+
+% Tables
+\usepackage{tabularx} % tabularx since the width should be handled automatically
+\usepackage{booktabs}
+\usepackage{makecell}
+
+% Graphics
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage{physics}
+\usepackage{graphics}
+\usetikzlibrary{matrix, angles, quotes, intersections}
+
+% Miscellaneous
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{multicol}
+
+% ------------------------------------------------------------------
+% Formatting
+% ------------------------------------------------------------------
+\mdfsetup{skipabove=5pt,skipbelow=5pt}
+\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue}
+\setlist{itemsep=0.5pt, topsep=0.5pt, leftmargin=6mm}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+
+% Theorems and Styles
+\input{theorems_and_styles.tex}
+
+% ------------------------------------------------------------------
+% Custom Commands
+% ------------------------------------------------------------------
+
+% Math general
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Pow}{\mathcal{P}}
+
+% Probability Stuff
+\renewcommand{\O}{\Omega}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\I}{1}
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Cov}{\text{Cov}}
+\newcommand{\Ber}{\text{Ber}}
+\newcommand{\Bin}{\text{Bin}}
+\newcommand{\Geom}{\text{Geom}}
+\newcommand{\Cat}{\text{Cat}}
+\newcommand{\Poisson}{\text{Poisson}}
+\newcommand{\Unif}{\mathcal{U}}
+\newcommand{\Exp}{\text{Exp}}
+\newcommand{\Normal}{\mathcal{N}}
+\newcommand{\Atom}{\text{Atom}}
+
+% ------------------------------------------------------------------
+% Meta Data
+% ------------------------------------------------------------------
+\title{\vspace{-3ex}Probability and Statistics}
+\author{Nicola Studer \\ \href{mailto:nicstuder@student.ethz.ch}{nicstuder@student.ethz.ch}}
+\date{\vspace{-5ex}}
+
+
+% ------------------------
+% Document
+% ------------------------
+
+\begin{document}
+
+% Title
+\maketitle
+\begin{align*}
+  \color{general} \blacksquare \ & \text{General} & \color{discrete_highlight} \blacksquare \ & \text{Discrete} & \color{cont_highlight} \blacksquare \ & \text{Continuous}
+\end{align*}
+
+% Sections
+\input{mathematical_framework.tex} \pagebreak
+\input{conditional_probabilities.tex}
+\input{independence.tex}
+\input{random_variables.tex}
+\input{expected_value.tex}
+\input{joint_distributions.tex} \pagebreak
+\input{probability_as_vector_space.tex}
+\input{conditional_expected_value_on_event.tex}
+
+\end{document}

@@ -1,0 +1,110 @@
+\section{Random variables}
+
+Let \((\O, \F, \P)\) be a probability space. A random variable is \textbf{measurable} map \(X: \Omega \to \R\)  such that for all \(a \in \R\):
+\[\{\omega \in \O \mid X(\omega) \leq a\} \in \F\]
+
+Furthermore we can define \textbf{events} in terms of a \textbf{random variable} where we use an abuse of notation:
+\[\{X \leq a\} = \{\omega \in \O \mid X(\omega) \leq a\}\]
+Which has a probability of \(\P(X \leq a) = \P(\{X \leq a\})\).
+
+\begin{definition*}[Preimage of a random variable \(X\)]
+  \[X^{-1}(A) = \{\omega \in \O \mid X(\omega) \in A\} \quad A \subset \R\]
+  \(X\) is \textbf{\(\bm{\F}\)-measurable} if \(\forall B \subsetneq \R\), \(B\) closed: \(X^{-1}(B) \in \F\).
+\end{definition*}
+
+\begin{definition*}[Indicator function \(\I_A\) of an event \(A\)]
+  \[\forall \omega \in \O \quad \I_A(\omega) = \begin{cases}
+    0, & w \notin A \\
+    1, & w \in A
+  \end{cases}\]
+\end{definition*}
+
+\begin{definition*}[Cumulative Distribution Function (CDF)]
+  Let \(X\) be a random variable on the probability space \((\O, \F, \P)\), the CDF \(F_X: \R \to [0, 1]\) is defined by
+  \[\forall x \in \R \quad F_X(x) = \P(X^{-1}((-\infty, x))) =:\P(X \leq x) \]
+\end{definition*}
+Properties of the CDF:
+\begin{itemize}
+  \item \(a < b \implies \P(a < X \leq b) = F_X(b) - F_x(a)\)
+  \item \(F_X\) is monotonically increasing
+  \item \(F_X\) is right-continuous, i.e. \(\lim_{y \to x^+} F_X(y) = F_X(x)\)
+  \item \(\lim_{x \to -\infty} F_X (x) = 0\) and \(\lim_{x \to \infty} F_X(x) = 1\)
+\end{itemize}
+
+\begin{definition*}[Independence of random variables]
+  The RVs \(X_1, \ldots, X_n\) are called independent, if
+  \begin{align*}
+    \forall x_1, \ldots, x_n \in \R: \quad & \P(X_1 \leq x_1, \ldots, X_n \leq x_n) = \\
+    & \P(X_1 \leq x_1) \cdot \ldots \cdot \P(X_n \leq x_n)
+  \end{align*}
+\end{definition*}
+
+\pagebreak
+\subsection{Discrete random variables}
+A random variable \(X\) is called \textbf{discrete} if the set of values it can output \(\chi\), is a discrete (a finite or countable set).
+
+\begin{ddefinition*}[Probability Mass Function (PMF)]
+  Let \(X\) be a discrete random variable and \(\chi\) be the set of all its values. The probability mass function \(p_x(x)\) for each \(x \in \chi\) is defined by:
+  \[p_X(x) = \P(X = x) = \P_x(\{x\})\]
+\end{ddefinition*}
+
+\begin{ddefinition*}[CDF of a discrete random variable]
+  \[F_X(x) = \P(X \leq x) = \sum_{x \in \chi} p_X(x)\]
+\end{ddefinition*}
+
+\subsubsection{Discrete distrbutions}
+\begin{itemize}
+  \item \textbf{Bernoulli} (\(X \sim \Ber(p)\)): If \(\chi = \{0, 1\}\) and
+  \[p_x(0) = 1 - p \quad p_x(1) = p\]
+
+  \item \textbf{Binomial} (\(X \sim \Bin(n, p)\)) with \(p > 0\) and \(n \in \N_1\): If \(\chi = \{0, 1, \ldots, n\}\) and
+  \[\forall k \in \chi \quad p_x(k) = \binom{n}{k} p^k \cdot (1 - p)^{n -k}\]
+  It describes a repeating Bernoulli experiment.
+
+  \item \textbf{Poisson} (\(X \sim \Poisson(\lambda)\)) with \(\lambda > 0\), if \(\chi = \N\) and
+  \[\forall k \in \N \quad p_x(k) = e^{-\lambda} \frac{\lambda^k}{k!}\]
+  Good approximation of a Binomial distribution if \(n\) is large and \(q\) small.
+
+  \item \textbf{Categorical} (\(X \sim \Cat(p_1, \ldots, p_k)\)) if \(\chi = \{1, \ldots, k\}\) and \(p_x(i) = p_i\) for \(i = 1, \ldots, k\). Model is selecting among \(k\) different choices, each with some probability, and assigning \(1, \ldots, k\) to the choices.
+\end{itemize}
+
+\pagebreak
+\subsection{Continuous Random Variable}
+A random variable \(X\) is called \textbf{continuous} if the set of values it can produce is uncountably infinite and the probability of attaining a single value is zero.
+
+\begin{cdefinition*}[Probability Density Function (PDF)]
+  Let \(X\) be a continuous random variable. If there exists a (measureable) function \(p_x: \R \to [0, \infty)\), such that
+  \[\P_X(I) = \P(X \in I) = \int_I p_x(x) \,dx\]
+  for all intervals \(I\) in \(\R\), we call it the \textbf{PDF}.
+\end{cdefinition*}
+
+Notice that \(\int_\R p_x(x) \, dx = 1\) since \(\P_X(\R) = 1\).
+
+\begin{cdefinition*}[CDF of a continuous random variable]
+  \[F_x(x) = \P(X \leq x) = \int_{-\infty}^x p_x(t) \,dt\]
+\end{cdefinition*}
+The definition leads to the following consequences:
+\begin{itemize}
+  \item \(\P(a \leq x \leq b) = \P(a < x < b)\)
+  \item \(\P(X = x) = 0\)
+  \item \(\P(X \in [a, b]) = \P(X \in (a, b))\)
+  \item \(F_x\) differentiable \(\implies \frac{dF_x}{dx}(x_0) = p_x(x_0)\)
+\end{itemize}
+
+\subsubsection{Continuous distributions}
+\begin{itemize}
+  \item \textbf{Uniform} (\(X \sim \Unif([a, b])\)) with \(a, b \in \R\) and \(a < b\), if \(X \in [a, b]\) and
+  \[p_X(x) = \begin{cases}
+    0, & x \notin [a, b] \\
+    \frac{1}{b - 1}, & x \in [a, b]
+  \end{cases}\]
+
+  \item \textbf{Exponential} (\(X \sim \Exp(\lambda)\)) with \(\lambda > 0\), if \(X \in \R\) and
+  \[p_x(x) = \begin{cases}
+    \lambda e^{-\lambda x}, & x \geq 0 \\
+    0, & x < 0
+  \end{cases}\]
+
+  \item \textbf{Normal} (\(X \sim \Normal(\mu, \sigma)\)) with \(\sigma > 0\) and \(\mu \in \R\), if \(X \in \R\) and
+  \[p_X(x) = \frac{1}{\sigma \cdot \sqrt{2 \pi}}\ \cdot \exp(-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2)\]
+\end{itemize}

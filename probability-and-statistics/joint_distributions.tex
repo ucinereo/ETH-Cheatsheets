@@ -1,0 +1,67 @@
+\section{Joint Distributions}
+\begin{definition*}[Joint Distribution]
+  Let \(X_1, \ldots, X_n\) be random variables defined on the same probability space \((\O, \F, \P)\). Consider \(X = (X_1, \ldots, X_n)\). The joint distribution \(\P_X\) on the hyper set \(A \in \B^n\) where \(\B^n = \sigma(\{A_1 \times \cdots \times A_n \mid A_i \in \B\})\) is defined as:
+  \[\P_X(A) = \P(X^{-1}(A)) = \P(\{\omega \in \O \mid X(\omega) \in A\})\]
+\end{definition*}
+
+\begin{ddefinition*}[Joint PMF]
+  Let \(X = X_1, \ldots, X_n\) be discrete random variables, defined on the same probability space, and taking values \(\chi_1, \ldots, \chi_n\). The joint PMF is defined as:
+  \[p_{X}(x_1, \ldots, x_n) = \P(X_1 = x_1, \ldots, X_n = x_n)\]
+  Where \(p_X\) can be written as \(p_{X_1, \ldots, X_n}\) or simply \(p\).
+\end{ddefinition*}
+
+\begin{proposition}
+  Let \(X_1, \ldots X_n\) be discrete random variables with \(X_i \in \chi_i\). Then \(Z = \phi(X_1, \ldots, X_n)\) is a discrete random variable with values in \(\chi = (\chi_1 \times \ldots \times \chi_n)\) and with distribution given by \(\forall z \in \chi\):
+  \[\P(Z = z) = \sum_{\substack{x_1 \in \chi1, \ldots, x_n \in \chi_n \\ \phi(x_1, \ldots, x_n) = z}} \P(X_1 = x_1, \ldots, X_n = x_n)\]
+\end{proposition}
+
+\begin{dtheorem*}[Marginal distribution, discrete]
+  Let \(X_1, \ldots, X_n\) be discrete random variables with joint PMF. For every \(i\) we have \(\forall z \in \chi_i\):
+  \[\P(X_i = z) = \smashoperator[r]{\sum_{x_1, \ldots x_{i-1}, x_{i+1}, \ldots, x_n}} p(x_1, \ldots, x_{i-1}, x_{x+1}, \ldots, x_n)\]
+\end{dtheorem*}
+
+\begin{proposition}
+  The expected values of joint discrete random variables can be written as:
+  \[\E(\phi(X_1, \ldots, X_n)) = \smashoperator[r]{\sum_{x_1 \in \chi_1, \ldots, x_n \in \chi_n}} \phi(x_1, \ldots, x_n) \cdot p(x_1, \ldots, x_n)\]
+\end{proposition}
+
+\begin{proposition}
+  \(X_1, \ldots X_n\) are independent \(\iff\) for all \(x_1 \in \chi_1, \ldots, x_n \in \chi_n\) holds: \[p(x_1, \ldots, x_n) = \P(X_1 = x_1) \cdot \ldots \cdot \P(X_n = x_n)\]
+\end{proposition}
+
+\begin{cdefinition*}[Joint PDF]
+  Let the random variables \(X = X_1, \ldots, X_n\) be defined on the same probability space. We say these random variables have a joint PDF \(p_{X_1, \ldots, X_n} = p_X\) if for all subsets \(A \in \B^n\) it holds
+  \begin{align*}
+    \P_X(A) = \P((X_1, \ldots, X_n) \in A) \\
+    = \int_A p_X(x_1, \ldots, x_n) \, dx_1 \ldots \,dx_n
+  \end{align*}
+\end{cdefinition*}
+
+\begin{cdefinition*}[Joint CDF, continuous]
+  Given a collection of random variables \(X = X_1, \ldots, X_n\) defined on the same probability space, their joint CDF is defined as
+  \begin{align*}
+    F_{X}(x_1, \ldots, x_n) = \P(X_1 \leq x_1, \ldots, X_n \leq x_n) \\
+    = \int_{-\infty}^{x_1} \ldots \int_{-\infty}^{x_n} p_{X}(x_1, \ldots, x_n) \,dx_n \ldots \, dx_1
+  \end{align*}
+\end{cdefinition*}
+
+\begin{proposition}
+  Let \(X_1, \ldots, X_n\) be continuous random variables with joint PDF and \(\phi: \R^n \to \R\). Then the expected value is defined as
+  \begin{multline*}
+    \E(\phi(X_1, \ldots, X_n)) = \\ \int_\R \ldots \int_\R \phi(x_1, \ldots, x_n) \cdot p(x_1, \ldots, x_n) \, dx_n \ldots \, dx_1
+  \end{multline*}
+\end{proposition}
+
+\begin{ctheorem*}[Marginal distribution, continuous]
+  Let \(X_1, \ldots, X_n\) be continuous random variables with a joint PDF. For every \(i\) we have \(\forall z \in \chi_i\):
+  \[p_{x_i}(z) = \smashoperator{\int_{x_1, \ldots, x_{i-1}, x_{x+1}, \ldots, x_n}} p(x_1, \ldots, x_{i-1}, x_{i+1}, \ldots, x_n) \, dx_n \ldots \, dx_1\]
+\end{ctheorem*}
+
+\begin{proposition}
+  Let \(X_1, \ldots, X_n\) be continuous random variables with PDF \(p_{X_1}, \ldots, p_{X_n}\). Then:
+  \begin{itemize}
+    \item[] \(X_1, \ldots X_n\) are independent
+    \item[\(\Leftrightarrow\)] \(p(x_1, \ldots, x_n) = p_{X_1}(x_1) \cdot \ldots \cdot p_{X_n}(x_n)\)
+    \item[\(\Leftrightarrow\)] \(\E(\phi_1(X_1) \cdot \ldots \cdot \phi_n(X_n)) = \E(\phi_1(X_1)) \cdot \ldots \cdot \E(\phi_n(X_n))\)
+  \end{itemize}
+\end{proposition}

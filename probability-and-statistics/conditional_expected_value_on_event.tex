@@ -1,0 +1,13 @@
+\section{Conditional expected value}
+\begin{ddefinition*}[Conditional expected value on an event]
+  Let \((\O, \F, \P)\) denote a discrete probability space and let \(B \in \F\) denote an event with \(\P(B) > 0\). Then we can define the average expected value of a random variable \(X\) depending on \(B\) as:
+  \begin{align*}
+    \E(X \mid B) &= \frac{\E(\I_B X)}{\P(B)} = \sum_{x \in \chi} x \cdot \P(X = x \mid B) \\
+    &= \sum_{\omega \in \O} X(\omega) \P(\{\omega\} \mid B)
+  \end{align*}
+\end{ddefinition*}
+
+\begin{ddefinition*}[Conditional expected value as random variable]
+  Let \(\B = (B_i)_{i \in I}\) be a countable partition of \(\O\). Then \(\E(X \mid \B)\) defines a new variable written as:
+  \[\E(X \mid \B) = \sum_{i \in I, \P(B_i) > 0} \E(X \mid B_i) \I_{B_i}\]
+\end{ddefinition*}

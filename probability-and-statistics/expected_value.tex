@@ -1,0 +1,78 @@
+\section{Expected value}
+
+For any random variable \(X: \Omega \to \R_+\) with non-negative values, the expected value is defined with the CDF as:
+\[\E(X) = \int_{\R_+} (1 - F_X(x)) \, dx = \int_{\R_+} \P(X > x) \, dx\]
+
+\begin{ddefinition*}[Expected Value, Discrete]
+  Let \(X\) be a discrete random variable with value in \(\chi\). The expected value is defined as (if the sum is well defined):
+  \[\E(X) := \sum_{x \in \chi}x \cdot p_X(x) = \sum_{\omega \in \O} X(\omega) \cdot p(\omega)\]
+\end{ddefinition*}
+
+\begin{proposition}
+  {\small \(\E(\I_A) = \P(A)\)}
+\end{proposition}
+
+\begin{dtheorem*}[Expected Value of transformed RV, Discrete]
+  Let \(X\) be discrete with values in \(\chi\). For all \(\phi: \R \to \R\):
+  \[\E(\phi(X)) = \sum_{x \in \chi}\phi(x) \cdot p_X(x)\]
+\end{dtheorem*}
+
+\begin{cdefinition*}[Expected Value, Continuous]
+  Let \(X\) be a discrete random variable with density \(p_x\). The expected value is defined as:
+  \[\E(X) := \int_{\R} x \cdot p_X(x) \,dx\]
+\end{cdefinition*}
+
+\begin{ctheorem*}[Expected Value of transformed RV, continuous]
+  Let \(X\) be continuous with density \(p_x\). For all \(\phi: \R \to \R\):
+  \[\E(\phi(X)) = \int_\R \phi(x) \cdot p_X(x) \, dx\]
+\end{ctheorem*}
+
+\begin{theorem*}[Linearity of expected value]
+  \[\E(\alpha X + \beta Y) = \alpha \E(X) + \beta \E(Y) \quad (a, b \in \R)\]
+\end{theorem*}
+
+\begin{theorem*}[Expected value of \(XY\), independence]
+  \[X, Y \ \text{ind.} \Leftrightarrow \E(\phi(X) \psi(Y)) = \E(\phi(X)) \E(\psi(Y))\]
+\end{theorem*}
+This theorem also holds for \(X_1, \ldots X_n\) and \(\phi_1, \ldots, \phi_n\).
+
+\subsection{Variance and Covariance}
+\begin{definition*}[Variance]
+  Let \(X\) be a random variable such that \(\E(X^2) < \infty\). The variance of \(X\) is defined as:
+  \[\Var(X) = \sigma_X^2 = \E((X - \E(X))^2) = \E(X^2) - \E(X)^2\]
+  \(\sigma_X\) is called the \textbf{standard deviation} of \(X\).
+\end{definition*}
+
+\begin{itemize}
+  \item If \(\E(X^2) < \infty\) and \(\lambda \in \R\), then \(\sigma_{\lambda X}^2 = \lambda^2 \sigma_X^2\).
+  \item If \(S = X_1 + \ldots + X_n\), with \(X_1, \ldots, X_n\) pairwise independent, then \(\sigma_S^2 = \sum_{i = 1}^n \sigma_{X_i}^2\)
+\end{itemize}
+
+\begin{definition*}[Covariance]
+  Let \(X, Y\) be two random variables with \(\E(X^2) < \infty\) and \(\E(Y^2) < \infty\), then their covariance is defined as
+  \[\Cov(X, Y) = \E((X - \E(X))(Y - \E(Y)))\]
+\end{definition*}
+\begin{itemize}
+  \item \(\Cov(X, X) = \sigma_X^2 = \Var(X)\)
+  \item \(X, Y\) independent \(\implies \Cov(X, Y) = 0\) 
+\end{itemize}
+
+\subsection{Inequalities}
+\begin{lemma}[Monotonicity]
+  Let \(X, Y\) be two random variables such that \(X \leq Y\), then \(\E(X) \leq \E(Y)\)
+\end{lemma}
+
+\begin{theorem*}[Markov's Inequality]
+  Let \(X\) be a random variable with \(X \geq 0\), then for \(a > 0\):
+  \[\P(X \geq a) \leq \frac{\E(X)}{a}\]
+\end{theorem*}
+
+\begin{theorem*}[Jensen's Inequality]
+  Let \(X\) be a random variable and \(\phi: \R \to \R\) a convex function, then
+  \[\phi(\E(X)) \leq \E(\phi(X))\]
+\end{theorem*}
+
+\begin{theorem*}[Chebychev's Inequality]
+  Let \(X\) be a random variable with \(\E(X^2) < \infty\), then for \(t > 0\)
+  \[\P(|X - \E(X)| \geq t) \leq \frac{\Var(X)}{t^2}\]
+\end{theorem*}

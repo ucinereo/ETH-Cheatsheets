@@ -1,0 +1,41 @@
+\section{Mathematical framework}
+
+\begin{definition*}[Probability Space \((\O, \F, \P)\)]
+  \begin{itemize}
+    \item \(\bm{\O} \neq \emptyset\): \textbf{Sample space} with \(\omega \in \O\) as outcome.
+    \item \(\bm{\F}\subseteq \Pow(\O)\): \textbf{\(\bm{\sigma}\)-algebra}
+    \begin{enumerate}
+      \item \(\Omega \in \F\)
+      \item \(A \in \F \implies A^\complement \in \F\) where \(A\) is an event.
+      \item \(A_1, A_2, \ldots \in \F \implies \bigcup_{i=1}^\infty \in \F\)
+    \end{enumerate}
+    \item \(\pmb{\P}\): \textbf{Probability measure} on \((\O, \F)\)
+    \begin{enumerate}
+      \item[\(\P:\)] \(\F \to [0, 1], A \mapsto \P(A)\)
+      \item \(\P(\O) = \sum_{\omega \in \O} p(\omega) = 1\) if \(p(\omega) := \P(\{\omega\})\).
+      \item \(P(A) = \sum_{i=1}^\infty P(A_i)\) if \(A = \bigcup_{i=1}^\infty A_i\) disjoint.
+    \end{enumerate}
+  \end{itemize}
+\end{definition*}
+
+We have some further consequences of this definition:
+\begin{enumerate}
+  \item \(\emptyset \in \F\)
+  \item \(A_1, \ldots \in \F \Rightarrow \bigcap_{i=1}^\infty A_i \in \F\)
+  \item \(A, B \in \F \implies A \cup B \in \F\)
+  \item \(A, B \in \F \implies A \cap B \in \F\)
+\end{enumerate}
+
+and
+
+\begin{enumerate}
+  \item \(\P(\emptyset) = 0\)
+  \item \(\P(A^\complement) = 1 - \P(A)\)
+  \item \(\P(A \cup B) = \P(A) + \P(B) - \P(A \cap B)\)
+  \item \(A_1, \ldots A_k\) disjoint \(\implies \P(\bigcup_{i=1}^k A_i) = \sum_{i=1}^k \P(A_i)\)
+  \item \(\P(\bigcup_{i=1}^k A_i) = \sum_{i=1}^k \sum_{1 \leq j_1 < \ldots < j_i \leq k} \P(A_{j_1} \cap \ldots \cap A_{j_i})\)
+  \item (Union Bound) \(\P(\bigcup_{i=1}^\infty A_i) \leq \sum_{i=1}^\infty \P(A_i)\)
+  \item (Monotonicity) \(A \subseteq B \implies \P(A) \leq \P(B)\)
+  \item (De Morgan's Law) \((\bigcup_{i=1}^\infty A_i)^\complement = \bigcap_{i=1}^\infty (A_i)^\complement\)
+\end{enumerate}
+

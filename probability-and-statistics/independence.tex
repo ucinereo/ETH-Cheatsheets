@@ -1,0 +1,13 @@
+\section{Independence}
+\begin{ddefinition*}[Independence of two events]
+  Let \((\O, \F, \P)\) be a probability space. A collection of events \(A_1, \ldots, A_n\) is called independent, if
+  \[\forall I \subseteq \{1, \ldots, n\} \quad \P\left(\bigcap_{i \in I} A_i\right) = \prod_{i \in I} \P(A_i)\]
+\end{ddefinition*}
+\[A, B \ \text{ind.} \iff \P(A \mid B) = \P(A) \iff \P(B \mid A) = \P(B)\]
+
+\begin{itemize}
+  \item If \(A, B\) are independent, then likewise \(A, B^\complement\).
+  \item \(\P(A) \in \{0, 1\} \implies A\) is independent for all events.
+  \item If \(A\) is independent of itself, then \(\P(A) \in \{0, 1\}\)
+\end{itemize}
+
