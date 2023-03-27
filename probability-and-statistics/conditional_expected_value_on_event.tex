@@ -1,4 +1,4 @@
-\section{Conditional expected value}
+\section{Conditional Expectation}
 \begin{ddefinition*}[Conditional expected value on an event]
   Let \((\O, \F, \P)\) denote a discrete probability space and let \(B \in \F\) denote an event with \(\P(B) > 0\). Then we can define the average expected value of a random variable \(X\) depending on \(B\) as:
   \begin{align*}
@@ -9,5 +9,14 @@
 
 \begin{ddefinition*}[Conditional expected value as random variable]
   Let \(\B = (B_i)_{i \in I}\) be a countable partition of \(\O\). Then \(\E(X \mid \B)\) defines a new variable written as:
-  \[\E(X \mid \B) = \sum_{i \in I, \P(B_i) > 0} \E(X \mid B_i) \I_{B_i}\]
+  \[\E(X \mid \B)(\omega) = \sum_{i \in I, \P(B_i) > 0} \E(X \mid B_i) \I_{B_i}(\omega)\]
 \end{ddefinition*}
+
+\pagebreak
+The intuition behind this definition is when we fix \(\tilde{\omega} \in \O\), then w.l.o.g. assume \(\tilde{\omega} \in B_1\), then
+\[\E(X \mid \B)(\tilde{\omega}) = \E(X \mid B_1)(\tilde{\omega})\]
+
+\begin{dtheorem*}[Multiple random variables]
+  Let \(Y \in \L^2((\O, \mathcal{G}, \P); \R)\), then
+  \[\E(XY \mid \mathcal{G}) = Y \cdot \E(X \mid \mathcal{G})\]
+\end{dtheorem*}

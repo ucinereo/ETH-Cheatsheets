@@ -12,18 +12,16 @@ Which has a probability of \(\P(X \leq a) = \P(\{X \leq a\})\).
   \(X\) is \textbf{\(\bm{\F}\)-measurable} if \(\forall B \subsetneq \R\), \(B\) closed: \(X^{-1}(B) \in \F\).
 \end{definition*}
 
-\begin{definition*}[Indicator function \(\I_A\) of an event \(A\)]
-  \[\forall \omega \in \O \quad \I_A(\omega) = \begin{cases}
-    0, & w \notin A \\
-    1, & w \in A
-  \end{cases}\]
+\begin{definition*}[Distribution of a Random Variable]
+  For \(A \in \B(\R)\), we define the distribution (\textbf{law}) of \(X\) as
+  \[\P_X(A) := \P(X^{-1}(A)) = \P(\{\omega \in \O \mid X(\omega) \in A\})\]
 \end{definition*}
 
 \begin{definition*}[Cumulative Distribution Function (CDF)]
   Let \(X\) be a random variable on the probability space \((\O, \F, \P)\), the CDF \(F_X: \R \to [0, 1]\) is defined by
   \[\forall x \in \R \quad F_X(x) = \P(X^{-1}((-\infty, x))) =:\P(X \leq x) \]
 \end{definition*}
-Properties of the CDF:
+Properties of the CDF (characterized by RCLL, Càdlàg):
 \begin{itemize}
   \item \(a < b \implies \P(a < X \leq b) = F_X(b) - F_x(a)\)
   \item \(F_X\) is monotonically increasing
@@ -39,18 +37,17 @@ Properties of the CDF:
   \end{align*}
 \end{definition*}
 
-\pagebreak
 \subsection{Discrete random variables}
 A random variable \(X\) is called \textbf{discrete} if the set of values it can output \(\chi\), is a discrete (a finite or countable set).
 
 \begin{ddefinition*}[Probability Mass Function (PMF)]
   Let \(X\) be a discrete random variable and \(\chi\) be the set of all its values. The probability mass function \(p_x(x)\) for each \(x \in \chi\) is defined by:
-  \[p_X(x) = \P(X = x) = \P_x(\{x\})\]
+  \[p_X(x) = \P(X = x) = \P_x(\{x\}) = \P(X^{-1}(\{x\}))\]
 \end{ddefinition*}
-
+Probability
 \begin{ddefinition*}[CDF of a discrete random variable]
   \[F_X(x) = \P(X \leq x) = \sum_{x \in \chi} p_X(x)\]
-\end{ddefinition*}
+\end{ddefinition*}Probability
 
 \subsubsection{Discrete distrbutions}
 \begin{itemize}
@@ -105,6 +102,6 @@ The definition leads to the following consequences:
     0, & x < 0
   \end{cases}\]
 
-  \item \textbf{Normal} (\(X \sim \Normal(\mu, \sigma)\)) with \(\sigma > 0\) and \(\mu \in \R\), if \(X \in \R\) and
+  \item \textbf{Normal} (\(X \sim \Normal(\mu, \sigma)\)) with \(\sigma > 0\) and \(\mu \in \R\), if \(X \in \R\), \(\mu\) expected value, \(\sigma^2\) variance and
   \[p_X(x) = \frac{1}{\sigma \cdot \sqrt{2 \pi}}\ \cdot \exp(-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2)\]
 \end{itemize}
