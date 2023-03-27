@@ -17,7 +17,7 @@
 
 \begin{dtheorem*}[Marginal distribution, discrete]
   Let \(X_1, \ldots, X_n\) be discrete random variables with joint PMF. For every \(i\) we have \(\forall z \in \chi_i\):
-  \[\P(X_i = z) = \smashoperator[r]{\sum_{x_1, \ldots x_{i-1}, x_{i+1}, \ldots, x_n}} p(x_1, \ldots, x_{i-1}, x_{x+1}, \ldots, x_n)\]
+  \[\P(X_i = z) = \smashoperator[r]{\sum_{x_1, \ldots x_{i-1}, x_{i+1}, \ldots, x_n}} p(x_1, \ldots, x_{i-1}, z, x_{x+1}, \ldots, x_n)\]
 \end{dtheorem*}
 
 \begin{proposition}
@@ -52,9 +52,9 @@
   \end{multline*}
 \end{proposition}
 
-\begin{ctheorem*}[Marginal distribution, continuous]
+\begin{ctheorem*}[Marginal density, continuous]
   Let \(X_1, \ldots, X_n\) be continuous random variables with a joint PDF. For every \(i\) we have \(\forall z \in \chi_i\):
-  \[p_{x_i}(z) = \smashoperator{\int_{x_1, \ldots, x_{i-1}, x_{x+1}, \ldots, x_n}} p(x_1, \ldots, x_{i-1}, x_{i+1}, \ldots, x_n) \, dx_n \ldots \, dx_1\]
+  \[p_{x_i}(z) = \smashoperator{\int_{x_1, \ldots, x_{i-1}, x_{x+1}, \ldots, x_n}} p(x_1, \ldots, x_{i-1}, z, x_{i+1}, \ldots, x_n) \, dx_n \ldots \, dx_1\]
 \end{ctheorem*}
 
 \begin{proposition}
