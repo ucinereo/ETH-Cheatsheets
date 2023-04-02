@@ -1,0 +1,61 @@
+\section{Conditional Distribution}
+\begin{ddefinition*}[Conditional PMF]
+  Let \(X, Y\) be two discrete random variables on the same probability space taking values in \(\chi\) and \(\mathcal{Y}\). For \(y \in \mathcal{Y}\) such that \(\P(Y = y) \neq 0\), we define the \textit{conditional distribution of \(X\) given \(Y = y\)} as
+  \[p_{X \mid Y}(x \mid y) := \frac{p_{X, Y}(x, y)}{p_Y(y)}\]
+\end{ddefinition*}
+
+If \(X\) and \(Y\) are independent, then \(p(x \mid y) = p(x)\). For a fixed \(y \in \mathcal{Y}\) with \(\P(Y = y) > 0\) the function \(p_{X \mid Y}(\cdot \mid y)\) is a probability mass function. Thus, we can consider a random variable with this PMF written as \(X \mid Y = y\).
+
+\begin{dtheorem*}[Multiple variables]
+  \vspace*{-18pt}
+  \begin{multline*}
+    p_{X_{k+1}, \ldots, X_n \mid X_1, \ldots, X_k}(x_{k+1}, \ldots, x_n \mid x_1, \ldots x_k) \\
+    := \frac{p_{X_1, \ldots, X_n}(x_1, \ldots, x_n)}{p_{X_1, \ldots, X_k}(x_1, \ldots, x_k)}
+  \end{multline*}
+\end{dtheorem*}
+
+\begin{cdefinition*}[Conditional Density]
+  Let \(X, Y\) be two continuous random variables with joint density \(p_{X, Y}\). The \textit{conditional density of \(X\) given \(Y = y\)} is defined as
+  \[p_{X \mid Y}(x \mid y) = \begin{cases}
+    \frac{p_{X, Y}(x, y)}{p_Y(y)} & \text{if} \ p_Y(y) > 0 \\
+    0 & \text{otherwise}
+  \end{cases}\]
+\end{cdefinition*}
+
+\subsection{Mixed case}
+\begin{definition*}[Conditional probability density]
+  Let \(X\) be a continuous and \(Y\) a discrete random variable. For each \(y \in \mathcal{Y}\), we have the conditional probability distribution \(\P_{X 
+  mid y}\) on \(\R\) for each subset \(A \in \B(\R)\) defined as \(\P_{X \mid y}(A) :=\)
+  
+  \vspace{-15pt}
+  \[\frac{\P_{X, Y}(\{(x, y) \in \R^2 \mid x \in A\})}{\P_Y(\{y\})} = \frac{\P(X \in A, Y = y)}{p_Y(y)}\]
+  
+  If this conditional distribution has a density, we call it the \textit{conditional probability density of \(X\) given \(Y = y\)}
+\end{definition*}
+
+\begin{ctheorem*}[Law of Total Probability, \(Y\) continuous]
+  \[p_X(x) = \int p_{X \mid Y}(x \mid y) p_Y(y) \, dy\]
+\end{ctheorem*}
+
+\begin{dtheorem*}[Law of Total Probability, \(Y\) discrete]
+  \[p_X(x) = \sum_{y \in \mathcal{Y}} p_{X \mid Y}(x \mid y)p_Y(y)\]
+\end{dtheorem*}
+
+\begin{ctheorem*}[Bayes Rule, \(X\) continuous]
+  \[p_{X \mid Y}(x \mid y) = \frac{p_{Y \mid X}(y \mid x) p_X(x)}{\int p_{Y \mid X}(y \mid x') p_X(x') \, dx'}\]
+\end{ctheorem*}
+
+\begin{dtheorem*}[Bayes Rule, \(X\) discrete]
+  \[p_{X \mid Y}(x \mid y) = \frac{p_{Y \mid X}(y \mid x) p_X(x)}{\sum_{x' \in \chi} p_{Y \mid X}(y \mid x')}\]
+\end{dtheorem*}
+
+\begin{theorem*}[Chain Rule]
+  Let \(X_1, \ldots, X_n\) be random variables. Then
+  \[p(x_1, \ldots, x_n) = p(x_1) p(x_2 \mid x_1) \cdots p(x_n \mid x_1, \ldots, x_n)\]
+\end{theorem*}
+
+\begin{theorem*}[Conditional Independence]
+  Let \(X, Y, Z\) be random variables. The random variables \(X\) and \(Y\) are said to be conditionally independent given \(Z\) if \(\forall x, y, z\):
+  \vspace{-10pt}
+  \[p_{X, Y \mid Z}(x, y \mid z) = p_{X \mid Z}(x \mid z) p_{Y \mid Z}(y \mid z)\]
+\end{theorem*}

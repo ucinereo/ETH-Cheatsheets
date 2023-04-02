@@ -1,7 +1,8 @@
 \section{Expected value}
 
 For any random variable \(X: \Omega \to \R_+\) with non-negative values, the expected value is defined with the CDF as:
-\[\E(X) = \int_{\R_+} (1 - F_X(x)) \, dx = \int_{\R_+} \P(X > x) \, dx\]
+\vspace{-8pt}
+\[\E(X) = \int_\R x \,dF_X(x) \color{gray!70} = \int_\R x \frac{F_X(x)}{dx} \, dx\]
 
 \begin{ddefinition*}[Expected Value, Discrete]
   Let \(X\) be a discrete random variable with value in \(\chi\). The expected value is defined as (if the sum is well defined):
@@ -18,7 +19,7 @@ For any random variable \(X: \Omega \to \R_+\) with non-negative values, the exp
 \end{dtheorem*}
 
 \begin{cdefinition*}[Expected Value, Continuous]
-  Let \(X\) be a discrete random variable with density \(p_x\). The expected value is defined as:
+  Let \(X\) be a continuous random variable with density \(p_x\). The expected value is defined as:
   \[\E(X) := \int_{\R} x \cdot p_X(x) \,dx\]
 \end{cdefinition*}
 
