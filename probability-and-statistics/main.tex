@@ -9,7 +9,8 @@
 \setlength{\columnsep}{0.5cm}
 \usepackage{flowfram}
 \ffvadjustfalse
-\Ncolumn{3}
+\Ncolumn[<9]{3}
+\onecolumn[9]
 \usepackage[compact]{titlesec}
 \usepackage{parskip}
 \setlength{\parskip}{3pt}
@@ -124,7 +125,10 @@
 \input{random_variables.tex}
 \input{expected_value.tex}
 \input{joint_distributions.tex} \pagebreak
-\input{probability_as_vector_space.tex}
+\input{conditional_distribution.tex}
 \input{conditional_expected_value_on_event.tex}
+\pagebreak
+% \input{convergence_of_empirical_averages_to_expectation.tex}
+\input{probability_as_vector_space.tex}
 
 \end{document}

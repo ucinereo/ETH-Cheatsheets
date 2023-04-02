@@ -14,7 +14,7 @@ Which has a probability of \(\P(X \leq a) = \P(\{X \leq a\})\).
 
 \begin{definition*}[Distribution of a Random Variable]
   For \(A \in \B(\R)\), we define the distribution (\textbf{law}) of \(X\) as
-  \[\P_X(A) := \P(X^{-1}(A)) = \P(\{\omega \in \O \mid X(\omega) \in A\})\]
+  \[\mu(A) = \P_X(A) := \P(X^{-1}(A)) = \P(\{\omega \in \O \mid X(\omega) \in A\})\]
 \end{definition*}
 
 \begin{definition*}[Cumulative Distribution Function (CDF)]
@@ -44,13 +44,14 @@ A random variable \(X\) is called \textbf{discrete} if the set of values it can 
   Let \(X\) be a discrete random variable and \(\chi\) be the set of all its values. The probability mass function \(p_x(x)\) for each \(x \in \chi\) is defined by:
   \[p_X(x) = \P(X = x) = \P_x(\{x\}) = \P(X^{-1}(\{x\}))\]
 \end{ddefinition*}
-Probability
+
 \begin{ddefinition*}[CDF of a discrete random variable]
   \[F_X(x) = \P(X \leq x) = \sum_{x \in \chi} p_X(x)\]
-\end{ddefinition*}Probability
+\end{ddefinition*}
 
-\subsubsection{Discrete distrbutions}
+\subsubsection{Discrete distributions}
 \begin{itemize}
+  \item \textbf{Constant} (\(X \sim X_{\{\alpha\}} = \mathcal{N}(\mu, 0)\)): If \(\chi = \{\alpha\}\) and \(F_X = \I_{[x, \infty)}\)
   \item \textbf{Bernoulli} (\(X \sim \Ber(p)\)): If \(\chi = \{0, 1\}\) and
   \[p_x(0) = 1 - p \quad p_x(1) = p\]
 
@@ -93,7 +94,7 @@ The definition leads to the following consequences:
   \item \textbf{Uniform} (\(X \sim \Unif([a, b])\)) with \(a, b \in \R\) and \(a < b\), if \(X \in [a, b]\) and
   \[p_X(x) = \begin{cases}
     0, & x \notin [a, b] \\
-    \frac{1}{b - 1}, & x \in [a, b]
+    \frac{1}{b - a}, & x \in [a, b]
   \end{cases}\]
 
   \item \textbf{Exponential} (\(X \sim \Exp(\lambda)\)) with \(\lambda > 0\), if \(X \in \R\) and
@@ -102,6 +103,6 @@ The definition leads to the following consequences:
     0, & x < 0
   \end{cases}\]
 
-  \item \textbf{Normal} (\(X \sim \Normal(\mu, \sigma)\)) with \(\sigma > 0\) and \(\mu \in \R\), if \(X \in \R\), \(\mu\) expected value, \(\sigma^2\) variance and
-  \[p_X(x) = \frac{1}{\sigma \cdot \sqrt{2 \pi}}\ \cdot \exp(-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2)\]
+  \item \textbf{Normal} (\(X \sim \Normal(\mu, \sigma^2)\)) with \(\sigma > 0\) and \(\mu \in \R\), if \(X \in \R\), \(\mu\) expected value, \(\sigma^2\) variance and
+  \[p_X(x) = \frac{1}{\sqrt{2 \pi \sigma^2}}\ \cdot \exp(-\frac{(x - \mu)^2}{\sigma^2})\]
 \end{itemize}
