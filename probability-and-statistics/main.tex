@@ -86,17 +86,17 @@
 \newcommand{\B}{\mathcal{B}}
 \newcommand{\I}{1}
 \renewcommand{\L}{\mathcal{L}}
-\newcommand{\Var}{\text{Var}}
-\newcommand{\Cov}{\text{Cov}}
-\newcommand{\Ber}{\text{Ber}}
-\newcommand{\Bin}{\text{Bin}}
-\newcommand{\Geom}{\text{Geom}}
-\newcommand{\Cat}{\text{Cat}}
-\newcommand{\Poisson}{\text{Poisson}}
-\newcommand{\Unif}{\mathcal{U}}
-\newcommand{\Exp}{\text{Exp}}
-\newcommand{\Normal}{\mathcal{N}}
-\newcommand{\Atom}{\text{Atom}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Ber}{Ber}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\Geom}{Geom}
+\DeclareMathOperator{\Cat}{Cat}
+\DeclareMathOperator{\Poisson}{Poisson}
+\DeclareMathOperator{\Unif}{\mathcal{U}}
+\DeclareMathOperator{\Exp}{Exp}
+\DeclareMathOperator{\Normal}{\mathcal{N}}
+\DeclareMathOperator{\Atom}{Atom}
 
 % ------------------------------------------------------------------
 % Meta Data
@@ -130,5 +130,8 @@
 \pagebreak
 % \input{convergence_of_empirical_averages_to_expectation.tex}
 \input{probability_as_vector_space.tex}
+
+\clearpage
+\input{appendix_distributions.tex}
 
 \end{document}
