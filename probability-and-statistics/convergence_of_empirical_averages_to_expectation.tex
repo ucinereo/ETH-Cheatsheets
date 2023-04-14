@@ -1,5 +1,43 @@
 \section{Convergence of Empirical Averages to Expectation}
 
 \begin{definition*}[Independent with identical distribution (i.i.d.)]
-  The rnadom variables \(X_1, X_2, \ldots\) defined on the same probability space are called i.i.d. if they are independent.
+  The random variables \(X_1, X_2, \ldots\) defined on the same probability space are called i.i.d. if they are independent and each \(X_i\) has the same distribution.
 \end{definition*}
+
+\begin{definition*}[Convergence of Random Variables]
+  Let \(\{X_n\}_{n \in \N}\) be a sequence of random variables. Then:
+  \begin{enumerate}
+    \item \(X_n\) converges to \(X\) \textbf{almost surely} if
+    \[\P(\{w \in \Omega \mid \lim_{n\to\infty} X_n(\omega) = X(\omega)\}) = 1\]
+    and we write \(X_n \stackrel{a.s.}{\to} X\) as \(n \to \infty\).
+    \item \(X_n\) converges to \(X\) \textbf{in probability}, if for any \(\epsilon > 0\)
+    \[\lim_{n \to \infty} \P(|X_n - X| > \epsilon) = 0\]
+    and we write \(X_n \stackrel{\P}{\to} X\) as \(n \to \infty\).
+    \item \(X_n\) converges to \(X\) \textbf{in distribution}, if for all continuity points \(x\) of \(F_X\) we have
+    \[\lim_{n \to \infty} F_{X_n}(x) = F_X(x)\]
+    and we write \(X_n \stackrel{\mathcal{D}}{\to} X\) as \(n \to \infty\).
+  \end{enumerate}
+\end{definition*}
+
+\begin{lemma}
+  \(X_n \stackrel{a.s.}{\to} X \implies X_n \stackrel{\P}{\to} X \implies X_n \stackrel{\mathcal{D}}{\to} X\).
+\end{lemma}
+
+\begin{definition*}[Sample Mean]
+    Let \(X_1, X_2, \ldots\) be i.i.d. random variables with finite first moment, then the sample mean is defined as:
+    \[\bar{X_n} := \frac{1}{n}\sum_{i=1}^n X_i.\]
+\end{definition*}
+
+\pagebreak
+\begin{theorem*}[Laws of Large Numbers (LLN)]
+  Let \(X_1, X_2, \ldots\) be i.i.d. random variables with finite first moment \(\mu := \E(X_i)\) and finite second moment \(\sigma^2 := \Var(X_i)\). Then the weak law of large numbers (\textbf{WLLN}) states that as \(n \to \infty\)
+  \[\bar{X_n} \stackrel{\P}{\to} \mu\]
+  and the strong law of large numbers (\textbf{SLLN}) states as \(n \to \infty\)
+  \[\bar{X_n} \stackrel{a.s.}{\to} \mu.\]
+\end{theorem*}
+
+\begin{theorem*}[Central Limit Theroem (CLT)]
+  Let \(X_1, X_2, \ldots\) be i.i.d. random variables with \(\E(X_i) = \mu\) and \(\Var(X_i) = \sigma^2\). Then for the sum \(S_n := \sum_{i=1}^n X_i\) we have for all \(x \in \R\)
+  \[\P(\frac{S_n - n \mu}{\sqrt{\sigma^2n}} \leq x) \underset{n \to \infty}{\to} \Phi(x)\]
+  where \(\Phi\) is the CDF of the \(\Normal(0, 1)\)-distribution.
+\end{theorem*}
