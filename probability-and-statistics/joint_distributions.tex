@@ -12,7 +12,7 @@
 
 \begin{proposition}
   Let \(X_1, \ldots X_n\) be discrete random variables with \(X_i \in \chi_i\). Then \(Z = \phi(X_1, \ldots, X_n)\) is a discrete random variable with values in \(\chi = (\chi_1 \times \ldots \times \chi_n)\) and with distribution given by \(\forall z \in \chi\):
-  \[\P(Z = z) = \sum_{\substack{x_1 \in \chi1, \ldots, x_n \in \chi_n \\ \phi(x_1, \ldots, x_n) = z}} \P(X_1 = x_1, \ldots, X_n = x_n)\]
+  \[\P(Z = z) = \sum_{\substack{x_1 \in \chi_1, \ldots, x_n \in \chi_n \\ \phi(x_1, \ldots, x_n) = z}} \P(X_1 = x_1, \ldots, X_n = x_n)\]
 \end{proposition}
 
 \begin{dtheorem*}[Marginal distribution, discrete]
@@ -54,7 +54,7 @@
 
 \begin{ctheorem*}[Marginal density, continuous]
   Let \(X_1, \ldots, X_n\) be continuous random variables with a joint PDF. For every \(i\) we have \(\forall z \in \chi_i\):
-  \[p_{x_i}(z) = \smashoperator{\int_{x_1, \ldots, x_{i-1}, x_{x+1}, \ldots, x_n}} p(x_1, \ldots, x_{i-1}, z, x_{i+1}, \ldots, x_n) \, dx_n \ldots \, dx_1\]
+  \[p_{X_i}(z) = \smashoperator{\int_{x_1, \ldots, x_{i-1}, x_{x+1}, \ldots, x_n}} p(x_1, \ldots, x_{i-1}, z, x_{i+1}, \ldots, x_n) \, dx_n \ldots \, dx_1\]
 \end{ctheorem*}
 
 \begin{proposition}

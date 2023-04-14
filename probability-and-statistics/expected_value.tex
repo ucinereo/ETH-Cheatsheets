@@ -6,11 +6,16 @@ For any random variable \(X: \Omega \to \R_+\) with non-negative values, the exp
 
 \begin{ddefinition*}[Expected Value, Discrete]
   Let \(X\) be a discrete random variable with value in \(\chi\). The expected value is defined as (if the sum is well defined):
+  \vspace{-10pt}
   \[\E(X) := \sum_{x \in \chi}x \cdot p_X(x) = \sum_{\omega \in \O} X(\omega) \cdot p(\omega)\]
 \end{ddefinition*}
 
 \begin{proposition}
-  {\small \(\E(\I_A) = \P(A)\)}
+  {\small \(\E(\I_A) = \P(A)\)}.
+\end{proposition}
+
+\begin{proposition}
+  If \(\chi \subseteq \N_0\), then \(\E(X) = \sum_{j=1}^\infty \P(X > j)\).
 \end{proposition}
 
 \begin{dtheorem*}[Expected Value of transformed RV, Discrete]
@@ -20,6 +25,7 @@ For any random variable \(X: \Omega \to \R_+\) with non-negative values, the exp
 
 \begin{cdefinition*}[Expected Value, Continuous]
   Let \(X\) be a continuous random variable with density \(p_x\). The expected value is defined as:
+  \vspace{-10pt}
   \[\E(X) := \int_{\R} x \cdot p_X(x) \,dx\]
 \end{cdefinition*}
 
@@ -45,17 +51,19 @@ This theorem also holds for \(X_1, \ldots X_n\) and \(\phi_1, \ldots, \phi_n\).
 \end{definition*}
 
 \begin{itemize}
-  \item If \(\E(X^2) < \infty\) and \(\lambda \in \R\), then \(\sigma_{\lambda X}^2 = \lambda^2 \sigma_X^2\).
-  \item If \(S = X_1 + \ldots + X_n\), with \(X_1, \ldots, X_n\) pairwise independent, then \(\sigma_S^2 = \sum_{i = 1}^n \sigma_{X_i}^2\)
+  \item If \(\E(X^2) < \infty, \lambda, \alpha \in \R\), then \(\Var(\lambda X + \alpha) = \lambda^2 \Var(X)\).
+  \item If \(S = X_1 + \ldots + X_n\), with \(X_1, \ldots, X_n\) pairwise independent (or uncorrelated), then \(\sigma_S^2 = \sum_{i = 1}^n \sigma_{X_i}^2\)
 \end{itemize}
 
 \begin{definition*}[Covariance]
   Let \(X, Y\) be two random variables with \(\E(X^2) < \infty\) and \(\E(Y^2) < \infty\), then their covariance is defined as
+  \vspace{-7pt}
   \[\Cov(X, Y) = \E((X - \E(X))(Y - \E(Y)))\]
+  If \(\Cov(X, Y) = 0\), then they are uncorrelated.
 \end{definition*}
 \begin{itemize}
   \item \(\Cov(X, X) = \sigma_X^2 = \Var(X)\)
-  \item \(X, Y\) independent \(\implies \Cov(X, Y) = 0\) 
+  \item \(X, Y\) independent \(\implies \Cov(X, Y) = 0\)
 \end{itemize}
 
 \subsection{Inequalities}
@@ -65,11 +73,13 @@ This theorem also holds for \(X_1, \ldots X_n\) and \(\phi_1, \ldots, \phi_n\).
 
 \begin{theorem*}[Markov's Inequality]
   Let \(X\) be a random variable with \(X \geq 0\), then for \(a > 0\):
+  \vspace{-7pt}
   \[\P(X \geq a) \leq \frac{\E(X)}{a}\]
 \end{theorem*}
 
 \begin{theorem*}[Jensen's Inequality]
   Let \(X\) be a random variable and \(\phi: \R \to \R\) a convex function, then
+  \vspace{-7pt}
   \[\phi(\E(X)) \leq \E(\phi(X))\]
 \end{theorem*}
 
