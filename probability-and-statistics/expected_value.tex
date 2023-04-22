@@ -24,14 +24,14 @@ For any random variable \(X: \Omega \to \R_+\) with non-negative values, the exp
 \end{dtheorem*}
 
 \begin{cdefinition*}[Expected Value, Continuous]
-  Let \(X\) be a continuous random variable with density \(p_x\). The expected value is defined as:
+  Let \(X\) be a continuous random variable with density \(f_x\). The expected value is defined as:
   \vspace{-10pt}
-  \[\E(X) := \int_{\R} x \cdot p_X(x) \,dx\]
+  \[\E(X) := \int_{\R} x \cdot f_X(x) \,dx\]
 \end{cdefinition*}
 
 \begin{ctheorem*}[Expected Value of transformed RV, continuous]
-  Let \(X\) be continuous with density \(p_x\). For all \(\phi: \R \to \R\):
-  \[\E(\phi(X)) = \int_\R \phi(x) \cdot p_X(x) \, dx\]
+  Let \(X\) be continuous with density \(f_x\). For all \(\phi: \R \to \R\):
+  \[\E(\phi(X)) = \int_\R \phi(x) \cdot f_X(x) \, dx\]
 \end{ctheorem*}
 
 \begin{theorem*}[Linearity of expected value]

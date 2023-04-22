@@ -8,7 +8,8 @@ Furthermore we can define \textbf{events} in terms of a \textbf{random variable}
 Which has a probability of \(\P(X \leq a) = \P(\{X \leq a\})\).
 
 \begin{definition*}[Preimage of a random variable \(X\)]
-  \[X^{-1}(A) = \{\omega \in \O \mid X(\omega) \in A\} \quad A \subset \R\]
+  \vspace{-10pt}
+  \[X^{-1}(A) = \{\omega \in \O \mid X(\omega) \in A\} = \bm{"X \in A"} \quad A \subset \R\]
   \(X\) is \textbf{\(\bm{\F}\)-measurable} if \(\forall B \subsetneq \R\), \(B\) closed: \(X^{-1}(B) \in \F\).
 \end{definition*}
 
@@ -49,60 +50,24 @@ A random variable \(X\) is called \textbf{discrete} if the set of values it can 
   \[F_X(x) = \P(X \leq x) = \sum_{x \in \chi} p_X(x)\]
 \end{ddefinition*}
 
-\subsubsection{Discrete distributions}
-\begin{itemize}
-  \item \textbf{Constant} (\(X \sim X_{\{\alpha\}} = \mathcal{N}(\mu, 0)\)): If \(\chi = \{\alpha\}\) and \(F_X = \I_{[x, \infty)}\)
-  \item \textbf{Bernoulli} (\(X \sim \Ber(p)\)): If \(\chi = \{0, 1\}\) and
-  \[p_x(0) = 1 - p \quad p_x(1) = p\]
-
-  \item \textbf{Binomial} (\(X \sim \Bin(n, p)\)) with \(p > 0\) and \(n \in \N_1\): If \(\chi = \{0, 1, \ldots, n\}\) and
-  \[\forall k \in \chi \quad p_x(k) = \binom{n}{k} p^k \cdot (1 - p)^{n -k}\]
-  It describes a repeating Bernoulli experiment.
-
-  \item \textbf{Poisson} (\(X \sim \Poisson(\lambda)\)) with \(\lambda > 0\), if \(\chi = \N\) and
-  \[\forall k \in \N \quad p_x(k) = e^{-\lambda} \frac{\lambda^k}{k!}\]
-  Good approximation of a Binomial distribution if \(n\) is large and \(q\) small.
-
-  \item \textbf{Categorical} (\(X \sim \Cat(p_1, \ldots, p_k)\)) if \(\chi = \{1, \ldots, k\}\) and \(p_x(i) = p_i\) for \(i = 1, \ldots, k\). Model is selecting among \(k\) different choices, each with some probability, and assigning \(1, \ldots, k\) to the choices.
-\end{itemize}
-
-\pagebreak
 \subsection{Continuous Random Variable}
 A random variable \(X\) is called \textbf{continuous} if the set of values it can produce is uncountably infinite and the probability of attaining a single value is zero.
 
 \begin{cdefinition*}[Probability Density Function (PDF)]
-  Let \(X\) be a continuous random variable. If there exists a (measureable) function \(p_x: \R \to [0, \infty)\), such that
-  \[\P_X(I) = \P(X \in I) = \int_I p_x(x) \,dx\]
+  Let \(X\) be a continuous random variable. If there exists a (measureable) function \(f_x: \R \to [0, \infty)\), such that
+  \[\P_X(I) = \P(X \in I) = \int_I f_x(x) \,dx\]
   for all intervals \(I\) in \(\R\), we call it the \textbf{PDF}.
 \end{cdefinition*}
 
-Notice that \(\int_\R p_x(x) \, dx = 1\) since \(\P_X(\R) = 1\).
+Notice that \(\int_\R f_x(x) \, dx = 1\) since \(\P_X(\R) = 1\).
 
 \begin{cdefinition*}[CDF of a continuous random variable]
-  \[F_x(x) = \P(X \leq x) = \int_{-\infty}^x p_x(t) \,dt = \P_X((-\infty, x])\]
+  \[F_x(x) = \P(X \leq x) = \int_{-\infty}^x f_x(t) \,dt = \P_X((-\infty, x])\]
 \end{cdefinition*}
 The definition leads to the following consequences:
 \begin{itemize}
   \item \(\P(a \leq x \leq b) = \P(a < x < b)\)
   \item \(\P(X = x) = 0\)
   \item \(\P(X \in [a, b]) = \P(X \in (a, b))\)
-  \item \(F_x\) differentiable \(\implies \frac{dF_x}{dx}(x_0) = p_x(x_0)\)
-\end{itemize}
-
-\subsubsection{Continuous distributions}
-\begin{itemize}
-  \item \textbf{Uniform} (\(X \sim \Unif([a, b])\)) with \(a, b \in \R\) and \(a < b\), if \(X \in [a, b]\) and
-  \[p_X(x) = \begin{cases}
-    0, & x \notin [a, b] \\
-    \frac{1}{b - a}, & x \in [a, b]
-  \end{cases}\]
-
-  \item \textbf{Exponential} (\(X \sim \Exp(\lambda)\)) with \(\lambda > 0\), if \(X \in \R\) and
-  \[p_x(x) = \begin{cases}
-    \lambda e^{-\lambda x}, & x \geq 0 \\
-    0, & x < 0
-  \end{cases}\]
-
-  \item \textbf{Normal} (\(X \sim \Normal(\mu, \sigma^2)\)) with \(\sigma > 0\) and \(\mu \in \R\), if \(X \in \R\), \(\mu\) expected value, \(\sigma^2\) variance and
-  \[p_X(x) = \frac{1}{\sqrt{2 \pi \sigma^2}}\ \cdot \exp(-\frac{(x - \mu)^2}{\sigma^2})\]
+  \item \(F_x\) differentiable \(\implies \frac{dF_x}{dx}(x_0) = f_x(x_0)\)
 \end{itemize}

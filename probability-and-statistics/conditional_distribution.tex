@@ -1,7 +1,7 @@
 \section{Conditional Distribution}
 \begin{ddefinition*}[Conditional PMF]
   Let \(X, Y\) be two discrete random variables on the same probability space taking values in \(\chi\) and \(\mathcal{Y}\). For \(y \in \mathcal{Y}\) such that \(\P(Y = y) \neq 0\), we define the \textit{conditional distribution of \(X\) given \(Y = y\)} as
-  \[p_{X \mid Y}(x \mid y) := \frac{p_{X, Y}(x, y)}{p_Y(y)}\]
+  \[p_{X \mid Y}(x \mid y) := \frac{p_{X, Y}(x, y)}{p_Y(y)} = \frac{p_{X, Y}(x, y)}{\int_\R p_{X, Y}(x, y) \,dx}\]
 \end{ddefinition*}
 
 If \(X\) and \(Y\) are independent, then \(p(x \mid y) = p(x)\). For a fixed \(y \in \mathcal{Y}\) with \(\P(Y = y) > 0\) the function \(p_{X \mid Y}(\cdot \mid y)\) is a probability mass function. Thus, we can consider a random variable with this PMF written as \(X \mid Y = y\).
@@ -16,8 +16,8 @@ If \(X\) and \(Y\) are independent, then \(p(x \mid y) = p(x)\). For a fixed \(y
 
 \begin{cdefinition*}[Conditional Density]
   Let \(X, Y\) be two continuous random variables with joint density \(p_{X, Y}\). The \textit{conditional density of \(X\) given \(Y = y\)} is defined as
-  \[p_{X \mid Y}(x \mid y) = \begin{cases}
-    \frac{p_{X, Y}(x, y)}{p_Y(y)} & \text{if} \ p_Y(y) > 0 \\
+  \[f_{X \mid Y}(x \mid y) = \begin{cases}
+    \frac{f_{X, Y}(x, y)}{p_Y(y)} & \text{if} \ f_Y(y) > 0 \\
     0 & \text{otherwise}
   \end{cases}\]
 \end{cdefinition*}
@@ -34,7 +34,7 @@ If \(X\) and \(Y\) are independent, then \(p(x \mid y) = p(x)\). For a fixed \(y
 \end{definition*}
 
 \begin{ctheorem*}[Law of Total Probability, \(Y\) continuous]
-  \[p_X(x) = \int p_{X \mid Y}(x \mid y) p_Y(y) \, dy\]
+  \[f_X(x) = \int f_{X \mid Y}(x \mid y) f_Y(y) \, dy\]
 \end{ctheorem*}
 
 \begin{dtheorem*}[Law of Total Probability, \(Y\) discrete]
@@ -42,7 +42,7 @@ If \(X\) and \(Y\) are independent, then \(p(x \mid y) = p(x)\). For a fixed \(y
 \end{dtheorem*}
 
 \begin{ctheorem*}[Bayes Rule, \(X\) continuous]
-  \[p_{X \mid Y}(x \mid y) = \frac{p_{Y \mid X}(y \mid x) p_X(x)}{\int p_{Y \mid X}(y \mid x') p_X(x') \, dx'}\]
+  \[f_{X \mid Y}(x \mid y) = \frac{f_{Y \mid X}(y \mid x) f_X(x)}{\int f_{Y \mid X}(y \mid x') f_X(x') \, dx'}\]
 \end{ctheorem*}
 
 \begin{dtheorem*}[Bayes Rule, \(X\) discrete]
