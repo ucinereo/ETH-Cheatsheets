@@ -18,7 +18,7 @@
 \begin{center}
 	\begin{tabularx}{\textwidth}{llXXXX}
 		\toprule
-		Distribution & Parameters & \(\E(X)\) & \(\Var(X)\) & \(p_X(t)\)                                                                                                                                  & \(F_X(t)\) \\
+		Distribution & Parameters & \(\E(X)\) & \(\Var(X)\) & \(f_X(t)\)                                                                                                                                  & \(F_X(t)\) \\
 		\midrule
 		Uniform & \([a,b]\): Intervall & \(\frac{a+b}{2}\) & \(\frac{1}{12}(b-a)^2\) & \(\begin{cases} \frac{1}{b-a} &a \le t \le b \\ 0 & \text{otherwise}\end{cases}\) & \(\begin{cases} 0 & t\le a \\ \frac{t-a}{b-a} & a < t < b \\ 1 & t \ge b \end{cases}\) \\
 		Exponential & \(\lambda: \frac{1}{\E(X)}\) & \(\frac{1}{\lambda}\) & \(\frac{1}{\lambda^2}\) & \(\begin{cases} \lambda e^{-\lambda t} & t \geq 0 \\ 0 & t < 0 \end{cases}\) & \(\begin{cases} 1-e^{-\lambda t} & t>0 \\ 0 & t \leq 0\end{cases}\) \\

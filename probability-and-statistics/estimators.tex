@@ -1,0 +1,54 @@
+\section{Estimators}
+We make the following assumptions:
+\begin{itemize}
+  \item Parameter space \(\Theta \subseteq \R^m\)
+  \item Family of probability distributions \(\{\P_\theta \mid \theta \in \Theta\}\) on the sample space \((\O, \F)\); for each element \(\theta = (\theta_1, \ldots, \theta_m)\) in the parameter space, there exists a probability model \(\P_\theta\), which describes the relationship between the data and the unknown parameters.
+  \item Random variables \(X_1, \ldots, X_n\) on \((\O, \mathcal{F})\)
+  \item We refer to the observed data \(x_1, \ldots, x_n\) or the random variables \(X_1, \ldots, X_n\) as a sample.
+  \item For each \(\theta_1, \ldots, \theta_m\) we search for an estimator \(T_j\).
+\end{itemize}
+
+\begin{definition*}[Estimator]
+  An estimator is a random variable \(T_j: \O \to \R\) of form
+  \[T_j = t_j(X_1, \ldots X_n) \qquad t_j: \R^n \to \R\]
+\end{definition*}
+
+\textbf{Notation}: \(T = (T_1, \ldots, T_m)\) and \(\theta = (\theta_1, \ldots, \theta_m)\).
+
+\begin{definition*}[Unbiased]
+  An estimator \(T\) is unbiased, if \(\forall \theta \in \Theta: \E_\theta(T) = \theta\).
+\end{definition*}
+
+\begin{definition*}[Bias]
+  The bias of \(T\) in the model \(\P_\theta\) is defined as \(\E_\theta(T) - \theta\).
+\end{definition*}
+
+\begin{definition*}[Consistent]
+  The sequence \(T^{(n)}\) is \textbf{consistent} if \(T^{(n)} \stackrel{\P_\theta}{\to}\theta\) as \(n \to \infty\).
+\end{definition*}
+
+\begin{definition*}[Mean Squared Error (MSE)]
+  \vspace{-13pt}
+  \begin{align*}
+    \MSE_\theta(T) &= \E_\theta((T-\theta)^2) \\
+    &= \Var_\theta(T) + (\E_\theta(T) - \theta)^2
+  \end{align*}
+\end{definition*}
+
+An estimator $T$ gives us a random single value for $\theta$, drawn from the sampling distribution of the estimator, which represents the distribution of possible values that we would get if we were to calculate the estimator for many different samples of data.
+
+\subsection{Maximum-Likelihood-Method}
+Let \(X_1, \ldots, X_n\) be random variables on \(\P_\theta\). The \textbf{Likelihood-function} \(L: \Theta \to \R\) is defined as:
+\[L(x_1, \ldots, x_n ; \theta) = \begin{cases}
+  p(x_1, \ldots, x_n ; \theta) & \text{discrete case} \\
+  f(x_1, \ldots, x_n ; \theta) & \text{continuous case}
+\end{cases}\]
+with \(p\) (or \(f\)) being the joint PMF/PDF.
+Then for each \(x_1, \ldots, x_n \in \chi\) let \(t_{\ML}(x_1, \ldots, x_n)\) be the value which maximizes the function \(\theta \mapsto L(X_1, \ldots, X_, ; \theta)\).
+The \textbf{Maximum-Likelihood-Estimator} is then defined as
+\[T_{\ML} = t_{\ML}(X_1, \ldots, X_n) \in \underset{\theta}{\arg\max} L(X_1, \ldots, X_n ; \theta).\]
+
+\vspace{-10pt}
+\begin{note*}[Alternative notation of MLE (from IML)]
+  \[\scriptstyle \hat{\theta}_{\MLE} = \underset{\theta}{\arg\max} L(\theta; X, y) = p(y_1, \ldots, y_n \mid x_1, \ldots, x_n, \theta)\]
+\end{note*}

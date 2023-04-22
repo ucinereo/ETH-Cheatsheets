@@ -98,6 +98,11 @@
 \DeclareMathOperator{\Normal}{\mathcal{N}}
 \DeclareMathOperator{\Atom}{Atom}
 
+% Statistical stuff
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\MLE}{MLE}
+\DeclareMathOperator{\ML}{ML}
+
 % ------------------------------------------------------------------
 % Meta Data
 % ------------------------------------------------------------------
@@ -124,12 +129,14 @@
 \input{independence.tex}
 \input{random_variables.tex}
 \input{expected_value.tex}
-\input{joint_distributions.tex} \pagebreak
+\input{joint_distributions.tex} \clearpage
 \input{conditional_distribution.tex}
 \input{conditional_expected_value_on_event.tex}
 \pagebreak
 \input{convergence_of_empirical_averages_to_expectation.tex}
 \input{probability_as_vector_space.tex}
+\pagebreak
+\input{estimators.tex}
 
 \clearpage
 \input{appendix_distributions.tex}

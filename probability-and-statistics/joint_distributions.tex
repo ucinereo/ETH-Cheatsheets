@@ -5,9 +5,13 @@
 \end{definition*}
 
 \begin{ddefinition*}[Joint PMF]
-  Let \(X = X_1, \ldots, X_n\) be discrete random variables, defined on the same probability space, and taking values \(\chi_1, \ldots, \chi_n\). The joint PMF is defined as:
+  Let \(X = X_1, \ldots, X_n\) be discrete random variables, defined on the same probability space.
   \[p_{X}(x_1, \ldots, x_n) = \P(X_1 = x_1, \ldots, X_n = x_n)\]
-  Where \(p_X\) can be written as \(p_{X_1, \ldots, X_n}\) or simply \(p\).
+\end{ddefinition*}
+
+\begin{ddefinition*}[Joint CDF, discrete]
+  Let \(X = X_1, \ldots, X_n\) be discrete random variables, defined on the same probability space.
+  \[\scriptstyle F_X(x_1, \ldots, x_n) = \P(X_1 \leq x_1, \ldots, X_n \leq x_n) = \smashoperator{\sum_{y_1 \leq x_1, \ldots, y_n \leq x_n}} p(y_1, \ldots, y_n)\]
 \end{ddefinition*}
 
 \begin{proposition}
@@ -25,43 +29,77 @@
   \[\E(\phi(X_1, \ldots, X_n)) = \smashoperator[r]{\sum_{x_1 \in \chi_1, \ldots, x_n \in \chi_n}} \phi(x_1, \ldots, x_n) \cdot p(x_1, \ldots, x_n)\]
 \end{proposition}
 
-\begin{proposition}
-  \(X_1, \ldots X_n\) are independent \(\iff\) for all \(x_1 \in \chi_1, \ldots, x_n \in \chi_n\) holds: \[p(x_1, \ldots, x_n) = \P(X_1 = x_1) \cdot \ldots \cdot \P(X_n = x_n)\]
-\end{proposition}
-
 \begin{cdefinition*}[Joint PDF]
-  Let the random variables \(X = X_1, \ldots, X_n\) be defined on the same probability space. We say these random variables have a joint PDF \(p_{X_1, \ldots, X_n} = p_X\) if for all subsets \(A \in \B^n\) it holds
+  Let the random variables \(X = X_1, \ldots, X_n\) be defined on the same probability space. We say these random variables have a joint PDF \(f_{X_1, \ldots, X_n} = f_X\) if for all subsets \(A \in \B^n\) it holds
   \begin{align*}
     \P_X(A) = \P((X_1, \ldots, X_n) \in A) \\
-    = \int_A p_X(x_1, \ldots, x_n) \, dx_1 \ldots \,dx_n
+    = \int_A f_X(x_1, \ldots, x_n) \, dx_1 \ldots \,dx_n
   \end{align*}
 \end{cdefinition*}
 
 \begin{cdefinition*}[Joint CDF, continuous]
-  Given a collection of random variables \(X = X_1, \ldots, X_n\) defined on the same probability space, their joint CDF is defined as
+  Let \(X = X_1, \ldots, X_n\) be continuous random variables, defined on the same probability space.
   \begin{align*}
     F_{X}(x_1, \ldots, x_n) = \P(X_1 \leq x_1, \ldots, X_n \leq x_n) \\
-    = \int_{-\infty}^{x_1} \ldots \int_{-\infty}^{x_n} p_{X}(x_1, \ldots, x_n) \,dx_n \ldots \, dx_1
+    = \int_{-\infty}^{x_1} \ldots \int_{-\infty}^{x_n} f_{X}(x_1, \ldots, x_n) \,dx_n \ldots \, dx_1
   \end{align*}
 \end{cdefinition*}
 
 \begin{proposition}
   Let \(X_1, \ldots, X_n\) be continuous random variables with joint PDF and \(\phi: \R^n \to \R\). Then the expected value is defined as
   \begin{multline*}
-    \E(\phi(X_1, \ldots, X_n)) = \\ \int_\R \ldots \int_\R \phi(x_1, \ldots, x_n) \cdot p(x_1, \ldots, x_n) \, dx_n \ldots \, dx_1
+    \E(\phi(X_1, \ldots, X_n)) = \\ \int_\R \ldots \int_\R \phi(x_1, \ldots, x_n) \cdot f(x_1, \ldots, x_n) \, dx_n \ldots \, dx_1
   \end{multline*}
 \end{proposition}
 
 \begin{ctheorem*}[Marginal density, continuous]
   Let \(X_1, \ldots, X_n\) be continuous random variables with a joint PDF. For every \(i\) we have \(\forall z \in \chi_i\):
-  \[p_{X_i}(z) = \smashoperator{\int_{x_1, \ldots, x_{i-1}, x_{x+1}, \ldots, x_n}} p(x_1, \ldots, x_{i-1}, z, x_{i+1}, \ldots, x_n) \, dx_n \ldots \, dx_1\]
+  \[f_{X_i}(z) = \smashoperator{\int_{x_1, \ldots, x_{i-1}, x_{x+1}, \ldots, x_n}} f(x_1, \ldots, x_{i-1}, z, x_{i+1}, \ldots, x_n) \, dx_n \ldots \, dx_1\]
 \end{ctheorem*}
 
-\begin{proposition}
-  Let \(X_1, \ldots, X_n\) be continuous random variables with PDF \(p_{X_1}, \ldots, p_{X_n}\). Then:
+\begin{theorem*}[Independence of joint random variables]
+  Let \(X_1, \ldots, X_n\) be random variables with \(p_{X_1}, \ldots, p_{X_n}\).
   \begin{itemize}
     \item[] \(X_1, \ldots X_n\) are independent
     \item[\(\Leftrightarrow\)] \(p(x_1, \ldots, x_n) = p_{X_1}(x_1) \cdot \ldots \cdot p_{X_n}(x_n)\)
     \item[\(\Leftrightarrow\)] \(\E(\phi_1(X_1) \cdot \ldots \cdot \phi_n(X_n)) = \E(\phi_1(X_1)) \cdot \ldots \cdot \E(\phi_n(X_n))\)
   \end{itemize}
+\end{theorem*}
+
+\pagebreak
+\subsection{Useful lemmas and theorems}
+
+\begin{definition*}[Distribution of transformed random variables]
+  Let \(X = (X_1, \ldots, X_n)\) and \(Y(\omega) = g(X(\omega))\) be two random variable with \(g: \R^n \to \R^m\). Then for any \(A \in \B(\R)\)
+  \vspace{-10pt}
+  \[\mu_Y(A) = \mu_X(g^{-1}(A)).\]
+\end{definition*}
+
+\begin{theorem*}[Transformation Theorem]
+  Let \(g(x) = m + Bx\) with \(\det(B) \neq 0\). If \(\mu_X\) is abs. continuous, then \(\mu_Y\) is abs. continuous and furthermore
+  \[f_Y(x) = \frac{1}{|\det(B)|} f_X(B^{-1}(x - m)).\]
+\end{theorem*}
+
+\begin{example}
+  \(X_1, X_2 \sim U(0, 1)\), what is the joint CDF of \(Y = X_1 + X_2\) and \(Z = X_1 - X_2\)? \\
+  Then \(g(x_1, x_2) = (x_1 + x_2, x_1 - x_2)\) and \(B = \begin{pmatrix}
+    1 & 1 \\
+    1 & -1
+  \end{pmatrix}\) with \(\det (B) = 2\), \(g(x) = Bx\). Thus \((Y, Z) = g(X_1, X_2)\) and with the transformation theorem we get
+  \[f_{Y, Z}(y, z) = f_{X_1, X_2}(g^{-1}(y, z)) = \frac{1}{2}f_{X_1, X_2}(\frac{y+z}{2}, \frac{y-z}{2})\]
+\end{example}
+
+\begin{proposition}
+  If the R.V. \((X, Y)\) has a density function \(f\), then \(Z = X + Y\) has a density 
+  \(f_Z(z) = \int_\R f(x, z - x) \, dx\).
+\end{proposition}
+
+\begin{definition*}[Convolution]
+  If \(X\) and \(Y\) are independent, then \(Z = X + Y\) has a density function, called the convolution:
+  \[(f_X * f_Y) := f_Z(z) = \int_\R f_X(x)f_Y(z - x) \, dx\]
+\end{definition*}
+
+\begin{proposition}
+  Suppose \(X_1, \ldots, X_n\) are i.i.d with CDF \(F\). Then \(V = \max\{X_1, \ldots, X_n\}\) has CDF \(F_V(x) = F^n(x)\) and
+  \(U = \min \{X_1, \ldots, X_n\}\) has CDF \(F_U(x) = 1 - (1 - F(x))^n\).
 \end{proposition}

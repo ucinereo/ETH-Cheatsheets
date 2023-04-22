@@ -1,0 +1,36 @@
+\section{Distributions}
+\subsection{Discrete}
+\begin{itemize}
+  \item \textbf{Constant} (\(X \sim X_{\{\alpha\}} = \mathcal{N}(\mu, 0)\)): If \(\chi = \{\alpha\}\) and \(F_X = \I_{[x, \infty)}\)
+  \item \textbf{Bernoulli} (\(X \sim \Ber(p)\)): If \(\chi = \{0, 1\}\) and
+  \[p_x(0) = 1 - p \quad p_x(1) = p\]
+
+  \item \textbf{Binomial} (\(X \sim \Bin(n, p)\)) with \(p > 0\) and \(n \in \N_1\): If \(\chi = \{0, 1, \ldots, n\}\) and
+  \[\forall k \in \chi \quad p_x(k) = \binom{n}{k} p^k \cdot (1 - p)^{n -k}\]
+  It describes a repeating Bernoulli experiment.
+
+  \item \textbf{Poisson} (\(X \sim \Poisson(\lambda)\)) with \(\lambda > 0\), if \(\chi = \N\) and
+  \[\forall k \in \N \quad p_x(k) = e^{-\lambda} \frac{\lambda^k}{k!}\]
+  Good approximation of a Binomial distribution if \(n\) is large and \(q\) small.
+
+  \item \textbf{Categorical} (\(X \sim \Cat(p_1, \ldots, p_k)\)) if \(\chi = \{1, \ldots, k\}\) and \(p_x(i) = p_i\) for \(i = 1, \ldots, k\). Model is selecting among \(k\) different choices, each with some probability, and assigning \(1, \ldots, k\) to the choices.
+\end{itemize}
+
+
+\subsection{Continuous}
+\begin{itemize}
+  \item \textbf{Uniform} (\(X \sim \Unif([a, b])\)) with \(a, b \in \R\) and \(a < b\), if \(X \in [a, b]\) and
+  \[f_X(x) = \begin{cases}
+    0, & x \notin [a, b] \\
+    \frac{1}{b - a}, & x \in [a, b]
+  \end{cases}\]
+
+  \item \textbf{Exponential} (\(X \sim \Exp(\lambda)\)) with \(\lambda > 0\), if \(X \in \R\) and
+  \[f_x(x) = \begin{cases}
+    \lambda e^{-\lambda x}, & x \geq 0 \\
+    0, & x < 0
+  \end{cases}\]
+
+  \item \textbf{Normal} (\(X \sim \Normal(\mu, \sigma^2)\)) with \(\sigma > 0\) and \(\mu \in \R\), if \(X \in \R\), \(\mu\) expected value, \(\sigma^2\) variance and
+  \[f_X(x) = \frac{1}{\sqrt{2 \pi \sigma^2}}\ \cdot \exp(-\frac{(x - \mu)^2}{\sigma^2})\]
+\end{itemize}
