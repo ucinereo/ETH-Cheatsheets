@@ -25,7 +25,6 @@ For any random variable \(X: \Omega \to \R_+\) with non-negative values, the exp
 
 \begin{cdefinition*}[Expected Value, Continuous]
   Let \(X\) be a continuous random variable with density \(f_x\). The expected value is defined as:
-  \vspace{-10pt}
   \[\E(X) := \int_{\R} x \cdot f_X(x) \,dx\]
 \end{cdefinition*}
 
@@ -46,6 +45,7 @@ This theorem also holds for \(X_1, \ldots X_n\) and \(\phi_1, \ldots, \phi_n\).
 \subsection{Variance and Covariance}
 \begin{definition*}[Variance]
   Let \(X\) be a random variable such that \(\E(X^2) < \infty\). The variance of \(X\) is defined as:
+  \vspace{-10pt}
   \[\Var(X) = \sigma_X^2 = \E((X - \E(X))^2) = \E(X^2) - \E(X)^2\]
   \(\sigma_X\) is called the \textbf{standard deviation} of \(X\).
 \end{definition*}
@@ -68,22 +68,22 @@ This theorem also holds for \(X_1, \ldots X_n\) and \(\phi_1, \ldots, \phi_n\).
 
 \subsection{Inequalities}
 \begin{lemma}[Monotonicity]
-  Let \(X, Y\) be two random variables such that \(X \leq Y\), then \(\E(X) \leq \E(Y)\)
+  \(X \leq Y \implies \E(X) \leq \E(Y)\)
 \end{lemma}
 
 \begin{theorem*}[Markov's Inequality]
-  Let \(X\) be a random variable with \(X \geq 0\), then for \(a > 0\):
+  Let \(X\) be a R.V, \(g: \chi \to [0, \infty)\) monotonically increasing, then for \(a \in \R\):
   \vspace{-7pt}
-  \[\P(X \geq a) \leq \frac{\E(X)}{a}\]
+  \[\P(X \geq a) \leq \frac{\E(g(X))}{g(a)}\]
 \end{theorem*}
 
 \begin{theorem*}[Jensen's Inequality]
-  Let \(X\) be a random variable and \(\phi: \R \to \R\) a convex function, then
+  Let \(X\) be a R.V, \(\phi: \R \to \R\) a convex function, then
   \vspace{-7pt}
   \[\phi(\E(X)) \leq \E(\phi(X))\]
 \end{theorem*}
 
 \begin{theorem*}[Chebychev's Inequality]
-  Let \(X\) be a random variable with \(\E(X^2) < \infty\), then for \(t > 0\)
+  Let \(X\) be a R.V. s.t. \(\E(X^2) < \infty\), then for \(t > 0\)
   \[\P(|X - \E(X)| \geq t) \leq \frac{\Var(X)}{t^2}\]
 \end{theorem*}

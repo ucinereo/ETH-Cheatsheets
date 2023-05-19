@@ -11,12 +11,14 @@
 
 \begin{theorem*}[Law of total probability]
   Let \(\B = (B_i)_{i \in I}\) be a countable partition of \(\O\). Then
+  \vspace{-10pt}
   \[\forall A \in \F \quad \P(A) = \sum_{i \in I: \P(B_i) > 0} \P(A \mid B_i) \cdot \P(B_i)\]
 \end{theorem*}
 
-\begin{lemma}
-  For arbitrary \(A_1, \ldots, A_n\)when the left site \(> 0\): \(\P(\bigcup_{i=1}^n) = \P(A_1) \P(A_2 \mid A_1) \ldots \P(A_n \mid A_1 \cup \ldots \cup A_{n-1})\)
-\end{lemma}
+\begin{theorem*}[Chain Rule of Probability]
+  \vspace{-12pt}
+ \[ \P(\cap_{i=1}^n A_i) = \P(A_1) \P(A_2 \mid A_1) \cdots \P(A_n \mid A_1 \cap \ldots \cap A_{n-1})\]
+\end{theorem*}
 
 \begin{theorem*}[Bayes' theorem]
   Let \(\B = (B_i)_{i \in I}\) be a countable partition of \(\O\) where \(\P(B_i) > 0\) for all \(i\). Then for all \(A \in \F\) with \(\P(A) > 0\):

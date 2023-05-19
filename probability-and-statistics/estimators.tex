@@ -44,11 +44,28 @@ Let \(X_1, \ldots, X_n\) be random variables on \(\P_\theta\). The \textbf{Likel
   f(x_1, \ldots, x_n ; \theta) & \text{continuous case}
 \end{cases}\]
 with \(p\) (or \(f\)) being the joint PMF/PDF.
-Then for each \(x_1, \ldots, x_n \in \chi\) let \(t_{\ML}(x_1, \ldots, x_n)\) be the value which maximizes the function \(\theta \mapsto L(X_1, \ldots, X_, ; \theta)\).
+Then for each \(x_1, \ldots, x_n \in \chi\) let \(t_{\ML}(x_1, \ldots, x_n)\) be the value which maximizes the function \(\theta \mapsto L(X_1, \ldots, X_n ; \theta)\).
 The \textbf{Maximum-Likelihood-Estimator} is then defined as
-\[T_{\ML} = t_{\ML}(X_1, \ldots, X_n) \in \underset{\theta}{\arg\max} L(X_1, \ldots, X_n ; \theta).\]
+\[T_{\ML} = t_{\ML}(X_1, \ldots, X_n) \in \underset{\theta}{\arg\max} \, L(X_1, \ldots, X_n ; \theta).\]
 
 \vspace{-10pt}
 \begin{note*}[Alternative notation of MLE (from IML)]
-  \[\scriptstyle \hat{\theta}_{\MLE} = \underset{\theta}{\arg\max} L(\theta; X, y) = p(y_1, \ldots, y_n \mid x_1, \ldots, x_n, \theta)\]
+  \[\scriptstyle \hat{\theta}_{\MLE} = \underset{\theta}{\arg\max} \, L(\theta; X, y) = p(y_1, \ldots, y_n \mid x_1, \ldots, x_n, \theta)\]
 \end{note*}
+
+\subsection{Method of Moments}
+\begin{definition*}[$k$-th sample moment]
+  \[\hat{\mu_k} = \frac{1}{n} \sum_{i=1}^n x_i^k\]
+\end{definition*}
+
+Suppose we know the formula of the first \(k\) moments \(\mu_1 = f_1(\theta_1, \ldots, \theta_n)\), \(\ldots\), \(\mu_n = f_n(\theta_1, \ldots, \theta_n)\), then the method of moments estimator for \(\theta_1, \ldots, \theta_n\) is denoted by \(\hat{\theta_1}, \ldots, \hat{\theta_n}\) and can be solved with the following system of equations:
+\[\hat{\mu_1} = f_1(\hat{\theta_1}, \ldots, \hat{\theta_n}) \quad \ldots \quad \hat{\mu}_n = f_n(\hat{\theta_1}, \ldots, \hat{\theta_n})\]
+
+\subsection{Bayesian Inference}
+Instead of making a point estimator, Bayes' inference provides a full posterior distribution that captures uncertainty in parameter estimation.
+
+We assume \(\theta \sim \pi_0\) (\(\P(\theta = t) = \pi_0(t)\)) as \textbf{prior}. Then we can calculate the \textbf{posterior distribution}:
+\begin{align*}
+  \P(\theta \mid x_1, \ldots, x_n) &= \frac{\P(x_1, \ldots, x_n, \theta)}{\P(x_1, \ldots, x_n)}\\
+  &= \frac{\P(x_1, \ldots, x_n \mid \theta) \pi_0(\theta)}{\int f(x_1, \ldots, x_n \mid \theta = \theta')\pi_0(\theta') \, d\theta'}
+\end{align*}
