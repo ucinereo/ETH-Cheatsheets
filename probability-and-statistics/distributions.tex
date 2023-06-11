@@ -1,19 +1,19 @@
 \section{Distributions}
 \subsection{Discrete}
 \begin{itemize}
-  \item \textbf{Constant} (\(X \sim X_{\{\alpha\}} = \mathcal{N}(\mu, 0)\)): If \(\chi = \{\alpha\}\) and \(F_X = \I_{[x, \infty)}\)
-  \item \textbf{Bernoulli} (\(X \sim \Ber(p)\)): If \(\chi = \{0, 1\}\) and
+  \item \textbf{Constant} (\(X \sim X_{\{\alpha\}} = \mathcal{N}(\mu, 0)\)): If \(\DX = \{\alpha\}\) and \(F_X = \I_{[x, \infty)}\)
+  \item \textbf{Bernoulli} (\(X \sim \Ber(p)\)): If \(\DX = \{0, 1\}\) and
   \[p_x(0) = 1 - p \quad p_x(1) = p\]
 
-  \item \textbf{Binomial} (\(X \sim \Bin(n, p)\)) with \(p > 0\) and \(n \in \N_1\): If \(\chi = \{0, 1, \ldots, n\}\) and
-  \[\forall k \in \chi \quad p_x(k) = \binom{n}{k} p^k \cdot (1 - p)^{n -k}\]
+  \item \textbf{Binomial} (\(X \sim \Bin(n, p)\)) with \(p > 0\) and \(n \in \N_1\): If \(\DX = \{0, 1, \ldots, n\}\) and
+  \[\forall k \in \DX \quad p_x(k) = \binom{n}{k} p^k \cdot (1 - p)^{n -k}\]
   It describes a repeating Bernoulli experiment.
 
-  \item \textbf{Poisson} (\(X \sim \Poisson(\lambda)\)) with \(\lambda > 0\), if \(\chi = \N\) and
+  \item \textbf{Poisson} (\(X \sim \Poisson(\lambda)\)) with \(\lambda > 0\), if \(\DX = \N\) and
   \[\forall k \in \N \quad p_x(k) = e^{-\lambda} \frac{\lambda^k}{k!}\]
   Good approximation of a Binomial distribution if \(n\) is large and \(q\) small.
 
-  \item \textbf{Categorical} (\(X \sim \Cat(p_1, \ldots, p_k)\)) if \(\chi = \{1, \ldots, k\}\) and \(p_x(i) = p_i\) for \(i = 1, \ldots, k\). Model is selecting among \(k\) different choices, each with some probability, and assigning \(1, \ldots, k\) to the choices.
+  \item \textbf{Categorical} (\(X \sim \Cat(p_1, \ldots, p_k)\)) if \(\DX = \{1, \ldots, k\}\) and \(p_x(i) = p_i\) for \(i = 1, \ldots, k\). Model is selecting among \(k\) different choices, each with some probability, and assigning \(1, \ldots, k\) to the choices.
 \end{itemize}
 
 

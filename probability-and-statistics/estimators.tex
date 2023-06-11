@@ -28,7 +28,6 @@ We make the following assumptions:
 \end{definition*}
 
 \begin{definition*}[Mean Squared Error (MSE)]
-  \vspace{-13pt}
   \begin{align*}
     \MSE_\theta(T) &= \E_\theta((T-\theta)^2) \\
     &= \Var_\theta(T) + (\E_\theta(T) - \theta)^2
@@ -44,11 +43,10 @@ Let \(X_1, \ldots, X_n\) be random variables on \(\P_\theta\). The \textbf{Likel
   f(x_1, \ldots, x_n ; \theta) & \text{continuous case}
 \end{cases}\]
 with \(p\) (or \(f\)) being the joint PMF/PDF.
-Then for each \(x_1, \ldots, x_n \in \chi\) let \(t_{\ML}(x_1, \ldots, x_n)\) be the value which maximizes the function \(\theta \mapsto L(X_1, \ldots, X_n ; \theta)\).
+Then for each \(x_1, \ldots, x_n \in \DX\) let \(t_{\ML}(x_1, \ldots, x_n)\) be the value which maximizes the function \(\theta \mapsto L(X_1, \ldots, X_n ; \theta)\).
 The \textbf{Maximum-Likelihood-Estimator} is then defined as
 \[T_{\ML} = t_{\ML}(X_1, \ldots, X_n) \in \underset{\theta}{\arg\max} \, L(X_1, \ldots, X_n ; \theta).\]
 
-\vspace{-10pt}
 \begin{note*}[Alternative notation of MLE (from IML)]
   \[\scriptstyle \hat{\theta}_{\MLE} = \underset{\theta}{\arg\max} \, L(\theta; X, y) = p(y_1, \ldots, y_n \mid x_1, \ldots, x_n, \theta)\]
 \end{note*}

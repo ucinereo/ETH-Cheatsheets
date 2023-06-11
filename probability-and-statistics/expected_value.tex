@@ -1,13 +1,11 @@
 \section{Expected value}
 
 For any random variable \(X: \Omega \to \R_+\) with non-negative values, the expected value is defined with the CDF as:
-\vspace{-8pt}
 \[\E(X) = \int_\R x \,dF_X(x) \color{gray!70} = \int_\R x \frac{F_X(x)}{dx} \, dx\]
 
 \begin{ddefinition*}[Expected Value, Discrete]
-  Let \(X\) be a discrete random variable with value in \(\chi\). The expected value is defined as (if the sum is well defined):
-  \vspace{-10pt}
-  \[\E(X) := \sum_{x \in \chi}x \cdot p_X(x) = \sum_{\omega \in \O} X(\omega) \cdot p(\omega)\]
+  Let \(X\) be a discrete random variable with value in \(\DX\). The expected value is defined as (if the sum is well defined):
+  \[\E(X) := \sum_{x \in \DX}x \cdot p_X(x) = \sum_{\omega \in \O} X(\omega) \cdot p(\omega)\]
 \end{ddefinition*}
 
 \begin{proposition}
@@ -15,12 +13,11 @@ For any random variable \(X: \Omega \to \R_+\) with non-negative values, the exp
 \end{proposition}
 
 \begin{proposition}
-  If \(\chi \subseteq \N_0\), then \(\E(X) = \sum_{j=1}^\infty \P(X > j)\).
+  If \(\DX \subseteq \N_0\), then \(\E(X) = \sum_{j=1}^\infty \P(X > j)\).
 \end{proposition}
 
-\begin{dtheorem*}[Expected Value of transformed RV, Discrete]
-  Let \(X\) be discrete with values in \(\chi\). For all \(\phi: \R \to \R\):
-  \[\E(\phi(X)) = \sum_{x \in \chi}\phi(x) \cdot p_X(x)\]
+\begin{dtheorem*}[Expected Value of transformed RV, Discrete] \vspace{-5pt}
+  \[\E(\phi(X)) = \sum_{x \in \DX}\phi(x) \cdot p_X(x)\]
 \end{dtheorem*}
 
 \begin{cdefinition*}[Expected Value, Continuous]
@@ -28,24 +25,23 @@ For any random variable \(X: \Omega \to \R_+\) with non-negative values, the exp
   \[\E(X) := \int_{\R} x \cdot f_X(x) \,dx\]
 \end{cdefinition*}
 
-\begin{ctheorem*}[Expected Value of transformed RV, continuous]
-  Let \(X\) be continuous with density \(f_x\). For all \(\phi: \R \to \R\):
+\begin{ctheorem*}[Expected Value of transformed RV, continuous] \vspace{-5pt}
   \[\E(\phi(X)) = \int_\R \phi(x) \cdot f_X(x) \, dx\]
 \end{ctheorem*}
 
-\begin{theorem*}[Linearity of expected value]
+\begin{theorem*}[Linearity of expected value] \vspace{-5pt}
   \[\E(\alpha X + \beta Y) = \alpha \E(X) + \beta \E(Y) \quad (a, b \in \R)\]
 \end{theorem*}
 
-\begin{theorem*}[Expected value of \(XY\), independence]
+\begin{theorem*}[Expected value of \(XY\), independence] \vspace{-5pt}
   \[X, Y \ \text{ind.} \Leftrightarrow \E(\phi(X) \psi(Y)) = \E(\phi(X)) \E(\psi(Y))\]
 \end{theorem*}
 This theorem also holds for \(X_1, \ldots X_n\) and \(\phi_1, \ldots, \phi_n\).
 
+\pagebreak
 \subsection{Variance and Covariance}
 \begin{definition*}[Variance]
   Let \(X\) be a random variable such that \(\E(X^2) < \infty\). The variance of \(X\) is defined as:
-  \vspace{-10pt}
   \[\Var(X) = \sigma_X^2 = \E((X - \E(X))^2) = \E(X^2) - \E(X)^2\]
   \(\sigma_X\) is called the \textbf{standard deviation} of \(X\).
 \end{definition*}
@@ -57,7 +53,6 @@ This theorem also holds for \(X_1, \ldots X_n\) and \(\phi_1, \ldots, \phi_n\).
 
 \begin{definition*}[Covariance]
   Let \(X, Y\) be two random variables with \(\E(X^2) < \infty\) and \(\E(Y^2) < \infty\), then their covariance is defined as
-  \vspace{-7pt}
   \[\Cov(X, Y) = \E((X - \E(X))(Y - \E(Y)))\]
   If \(\Cov(X, Y) = 0\), then they are uncorrelated.
 \end{definition*}
@@ -72,14 +67,12 @@ This theorem also holds for \(X_1, \ldots X_n\) and \(\phi_1, \ldots, \phi_n\).
 \end{lemma}
 
 \begin{theorem*}[Markov's Inequality]
-  Let \(X\) be a R.V, \(g: \chi \to [0, \infty)\) monotonically increasing, then for \(a \in \R\):
-  \vspace{-7pt}
+  Let \(X\) be a R.V, \(g: \DX \to [0, \infty)\) monotonically increasing, then for \(a \in \R\):
   \[\P(X \geq a) \leq \frac{\E(g(X))}{g(a)}\]
 \end{theorem*}
 
 \begin{theorem*}[Jensen's Inequality]
   Let \(X\) be a R.V, \(\phi: \R \to \R\) a convex function, then
-  \vspace{-7pt}
   \[\phi(\E(X)) \leq \E(\phi(X))\]
 \end{theorem*}
 

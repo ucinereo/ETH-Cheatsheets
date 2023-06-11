@@ -8,7 +8,6 @@ Furthermore we can define \textbf{events} in terms of a \textbf{random variable}
 Which has a probability of \(\P(X \leq a) = \P(\{X \leq a\})\).
 
 \begin{definition*}[Preimage of a random variable \(X\)]
-  \vspace{-10pt}
   \[X^{-1}(A) = \{\omega \in \O \mid X(\omega) \in A\} = \bm{"X \in A"} \quad A \subset \R\]
   \(X\) is \textbf{\(\bm{\F}\)-measurable} if \(\forall B \subsetneq \R\), \(B\) closed: \(X^{-1}(B) \in \F\).
 \end{definition*}
@@ -39,15 +38,15 @@ Properties of the CDF (characterized by RCLL, Càdlàg):
 \end{definition*}
 
 \subsection{Discrete random variables}
-A random variable \(X\) is called \textbf{discrete} if the set of values it can output \(\chi\), is a discrete (a finite or countable set).
+A random variable \(X\) is called \textbf{discrete} if the set of values it can output \(\DX\), is a discrete (a finite or countable set).
 
 \begin{ddefinition*}[Probability Mass Function (PMF)]
-  Let \(X\) be a discrete random variable and \(\chi\) be the set of all its values. The probability mass function \(p_x(x)\) for each \(x \in \chi\) is defined by:
+  Let \(X\) be a discrete random variable and \(\DX\) be the set of all its values. The probability mass function \(p_x(x)\) for each \(x \in \DX\) is defined by:
   \[p_X(x) = \P(X = x) = \P_X(\{x\}) = \P(X^{-1}(\{x\}))\]
 \end{ddefinition*}
 
-\begin{ddefinition*}[CDF of a discrete random variable]
-  \[F_X(x) = \P(X \leq x) = \sum_{x \in \chi} p_X(x)\]
+\begin{ddefinition*}[CDF of a discrete random variable] \vspace{-5pt}
+  \[F_X(x) = \P(X \leq x) = \sum_{x \in \DX} p_X(x)\]
 \end{ddefinition*}
 
 \subsection{Continuous Random Variable}
@@ -61,7 +60,7 @@ A random variable \(X\) is called \textbf{continuous} if the set of values it ca
 
 Notice that \(\int_\R f_x(x) \, dx = 1\) since \(\P_X(\R) = 1\).
 
-\begin{cdefinition*}[CDF of a continuous random variable]
+\begin{cdefinition*}[CDF of a continuous random variable] \vspace{-5pt}
   \[F_x(x) = \P(X \leq x) = \int_{-\infty}^x f_x(t) \,dt = \P_X((-\infty, x])\]
 \end{cdefinition*}
 The definition leads to the following consequences:
