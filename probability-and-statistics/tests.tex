@@ -1,0 +1,37 @@
+\section{Tests}
+\begin{definition*}[Null hypothesis \(\bm{H_0}\), alternative Hypothesis \(\bm{H_A}\)]
+  Two subsets \(\Theta_0 \subseteq \Theta, \Theta_A \subseteq \Theta\), s.t. \(\Theta_0 \cap \Theta_A = \emptyset\). A hypothesis is \textbf{simple} if \(\Theta_0 = \{\alpha \in \Theta\}\) or else \textbf{composite}.
+\end{definition*}
+
+\begin{definition*}[Test]
+  A \textbf{test} is a tuple \((T, K)\), where \(T\) is a random variable of form \(T = t(X_1, \ldots, X_n)\) and \(K \subseteq \R\) a deterministic subset of \(\R\). \(T\) is called the \textbf{test statistic} and \(K\) is the \textbf{rejection region} or critical region. 
+\end{definition*}
+
+We reject a hypothesis \(H_0\) \(\iff\) \(\I_{t(x_1, \ldots, x_n) \in K} = 1\).
+
+\begin{definition*}[Error types]
+  \begin{itemize}
+    \item \textbf{Type I Error}: Rejecting a true \(H_0\). \\
+    Probability: \(\P_\theta(T \in K), \ \theta \in \Theta_0\).
+    \item \textbf{Type II Error}: Failing to reject a false \(H_0\). \\
+    Probability: \(\P_\theta(T \not\in K) = 1 - \P_\theta(T \in K), \ \theta \in \Theta_A\).
+  \end{itemize}
+\end{definition*}
+
+Normally when designing a test we go through 2 steps:
+
+1. Minimize type I errors:
+\begin{definition*}[Significance level]
+  A test has a significance level \(\alpha \in [0, 1]\) if
+  \vspace{-7pt}
+  \[\underset{\theta \in \Theta_0}{\sup} \P_\theta(T \in K) \leq \alpha\]
+\end{definition*}
+
+2. Maximize the power of the test (reducing type II errors)
+\begin{definition*}[Power]
+  The power of a test is defined as:
+  \vspace{-7pt}
+  \[\beta: \Theta_A \to [0, 1], \quad \theta \mapsto \beta(\theta) := \P_\theta(T \in K)\]
+\end{definition*}
+
+As this is asymmetric and thus makes it harder to reject \(H_0\) than accepting it, we take the \textbf{negation} of the wanted statement as \(H_0\).
