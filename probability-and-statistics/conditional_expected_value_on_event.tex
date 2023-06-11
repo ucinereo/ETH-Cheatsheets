@@ -2,7 +2,7 @@
 \begin{ddefinition*}[Conditional expectation on an event]
   Let \((\O, \F, \P)\) denote a discrete probability space and let \(B \in \F\) denote an event with \(\P(B) > 0\). Then we can define the average expected value of a random variable \(X\) depending on \(B\) as:
   \begin{align*}
-    \E(X \mid B) &= \frac{\E(\I_B X)}{\P(B)} = \sum_{x \in \chi} x \cdot \P(X = x \mid B) \\
+    \E(X \mid B) &= \frac{\E(\I_B X)}{\P(B)} = \sum_{x \in \DX} x \cdot \P(X = x \mid B) \\
     &= \sum_{\omega \in \O} X(\omega) \P(\{\omega\} \mid B)
   \end{align*}
 \end{ddefinition*}
@@ -10,7 +10,7 @@
 \begin{cdefinition*}[Conditional expectation with event]
   Let \(X\) be a continuous random variable. The expected value of \(X\) given \(Y = y\) is defined as
   \[\E(X \mid Y = y) := \int x \ f_{X \mid Y}(x \mid y) \,dx\]
-  The same holds if \(X\) is discrete, in that case, we replace the integral by a sum over \(x \in \chi\).
+  The same holds if \(X\) is discrete, in that case, we replace the integral by a sum over \(x \in \DX\).
 \end{cdefinition*}
 
 This introduces a new random variable:
@@ -30,10 +30,10 @@ The intuition behind this definition is when we fix \(\tilde{\omega} \in \O\), t
   \[\E(XY \mid \mathcal{G}) = Y \cdot \E(X \mid \mathcal{G})\]
 \end{dtheorem*}
 
-\begin{theorem*}[Tower Property]
+\begin{theorem*}[Tower Property] \vspace{-5pt}
   \[\E(X) = \E(\E(X \mid Y))\]
 \end{theorem*}
 
-\begin{theorem*}[Law of Total Variance]
+\begin{theorem*}[Law of Total Variance] \vspace{-5pt}
   \[\Var(X) = \E(\Var(X \mid Y)) + \Var(\E(X \mid Y))\]
 \end{theorem*}

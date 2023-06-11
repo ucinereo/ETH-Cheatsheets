@@ -63,6 +63,16 @@
 \setlist{itemsep=0.5pt, topsep=0.5pt, leftmargin=6mm}
 \renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
 
+% Change the top/bottom margin of math environment
+\makeatletter
+\g@addto@macro\normalsize{%
+  \setlength\abovedisplayskip{4pt}
+  \setlength\belowdisplayskip{4pt}
+  \setlength\abovedisplayshortskip{4pt}
+  \setlength\belowdisplayshortskip{4pt}
+}
+\makeatother
+
 % Theorems and Styles
 \input{theorems_and_styles.tex}
 
@@ -97,6 +107,7 @@
 \DeclareMathOperator{\Exp}{Exp}
 \DeclareMathOperator{\Normal}{\mathcal{N}}
 \DeclareMathOperator{\Atom}{Atom}
+\DeclareMathOperator{\DX}{\mathcal{X}}
 
 % Statistical stuff
 \DeclareMathOperator{\MSE}{MSE}
@@ -128,8 +139,8 @@
 \input{conditional_probabilities.tex}
 \input{independence.tex}
 \input{random_variables.tex}
-\input{expected_value.tex}
-\input{joint_distributions.tex} \clearpage
+\input{expected_value.tex} \pagebreak
+\input{joint_distributions.tex} \pagebreak
 \input{conditional_distribution.tex}
 \input{conditional_expected_value_on_event.tex}
 \pagebreak
@@ -137,6 +148,8 @@
 \input{probability_as_vector_space.tex}
 \pagebreak
 \input{estimators.tex}
+\pagebreak
+\input{tests.tex}
 
 \clearpage
 \input{appendix_distributions.tex}
