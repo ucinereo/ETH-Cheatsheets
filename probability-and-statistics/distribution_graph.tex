@@ -1,0 +1,50 @@
+\begin{tikzpicture}[
+	node distance = 2cm,
+	dvertex/.style = {draw, rectangle, align=center, draw=discrete_highlight, thick},
+  cvertex/.style = {draw, rectangle, align=center, draw=cont_highlight, thick},
+]
+\tikzstyle{every node}=[font=\scriptsize]
+
+% Define vertices
+\node[cvertex] (Normal) {\(\Normal(\mu, \sigma\))};
+\node[dvertex, above left of=Normal] (Poisson) {\(\Poisson(\lambda)\)};
+\node[dvertex, above right of=Normal] (Binomial) {\(\Bin(n, p)\)};
+\node[dvertex, left of=Poisson] (NegBinomial) {\(\NB(r, p)\)};
+\node[dvertex, below of=NegBinomial] (Geometric) {\(\Geom(p)\)};
+\node[dvertex, right of=Binomial] (Bernoulli) {\(\Ber(p)\)};
+\node[cvertex, below left of=Normal] (sNormal) {\(\Normal(0,1)\)};
+\node[cvertex, below right of=Normal] (Gamma) {\(\Ga(\alpha, \lambda)\)};
+\node[cvertex, below right of=sNormal] (ChiSquared) {\(\chi^2(k)\)};
+\node[cvertex, below right of=ChiSquared] (Exponential) {\(\Exp(\lambda)\)};
+\node[cvertex, below left of=ChiSquared] (StudentT) {\(t(\nu)\)};
+\node[cvertex, below left of=sNormal] (Cauchy) {Cauchy};
+\node[cvertex, right of=Exponential] (Uniform) {\(\Unif([a, b])\)};
+
+% Draw edges with labels
+\path[->] (NegBinomial.-100) edge node[left, align=center, near start]{\(r=1\)} (Geometric.100);
+\path[->] (Geometric.80) edge node[right, align=center, near start]{\(\sum X_i\)} (NegBinomial.-80);
+\path[->] (Geometric) edge[loop below, distance=5] node[below]{\(\min X_i\)} (Geometric);
+\path[->, dashed] (NegBinomial) edge[bend left=30] node[above, align=center]{\(\lambda = r(1 - p)\) \\ \(r \to \infty\)} (Poisson);
+\path[->] (Poisson) edge[loop above, distance=10] node[right]{\(\sum X_i\)} (Poisson);
+\path[->, dashed] (Poisson) edge node[left, align=center]{\(\lambda = \sigma^2\) \\ \(\lambda \to \infty\)} (Normal);
+\path[->] (Binomial.5) edge node[above]{\(n = 1\)} (Bernoulli.173);
+\path[->] (Bernoulli.-174) edge node[below]{\(\sum X_i\)} (Binomial.-5);
+\path[->, dashed] (Binomial) edge node[right, align=center, near end]{\(\mu = np\) \\ \(\sigma^2 = np(1 - p)\) \\ \(n \to \infty\)} (Normal);
+\path[->, dashed] (Binomial) edge node[above, align=center]{\(\lambda = np\) \\ \(n \to \infty\)} (Poisson);
+\path[->] (Normal.-175) edge node[left, near start]{\(\frac{X - \mu}{\sigma}\)} (sNormal.110);
+\path[->] (sNormal.90) edge node[right, near start]{\(\mu + \sigma X\)} (Normal.-165);
+\path[->] (Normal) edge[loop, in=-50, out=-90, looseness=5, distance=6] node[below, very near end]{\(\sum X_i\)} (Normal);
+\path[->, dashed] (Gamma) edge node[right, align=center]{\(\mu = \alpha \lambda\) \\ \(\sigma^2 = \alpha \lambda^2\) \\ \(\alpha \to \infty\)} (Normal.0);
+\path[->] (sNormal) edge node[left, very near end]{\(\sum X_i^2\)} (ChiSquared);
+\path[->] (Gamma) edge[] node[left, align=center, near start]{\(\alpha = k/2\) \\ \(\lambda = 2\)} (ChiSquared);
+\path[->] (Gamma.-100) edge node[left]{\(\alpha = 1\)} (Exponential.100);
+\path[->] (Exponential.80) edge node[right]{\(\sum X_i\)} (Gamma.-80);
+\path[<->] (ChiSquared) edge node[left, near start]{\(\lambda = 2\)} node[left, near end]{\(k = 2\)} (Exponential);
+\path[->] (Exponential.5) edge node[above]{\(e^{-\lambda X}\)} (Uniform.175);
+\path[->] (Uniform.-165) edge node[below]{\(-\lambda \log X\)} (Exponential.-16.5);
+\path[->] (sNormal) edge node[left]{\(\frac{X_1}{X_2}\)} (Cauchy);
+\path[->] (StudentT) edge node[left, near start]{\(\nu = 1\)} (Cauchy);
+\path[->, dashed] (StudentT) edge node[right, very near start]{\(\nu \to \infty\)} (sNormal);
+\path[->] (Cauchy) edge[loop, in=-170, out=-120, distance=10] node[below]{\(\sum X_i\)} (Cauchy);
+\path[->] (Cauchy) edge[loop, in=120, out=170, distance=10] node[above]{\(\frac{1}{X}\)} (Cauchy);
+\end{tikzpicture}
