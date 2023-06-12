@@ -1,7 +1,7 @@
-\section{Convergence of Empirical Averages to Expectation}
+\section{Convergence to Expectation}
 
-\begin{definition*}[Independent with identical distribution (i.i.d.)]
-  The random variables \(X_1, X_2, \ldots\) defined on the same probability space are called i.i.d. if they are independent and each \(X_i\) has the same distribution.
+\begin{definition*}[Independent with identical distribution (iid.)]
+  \(X_1, X_2, \ldots\) on the same probability space are iid. if they are independent and each \(X_i\) has the same distribution.
 \end{definition*}
 
 \begin{definition*}[Convergence of Random Variables]
@@ -23,26 +23,23 @@
   \(X_n \stackrel{a.s.}{\to} X \implies X_n \stackrel{\P}{\to} X \implies X_n \stackrel{\mathcal{D}}{\to} X\).
 \end{lemma}
 
-\begin{definition*}[Sample Mean]
-    Let \(X_1, X_2, \ldots\) be i.i.d. random variables with finite first moment, then the sample mean is defined as:
-    \[\bar{X_n} := \frac{1}{n}\sum_{i=1}^n X_i.\]
+\begin{definition*}[Sample Mean / Sample Variance]
+    \(X_1, \ldots, X_n\) iid. with \(\E(X_i) < \infty\).
+
+    \begin{tabularx}{\linewidth}{ll}
+      \(\bar{X_n} := \frac{1}{n}\sum_{i=1}^n X_i.\) & \(S^2 = \frac{1}{n-1}\sum_{i=1}^2(X_i - \bar{X_n})^2.\)
+    \end{tabularx}
 \end{definition*}
 
-\begin{definition*}[Sample Variance]
-  Let \(X_1, X_2, \ldots\) be i.i.d. random variables with finite first moment, then the sample variance is defined as:
-  \[S^2 = \frac{1}{n-1}\sum_{i=1}^2(X_i - \bar{X_n})^2.\]
-\end{definition*}
-
-\pagebreak
 \begin{theorem*}[Laws of Large Numbers (LLN)]
-  Let \(X_1, X_2, \ldots\) be i.i.d. random variables with finite first moment \(\mu := \E(X_i)\) and finite second moment \(\sigma^2 := \Var(X_i)\). Then the weak law of large numbers (\textbf{WLLN}) states that as \(n \to \infty\)
-  \[\bar{X_n} \stackrel{\P}{\to} \mu\]
-  and the strong law of large numbers (\textbf{SLLN}) states as \(n \to \infty\)
+  Let \(X_1, X_2, \ldots\) be iid. R.V. with \(\mu := \E(X_i) < \infty\) and \(\sigma^2 := \Var(X_i) < \infty\). Then the weak LLN (\textbf{WLLN}) states that as \(n \to \infty\)
+  \[\bar{X_n} \stackrel{\P}{\to} \mu.\]
+  The strong LLN (\textbf{SLLN}) states as \(n \to \infty\)
   \[\bar{X_n} \stackrel{a.s.}{\to} \mu.\]
 \end{theorem*}
 
 \begin{theorem*}[Central Limit Theorem (CLT)]
-  Let \(X_1, X_2, \ldots\) be i.i.d. random variables with \(\E(X_i) = \mu\) and \(\Var(X_i) = \sigma^2\). Then for the sum \(S_n := \sum_{i=1}^n X_i\) we have for all \(x \in \R\)
-  \[\P\left(\frac{S_n - n \mu}{\sqrt{\sigma^2n}} \leq x\right) \underset{n \to \infty}{\to} \Phi(x)\]
+  Let \(X_1, X_2, \ldots\) be iid. R.V. with \(\mu := \E(X_i) < \infty\) and \(\sigma^2 := \Var(X_i) < \infty\). Then for \(S_n := \sum_{i=1}^n X_i\) we have
+  \[\forall x \in \R: \quad \P\left(\frac{S_n - n \mu}{\sqrt{\sigma^2n}} \leq x\right) \underset{n \to \infty}{\to} \Phi(x)\]
   where \(\Phi\) is the CDF of the \(\Normal(0, 1)\)-distribution.
 \end{theorem*}

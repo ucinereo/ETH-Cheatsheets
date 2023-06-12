@@ -1,12 +1,19 @@
 \section{Conditional Distribution}
 \begin{ddefinition*}[Conditional PMF]
-  Let \(X, Y\) be two discrete random variables on the same probability space taking values in \(\DX\) and \(\mathcal{Y}\). For \(y \in \mathcal{Y}\) such that \(\P(Y = y) \neq 0\), we define the \textit{conditional distribution of \(X\) given \(Y = y\)} as
+  Let \(X, Y\) be two discrete R.V. on the same probability space taking values in \(\DX\) and \(\mathcal{Y}\). For \(y \in \mathcal{Y}\) such that \(\P(Y = y) \neq 0\), we define the \textit{conditional distribution of \(X\) given \(Y = y\)} as
   \[p_{X \mid Y}(x \mid y) := \frac{p_{X, Y}(x, y)}{p_Y(y)} = \frac{p_{X, Y}(x, y)}{\int_\R p_{X, Y}(x, y) \,dx}\]
 \end{ddefinition*}
 
-If \(X\) and \(Y\) are independent, then \(p(x \mid y) = p(x)\). For a fixed \(y \in \mathcal{Y}\) with \(\P(Y = y) > 0\) the function \(p_{X \mid Y}(\cdot \mid y)\) is a probability mass function. Thus, we can consider a random variable with this PMF written as \(X \mid Y = y\).
+\begin{proposition}
+  \(X, Y\) independent \(\implies p(x \mid y) = p(x)\).
+\end{proposition}
 
-\begin{dtheorem*}[Multiple variables]
+\begin{proposition}
+  \(p_{X \mid Y}(\cdot \mid y)\) is a PMF if \(p_Y(y) > 0, y \in \mathcal{Y}\).
+  Thus, we can consider a R.V. "\(X \mid Y = y\)".
+\end{proposition}
+
+\begin{dtheorem*}[Multiple variables] \vspace{-10pt}
   \begin{multline*}
     p_{X_{k+1}, \ldots, X_n \mid X_1, \ldots, X_k}(x_{k+1}, \ldots, x_n \mid x_1, \ldots x_k) \\
     := \frac{p_{X_1, \ldots, X_n}(x_1, \ldots, x_n)}{p_{X_1, \ldots, X_k}(x_1, \ldots, x_k)}
@@ -23,36 +30,26 @@ If \(X\) and \(Y\) are independent, then \(p(x \mid y) = p(x)\). For a fixed \(y
 
 \subsection{Mixed case}
 \begin{definition*}[Conditional probability density]
-  Let \(X\) be a continuous and \(Y\) a discrete random variable. For each \(y \in \mathcal{Y}\), we have the conditional probability distribution \(\P_{X 
-  mid y}\) on \(\R\) for each subset \(A \in \B(\R)\) defined as \(\P_{X \mid y}(A) :=\)
-  
-  \[\frac{\P_{X, Y}(\{(x, y) \in \R^2 \mid x \in A\})}{\P_Y(\{y\})} = \frac{\P(X \in A, Y = y)}{p_Y(y)}\]
-  
+  Let \(X\) be a continuous and \(Y\) a discrete R.V. For each \(y \in \mathcal{Y}\), we have the conditional probability distribution \(\P_{X \mid y}\) on \(\R\) for each subset \(A \in \B(\R)\) defined as
+  \[\P_{X \mid y}(A) := \frac{\P(X \in A, Y = y)}{p_Y(y)}\]
   If this conditional distribution has a density, we call it the \textit{conditional probability density of \(X\) given \(Y = y\)}
 \end{definition*}
 
-\begin{ctheorem*}[Law of Total Probability, \(Y\) continuous] \vspace{-5pt}
+\begin{theorem*}[Law of Total Probability] \vspace{-5pt}
   \[f_X(x) = \int f_{X \mid Y}(x \mid y) f_Y(y) \, dy\]
-\end{ctheorem*}
+  If \(Y\) discrete, the integral is replaced by sum over \(y \in \mathcal{Y}\).
+\end{theorem*}
 
-\begin{dtheorem*}[Law of Total Probability, \(Y\) discrete] \vspace{-5pt}
-  \[p_X(x) = \sum_{y \in \mathcal{Y}} p_{X \mid Y}(x \mid y)p_Y(y)\]
-\end{dtheorem*}
-
-\begin{ctheorem*}[Bayes' Rule, \(X\) continuous] \vspace{-5pt}
+\begin{theorem*}[Bayes' Rule, \(X\) continuous] \vspace{-5pt}
   \[f_{X \mid Y}(x \mid y) = \frac{f_{Y \mid X}(y \mid x) f_X(x)}{\int f_{Y \mid X}(y \mid x') f_X(x') \, dx'}\]
-\end{ctheorem*}
+  If \(X\) discrete, the integral is replaced by sum over \(x' \in \DX\).
+\end{theorem*}
 
-\begin{dtheorem*}[Bayes' Rule, \(X\) discrete] \vspace{-5pt}
-  \[p_{X \mid Y}(x \mid y) = \frac{p_{Y \mid X}(y \mid x) p_X(x)}{\sum_{x' \in \DX} p_{Y \mid X}(y \mid x')}\]
-\end{dtheorem*}
-
-\begin{theorem*}[Chain Rule]
-  Let \(X_1, \ldots, X_n\) be random variables. Then
+\begin{theorem*}[Chain Rule] \vspace{-5pt}
   \[p(x_1, \ldots, x_n) = p(x_1) p(x_2 \mid x_1) \cdots p(x_n \mid x_1, \ldots, x_n)\]
 \end{theorem*}
 
 \begin{theorem*}[Conditional Independence]
-  Let \(X, Y, Z\) be random variables. The random variables \(X\) and \(Y\) are said to be conditionally independent given \(Z\) if \(\forall x, y, z\):
+  \(X\) and \(Y\) are conditionally independent given \(Z\) if \(\forall x, y, z\):
   \[p_{X, Y \mid Z}(x, y \mid z) = p_{X \mid Z}(x \mid z) p_{Y \mid Z}(y \mid z)\]
 \end{theorem*}
