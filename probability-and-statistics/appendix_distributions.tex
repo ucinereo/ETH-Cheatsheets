@@ -6,7 +6,7 @@
   \textbf{Prerequisites:} \(\DX = \{0, 1\}, \, p \in [0, 1]\) \\
   \begin{tabularx}{\linewidth}{@{}ll@{}}
     \(\bm{p_X(x)} = p^x(1 - p)^{1 - x}\) & \(\bm{\E(X)} = p\) \\
-    \(\bm{F_X(x)} = 1 - p \ (x \in [0, 1)\)) & \(\bm{\Var(X)} = p(1 - p)\)
+    \(\bm{F_X(x)} = 1 - p \ (x \in [0, 1))\) & \(\bm{\Var(X)} = p(1 - p)\)
   \end{tabularx}
 \end{ddefinition*}
 
@@ -19,9 +19,9 @@
 \end{ddefinition*}
 
 \begin{ddefinition*}[Negative Binomial (\(X \sim \NB(r, p)\))]
-  \textbf{Prerequisites:} \(\DX = \N_0, \, p \in [0, 1], \, r > 0\) \\
+  \textbf{Prerequisites:} \(\DX = \{r, r+1, \ldots\}, \, p \in [0, 1], \, r > 0\) \\
   \begin{tabularx}{\linewidth}{@{}ll@{}}
-    \(\bm{p_X(x)} = \binom{x + r - 1}{x}p^r(1 - p)^x\) & \(\bm{\E(X)} = \frac{r(1 - p)}{p}\) \\
+    \(\bm{p_X(x)} = \binom{x - 1}{x}p^r(1 - p)^{x - r}\) & \(\bm{\E(X)} = \frac{r(1 - p)}{p}\) \\
     \(\bm{\Var(X)} = \frac{r(1 - p)}{p^2}\)
   \end{tabularx}
 \end{ddefinition*}
@@ -48,7 +48,7 @@
   \textbf{Prerequisites:} \(a < b, \, x \notin [a, b] \implies f_X(x) = 0\) \\
   \begin{tabularx}{\linewidth}{@{}ll@{}}
     \(\bm{f_X(x)} = \frac{1}{b-a}\) & \(\bm{\E(X)} = \frac{a + b}{2}\) \\
-    \(\bm{F_X(x)} = \begin{cases}0 & x < a \\ \frac{t - a}{b - a} & x \in [a, b] \\ 1 & x > b\end{cases}\) & \(\bm{\Var(X)} = \frac{1}{12}(b - a)^2\)
+    \(\bm{F_X(x)} = \frac{t - a}{b - a} \ \text{if} \ x \in [a, b]\) & \(\bm{\Var(X)} = \frac{1}{12}(b - a)^2\)
   \end{tabularx}
 \end{cdefinition*}
 
@@ -70,21 +70,18 @@
 
 \begin{cdefinition*}[{Chi-Squared (\(X \sim \chi^2(k)\))}]
   \textbf{Prerequisites:} \(k \in \N\), \(\DX = \R_{>0}\) if \(k = 1\), otw. \(\DX = \R_+\) \\
-  \begin{tabularx}{\linewidth}{@{}ll@{}}
-    \(\bm{f_X(x)} = \frac{1}{2^{k/2}\Gamma(k/2)} x^{k/2-1}e^{-x/2}\) & \(\bm{\E(X)} = k\) \\
-    \(\bm{F_X(x)} = \frac{1}{\Gamma(k/2)} \gamma\left(\frac{k}{2}, \frac{x}{2}\right)\) & \(\bm{\Var(X)} = 2k\)
+  \begin{tabularx}{\linewidth}{@{}lll@{}}
+    \(\bm{f_X(x)} = \frac{1}{2^{\frac{k}{2}}\Gamma(\frac{k}{2})} x^{\frac{k}{2}-1}e^{-\frac{x}{2}}\) & \(\bm{\E(X)} = k\) & \(\bm{\Var(X)} = 2k\)
   \end{tabularx}
 \end{cdefinition*}
 
 \begin{cdefinition*}[{Gamma (\(X \sim \Ga(\alpha, \lambda)\))}]
   \textbf{Prerequisites:} \(\DX = \R_{>0}, \, \alpha > 0, \, \lambda > 0\) \\
-  \begin{tabularx}{\linewidth}{@{}ll@{}}
-    \(\bm{f_X(x)} = \frac{1}{\Gamma(\alpha)} \lambda^\alpha x^{\alpha - 1}e^{-\lambda x}\) & \(\bm{\E(X)} = \frac{\alpha}{\lambda}\) \\
-    \(\bm{F_X(x)} = \frac{1}{\Gamma(\alpha)} \gamma(\alpha, \lambda x)\) & \(\bm{\Var(X)} = \frac{\alpha}{\lambda^2}\)
+  \begin{tabularx}{\linewidth}{@{}lll@{}}
+    \(\bm{f_X(x)} = \frac{1}{\Gamma(\alpha)} \lambda^\alpha x^{\alpha - 1}e^{-\lambda x}\) & \(\bm{\E(X)} = \frac{\alpha}{\lambda}\) & \(\bm{\Var(X)} = \frac{\alpha}{\lambda^2}\)
   \end{tabularx}
 \end{cdefinition*}
 
-\pagebreak
 \begin{cdefinition*}[{Student's \(t\) with parameter \(\nu\)}]
   \textbf{Prerequisites:} \(\DX = \R, \, \nu > 0\) \\
   \begin{tabularx}{\linewidth}{@{}ll@{}}
@@ -92,6 +89,10 @@
     \multicolumn{2}{@{}l}{\(\bm{\Var(X)}\): \(\frac{\nu}{\nu - 2}\) for \(\nu > 0\), \(\infty\) for \(2 < \nu \leq 4\), \(0\) otw.}
   \end{tabularx}
 \end{cdefinition*}
+
+\begin{lemma}
+  \(X \sim \Normal(0, 1), \, Y \sim \chi^2(k) \, \text{ind.}\implies \frac{X}{\sqrt{\frac{1}{k}Y}} \sim t(k)\)
+\end{lemma}
 
 \begin{cdefinition*}[{Cauchy}]
   \textbf{Prerequisites:} \(\DX = \R\) \\
@@ -101,6 +102,20 @@
   \end{tabularx}
 \end{cdefinition*}
 
+\subsection*{Relationship between distributions}
 \begin{center}
   \input{distribution_graph.tex}
 \end{center}
+
+\begin{theorem*}[Distribution statements (\(X_1, \ldots, X_n\) iid. \(\sim \Normal(\mu, \sigma^2)\))]
+  \begin{itemize}
+    \item \(\bar{X_n} \sim \Normal(\mu, \frac{1}{n}\sigma^2)\) and thus \(\frac{\bar{X_n} - \mu}{\sigma / \sqrt{n}} \sim \Normal(0, 1)\).
+    \item \(\frac{n-1}{\sigma^2}S^2 = \frac{1}{\sigma^2}\sum_{i=1}^n(X_i - \bar{X_n})^2 \sim \chi^2(n-1)\).
+    \item \(\bar{X_n}\) and \(S^2\) are independent.
+    \item \(\frac{\bar{X_n} - \mu}{S / \sqrt{n}} = \frac{\frac{\bar{X_n} - \mu}{\sigma / \sqrt{n}}}{\sqrt{\frac{1}{n-1} \frac{n-1}{\sigma^2}S^2}} \sim t(n-1)\)
+  \end{itemize}
+\end{theorem*}
+
+\begin{definition*}[Gamma Function] \vspace{-5pt}
+  \[\Gamma(\alpha) := \int_0^\infty u^{\alpha-1}e^{-u} \, du \quad (\alpha > 0)\]
+\end{definition*}
