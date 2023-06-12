@@ -1,28 +1,106 @@
 \section{List of distributions}
-\subsection{Discrete}
-\begin{center}
-	\begin{tabularx}{\textwidth}{llXXXX}
-		\toprule 
-		Distribution & Parameters & \(\E(X)\) & \(\Var(X)\) & \(p_X(t)\) & \(F_X(t)\) \\
-		\midrule
-		Uniform & \makecell[l]{\(n\): \#Events \\ \(x_i\): Events} & \(\frac{1}{n} \sum_{i=1}^{n} x_i\) & \(\frac{1}{n} \sum_{i=1}^{n} x_i^2 - \frac{1}{n^2} \left(\sum_{i=1}^{n} x_i \right)^2\) & \(\frac{1}{n}\) & \(\frac{|\{k:x_k \leq t\}|}{n}\) \\
-		Bernoulli & \(p:\) Probability & \(p\) & \(p \cdot (1-p)\) & \(p^t(1-p)^{1-t}\) & \(1-p\) where \(0 \leq t < 1\) \\
-		Binomial & \makecell[l] {\(n\): \#Tries \\ \(p:\) Probability} & \(np\) & \(np(1-p)\) & \(\binom{n}{t}p^t(1-p)^{n-t}\) & \(\sum_{k=0}^{t} \binom{n}{k} p^k(1-p)^{n-k}\) \\
-		Geometric & \makecell[l] {\(p\): Probability \\ \(t:\) \#Tries} & \(\frac{1}{p}\) & \(\frac{1-p}{p^2}\) & \(p(1-p)^{t-1}\) & \(1-(1-p)^t\) \\
-		Poisson          & \makecell[l]{ \(\lambda\): Lambda} & \(\lambda\) & \(\lambda\) & \(\frac{\lambda^t}{t!}e^{-\lambda}\) & \(e^{-\lambda} \sum_{k=0}^{t} \frac{\lambda^{k}}{k!}\) \\
-		\bottomrule
-	\end{tabularx}
-\end{center}
+\subsection*{Discrete}
 
-\subsection{Continuous}
+\renewcommand{\arraystretch}{1.8}
+\begin{ddefinition*}[Bernoulli (\(X \sim \Ber(p)\))]
+  \textbf{Prerequisites:} \(\DX = \{0, 1\}, \, p \in [0, 1]\) \\
+  \begin{tabularx}{\linewidth}{@{}ll@{}}
+    \(\bm{p_X(x)} = p^x(1 - p)^{1 - x}\) & \(\bm{\E(X)} = p\) \\
+    \(\bm{F_X(x)} = 1 - p \ (x \in [0, 1)\)) & \(\bm{\Var(X)} = p(1 - p)\)
+  \end{tabularx}
+\end{ddefinition*}
+
+\begin{ddefinition*}[Binomial (\(X \sim \Bin(n, p)\))]
+  \textbf{Prerequisites:} \(\DX = \{0, 1, \ldots, n\}, \, p \in [0, 1], \, n \in \N\) \\
+  \begin{tabularx}{\linewidth}{@{}ll@{}}
+    \(\bm{p_X(x)} = \binom{n}{x}p^x(1 - p)^{n - x}\) & \(\bm{\E(X)} = np\) \\
+    \(\bm{F_X(x)} = \sum\limits_{k = 0}^x \binom{n}{k}p^k (1-p)^{n-k}\) & \(\bm{\Var(X)} = np(1 - p)\)
+  \end{tabularx}
+\end{ddefinition*}
+
+\begin{ddefinition*}[Negative Binomial (\(X \sim \NB(r, p)\))]
+  \textbf{Prerequisites:} \(\DX = \N_0, \, p \in [0, 1], \, r > 0\) \\
+  \begin{tabularx}{\linewidth}{@{}ll@{}}
+    \(\bm{p_X(x)} = \binom{x + r - 1}{x}p^r(1 - p)^x\) & \(\bm{\E(X)} = \frac{r(1 - p)}{p}\) \\
+    \(\bm{\Var(X)} = \frac{r(1 - p)}{p^2}\)
+  \end{tabularx}
+\end{ddefinition*}
+
+\begin{ddefinition*}[Geometric (\(X \sim \Geom(p)\))]
+  \textbf{Prerequisites:} \(\DX = \N_1, \, p \in (0, 1]\) \\
+  \begin{tabularx}{\linewidth}{@{}ll@{}}
+    \(\bm{p_X(x)} = p(1-p)^{x-1}\) & \(\bm{\E(X)} = \frac{1}{p}\) \\
+    \(\bm{F_X(x)} = 1 - (1 - p)^x\) & \(\bm{\Var(X)} = \frac{1 - p}{p^2}\)
+  \end{tabularx}
+\end{ddefinition*}
+
+\begin{ddefinition*}[Poisson (\(X \sim \Poisson(\lambda)\))]
+  \textbf{Prerequisites:} \(\DX = \N_0, \, \lambda > 0\) \\
+  \begin{tabularx}{\linewidth}{@{}ll@{}}
+    \(\bm{p_X(x)} = e^{-\lambda}\frac{\lambda^x}{x!}\) & \(\bm{\E(X)} = \lambda\) \\
+    \(\bm{F_X(x)} = e^{-\lambda} \sum\limits_{k=1}^x \frac{\lambda^k}{k!}\) & \(\bm{\Var(X)} = \lambda\)
+  \end{tabularx}
+\end{ddefinition*}
+
+\pagebreak
+\subsection*{Continuous}
+\begin{cdefinition*}[{Uniform (\(X \sim \Unif([a, b])\))}]
+  \textbf{Prerequisites:} \(a < b, \, x \notin [a, b] \implies f_X(x) = 0\) \\
+  \begin{tabularx}{\linewidth}{@{}ll@{}}
+    \(\bm{f_X(x)} = \frac{1}{b-a}\) & \(\bm{\E(X)} = \frac{a + b}{2}\) \\
+    \(\bm{F_X(x)} = \begin{cases}0 & x < a \\ \frac{t - a}{b - a} & x \in [a, b] \\ 1 & x > b\end{cases}\) & \(\bm{\Var(X)} = \frac{1}{12}(b - a)^2\)
+  \end{tabularx}
+\end{cdefinition*}
+
+\begin{cdefinition*}[{Exponential (\(X \sim \Exp(\lambda)\))}]
+  \textbf{Prerequisites:} \(\DX = \R_+, \, \lambda > 0\) \\
+  \begin{tabularx}{\linewidth}{@{}ll@{}}
+    \(\bm{f_X(x)} = \lambda e^{-\lambda x}\) & \(\bm{\E(X)} = \frac{1}{\lambda}\) \\
+    \(\bm{F_X(x)} = 1 - e^{-\lambda x}\) & \(\bm{\Var(X)} = \frac{1}{\lambda^2}\)
+  \end{tabularx}
+\end{cdefinition*}
+
+\begin{cdefinition*}[{Normal/Gaussian (\(X \sim \Normal(\mu, \sigma^2)\))}]
+  \textbf{Prerequisites:} \(\DX = \R, \, \sigma^2 \in \R_{>0}\) \\
+  \begin{tabularx}{\linewidth}{@{}ll@{}}
+    \(\bm{f_X(x)} = \frac{1}{\sigma\sqrt{2 \pi}}e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}\) & \(\bm{\E(X)} = \mu\) \\
+    \(\bm{F_X(x)} = \frac{1}{\sigma\sqrt{2 \pi}}\int_{-\infty}^xe^{-\frac{1}{2}\left(\frac{y - \mu}{\sigma}\right)^2} \, dy\) & \(\bm{\Var(X)} = \sigma^2\)
+  \end{tabularx}
+\end{cdefinition*}
+
+\begin{cdefinition*}[{Chi-Squared (\(X \sim \chi^2(k)\))}]
+  \textbf{Prerequisites:} \(k \in \N\), \(\DX = \R_{>0}\) if \(k = 1\), otw. \(\DX = \R_+\) \\
+  \begin{tabularx}{\linewidth}{@{}ll@{}}
+    \(\bm{f_X(x)} = \frac{1}{2^{k/2}\Gamma(k/2)} x^{k/2-1}e^{-x/2}\) & \(\bm{\E(X)} = k\) \\
+    \(\bm{F_X(x)} = \frac{1}{\Gamma(k/2)} \gamma\left(\frac{k}{2}, \frac{x}{2}\right)\) & \(\bm{\Var(X)} = 2k\)
+  \end{tabularx}
+\end{cdefinition*}
+
+\begin{cdefinition*}[{Gamma (\(X \sim \Ga(\alpha, \lambda)\))}]
+  \textbf{Prerequisites:} \(\DX = \R_{>0}, \, \alpha > 0, \, \lambda > 0\) \\
+  \begin{tabularx}{\linewidth}{@{}ll@{}}
+    \(\bm{f_X(x)} = \frac{1}{\Gamma(\alpha)} \lambda^\alpha x^{\alpha - 1}e^{-\lambda x}\) & \(\bm{\E(X)} = \frac{\alpha}{\lambda}\) \\
+    \(\bm{F_X(x)} = \frac{1}{\Gamma(\alpha)} \gamma(\alpha, \lambda x)\) & \(\bm{\Var(X)} = \frac{\alpha}{\lambda^2}\)
+  \end{tabularx}
+\end{cdefinition*}
+
+\pagebreak
+\begin{cdefinition*}[{Student's \(t\) with parameter \(\nu\)}]
+  \textbf{Prerequisites:} \(\DX = \R, \, \nu > 0\) \\
+  \begin{tabularx}{\linewidth}{@{}ll@{}}
+    \(\bm{f_X(x)} = \frac{\Gamma\left(\frac{n+1}{2}\right)}{\sqrt{n\pi} \cdot \Gamma(\frac{n}{2})} \left(1+\frac{t^2}{n}\right)^{-\frac{n+1}{2}}\) & \(\bm{\E(X)} = 0 \) if \(\nu > 1\) \\
+    \multicolumn{2}{@{}l}{\(\bm{\Var(X)}\): \(\frac{\nu}{\nu - 2}\) for \(\nu > 0\), \(\infty\) for \(2 < \nu \leq 4\), \(0\) otw.}
+  \end{tabularx}
+\end{cdefinition*}
+
+\begin{cdefinition*}[{Cauchy}]
+  \textbf{Prerequisites:} \(\DX = \R\) \\
+  \begin{tabularx}{\linewidth}{@{}ll@{}}
+    \(\bm{f_X(x)} = \frac{1}{\pi}\cdot \frac{1}{1 + x^2}\) & \(\bm{\E(X)}\) undef. \\
+    \(\bm{F_X(x)} = \frac{1}{2} + \frac{1}{\pi} \arctan(x)\) & \(\bm{\Var(X)}\) undef.
+  \end{tabularx}
+\end{cdefinition*}
+
 \begin{center}
-	\begin{tabularx}{\textwidth}{llXXXX}
-		\toprule
-		Distribution & Parameters & \(\E(X)\) & \(\Var(X)\) & \(f_X(t)\)                                                                                                                                  & \(F_X(t)\) \\
-		\midrule
-		Uniform & \([a,b]\): Intervall & \(\frac{a+b}{2}\) & \(\frac{1}{12}(b-a)^2\) & \(\begin{cases} \frac{1}{b-a} &a \le t \le b \\ 0 & \text{otherwise}\end{cases}\) & \(\begin{cases} 0 & t\le a \\ \frac{t-a}{b-a} & a < t < b \\ 1 & t \ge b \end{cases}\) \\
-		Exponential & \(\lambda: \frac{1}{\E(X)}\) & \(\frac{1}{\lambda}\) & \(\frac{1}{\lambda^2}\) & \(\begin{cases} \lambda e^{-\lambda t} & t \geq 0 \\ 0 & t < 0 \end{cases}\) & \(\begin{cases} 1-e^{-\lambda t} & t>0 \\ 0 & t \leq 0\end{cases}\) \\
-		Normal & \makecell[l]{\(\sigma^2\): Variance \\ \(\mu: \E(X)\)} & \(\mu\) & \(\sigma ^2\) & \(\frac{1}{\sqrt{2\pi \sigma^2} }e^{-{\frac{(t-\mu)^2}{2\sigma^2} }}\) & \(\frac{1}{\sigma {\sqrt{2\pi}}} \int_{-\infty}^t e^{-\frac{1}{2}\left( \frac{y-\mu}{\sigma} \right) ^2} \mathrm{d} y\) \\
-		\bottomrule
-	\end{tabularx}
+  \input{distribution_graph.tex}
 \end{center}
