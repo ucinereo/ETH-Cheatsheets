@@ -36,7 +36,7 @@
 \path[->] (Normal) edge[loop, in=-50, out=-90, looseness=5, distance=6] node[below, very near end]{\(\sum X_i\)} (Normal);
 \path[->, dashed] (Gamma) edge node[right, align=center]{\(\mu = \alpha \lambda\) \\ \(\sigma^2 = \alpha \lambda^2\) \\ \(\alpha \to \infty\)} (Normal.0);
 \path[->] (sNormal) edge node[left, very near end]{\(\sum X_i^2\)} (ChiSquared);
-\path[->] (Gamma) edge[] node[left, align=center, near start]{\(\alpha = k/2\) \\ \(\lambda = 2\)} (ChiSquared);
+\path[->] (Gamma) edge[] node[left, align=center, near start]{\(\alpha = k/2\) \\ \(\lambda = 1/2\)} (ChiSquared);
 \path[->] (Gamma.-100) edge node[left]{\(\alpha = 1\)} (Exponential.100);
 \path[->] (Exponential.80) edge node[right]{\(\sum X_i\)} (Gamma.-80);
 \path[<->] (ChiSquared) edge node[left, near start]{\(\lambda = 2\)} node[left, near end]{\(k = 2\)} (Exponential);
