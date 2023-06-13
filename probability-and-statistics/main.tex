@@ -116,6 +116,9 @@
 \DeclareMathOperator{\MLE}{MLE}
 \DeclareMathOperator{\ML}{ML}
 
+% Misc
+\newcommand{\sdots}{\ifmmode\mathinner{\ldotp\kern-0.2em\ldotp\kern-0.2em\ldotp}\else.\kern-0.13em.\kern-0.13em.\fi}
+
 % ------------------------------------------------------------------
 % Meta Data
 % ------------------------------------------------------------------
@@ -151,6 +154,9 @@
 \input{estimators.tex}
 \pagebreak
 \input{tests.tex}
+\input{confidence_interval.tex}
+\pagebreak
+\input{additional_stuff.tex}
 
 \clearpage
 \input{appendix_distributions.tex}

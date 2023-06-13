@@ -16,20 +16,80 @@ We reject a hypothesis \(H_0\) \(\iff\) \(\I_{t(x_1, \ldots, x_n) \in K} = 1\).
     \item \textbf{Type II Error}: Failing to reject a false \(H_0\). \\
     Probability: \(\P_\theta(T \not\in K) = 1 - \P_\theta(T \in K), \ \theta \in \Theta_A\).
   \end{itemize}
-\end{definition*}
-
-Normally when designing a test we go through 2 steps:
-
+\end{definition*}enumerate
 1. Minimize type I errors:
-\begin{definition*}[Significance level]
+\begin{definition*}[Significance level of a test]
   A test has a significance level \(\alpha \in [0, 1]\) if
   \[\underset{\theta \in \Theta_0}{\sup} \P_\theta(T \in K) \leq \alpha\]
 \end{definition*}
 
 2. Maximize the power of the test (reducing type II errors)
-\begin{definition*}[Power]
+\begin{definition*}[Power of a test]
   The power of a test is defined as:
   \[\beta: \Theta_A \to [0, 1], \quad \theta \mapsto \beta(\theta) := \P_\theta(T \in K)\]
 \end{definition*}
 
 As this is asymmetric and thus makes it harder to reject \(H_0\) than accepting it, we take the \textbf{negation} of the wanted statement as \(H_0\).
+
+\subsection{How to find the hypothesis}
+\begin{enumerate}
+  \item List the things to avoid.
+  \item Take that as Type I Error.
+  \item Conclude the \(H_0\) with reverse engineering.
+\end{enumerate}
+
+\pagebreak
+\subsection{z-test}
+\textbf{Prerequisites:} \(X_1, \ldots, X_n \sim \Normal(\mu, \sigma^2)\) iid; \(\bm{\sigma^2}\) \textbf{known}.
+
+\textbf{Hypothesis:} \(H_0: \theta = \theta_0\), \(H_A: \theta > \theta_0 \, \text{or} \, \theta < \theta_0 \, \text{or} \, \theta \neq \theta_0\).
+
+\textbf{Teststatistic:} \(T := \frac{\bar{X_n} - \theta_0}{\sigma / \sqrt{n}} \sim \Normal(0, 1)\) under \(\P_{\theta_0}\).
+
+\textbf{Rejection Region:}
+\begin{align*}
+  H_A: \theta > \theta_0 &\implies K_> = (c_>, \infty) \\
+  H_A: \theta < \theta_0 &\implies K_< = (-\infty, c_<) \\
+  H_A: \theta \neq \theta_0 &\implies K_{\neq} = (-\infty, -c_{\neq}) \cup (c_{\neq}, \infty)
+\end{align*}
+
+\textbf{How to find \(c_>, c_<, c_{\neq}\):}
+\begin{align*}
+  \alpha = \P_{\theta_0}(T > c_>) &\implies c_> = \Phi^{-1}(1 - \alpha) \\
+  \alpha = 1 - \P_{\theta_0}(T \leq -c_<) &\implies c_< = -\Phi^{-1}(1 - \alpha) \\
+  \alpha = 2(1 - \P(T \leq c_{\neq})) &\implies c_{\neq} = \Phi^{-1}\left(1 - \frac{\alpha}{2}\right)
+\end{align*}
+
+\subsection{t-test}
+\textbf{Prerequisites:} \(X_1, \ldots, X_n \sim \Normal(\mu, \sigma^2)\) iid.
+
+\textbf{Hypothesis:} \(H_0: \mu = \mu_0\), \(H_A:\) same as z-Test.
+
+\textbf{Teststatistic:} \(T := \frac{\bar{X_n} - \mu_0}{S / \sqrt{n}} \sim t_{n-1} \qquad (S = \sqrt{S^2})\).
+
+\textbf{Rejection Region:} Same as z-Test.
+
+\textbf{How to find \(c_>, c_<, c_{\neq}\):}
+\begin{align*}
+  c_> = t_{n-1} \quad c_< = t_{n-1, \alpha} = -t_{n-1, 1-\alpha} \quad c_{\neq} = t_{n-1, 1 - \frac{\alpha}{2}}
+\end{align*}
+
+\subsection{Unpaired two-sample z-, t-test}
+\textbf{Pre.:} \(X_1, \sdots, X_{n} \sim \Normal(\mu_1, \sigma^2), \, Y_1, \sdots, Y_{m} \sim \Normal(\mu_2, \sigma^2)\) iid.
+
+\textbf{Hypothesis:} \(H_0: \mu_1 - \mu_2 = \omega_0\), \(H_A:\) same as z-Test.
+
+\textbf{Rejection Region:} Same as z-Test.
+
+\textbf{Teststatistic (known \(\bm{\sigma^2}\)):}
+\begin{center}
+  \(T := \frac{(\bar{X_{n}} - \bar{Y_{m}}) - (\mu_1 - \mu_2)}{\sigma\sqrt{\frac{1}{n} + \frac{1}{m}}} \sim \Normal(0, 1)\).
+\end{center}
+
+\textbf{Teststatistic (unknown \(\bm{\sigma^2}\)):} \\
+\(T := \frac{(\bar{X_{n}} - \bar{Y_{m}}) - (\mu_1 - \mu_2)}{S_p\sqrt{\frac{1}{n} + \frac{1}{m}}} \sim t_{m + n - 2}\) with \(S_p = \sqrt{\frac{(n - 1)S_1^2 + (m - 1)S_2^2}{n + m - 2}}\) and \(S_1\), \(S_2\) the sample variances.
+
+\textbf{How to find \(c_>, c_<, c_{\neq}\):} Same as z-, t-Test.
+
+\subsection{Paired two-sample z-, t-test}
+\(Z_i := X_i - Y_i \sim \Normal(\mu_1 - \mu_2, 2\sigma^2)\). Then do z-, t-Test.
