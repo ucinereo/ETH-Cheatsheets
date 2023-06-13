@@ -1,0 +1,34 @@
+\section{Additional Stuff}
+\begin{theorem*}[Random Number Generation]
+  Let \(F\) be a continuous, strictly monotone increasing CDF with inverse \(F^{-1}\). Then
+  \[X \sim \Unif([0, 1]), Y = F^{-1}(X) \implies F_Y = F.\]
+
+\end{theorem*}
+
+\begin{definition*}[Empirical distribution function]
+  Just like the sample mean \(\bar{X_n}\) and sample variance \(S^2\) there is a empirical CDF defined as:
+  \[\hat{F_n}(t) := \frac{1}{n}\sum_{i=1}^n \I_{\{X_i < t\}} \stackrel{a.s.}{\to} \E(\I_{(-\infty, t]}(X_1)) = F_X(t)\]
+\end{definition*}
+
+\begin{definition*}[Monte-Carlo Integration]
+  Used to approximate the value of an integral.
+  \begin{multline*}
+    \int_{[0, 1]^m} h(x_1, \ldots, x_m) \, dx_1 \sdots dx_m \\[-10pt]
+    = \E(h(U_1, \sdots, U_m)) \approx \frac{1}{N} \sum_{i=1}^N h(u_1^i, \sdots, u_m^i)
+  \end{multline*}
+  Where \(U_1, \sdots, U_m \sim \Unif([0, 1])\).
+\end{definition*}
+
+\begin{definition*}[Moment generating function]
+  Let \(X\) be a R.V and \(t \in \R\), then the MGF is defined as:
+  \[M_X(t) := \E(e^{tX})\]
+  This is always well defined for \([0, \infty]\). Furthermore:
+  \[\frac{d^k}{dt^k} M_X(t) |_{t=0} = \E(X^k) = m_X^k.\]
+\end{definition*}
+
+
+
+\begin{theorem*}[Chernoff Bound]
+  \(X_1, \ldots, X_n\) iid. s.t. \(\forall t \in \R: \E(e^{tX}) < \infty \), \(S_n := \sum\limits_{i=1}^n X_i\).
+  \[\forall b \in \R \quad \P(S_n \geq b) \leq \exp(\underset{t \in \R}{\inf}(n \log M_X(t) - tb))\]
+\end{theorem*}

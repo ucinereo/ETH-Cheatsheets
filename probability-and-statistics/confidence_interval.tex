@@ -1,0 +1,18 @@
+\section{Confidence Interval}
+\begin{definition*}[Confidence Interval]
+  A confidence interval with \textbf{confidence level} \(1 - \alpha\) is a subset \(C(x_1, \ldots, x_n) \subseteq \Theta\) such that
+  \[\forall \theta \in \Theta \quad \P_\theta(C(X_1, \ldots, X_n) \ni \theta) \geq 1 - \alpha.\]
+  Mostly this is a random interval \([u(X), v(X)]\).
+\end{definition*}
+
+\subsection*{Confidence Interval \(\to\) Test}
+\(C(x_1, \ldots, x_n)\) with confidence level \(1 - \alpha\) known. We define a test statistic \(\I_{\{\theta_0 \notin C(X_1, \ldots, X_n)\}}\). Thus we get:
+\[\P_{\theta_0}(\theta_0 \notin C(X_1, \sdots, X_n)) = 1 - \P_{\theta_0}(C(X_1, \sdots, X_n)\ni \theta_0) \leq \alpha.\]
+
+\subsection*{Confidence Interval \(\leftarrow\) Test}
+Given \(\forall \theta_0: T_{\theta_0}(x_1, \ldots, x_n) \leq \alpha\). We define the confidence interval \(C(X_1, \ldots, X_n) = \{\theta \in \Theta \mid T_\theta(X_1, \ldots, X_n) \notin K_\theta\}\). Thus we get:
+\begin{align*}
+  \P_\theta(\theta \in C(X_1, \sdots, X_n)) &= \P_\theta(T_\theta(X_1, \sdots, X_n) \notin K_\theta) \\
+  &= 1 - \P_\theta(T_\theta(X_1, \sdots, X_n) \in K) \\
+  &\geq 1 - \alpha.
+\end{align*}

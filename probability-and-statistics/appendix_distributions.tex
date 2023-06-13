@@ -26,7 +26,7 @@
   \end{tabularx}
 \end{ddefinition*}
 
-\begin{ddefinition*}[Geometric (\(X \sim \Geom(p)\))]
+\begin{ddefinition*}[Geometric (\(X \sim \Geom(p)\)) \hfill (memoryless)]
   \textbf{Prerequisites:} \(\DX = \N_1, \, p \in (0, 1]\) \\
   \begin{tabularx}{\linewidth}{@{}ll@{}}
     \(\bm{p_X(x)} = p(1-p)^{x-1}\) & \(\bm{\E(X)} = \frac{1}{p}\) \\
@@ -52,7 +52,11 @@
   \end{tabularx}
 \end{cdefinition*}
 
-\begin{cdefinition*}[{Exponential (\(X \sim \Exp(\lambda)\))}]
+\begin{lemma}
+  \(X \sim \Unif([0, 1]) \implies \P(X \leq F(t)) = F(t)\)
+\end{lemma}
+
+\begin{cdefinition*}[{Exponential (\(X \sim \Exp(\lambda)\))} \hfill (memoryless)]
   \textbf{Prerequisites:} \(\DX = \R_+, \, \lambda > 0\) \\
   \begin{tabularx}{\linewidth}{@{}ll@{}}
     \(\bm{f_X(x)} = \lambda e^{-\lambda x}\) & \(\bm{\E(X)} = \frac{1}{\lambda}\) \\
@@ -91,7 +95,7 @@
 \end{cdefinition*}
 
 \begin{lemma}
-  \(X \sim \Normal(0, 1), \, Y \sim \chi^2(k) \, \text{ind.}\implies \frac{X}{\sqrt{\frac{1}{k}Y}} \sim t(k)\)
+  \(X \sim \Normal(0, 1), \, Y \sim \chi^2(k) \, \text{ind.}\implies \frac{X}{\sqrt{\frac{1}{k}Y}} \sim t_k\)
 \end{lemma}
 
 \begin{cdefinition*}[{Cauchy}]
@@ -112,10 +116,14 @@
     \item \(\bar{X_n} \sim \Normal(\mu, \frac{1}{n}\sigma^2)\) and thus \(\frac{\bar{X_n} - \mu}{\sigma / \sqrt{n}} \sim \Normal(0, 1)\).
     \item \(\frac{n-1}{\sigma^2}S^2 = \frac{1}{\sigma^2}\sum_{i=1}^n(X_i - \bar{X_n})^2 \sim \chi^2(n-1)\).
     \item \(\bar{X_n}\) and \(S^2\) are independent.
-    \item \(\frac{\bar{X_n} - \mu}{S / \sqrt{n}} = \frac{\frac{\bar{X_n} - \mu}{\sigma / \sqrt{n}}}{\sqrt{\frac{1}{n-1} \frac{n-1}{\sigma^2}S^2}} \sim t(n-1)\)
+    \item \(\frac{\bar{X_n} - \mu}{S / \sqrt{n}} = \frac{\frac{\bar{X_n} - \mu}{\sigma / \sqrt{n}}}{\sqrt{\frac{1}{n-1} \frac{n-1}{\sigma^2}S^2}} \sim t_{n-1}\)
   \end{itemize}
 \end{theorem*}
 
 \begin{definition*}[Gamma Function] \vspace{-5pt}
   \[\Gamma(\alpha) := \int_0^\infty u^{\alpha-1}e^{-u} \, du \quad (\alpha > 0)\]
+\end{definition*}
+
+\begin{definition*}[Memorylessness]
+  \(X\) memoryless \(\stackrel{\text{def}}{\iff} \P(X \geq s + t \mid X \geq s) = \P(X \geq t)\)
 \end{definition*}
