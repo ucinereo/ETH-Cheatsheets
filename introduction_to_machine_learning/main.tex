@@ -1,0 +1,106 @@
+\documentclass[a4paper, 11pt]{article}
+
+% ------------------------------------------------------------------
+% Imports
+% ------------------------------------------------------------------
+
+% Formatting
+\usepackage[landscape, left=.5cm, top=.5cm, right=.5cm, bottom=.5cm]{geometry}
+\usepackage{flowfram}
+\usepackage[compact]{titlesec}
+\usepackage{parskip}
+
+% Language stuff
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+% Math imports
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+% Tables
+\usepackage{tabularx} % tabularx since the width should be handled automatically
+
+% Graphics
+\usepackage{graphics}
+
+% Miscellaneous
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{xcolor}
+
+% ------------------------------------------------------------------
+% Formatting
+% ------------------------------------------------------------------
+
+% Colors
+\definecolor{accent}{HTML}{2563eb}
+\definecolor{H1}{HTML}{2ecc71}
+\definecolor{H2}{HTML}{3498db}
+\definecolor{H3}{HTML}{9b59b6}
+
+% Column format
+\setlength{\columnsep}{5pt}
+\ffvadjustfalse
+\Ncolumn{4}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0cm}
+
+% Compact format
+\newcommand{\colorsection}[2]{\colorbox{#1}{\parbox{\dimexpr\linewidth-2\fboxsep}{\centering\ #2}}}
+\titlespacing*{\section}{0pt}{0ex}{0ex}
+\titleformat{\section}{\bfseries\color{white}}{}{0pt}{\colorsection{accent}}
+
+\titlespacing{\subsection}{0pt}{0ex}{0ex}
+\titleformat{\subsection}{\bfseries\color{black}}{}{0pt}{\colorsection{accent!50}}
+\linespread{0.5}
+
+% Misc
+\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue}
+\setlist{itemsep=0.2pt, topsep=0.5pt, leftmargin=4mm}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+
+% Change the top/bottom margin of math environment
+\setlength\abovedisplayskip{0pt}
+\setlength\belowdisplayskip{0pt}
+\setlength\abovedisplayshortskip{0pt}
+\setlength\belowdisplayshortskip{0pt}
+
+% definition environment
+\newtheoremstyle{compact_definition}{}{}{\normalfont}{}{\bfseries}{}{0em}{\thmnote{#3}: }
+\theoremstyle{compact_definition}
+\newtheorem*{definition}{Definition}
+
+% ------------------------------------------------------------------
+% Custom Commands
+% ------------------------------------------------------------------
+
+% Math general
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\renewcommand{\O}{\Omega}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\DeclareMathOperator{\Var}{\mathbb{V}}
+\DeclareMathOperator{\Cov}{Cov}
+
+% Misc
+\newcommand{\sdots}{\ifmmode\mathinner{\ldotp\kern-0.2em\ldotp\kern-0.2em\ldotp}\else.\kern-0.13em.\kern-0.13em.\fi}
+
+
+% ------------------------
+% Document
+% ------------------------
+
+\begin{document}
+
+% Title
+\begin{center}
+  \large Introduction to ML \\
+  \small \(\langle\)\href{https://google.com}{nicstuder@student.ethz.ch}\(\rangle\)
+\end{center}
+
+\end{document}
