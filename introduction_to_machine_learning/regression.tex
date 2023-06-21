@@ -1,0 +1,21 @@
+\section{Regression and Optimization}
+
+\begin{definition}[Square Error (featurized)]
+  \begin{gather*}
+    L(w) = \frac{1}{n}\sum(y_i - w^\top \phi_j(x_i)^2 = \frac{1}{n}||y - \Phi w||_2^2) \\
+    \nabla_w L(w) = \frac{2}{n}\Phi^\top (\Phi \hat{w} - y) \quad (\Phi^\top \Phi \ \text{psd})
+  \end{gather*}
+\end{definition}
+
+\begin{definition}[Gradient Descent]
+  \(w^{t+1} = w^t - \eta\nabla_wL(w^t)\)
+  \textit{Convergence}: \(||w^{t+1} - \hat{w}||_2^2 \leq \rho^{t+1} ||w^0 - \hat{w}||_2^2\) with speed \(\rho = ||I - \eta X^\top X||_{op}\) for \(\eta \leq \frac{2}{\lambda_{\max}}\). \(\eta^* : \frac{2}{\lambda_{\min} + \lambda_{\max}}, \rho^* : 1 - \eta^* \lambda_{\min} =\frac{\kappa - 1}{\kappa + 1}, \kappa : \frac{\lambda_{\max}}{\lambda_{\min}}\)
+\end{definition}
+
+\begin{definition}[Momentum]
+  \(w^{t+1} = w^t + \Delta w^{t-1} - \eta \nabla L(w^t)\)
+\end{definition}
+
+\begin{definition}[SGD]
+  \(w^{t+1} = w^t - \eta \nabla L_{\mathcal{S}}(w^t), \mathcal{S} \subset [n]\)
+\end{definition}
