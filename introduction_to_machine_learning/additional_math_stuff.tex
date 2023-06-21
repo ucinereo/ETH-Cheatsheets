@@ -1,0 +1,23 @@
+\section{Math Additions}
+
+\begin{definition}[Convexity] \
+  \begin{enumerate}
+    \setcounter{enumi}{-1}
+    \item \(f(\lambda x + (1 - \lambda y)) \leq \lambda f(x) + (1 - \lambda)f(y)\)
+    \item \(f(y) \geq f(x) + \langle \nabla f(x), y - x \rangle\)
+    \item \(D^2f(x) \succeq 0\) (psd)
+  \end{enumerate}
+  \begin{itemize}
+    \item \(\alpha f + \beta g, \alpha, \beta > 0\) convex if \(f, g\) convex.
+    \item \(f \circ g\) convex if \(f\) convex, \(g\) affine or \(f\) non-decreasing, \(g\) convex.
+    \item \(\max(f, g)\) convex if \(f, g\) convex.
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[Some derivatives]
+  \begin{itemize*}
+    \item \(\frac{d}{dx}Ax = A\)
+    \item \(\frac{d}{dx}w^\top x = w^\top\)
+    \item \(\frac{d}{dx} x^\top A x = (A + A^\top x)\)
+  \end{itemize*}
+\end{definition}
