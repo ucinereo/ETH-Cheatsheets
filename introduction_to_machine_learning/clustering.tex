@@ -1,0 +1,21 @@
+\section{Clustering / K-Means Problem}
+\begin{definition}[Problem.]
+  Minimize \(\sum \min_{j \in [k]} ||x_i - \mu_j||_2^2\)
+\end{definition}
+
+\begin{definition}[Lloyd's heuristic]
+  \begin{enumerate*}
+    \item Init \(\mu_j\)
+    \item Assign \(x_i\) to closest \(\mu_j\)
+    \item Set \(\mu_j\) as mean of assigned points.
+  \end{enumerate*}
+\end{definition}
+
+Converges to local optimum. \(\O(nkd)\) per iter.
+
+\begin{definition}[K-Means++]
+  \(\mu_1 = x_i\) with \(i \sim \unif\{1, \sdots, n\}\), then given \(\mu_{1:j}\), pick \(\mu_j+1 = x_i\) with prob. \(p(i) \propto \min_{l \in [j]} ||x_i - \mu_l^{(0)}||_2^2\).
+  \(\O(\log k)\) opt. sol.
+\end{definition}
+
+Pick \(k\) by heuristics, regularization, etc.
