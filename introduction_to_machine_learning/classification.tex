@@ -1,0 +1,57 @@
+\section{Classification}
+\begin{definition}[Zero-One Loss]
+  \(l_{0-1}(\hat{f}(x), y) = \I_{\{y \neq \text{sign} \hat{f}(x)\}}\).
+\end{definition}
+\begin{definition}[a\(_{0-1}\)]
+  \(l(\hat{y}, y): c_{FP}\I_{\hat{y} = 1, y = -1} + c_{FN}\I_{\hat{y} = -1, y=1}\)
+\end{definition}
+Prop. \(l(\hat{f}(x), y) = g(y\hat{f}(x))\):
+\begin{itemize*}
+  \item \(\searrow\)
+  \item conv.
+  \item diff.
+  \item 0 if \(y = \hat{y}\)
+  \item robust to noise
+  \item \(\textcolor{H1}{\lnot *}\)-Grad for \(y \neq \hat{y}\)
+\end{itemize*}
+
+\begin{definition}[Exponential loss]
+  \(g_{\exp}(y\hat{f}(x)) = e^{-y\hat{f}(x)}\) (\(\textcolor{H1}{*}\))
+\end{definition}
+
+\begin{definition}[Logistic Loss]
+  \(g_{\text{log}}(y\hat{f}(x)) = \log(1+e^{-y\hat{f}(x)})\)
+\end{definition}
+
+\begin{definition}[Linear loss]
+  \(g_{\text{lin}}(y\hat{f}(x)) = -y\hat{f}(x)\)
+\end{definition}
+
+\begin{definition}[Cross Entropy]
+  \(- \log(e^{f_y(x)} / \sum_{k \hat{=} \text{class}} e^{f_k(x)})\)
+\end{definition}
+
+\begin{definition}[Softmax]
+  \([\text{softmax}(f(x))]_i = e^{f_i(x)} / \sum_{k} e^{f_k(x)}\)
+\end{definition}
+
+\begin{definition}[Logistic/Sigmoid]
+  \(\sigma(z) = 1/ (1 + e^{-z})\)
+\end{definition}
+
+\subsection*{Linear Classifiers \(w^\top x\) (with log. loss)}
+GD \(\to w || w_{MM} = \argmax_{||w|| = 1} \margin(w)\) w/
+\(\margin(w) = \min_i y_i \langle w, x_i \rangle\) (min distance to \(x_i\))
+
+\begin{definition}[Hard SVM]
+  \(\min_w \, ||w||_2 \) s.t. \(\forall i. \ y_i w^\top x_i \geq 1\)
+\end{definition}
+
+\subsection{Other Methods}
+\begin{definition}[kNN]
+  Classify by \(k\) nearest neighbors classes.
+\end{definition}
+
+\begin{definition}[Decision Trees]
+  Tree w/ rules \(r_v(x) = \I_{\{x_i > t_i\}}\).
+\end{definition}
