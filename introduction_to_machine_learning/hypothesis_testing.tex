@@ -1,0 +1,41 @@
+\section{Hypothesis Testing}
+\vspace{-9pt}
+\begin{multicols}{2}
+  \begin{center}
+    \begin{tabular}{@{}c|cc@{}}
+      & \(y_{+1}\) & \(y_{-1}\) \\ 
+      \hline
+      \(\hat{y}_{+1}\)  & TP & FP/\textcolor{red}{T\(_I\)}   \\[1.5ex]
+      \(\hat{y}_{-1}\)  & FN/\textcolor{red}{T\(_{II}\)}   & TN \\ 
+      \hline
+    \end{tabular}
+  \end{center}
+
+  \(\text{FPR} = \frac{\text{\#FP}}{\#y = -1}\) \\
+  \(\text{FNR} = \frac{\text{\#FN}}{\#y = 1}\) \\
+  \(\textcolor{H1}{\text{Precision}} = \frac{\text{\#TP}}{\#\hat{y} = +1}\) \\
+  \(\textcolor{H1}{\text{Recall/TPR}} = \frac{\text{\#TP}}{\#y = +1}\)
+\end{multicols} \vspace{-11pt}
+\(\tau\) decision instead of \(0\): \(\tau\) small: TPR/FPR \(\uparrow\); \(\tau\) medium: FNR/FPR\(\downarrow\); \(\tau\) big: FPR/TPR \(\downarrow\)
+
+\begin{definition}[AUROC]
+  Plot TPR(1-FNR)/FPR, with diff. \(\tau\)
+\end{definition}
+
+\begin{definition}[F1-Score]
+  \(\frac{2}{\frac{1}{\text{recall}} + \frac{1}{\text{precision}}}\), want both large.
+\end{definition}
+
+\subsection*{Generalizations (Gen. Err. = GE)}
+\begin{definition}[Worst-group GE]
+  \(\sup_{g \in G} \E^g_{(x, y)} \I_{\{y \neq \hat{y}\}}\)
+\end{definition}
+
+\begin{definition}[Domain-shift GE]
+  Accurate on data \(\sim D_{\text{test}}\).
+\end{definition}
+
+\begin{definition}[Adversarially robust]
+  \(\E_{(x, y)}\sup_{x' \in T(x)} \I_{\{y \neq \hat{y}\}}\)
+\end{definition}
+
