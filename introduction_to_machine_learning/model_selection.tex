@@ -1,0 +1,49 @@
+\section{Model Selection}
+\begin{definition}[Empirical Risk]
+  \(L(\hat{f}; D) = \frac{1}{n}\sum l(\hat{f}(x_i), y_i)\)
+\end{definition}
+
+\begin{definition}[Exp. Estimation Err.]
+  \(\E_X l(\hat{f}_D(x), f^*(x))\)
+\end{definition}
+
+\begin{definition}[Gen. Err.]
+  \(L(\hat{f_D}; \P_{X, Y}) = \E_{X, Y} l(\hat{f}_D(X), Y)\)
+\end{definition}
+
+\begin{definition}[Test Err.]
+  \(\frac{1}{|D_{\text{test}}|} \sum l(\hat{f}(x), y) \stackrel{\text{LLN}}{\rightarrow} L(\hat{f}; \P_{X, Y})\)
+\end{definition}
+
+For \(\E[\text{Gen. Err.}]\): \(D = D_{\text{train}} \uplus D_{\text{val}} \uplus D_{\text{test}} \) \\ \(D_{\text{val}}\) is used for independent model selection.
+
+\begin{definition}[K-Fold CV]
+  \(D_{\text{train}}, D_{\text{val}} \stackrel{\text{find}}{\rightarrow} \lambda, \sdots \stackrel{\text{use}}{\rightarrow} \hat{f}_{D_{\text{train}} \uplus D_{\text{val}}}\)
+\end{definition}
+
+\subsection{Bias-Variance Tradeoff}
+\(\E[\text{Gen. Err.}]\) = \textcolor{H1}{Bias\(^2\)} + \textcolor{H2}{Variance} + \textcolor{H3}{Noise}
+\begin{align*}
+  \E[L(\hat{f}_D; \P_{X, Y})] = \textcolor{H1}{\E_X[(\E_D[\hat{f}_D(X)] - f^*(X))^2]} \\
+  + \textcolor{H2}{\E_X[\E_D[(\hat{f}_D(x) -\E_D[\hat{f}_D])^2]]} + \textcolor{H3}{\sigma^2}.
+\end{align*}
+
+\begin{definition}[\textcolor{H1}{Bias}]
+  Diff. of average model \(\E_D[\hat{f}_D]\) to \(f^*\).
+\end{definition}
+
+\begin{definition}[\textcolor{H2}{Variance}]
+  Diff. of some model \(\hat{f}\) to \(\E_D[\hat{f}_D]\).
+\end{definition}
+
+\subsection*{Regularization}
+\begin{definition}[Lasso]
+  \(\argmin(||y - Xw||_2^2 + \lambda ||w||_1) \quad \lambda \in \R\)
+\end{definition}
+
+\begin{definition}[Ridge]
+  \(\argmin(||y - Xw||_2^2 + \lambda ||w||_2) \quad \lambda \in \R\)
+  With closed form: \(\hat{w} = (X^\top X + \lambda I^d)^{-1}X^\top y\).
+\end{definition}
+
+Thus \(\lambda \nearrow \implies\) bias \(\nearrow\) and variance \(\searrow\).
