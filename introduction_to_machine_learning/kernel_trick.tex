@@ -1,0 +1,33 @@
+\section{Kernel Trick}
+As \(w \in \Im(\Phi^\top) \Rightarrow w = \Phi^\top \alpha; \ K_{i, j} = k(x_i, x_j)\).
+Conditions for a valid kernel function \(k\): \\
+\begin{itemize*}
+  \item \(k(x, z) = k(z, x)\)
+  \item \(K\) psd s.t. \(\forall x. \ x^\top K x \geq 0 \) \\
+\end{itemize*}
+Want to find map \(\phi\) s.t. \(k(x, y) = \langle\phi(x), \phi(y)\rangle\).
+
+\begin{definition}[Inner Product kernel]
+  \(k(x, z) = h(\langle x, z \rangle)\)
+\end{definition}
+
+\begin{definition}[Polynomial kernel]
+  \(k(x, z) = (1 + \langle x, z \rangle)^m\)
+\end{definition}
+
+\begin{definition}[RFB kernel]
+  \(k(x, z)  = \exp\left(\frac{||x - z||_2^\alpha}{\tau}\right)\) which is \textbf{Gaussian} if \(\alpha = 2\), \textbf{Laplacian} if \(\alpha = 1\).
+\end{definition}
+
+\begin{definition}[Kernel Composition]
+  \begin{itemize*}
+    \item \(k_1 \dotplus k_2\)
+    \item \(c\cdot k \ (c >0)\)
+    \item \(k((x \ y), (x' \ y')) = k_1(x \ x') \dotplus k_2(y \ y') \)
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Kernelized Ridge]
+  \(\frac{1}{n}||y - K\alpha||^2 + \lambda \alpha^\top K \alpha\)
+  The final model is \(\hat{f}(x) = \hat{\alpha}^\top [k(x_i, x)]_i\).
+\end{definition}
