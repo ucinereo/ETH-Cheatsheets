@@ -1,0 +1,35 @@
+\section{Generative Modeling with NN}
+Model word \(X_i \in [N]\) as categorical variable. \(p(\text{Sentence}) = p(X_1, \sdots, X_m) \to\) \(N^m - 1\) param.
+\textit{Key idea:} Estimate conditional distribution:
+\begin{gather*}
+  \P(X_t = x \mid X_{1:t-1} = x_{1:t-1}) \\ 
+  \approx \P(X_t = x \mid X_{t-k:t-1} = x_{t-k:t-1}, \theta) \\
+  := \cat(x \mid \text{softmax}(f(x_{t-k:t_1}, \theta)))
+\end{gather*}
+With \(f\) as NN with params \(\theta\). Use CE-Loss:
+\[L(\theta) = \sum_t \log \P(X_t = x \mid X_{t-k:t-1} = x_{t-k:t-1}, \theta)\]
+
+\begin{definition}[Self-supervision]
+  Use next word as label.
+\end{definition}
+
+\subsection{Simple transformer (decoder only)}
+\begin{definition}[Computational Model]
+  \(Z_0 = XW_e + W_p\) with \(X = (x_{t-k}, \sdots, x_{t-1}) \in \R^{k \times N}\) and \(W_e\) is (learnable \textit{word embedding} matrix), \(W_p\) is a (fixed) \textit{position embedding} matrix, \(Z_l = \) transformer block and \(P = \text{softmax}(Z_nW_e^\top)\).
+\end{definition}
+
+\begin{definition}[(Self-)Attention]
+  Learn to predict a weighted, directed graph. \(z_i^{l+1} = \sum_{j=1:k} \text{score}_{i, j}v_j^l\). Score measures directed similarity of word \(i\) to \(j\).
+  Each word has "key" vector \(k_i\) / "query" vector \(q_i\) \ "value" vector \(v_i\).
+  Self-attention restricts both sides to be the same. Then we can add masking, such that only attend to preceding words (adding \(m_{i, j} = - \infty\) if \(j > i\), else 0). \vspace{-11pt}
+  \begin{gather*}
+    \text{score}_{i, j} = \frac{\exp(q_i k_j^\top / \sqrt{d} + m_{i,j})}{\sum_{j'}\exp(q_i k_{j'}^\top / \sqrt{d} + m_{i,j'})} \\
+    Z' := \text{softmax}\left(\frac{QK^\top}{\sqrt{d_k}} + M\right)V \quad (\text{SM rowwise})
+  \end{gather*}
+\end{definition}
+
+\begin{definition}[Multi-Head Attention]
+  Use multiple queries, keys, values for each word (\(Q_h, K_h, V_h)\) each in \(\R^{k \times d_v}\). Then concatenate to get single output \(Z \in \R^{k \times (h\cdot d_v)}\).
+\end{definition}
+
+In reality "tokens" are used instead of words (e.g. BPE: byte-pair encoding). Text generated from LLMs often is not directly useful, need "RL from Human Feedback".
