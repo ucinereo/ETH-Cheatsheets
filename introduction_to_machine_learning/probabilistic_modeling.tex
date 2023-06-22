@@ -33,7 +33,6 @@ Best of distribution family \(\mathcal{P} = \{\P_{XY}; \theta \in \Theta\}\)
 
 \subsection[Generative]{Generative \(p(x, y) = p(x \mid y; \gamma) p(y; \pi)\)}
 \textbf{Setup Ex.} \(Y \sim \cat(\pi), \P_{X \mid y; \mu_y, \Sigma_y} \sim \normal(\mu_y, \Sigma_y)\) with \(\pi \in \Pi, \Sigma_y \in S\) and \( y \in \{1, 2\}\).
-\[p(x \mid y; \mu_y, \Sigma_y) = \frac{1}{(2\pi)^{\frac{d}{2}}(\det \Sigma_y)^{\frac{1}{2}}} e^{- \frac{(x - \mu_y)^\top \Sigma_y^{-1} (x - \mu_y)}{2}}\]
 
 \begin{definition}[Gaus. Naïve Bayes]
   \(\Sigma_y = \text{diag}[\sigma_{y,1}^2, \sdots, \sigma_{y,d}^2]\).
@@ -46,15 +45,12 @@ Best of distribution family \(\mathcal{P} = \{\P_{XY}; \theta \in \Theta\}\)
   \(\hat{y} = \argmax p(y \mid x) = \argmax p(y) \prod p(x_i \mid y)\).
 \end{definition}
 
-\begin{definition}[Linear Discriminant Analysis]
-  \(\forall y: \sigma_y = \sigma\)
+\begin{definition}[GBC/QDA]
+  Same as GNB, less restrictive: \[\hat{\Sigma}_y = \frac{1}{\#\{Y = y\}}\sum_{i:y_i = y} (x_i - \hat{\mu}_y)(x_i - \hat{\mu}_y)^\top.\]
 \end{definition}
 
-\pagebreak
-\begin{definition}[Gaussian Bayes Classifiers]
-  Same as GNB, but \(\hat{\Sigma}_y = \frac{1}{\#\{Y = y\}}\sum_{i:y_i = y} (x_i - \hat{\mu}_y)(x_i - \hat{\mu}_y)^\top\).
-  
-  Also called quadratic discriminant analysis.
+\begin{definition}[Linear Discriminant Analysis]
+  \(\forall y: \sigma_y = \sigma\)
 \end{definition}
 
 \subsection{Bayesian Modeling}
@@ -101,5 +97,5 @@ Find \(a^*(x) = \argmin \hat{\E}[l(a(x), y) \mid X = x]\)
   \item Obtain \(p(y \mid x)\)
 \end{enumerate*}
 \begin{align*}
-  \hat{y} &= \argmax_y p(y \mid x) \\ &= \argmax \log p(y) + \log(x \mid y)
+  \hat{y} &= \argmax_y p(y \mid x) \\ &= \argmax_y \log p(y) + \log(x \mid y)
 \end{align*}
