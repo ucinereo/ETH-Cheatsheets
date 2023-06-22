@@ -1,0 +1,79 @@
+\section{Gaussian Mixture Models}
+We assume \(p(x \mid \theta) = \sum_j w_j \normal(x\mid \mu_j, \Sigma_j)\) and thus the optimization problem is defined as
+\[\argmin - \sum_i \log \sum_j w_j \normal(x_i \mid \mu_j, \Sigma_j)\]
+Fitting a GMM \(\equiv\) GBC without labels.
+
+\subsection*{Hard-EM}
+\begin{definition}[E-Step]
+  Predict most likely class for each \(x_i\).
+  \begin{align*}
+    z_i^{(t)} &= \argmax_z p(z \mid x_i, \theta^{t-1}) \\
+    &= \argmax_z p(z \mid \theta^{(t - 1)})p(x_i \mid z, \theta^{(t-1)})
+  \end{align*}
+\end{definition}
+
+\begin{definition}[M-Step]
+  Compute MLE as for GBC.
+\end{definition}
+
+Uniform \(w_j\), identical spherical \(\Sigma_j \Rightarrow\) k-means
+
+\subsection{Soft-EM}
+\begin{definition}[E-Step]
+  Calc cluster membership weights:
+  \[\gamma_j^{(t)} = p(Z = j \mid x, \Sigma, \mu, w) = \frac{w_j p(x_i \mid \Sigma_j, \mu_j)}{\sum_l w_l p(x \mid \Sigma_l, \mu_l)}\]
+\end{definition}
+
+\begin{definition}[M-Step]
+  Fit cluster to weighted \(x_i\) (MLE):
+  \begin{gather*}
+    w_j^{(t)} = \frac{1}{n} \sum_{i=1}^n \gamma_j^{(t)}(x_i) \quad \; \mu_j^{(t)} = \frac{\sum_{i=1}^n x_i \cdot \gamma_j^{(t)}(x_i)}{\sum_{i=1}^n \gamma_j^{(t)}(x_i)} \\
+    \Sigma_j^{(t)} = \frac{\sum_{i=1}^n \gamma_j^{(t)}(x_i)(x_i - \mu_j^{(t)})(x_i - \mu_j^{(t)})^\top}{\sum_{i=1}^n \gamma_j^{(t)}(x_i)}
+  \end{gather*}
+\end{definition}
+
+Hard-EM props. + variance \(\to 0 \Rightarrow\) k-means.
+CV for \(j\), maximize log-likelihood on val set.
+
+\subsection{EM for SSL}
+\begin{definition}[E-Step]
+  For \(x_i\) with label \(y_i\): \(\gamma_j^{(t)}(x_i) = [j = y_i]\).
+\end{definition}
+\begin{definition}[GM Bayes Cl.]
+  \begin{enumerate*}
+    \item Est. \(\P_Y\)
+    \item Est.\(p(x \mid y)\) via GMM
+    \item \(p(y \mid x) = \frac{1}{z}p(y)p(x \mid y)\).
+  \end{enumerate*}
+\end{definition}
+
+\begin{definition}[Density Est.]
+  Anomaly detection/data imputation.  Compare est. density of \(x_i\) against threshold \(\tau\) (CV) \(\to\) control estimated FPR.
+\end{definition}
+
+\subsection{General EM}
+\textit{E}: expected sufficient statistic, \textit{M}: MLE
+
+\begin{definition}[E-Step]
+  Calculate the expected complete data log-likelihood (function of \(\theta\)):
+  \begin{align*}
+    Q(\theta; \theta^{(t-1)}) &= \E_Z[\log p(X, Z \mid \theta) \mid X, \theta^{(t-1)}] \\
+    &= \sum_i \sum_{z_i} \gamma_{z_i}(x_i) \log p(x_i, z_i \mid \theta)
+  \end{align*}
+
+  W/ \(\gamma_z(x) = p(z \mid x, \theta^{(t-1)})\), depends on \(\theta^{(t-1)}\).
+\end{definition}
+
+\begin{definition}[M-Step]
+  Max. \(\theta^{(t)} = \argmax_\theta Q(\theta; \theta^{(t-1)})\). Equivalent to train a GBC with weighted data. 
+\end{definition}
+
+Each EM-iteration increases data likelihood.
+
+\begin{definition}[EM-Init]
+  \(w\) unif, \(\mu\) k-m++, \(\Sigma\) spherical (\(S^2\))
+\end{definition}
+
+\begin{definition}[Degeneracy]
+  Loss \(\to\) \(-\infty\) as \(\mu \to x, \sigma \to 0\). Thus add \(\nu^2I\) to covariances (\(\nu\) by CV). Same as adding a Wishart prior on \(\Sigma\) and calc. MAP.
+\end{definition}
