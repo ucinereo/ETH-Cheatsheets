@@ -2,7 +2,7 @@
 
 \begin{definition}[Square Error (featurized)]
   \begin{gather*}
-    L(w) = \frac{1}{n}\sum(y_i - w^\top \phi_j(x_i)^2 = \frac{1}{n}||y - \Phi w||_2^2) \\
+    L(w) = \frac{1}{n}\sum(y_i - w^\top \phi_j(x_i)^2) = \frac{1}{n}||y - \Phi w||_2^2 \\
     \nabla_w L(w) = \frac{2}{n}\Phi^\top (\Phi \hat{w} - y) \quad (\Phi^\top \Phi \ \text{psd})
   \end{gather*}
 \end{definition}
