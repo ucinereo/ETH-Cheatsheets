@@ -16,3 +16,20 @@ Given \(\forall \theta_0: T_{\theta_0}(x_1, \ldots, x_n) \leq \alpha\). We defin
   &= 1 - \P_\theta(T_\theta(X_1, \sdots, X_n) \in K) \\
   &\geq 1 - \alpha.
 \end{align*}
+
+\subsection*{Approximative Confidence Interval}
+If \(X_i \sim \P(\cdot \mid \theta)\) and we want to find a confidence interval with some confidence level \(1 - \alpha\) for \(\theta\), we can use the CLT:
+
+\begin{enumerate}
+  \item Calculate \(c_{\neq} = \Phi^{-1}\left(1 - \frac{\alpha}{2}\right)\)
+  \item Transform \(\P(c_{\neq} \leq \frac{S_n - n \mu}{\sqrt{\sigma^2 n}} \leq c_{\neq}) = \P(\alpha \leq \theta \leq \beta)\)
+  \item Then \(C(X_1, \ldots, X_n) = [\alpha, \beta]\)
+\end{enumerate}
+
+\begin{theorem*}[Useful (introduced) inequalities]
+  \begin{itemize}
+    \item \(\theta \in [\frac{1}{2}, 1] \implies \frac{\sqrt{1 - \theta}}{\theta} \leq \sqrt{2}\)
+    \item \(\theta \in [0, 1] \implies \theta(1-\theta) \leq \frac{1}{4}\)
+  \end{itemize}
+  Can be used for approximative confidence intervals.
+\end{theorem*}
