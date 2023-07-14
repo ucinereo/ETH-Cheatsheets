@@ -13,10 +13,10 @@ For any random variable \(X: \Omega \to \R_+\) with non-negative values, the exp
 \end{proposition}
 
 \begin{proposition}
-  If \(\DX \subseteq \N_0\), then \(\E(X) = \sum_{j=1}^\infty \P(X > j)\).
+  If \(\DX \subseteq \N_0\), then \(\E(X) = \sum_{j=0}^\infty \P(X > j)\).
 \end{proposition}
 
-\begin{dtheorem*}[Expected Value of transformed RV, Discrete] \vspace{-5pt}
+\begin{dtheorem*}[Law of the unconscious statistician (LOTUS)] \vspace{-5pt}
   \[\E(\phi(X)) = \sum_{x \in \DX}\phi(x) \cdot p_X(x)\]
 \end{dtheorem*}
 
@@ -25,7 +25,7 @@ For any random variable \(X: \Omega \to \R_+\) with non-negative values, the exp
   \[\E(X) := \int_{\R} x \cdot f_X(x) \,dx\]
 \end{cdefinition*}
 
-\begin{ctheorem*}[Expected Value of transformed RV, continuous] \vspace{-5pt}
+\begin{ctheorem*}[LOTUS] \vspace{-5pt}
   \[\E(\phi(X)) = \int_\R \phi(x) \cdot f_X(x) \, dx\]
 \end{ctheorem*}
 
