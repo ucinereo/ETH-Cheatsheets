@@ -103,3 +103,11 @@
   Suppose \(X_1, \ldots, X_n\) are i.i.d with CDF \(F\). Then \(V = \max\{X_1, \ldots, X_n\}\) has CDF \(F_V(x) = F^n(x)\) and
   \(U = \min \{X_1, \ldots, X_n\}\) has CDF \(F_U(x) = 1 - (1 - F(x))^n\).
 \end{proposition}
+
+\begin{ctheorem*}[Transformation of Bivariate Random Variables]
+  Let \((X, Y)\) be two continuous R.V. with density \(f_{X, Y}\). If we have a bijective transformation \(U = g_1(X, Y), V = g_2(X, Y)\) and define the inverse as \(X = h_1(U, V)\) and \(Y = h_2(U, V)\), then the joint PDF for \((U, V)\) is:
+  \[f_{U, V}(u, v) = f_{X, Y}(h_1(u, v), h_2(u, v))|J| \quad J = \begin{bmatrix}
+    \frac{\partial h_1}{\partial u} & \frac{\partial h_1}{\partial v} \\
+    \frac{\partial h_2}{\partial u} & \frac{\partial h_2}{\partial v}
+  \end{bmatrix}\]
+\end{ctheorem*}
