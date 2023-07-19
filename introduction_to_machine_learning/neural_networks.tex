@@ -13,7 +13,7 @@
   \(\forall \epsilon_{>0}, \exists\)neural network that approximates any function within \(\epsilon\).
 \end{definition}
 
-\subsection{Forward Propagation}
+\subsection{Forward Propagation \(W \in \R^{out \times in}\)}
   \textit{Input l.}: \(v^{(0)} = [x; 1]\)
   \textit{Output l.}: \(f = W^{(L)}v^{(L-1)}\)
   \textit{Hidden l.}: \(z^{(l)} = W^{(l)}v^{(l-1)}\) \& \(v^{(l)} = [\varphi(z^{(l)}); 1]\)
@@ -21,9 +21,9 @@
 \subsection{Backward Propagation}
 \textcolor{H1}{Given from L+1}, \textcolor{H2}{to compute}, \textcolor{H3}{given from FP}.
 \begin{gather*}
-  (\nabla_{W^(L)}l)^\top =\textcolor{H2}{\frac{\partial l}{\partial f}}\textcolor{H3}{\frac{\partial f}{\partial W^{(L)}}} = \textcolor{H2}{\frac{\partial l}{\partial f}}\textcolor{H3}{v^{(L-1)}} \\
-  (\nabla_{W^(L-1)}l)^\top = \textcolor{H1}{\frac{\partial l}{\partial f}} \textcolor{H2}{\frac{\partial f}{\partial z^{(L-1)}}}\textcolor{H3}{\frac{\partial z^{(L-1)}}{\partial W^{(L-1)}}} = \textcolor{H1}{\sdots} \textcolor{H2}{\sdots}\textcolor{H3}{v^{(L-2)}}\\
-  (\nabla_{W^(L-2)}l)^\top = \textcolor{H1}{\frac{\partial l}{\partial f} \frac{\partial f}{\partial z^{(L-1)}}} \textcolor{H2}{\frac{\partial z^{(L-1)}}{\partial z^{(L-2)}}}\textcolor{H3}{\frac{\partial z^{(L-2)}}{\partial W^{(L-2)}}}
+  (\nabla_{W^{(L)}}l)^\top =\textcolor{H2}{\frac{\partial l}{\partial f}}\textcolor{H3}{\frac{\partial f}{\partial W^{(L)}}} = \textcolor{H2}{\frac{\partial l}{\partial f}}\textcolor{H3}{v^{(L-1)}} \\
+  (\nabla_{W^{(L-1)}}l)^\top = \textcolor{H1}{\frac{\partial l}{\partial f}} \textcolor{H2}{\frac{\partial f}{\partial z^{(L-1)}}}\textcolor{H3}{\frac{\partial z^{(L-1)}}{\partial W^{(L-1)}}} = \textcolor{H1}{\sdots} \textcolor{H2}{\sdots}\textcolor{H3}{v^{(L-2)}}\\
+  (\nabla_{W^{(L-2)}}l)^\top = \textcolor{H1}{\frac{\partial l}{\partial f} \frac{\partial f}{\partial z^{(L-1)}}} \textcolor{H2}{\frac{\partial z^{(L-1)}}{\partial z^{(L-2)}}}\textcolor{H3}{\frac{\partial z^{(L-2)}}{\partial W^{(L-2)}}}
 \end{gather*}
 Where error \(\delta^{(l)} = \varphi(z^{(l)}) \odot (W^{(l+1)\top} \delta^{(l_1)})\) \\ and \(\nabla_{W^{(l)}}l = \delta^{(l)}v^{(l-1)\top}\) to calc the gradient.
 

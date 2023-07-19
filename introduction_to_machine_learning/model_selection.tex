@@ -42,7 +42,7 @@ For \(\E[\text{Gen. Err.}]\): \(D = D_{\text{train}} \uplus D_{\text{val}} \uplu
 \end{definition}
 
 \begin{definition}[Ridge]
-  \(\argmin(||y - Xw||_2^2 + \lambda ||w||_2) \quad \lambda \in \R\)
+  \(\argmin(||y - Xw||_2^2 + \lambda ||w||_2^2) \quad \lambda \in \R\)
   With closed form: \(\hat{w} = (X^\top X + \lambda I^d)^{-1}X^\top y\).
 \end{definition}
 
