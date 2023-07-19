@@ -1,0 +1,28 @@
+\begin{tikzpicture}[
+  node distance=.4cm and 1cm,
+  box/.style={draw, rectangle, rounded corners, minimum width=2cm, align=center},
+  arrow/.style={->, shorten >=2pt, shorten <=2pt},
+  stage/.style={align=center, font=\small},
+  transformer/.style={draw, dashed, rectangle, rounded corners, inner sep=0.8cm}
+  ]
+
+  % Nodes
+  \node[box] (text_pos) {Text \&\\Position\\Embed};
+  
+  \node[box, below=of text_pos] (attention) {Masked Multi\\Self Attention};
+  \node[box, below=of attention] (norm1) {Layer\\Norm};
+  \node[box, below=of norm1] (feed_forward) {Feed\\Forward};
+  \node[box, below=of feed_forward] (norm2) {Layer\\Norm};
+  
+  \node[box, below=of norm2] (prediction) {Text\\Prediction};
+  
+  % Transformer box
+  \node[transformer, fit=(attention) (norm2), inner sep=.2cm] (transformer_box) {};
+  
+  % Arrows
+  \draw[arrow] (text_pos.south) --  (attention.north);
+  \draw[arrow] (attention) -- (norm1);
+  \draw[arrow] (norm1) -- (feed_forward);
+  \draw[arrow] (feed_forward) -- (norm2);
+  \draw[arrow] (norm2) -- (prediction);
+\end{tikzpicture}

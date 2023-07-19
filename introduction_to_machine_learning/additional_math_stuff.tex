@@ -3,7 +3,7 @@
 \begin{definition}[Convexity] \
   \begin{enumerate}
     \setcounter{enumi}{-1}
-    \item \(f(\lambda x + (1 - \lambda y)) \leq \lambda f(x) + (1 - \lambda)f(y)\)
+    \item \(f(\lambda x + (1 - \lambda) y) \leq \lambda f(x) + (1 - \lambda)f(y)\)
     \item \(f(y) \geq f(x) + \langle \nabla f(x), y - x \rangle\)
     \item \(D^2f(x) \succeq 0\) (psd)
   \end{enumerate}
@@ -24,4 +24,12 @@
 
 \begin{definition}[Density of \(\normal(\mu, \Sigma)\)]
   \[p(x \mid y; \mu_y, \Sigma_y) = \frac{1}{(2\pi)^{\frac{d}{2}}(\det \Sigma_y)^{\frac{1}{2}}} e^{- \frac{(x - \mu_y)^\top \Sigma_y^{-1} (x - \mu_y)}{2}}\]
+\end{definition}
+
+\pagebreak
+\begin{definition}[CNN-Formulas] \(\bm{C}\)han., \(\bm{K}\)er. size, \(m = \#\)Ker.
+  \begin{itemize}
+    \item Dim: \(f(W) \times f(H) \times m, f(i) = \frac{i + 2P - K}{S} + 1\)
+    \item Params: \(p = (K \cdot K \cdot C \textcolor{H3}{+ 1}) \cdot m\), \(\textcolor{H3}{+ 1} \hat{=}\) Bias
+  \end{itemize}
 \end{definition}
