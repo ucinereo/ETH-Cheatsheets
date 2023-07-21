@@ -880,7 +880,7 @@ Algorithm:
 $$
 \begin{align*}
 &\text{Result} = \{\mathcal{R}\} \\
-&\text{while(exists } \mathcal{R}_i \text{ in Result such that } \mathcal{R}_i \text{ is not BCNF}) \\
+&\text{while(exists } \mathcal{R}_i \text{ in Result such that } \mathcal{R}_i \text{ is not 4NF}) \\
 &\qquad \text{Let} \ \alpha \to\to \beta \ \text{be the evil MVD} \\
 &\qquad \mathcal{R}_i^1 = \alpha \cup \beta \\
 &\qquad \mathcal{R}_i^2 = \mathcal{R}_i - \beta \\
@@ -1503,7 +1503,7 @@ Operations might be interleaved but execution must be **equivalent** to some **s
 
 **Serial Schedule**: Transactions happen one after another.
 
-**Serializable**: If a schedule is equivalent to some serial schedule, even if there are interleavings. It is only the result that matters.
+**Serializable**: If a schedule is equivalent to some serial schedule, even if there are interleaving. It is only the result that matters.
 
 #### Isolation Levels
 There are many different isolation levels all with different trade-offs. The Isolation Level is a property of each transaction.
@@ -1513,11 +1513,11 @@ There are many different isolation levels all with different trade-offs. The Iso
 - Read Committed
 - Read Uncommitted
 
-Where the overhead increases by going up the list tne the concurrency decreases.
+Where the overhead increases by going up the list and  the concurrency decreases.
 
 **Dirty-Read**: A read is dirty if it was written by some uncommitted transaction.
 
-**Isolation level: Read Uncommitted**: A transaction may perform dirty reads. It benefits from being faster. (For example ABG/SUM/etc.)
+**Isolation level: Read Uncommitted**: A transaction may perform dirty reads. It benefits from being faster. (For example AVG/SUM/etc.)
 
 **Isolation level: Read Committed**: A transaction may **not** perform dirty reads. Stronger than Read Uncommitted, but still does not guarantee serializability.
 
@@ -1528,7 +1528,7 @@ Where the overhead increases by going up the list tne the concurrency decreases.
 **Isolation level: Repeatable Read**:
 - A transaction may not perform dirty reads
 - An item read multiple times cannot change value.
-- Stronger than Read Comitted, but still does not guarantee serializability
+- Stronger than Read Committed, but still does not guarantee serializability
 
 ![](assets/2023-06-29-14-41-37.png)
 This is repeatable read, as each tuple is only read once,but it is not serializable. This is called phantom tuple.
@@ -1652,6 +1652,9 @@ x-Axis is current lock and y-Axis is requested lock
 | **X**   | YES | No  | NO  | NO  | NO  | NO  |
 
 #### Isolation Levels with Locks
+We can twist the strict 2PL protocol to implement different isolation
+levels in SQL.
+
 - Serializable: Strict 2PL + Index Lock (Intuitively, lock not only existing objects, but also all other relevant objects that one could insert in the future)
 - Repeatable Read: Strict 2PL
 - Read Committed: S locks are released immediately
@@ -1675,17 +1678,17 @@ Another way to enforce concurrency would be to just pre-define a serial order, a
 - Each object is tagged with the timestamp of the last transaction that successfully reads/writes.
 - If $T_i$ tries to access an object "form the future" (i.e., an object $X$ with higher read/write timestamp thatn $TS(T_i)$), **abort and restart*
 
-> This protocol always creates a schedule that is conflict serializable.Furthermore it prevents deadlocks, as the transactions never waits.
+> This protocol always creates a schedule that is conflict serializable. Furthermore it prevents deadlocks, as the transactions never waits.
 
 **Problems**:
 - Starvation: Long transaction could "starve to death" (keeps getting canceled)
-- Cascading Abort: This is against th eACID properties
+- Cascading Abort: This is against the ACID properties
 
 ### Snapshot Isolation
 - When transaction $T$ starts it receives a timestamp $TS(T)$
 - All reads are carried out as of the DB version of $TS(T)$
 - All writes are carried out in a separate buffer
-- When a transaction commits, DBMS checks for conflicts  -- Abort $T_1$ is exists $T_2$, such that $T_2$ committed after $TS(T_1)$ and before $T_1$ commits, and $T_1$ and $T_2$ update the same object.
+- When a transaction commits, DBMS checks for conflicts  -- Abort $T_1$ if exists $T_2$, such that $T_2$ committed after $TS(T_1)$ and before $T_1$ commits, and $T_1$ and $T_2$ update the same object.
 
 **Advantages**:
 - Writes and readers do not block each other
@@ -1788,7 +1791,7 @@ Thus in summary the relationship between the different families of schedules:
 ![](assets/2023-06-30-09-56-11.png)
 
 > Strict 2PL ensures both **serializability**, as well as **strict** recoverability.
-> the intuition behind that is in $T_1$, the access to $X$ can only happen after $T_2$ commit/abort.
+> The intuition behind that is in $T_1$, the access to $X$ can only happen after $T_2$ commit/abort.
 
 ### Write-ahead log
 Assumptions:
@@ -1855,7 +1858,7 @@ If `COMMIT T` is not in the log -> incomplete transaction (UNDO them)
 If `COMMIT T` is in the log -> complete transaction (REDO them)
 
 ## Distributed Database Systems
-This chapter describes protocols which are need when we have a distributed DBMS.
+This chapter describes protocols which are needed when we have a distributed DBMS.
 
 ```
 Main Server    | HotelDB        | FlightDB       | CarDB
@@ -1881,7 +1884,7 @@ END;           |                |                |
 - Coordinator receives $N$ messages.
 - If once can send messages concurrently to worker, let latency to be $t$, need to wait: $3t$.
 
-**Scheme**:
+**Schema**:
 ![](assets/2023-06-30-14-03-22.png)
 
 **Case: One worker fails**: 
@@ -1896,12 +1899,12 @@ END;           |                |                |
 - If one can send messages concurrently to worker, let latency to be $t$, need to wait: $2Nt$.
 
 ### Distributed Query Processing
-There are different ways how a distributed can be constructed:
+There are different ways how a distributed system can be constructed:
 1. Shared Memory
 2. Shared Disk
 3. Shared Nothing (Master receives queries, workers are single-machine DBs)
 
-Why do we want a distributed BD?
+Why do we want a distributed DB?
 - Data is too large to fit into a single machine
 - Computation intensive queries that require computation power beyond a single machine to be fast.
 
