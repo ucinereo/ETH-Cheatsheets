@@ -185,13 +185,13 @@ Represent knowledge as a collection of facts, and doing inference using *mathema
 | $\Pi$             | Projection          | $\Pi_{A_1, \ldots A_n}(R)$ (keep subset of columns)                                                                        |
 | $\times$          | Cartesian Product   | $(x, y) \in R_1 \times R_2 \iff x \in R_1 \land y \in R_2$                                                                 |
 | $\rho$            | Renaming            | $\rho_{B_1, \ldots, B_n}(R)$ (change name of attributes)                                                                   |
-| $\bowtie$         | Natural Join        | $R_1(A, b) \bowtie R_2(B, C) = \Pi_{A, B, C}(\sigma_{R_1.B = R_2.B}(R_1 \times R_2))$                                      |
+| $\bowtie$         | Natural Join        | $R_1(A, B) \bowtie R_2(B, C) = \Pi_{A, B, C}(\sigma_{R_1.B = R_2.B}(R_1 \times R_2))$                                      |
 |                   |                     | $R(A, B, C) \bowtie S(D, E) \iff R \times S$                                                                               |
 |                   |                     | $R(A, B, C) \bowtie S(A, B, C) \iff R \cup S$                                                                              |
 | $\bowtie_\theta$  | Theta Join          | $R_1 \bowtie_\theta R_2 = \sigma_\theta(R_1 \times R_2)$                                                                   |
 | $\bowtie_{A = B}$ | Equi-Join           | $R_1 \bowtie_{A = B} R_2 = \sigma_{A = B}(R_1 \times R_2)$                                                                 |
 | $\div$            | Relational Division | $R \div S = \Pi_{R-S} R - \Pi_{R-S}((\Pi_{R-S}R) \times S - R)$ (find all $k_1$, which have an instance with all of $k_2$) |
-| $\ltimes_C$       | Semi-Join           | $R_1(A_1, \ldots, A_n) \ltimes_c R_2(B-1, \ldots, B_m) = \Pi_{A_1, \ldots A_n}(R_1 \bowtie_c R_2)$                         |
+| $\ltimes_C$       | Semi-Join           | $R_1(A_1, \ldots, A_n) \ltimes_c R_2(B_1, \ldots, B_m) = \Pi_{A_1, \ldots A_n}(R_1 \bowtie_c R_2)$                         |
 
 We have some further consequences: $R \bowtie S = (R \ltimes \Pi_B S) \bowtie S$.
 
