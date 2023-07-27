@@ -94,3 +94,12 @@ As this is asymmetric and thus makes it harder to reject \(H_0\) than accepting 
 
 \subsection{Paired two-sample z-, t-test}
 \(Z_i := X_i - Y_i \sim \Normal(\mu_1 - \mu_2, 2\sigma^2)\). Then do z-, t-Test.
+
+\subsection{Construct Tests}
+Let \(X_1, \ldots, X_n\) be discrete or continuous under \(\P_{\theta_0}\) and \(\P_{\theta_A}\), where \(\theta_0 \neq \theta_A\) both simple. Then the likelihood-quotient is: \vspace{-7pt}
+\[R(x_1, \ldots, x_n) = \frac{L(x_1, \ldots, x_n; \theta_A)}{L(x_1, \ldots, x_n; \theta_0)}.\]
+\(L(x_1, \ldots, x_n; \theta_0) = 0 \implies R(x_1, \ldots, x_n) = \infty\). Furthermore \(R \gg 1 \implies H_A > H_0\) and \(R \ll 1 \implies H_A < H_0\).
+
+\begin{definition*}[LQ-Test (\(c \geq 0\))] \vspace{-7pt}
+  \[T = R(X_1, \ldots, x_n) \quad \text{and} \quad K = (c, \infty]\]
+\end{definition*}
