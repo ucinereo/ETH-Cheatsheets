@@ -21,7 +21,7 @@
 \begin{ddefinition*}[Negative Binomial (\(X \sim \NB(r, p)\))]
   \textbf{Prerequisites:} \(\DX = \{r, r+1, \ldots\}, \, p \in [0, 1], \, r > 0\) \\
   \begin{tabularx}{\linewidth}{@{}ll@{}}
-    \(\bm{p_X(x)} = \binom{x - 1}{x}p^r(1 - p)^{x - r}\) & \(\bm{\E(X)} = \frac{r(1 - p)}{p}\) \\
+    \(\bm{p_X(x)} = \binom{x + r - 1}{x}p^r(1 - p)^{x - r}\) & \(\bm{\E(X)} = \frac{r(1 - p)}{p}\) \\
     \(\bm{\Var(X)} = \frac{r(1 - p)}{p^2}\)
   \end{tabularx}
 \end{ddefinition*}
