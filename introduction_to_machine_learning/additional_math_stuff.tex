@@ -14,11 +14,16 @@
   \end{itemize}
 \end{definition}
 
-\begin{definition}[Some derivatives]
+\begin{definition}[Derivatives (Denom. lay.)]
   \begin{itemize*}
-    \item \(\frac{d}{dx}Ax = A\)
-    \item \(\frac{d}{dx}w^\top x = w^\top\)
-    \item \(\frac{d}{dx} x^\top A x = (A + A^\top x)\)
+    \item \(\frac{\partial}{\partial x}Ax = A^\top\) \\
+    \item \(\frac{\partial}{\partial x}x^\top A = A\)
+    \item \(\frac{\partial}{\partial x} \alpha = \vec{0}\)
+    \item \(\frac{\partial}{\partial x}x^\top a = \frac{\partial}{\partial x} a^\top x = a\)
+    \item \(\frac{\partial}{\partial x} b^\top X x = A^\top b\)
+    \item \(\frac{\partial}{\partial x} x^\top A x = (A + A^\top) x\) \\
+    \item \(\frac{\partial}{\partial x} x^\top x = 2x\)
+    \item \(\frac{\partial}{\partial x} ||y - Xx||_2^2 = 2X^\top (Xx - y)\)
   \end{itemize*}
 \end{definition}
 
@@ -26,10 +31,44 @@
   \[p(x \mid y; \mu_y, \Sigma_y) = \frac{1}{(2\pi)^{\frac{d}{2}}(\det \Sigma_y)^{\frac{1}{2}}} e^{- \frac{(x - \mu_y)^\top \Sigma_y^{-1} (x - \mu_y)}{2}}\]
 \end{definition}
 
-\pagebreak
-\begin{definition}[CNN-Formulas] \(\bm{C}\)han., \(\bm{K}\)er. size, \(m = \#\)Ker.
-  \begin{itemize}
-    \item Dim: \(f(W) \times f(H) \times m, f(i) = \frac{i + 2P - K}{S} + 1\)
-    \item Params: \(p = (K \cdot K \cdot C \textcolor{H3}{+ 1}) \cdot m\), \(\textcolor{H3}{+ 1} \hat{=}\) Bias
-  \end{itemize}
+\subsection{Shortcuts, Tips and Tricks}
+\begin{definition}[Covariances and PCA]
+  \(\frac{1}{n}\sum_{i = 1}^n x_i x_i^\top = \frac{1}{n}X^\top X\). Let \(\lambda_1 \geq \ldots \geq \lambda_d \geq 0\) denote eigenvalues of \(\frac{1}{n}X^\top X\) and \(\sigma_i\) denote \(i\)-th singular value of \(X\), then \(\lambda_i = \sigma_i^2/n\). \(L(k) = \sum_{j=k+1}^d \lambda_j\).
+\end{definition}
+
+\begin{definition}[Trace \(\tr\)]
+  \begin{itemize*}
+    \item Linear
+    \item \(\tr(A B C D) = \tr(D A B C)\)
+    \item \(\tr(A) = \sum_i \lambda_i\)
+    \item \(\tr(XX^\top) = \sum_{i, j} X_{i, j}^2 = ||X||_2^2\)
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Kernels]
+  \textbf{Valid}:
+  \begin{itemize*}
+    \item \(\frac{1}{1 - xy}\)
+    \item \(2^{xy}\)
+    \item \(e^{k(x, y)}\)
+    \item \(\cos(x - y)\) \\
+    \item \(\min(x, y)\)
+    \item \(\frac{\min(x, y)}{\max(x, y)}\)
+    \item \(g(x)k(x, y) g(y)\)
+  \end{itemize*}
+  \textbf{Invalid}: {\color{red}
+  \begin{itemize*}
+    \item \(\max(x, y)\)
+    \item \(f(k(x, y))\), \(f\) any poly.
+    \item \(\cos(x + y)\)
+  \end{itemize*}}
+\end{definition}
+
+\begin{definition}[MLE]
+  \begin{itemize*}
+    \item \(\hat{\lambda}_{exp} = \hat{p}_{poi} = \hat{\mu}_{\mathcal{N}} = \frac{\sum x_i}{n}\)
+    \item \(\hat{p}_{geo} = \frac{n}{\sum x_i}\)
+    \item \(\hat{p}_{bin} = \frac{1}{N}\frac{\sum_{i=1}^N x_i}{n}\)
+    \item \(\hat{\sigma}_{\mathcal{N}} = \frac{1}{n-1}\sum(x_i - \hat{\mu}_{\mathcal{N}})^2\)
+  \end{itemize*}
 \end{definition}
