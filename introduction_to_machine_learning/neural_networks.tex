@@ -20,18 +20,18 @@
 
 \subsection{Backward Propagation}
 \textcolor{H1}{Given from L+1}, \textcolor{H2}{to compute}, \textcolor{H3}{given from FP}.
-\begin{gather*}
-  (\nabla_{W^{(L)}}l)^\top =\textcolor{H2}{\frac{\partial l}{\partial f}}\textcolor{H3}{\frac{\partial f}{\partial W^{(L)}}} = \textcolor{H2}{\frac{\partial l}{\partial f}}\textcolor{H3}{v^{(L-1)}} \\
-  (\nabla_{W^{(L-1)}}l)^\top = \textcolor{H1}{\frac{\partial l}{\partial f}} \textcolor{H2}{\frac{\partial f}{\partial z^{(L-1)}}}\textcolor{H3}{\frac{\partial z^{(L-1)}}{\partial W^{(L-1)}}} = \textcolor{H1}{\sdots} \textcolor{H2}{\sdots}\textcolor{H3}{v^{(L-2)}}\\
-  (\nabla_{W^{(L-2)}}l)^\top = \textcolor{H1}{\frac{\partial l}{\partial f} \frac{\partial f}{\partial z^{(L-1)}}} \textcolor{H2}{\frac{\partial z^{(L-1)}}{\partial z^{(L-2)}}}\textcolor{H3}{\frac{\partial z^{(L-2)}}{\partial W^{(L-2)}}}
-\end{gather*}
+\begin{align*}
+  (\nabla_{W^{(L)}}l)^\top &=\textcolor{H2}{\frac{\partial l}{\partial f}}\textcolor{H3}{\frac{\partial f}{\partial W^{(L)}}} = \textcolor{H2}{\frac{\partial l}{\partial f}}\textcolor{H3}{v^{(L-1)}} \\
+  (\nabla_{W^{(L-1)}}l)^\top &= \textcolor{H1}{\frac{\partial l}{\partial f}} \textcolor{H2}{\frac{\partial f}{\partial z^{(L-1)}}}\textcolor{H3}{\frac{\partial z^{(L-1)}}{\partial W^{(L-1)}}} = \textcolor{H1}{\sdots} \textcolor{H2}{\sdots}\textcolor{H3}{v^{(L-2)}}\\
+  (\nabla_{W^{(L-2)}}l)^\top &= \textcolor{H1}{\frac{\partial l}{\partial f} \frac{\partial f}{\partial z^{(L-1)}}} \textcolor{H2}{\frac{\partial z^{(L-1)}}{\partial z^{(L-2)}}}\textcolor{H3}{\frac{\partial z^{(L-2)}}{\partial W^{(L-2)}}}
+\end{align*}
 Where error \(\delta^{(l)} = \varphi(z^{(l)}) \odot (W^{(l+1)\top} \delta^{(l_1)})\) \\ and \(\nabla_{W^{(l)}}l = \delta^{(l)}v^{(l-1)\top}\) to calc the gradient.
 
 \subsection*{Overfitting and Robustness}
 To avoid \(0, *\) grad. keep \(\Var\) of activation const.
 Init \(W\): tanh: \(\normal(\frac{1}{n_{in}} \, \text{or} \, \frac{2}{n_{in} + n_{out}})\); relu: \(\normal(\frac{2}{n_{in}})\).
 
-\textbf{LR}: piecewise constant \(\searrow\) or w/ momentum.
+\textbf{GD}: \(\eta\) piecewise const. \(\downarrow\) or w/ momentum.
 \textbf{Prevent Overfitting}: \begin{itemize*}
   \item Dropout(Eval \(\hat{w} = wp\))
   \item Regularization
@@ -40,7 +40,12 @@ Init \(W\): tanh: \(\normal(\frac{1}{n_{in}} \, \text{or} \, \frac{2}{n_{in} + n
 \end{itemize*}
 
 \subsection{CNN and other architectures}
-Use \(v^{(l+1)} = \varphi(W * v^{(l)})\). Output of \(m\) different \(f \times f\) filter to an \(n \times n\) image with padding \(p\) and stride \(s\): \(l \times l \times m\) with \(l = \frac{n + 2p - f}{s} +1\).
+\begin{definition}[CNN-Formulas] \(\bm{C}\)han., \(\bm{K}\)er. size, \(m = \#\)Ker.
+  \begin{itemize}
+    \item Dim: \(f(W) \times f(H) \times m, f(i) = \frac{i + 2P - K_i}{S} + 1\)
+    \item Params: \(p = (K_W \cdot K_H \cdot C \textcolor{H3}{+ 1}) \cdot m\), \(\textcolor{H3}{+ 1} \hat{=}\) Bias
+  \end{itemize}
+\end{definition}
 
 \begin{definition}[Pooling Layers]
   Pool units to decrease width.
