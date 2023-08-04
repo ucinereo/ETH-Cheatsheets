@@ -101,5 +101,28 @@ Let \(X_1, \ldots, X_n\) be discrete or continuous under \(\P_{\theta_0}\) and \
 \(L(x_1, \ldots, x_n; \theta_0) = 0 \implies R(x_1, \ldots, x_n) = \infty\). Furthermore \(R \gg 1 \implies H_A > H_0\) and \(R \ll 1 \implies H_A < H_0\).
 
 \begin{definition*}[LQ-Test (\(c \geq 0\))] \vspace{-7pt}
-  \[T = R(X_1, \ldots, x_n) \quad \text{and} \quad K = (c, \infty]\]
+  \[T = R(X_1, \ldots, X_n) \quad \text{and} \quad K = (c, \infty)\]
 \end{definition*}
+
+\subsection{p-Value}
+\begin{definition*}[Ordered Teststatistic]
+  A family of tests \((T, K_t)_{t \geq 0}\) is ordered according to \(T\) if \(K_t \subset \R\) and \(s \leq t \implies K_t \subseteq K_s\).
+  \begin{itemize}
+    \item \(K_t = (t, \infty)\): Right tailed (\(H_A: \theta > \theta_0\))
+    \item \(K_t = (-\infty, -t)\): Left tailed (\(H_A: \theta < \theta_0\))
+    \item \(K_t = (-\infty, -t) \cup (t, \infty)\): Two-tailed (\(H_A: \theta \neq \theta_0\))
+  \end{itemize}
+\end{definition*}
+
+\begin{definition*}[\(p\)-Value]
+  Let \(H_0: \theta = \theta_0\) and \((T, K_t)_{t \geq 0}\) an ordered family of tests.
+  \[\text{\(p\)-Value}: \Omega \to [0, 1], \quad \omega \mapsto \P_{\theta_0}(T \in K_{T(\omega)})\]
+\end{definition*}
+
+Properties of the \(p\)-Value:
+\begin{enumerate}
+  \item If \(T\) continuous and \(K_t = (t, \infty)\), then the \(p\)-Value under \(\P_{\theta_0}\) is \(\Unif([0, 1])\).
+  \item For \(p\)-Value \(\gamma\) holds, that all tests with significance level \(\alpha > \gamma\) \(H_0\) will be rejected.
+\end{enumerate}
+
+Thus a small \(p\)-Value \(\implies H_0\) is likely to be rejected.
