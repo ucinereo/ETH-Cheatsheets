@@ -1,37 +1,37 @@
 \section{Joint Distributions}
 \begin{definition*}[Joint Distribution]
-  Let \(X_1, \ldots, X_n\) be random variables defined on the same probability space \((\O, \F, \P)\). Consider \(X = (X_1, \ldots, X_n)\). The joint distribution \(\P_X\) on the hyper set \(A \in \B^n\) where \(\B^n = \sigma(\{A_1 \times \cdots \times A_n \mid A_i \in \B\})\) is defined as:
+  Let \(X_1, \ldots, X_n\) be R.V. defined on the same probability space \((\O, \F, \P)\). Consider \(X = (X_1, \ldots, X_n)\). The joint distribution \(\P_X\) on the hyper set \(A \in \B^n\) where \(\B^n = \sigma(\{A_1 \times \cdots \times A_n \mid A_i \in \B\})\) is defined as:
   \[\P_X(A) = \P(X^{-1}(A)) = \P(\{\omega \in \O \mid X(\omega) \in A\})\]
 \end{definition*}
 
 \begin{ddefinition*}[Joint PMF]
-  Let \(X = X_1, \ldots, X_n\) be discrete random variables, defined on the same probability space.
+  Let \(X = X_1, \ldots, X_n\) be discrete R.V., defined on the same probability space.
   \[p_{X}(x_1, \ldots, x_n) = \P(X_1 = x_1, \ldots, X_n = x_n)\]
 \end{ddefinition*}
 
 \begin{ddefinition*}[Joint CDF, discrete]
-  Let \(X = X_1, \ldots, X_n\) be discrete random variables, defined on the same probability space.
+  Let \(X = X_1, \ldots, X_n\) be discrete R.V., defined on the same probability space.
   \[\scriptstyle F_X(x_1, \ldots, x_n) = \P(X_1 \leq x_1, \ldots, X_n \leq x_n) = \smashoperator{\sum_{y_1 \leq x_1, \ldots, y_n \leq x_n}} p(y_1, \ldots, y_n)\]
 \end{ddefinition*}
 
 \begin{proposition}
-  Let \(X_1, \ldots X_n\) be discrete random variables with \(X_i \in \DX_i\). Then \(Z = \phi(X_1, \ldots, X_n)\) is a discrete random variable with values in \(\DX = (\DX_1 \times \ldots \times \DX_n)\) and with distribution given by \(\forall z \in \DX\):
+  Let \(X_1, \ldots X_n\) be discrete R.V. with \(X_i \in \DX_i\). Then \(Z = \phi(X_1, \ldots, X_n)\) is a discrete random variable with values in \(\DX = (\DX_1 \times \ldots \times \DX_n)\) and with distribution given by \(\forall z \in \DX\):
   \[\P(Z = z) = \sum_{\substack{x_1 \in \DX_1, \ldots, x_n \in \DX_n \\ \phi(x_1, \ldots, x_n) = z}} \P(X_1 = x_1, \ldots, X_n = x_n)\]
 \end{proposition}
 
 \begin{dtheorem*}[Marginal distribution, discrete]
-  Let \(X_1, \ldots, X_n\) be discrete random variables with joint PMF. For every \(i\) we have \(\forall z \in \DX_i\):
+  Let \(X_1, \ldots, X_n\) be discrete R.V. with joint PMF. For every \(i\) we have \(\forall z \in \DX_i\):
   \[\P(X_i = z) = \smashoperator[r]{\sum_{x_1, \ldots x_{i-1}, x_{i+1}, \ldots, x_n}} p(x_1, \ldots, x_{i-1}, z, x_{x+1}, \ldots, x_n)\]
 \end{dtheorem*}
 
 \begin{proposition}
-  The expected values of joint discrete random variables can be written as:
+  The expected values of joint discrete R.V. can be written as:
   \[\E(\phi(X_1, \ldots, X_n)) = \smashoperator[r]{\sum_{x_1 \in \DX_1, \ldots, x_n \in \DX_n}} \phi(x_1, \ldots, x_n) \cdot p(x_1, \ldots, x_n)\]
 \end{proposition}
 
 \pagebreak
 \begin{cdefinition*}[Joint PDF]
-  Let the random variables \(X = X_1, \ldots, X_n\) be defined on the same probability space. We say these random variables have a joint PDF \(f_{X_1, \ldots, X_n} = f_X\) if for all subsets \(A \in \B^n\) it holds
+  Let the R.V. \(X = X_1, \ldots, X_n\) be defined on the same probability space. We say these R.V. have a joint PDF \(f_{X_1, \ldots, X_n} = f_X\) if for all subsets \(A \in \B^n\) it holds
   \begin{align*}
     \P_X(A) = \P((X_1, \ldots, X_n) \in A) \\
     = \int_A f_X(x_1, \ldots, x_n) \, dx_1 \ldots \,dx_n
@@ -39,7 +39,7 @@
 \end{cdefinition*}
 
 \begin{cdefinition*}[Joint CDF, continuous]
-  Let \(X = X_1, \ldots, X_n\) be continuous random variables, defined on the same probability space.
+  Let \(X = X_1, \ldots, X_n\) be continuous R.V., defined on the same probability space.
   \begin{align*}
     F_{X}(x_1, \ldots, x_n) = \P(X_1 \leq x_1, \ldots, X_n \leq x_n) \\
     = \int_{-\infty}^{x_1} \ldots \int_{-\infty}^{x_n} f_{X}(x_1, \ldots, x_n) \,dx_n \ldots \, dx_1
@@ -47,19 +47,19 @@
 \end{cdefinition*}
 
 \begin{proposition}
-  Let \(X_1, \ldots, X_n\) be continuous random variables with joint PDF and \(\phi: \R^n \to \R\). Then the expected value is defined as
+  Let \(X_1, \ldots, X_n\) be continuous R.V. with joint PDF and \(\phi: \R^n \to \R\). The expected value is defined as
   \begin{multline*}
     \E(\phi(X_1, \ldots, X_n)) = \\ \int_\R \ldots \int_\R \phi(x_1, \ldots, x_n) \cdot f(x_1, \ldots, x_n) \, dx_n \ldots \, dx_1
   \end{multline*}
 \end{proposition}
 
 \begin{ctheorem*}[Marginal density, continuous]
-  Let \(X_1, \ldots, X_n\) be continuous random variables with a joint PDF. For every \(i\) we have \(\forall z \in \DX_i\):
+  Let \(X_1, \ldots, X_n\) be continuous R.V. with a joint PDF. For every \(i\) we have \(\forall z \in \DX_i\):
   \[f_{X_i}(z) = \smashoperator{\int_{x_1, \ldots, x_{i-1}, x_{x+1}, \ldots, x_n}} f(x_1, \ldots, x_{i-1}, z, x_{i+1}, \ldots, x_n) \, dx_n \ldots \, dx_1\]
 \end{ctheorem*}
 
-\begin{theorem*}[Independence of joint random variables]
-  Let \(X_1, \ldots, X_n\) be random variables with \(p_{X_1}, \ldots, p_{X_n}\).
+\begin{theorem*}[Independence of joint Random Variables]
+  Let \(X_1, \ldots, X_n\) be R.V. with \(p_{X_1}, \ldots, p_{X_n}\).
   \begin{itemize}
     \item[] \(X_1, \ldots X_n\) are independent
     \item[\(\Leftrightarrow\)] \(p(x_1, \ldots, x_n) = p_{X_1}(x_1) \cdot \ldots \cdot p_{X_n}(x_n)\)
@@ -67,10 +67,9 @@
   \end{itemize}
 \end{theorem*}
 
-\pagebreak
 \subsection{Useful lemmas and theorems}
 
-\begin{definition*}[Distribution of transformed random variables]
+\begin{definition*}[Distribution of transformed Random Variables]
   Let \(X = (X_1, \ldots, X_n)\) and \(Y(\omega) = g(X(\omega))\) be two random variable with \(g: \R^n \to \R^m\). Then for any \(A \in \B(\R)\)
   \[\mu_Y(A) = \mu_X(g^{-1}(A)).\]
 \end{definition*}
@@ -97,6 +96,7 @@
 \begin{definition*}[Convolution]
   If \(X\) and \(Y\) are independent, then \(Z = X + Y\) has a density function, called the convolution:
   \[(f_X * f_Y) := f_Z(z) = \int_\R f_X(x)f_Y(z - x) \, dx\]
+  \[\forall k \in \N_0 : \P[X_1 + X_2 = k] = \sum_{j=0}^k \P[X_1 = j] \P[X_2 = k - j]\]
 \end{definition*}
 
 \begin{proposition}
@@ -109,5 +109,6 @@
   \[f_{U, V}(u, v) = f_{X, Y}(h_1(u, v), h_2(u, v))|J| \quad J = \begin{bmatrix}
     \frac{\partial h_1}{\partial u} & \frac{\partial h_1}{\partial v} \\
     \frac{\partial h_2}{\partial u} & \frac{\partial h_2}{\partial v}
-  \end{bmatrix}\]
+  \end{bmatrix}
+  \]
 \end{ctheorem*}
