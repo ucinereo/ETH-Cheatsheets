@@ -80,7 +80,7 @@
 \end{theorem*}
 
 \begin{example}
-  \(X_1, X_2 \sim U(0, 1)\), what is the joint CDF of \(Y = X_1 + X_2\) and \(Z = X_1 - X_2\)? \\
+  \(X_1, X_2 \sim U(0, 1)\), CDF of \(Y = X_1 + X_2, Z = X_1 - X_2\)? \\
   Then \(g(x_1, x_2) = (x_1 + x_2, x_1 - x_2)\) and \(B = \begin{pmatrix}
     1 & 1 \\
     1 & -1
@@ -94,9 +94,9 @@
 \end{proposition}
 
 \begin{definition*}[Convolution]
-  If \(X\) and \(Y\) are independent, then \(Z = X + Y\) has a density function, called the convolution:
+  If \(X, Y\) indep., then \(Z = X + Y\) has a density function:
   \[(f_X * f_Y) := f_Z(z) = \int_\R f_X(x)f_Y(z - x) \, dx\]
-  \[\forall k \in \N_0 : \P[X_1 + X_2 = k] = \sum_{j=0}^k \P[X_1 = j] \P[X_2 = k - j]\]
+  \[\forall k \in \N_0 : \P[X + Y = k] = \sum_{j=0}^k \P[X = j] \P[Y = k - j]\]
 \end{definition*}
 
 \begin{proposition}
@@ -105,10 +105,18 @@
 \end{proposition}
 
 \begin{ctheorem*}[Transformation of Bivariate Random Variables]
-  Let \((X, Y)\) be two continuous R.V. with density \(f_{X, Y}\). If we have a bijective transformation \(U = g_1(X, Y), V = g_2(X, Y)\) and define the inverse as \(X = h_1(U, V)\) and \(Y = h_2(U, V)\), then the joint PDF for \((U, V)\) is:
+  Let \((X, Y)\) be two R.V. with \(f_{X, Y}\). If we have a bijective transformation \(U = g_1(X, Y), V = g_2(X, Y)\) with inverses \(X = h_1(U, V)\) and \(Y = h_2(U, V)\), then:
   \[f_{U, V}(u, v) = f_{X, Y}(h_1(u, v), h_2(u, v))|J| \quad J = \begin{bmatrix}
     \frac{\partial h_1}{\partial u} & \frac{\partial h_1}{\partial v} \\
     \frac{\partial h_2}{\partial u} & \frac{\partial h_2}{\partial v}
   \end{bmatrix}
   \]
 \end{ctheorem*}
+
+\begin{theorem*}[CDF/PDF of \(Z = g(X, Y)\)]
+  \begin{enumerate}
+    \item For each \(z\), find the set \(A_z = \{(x, y): g(x, y) \leq z\}\)
+    \item Find the CDF \(F_Z(z) = \P(\{(x, y) \mid g(x, y) \leq z\}) = \int_\R \int_\R p_{X, Y}(x, y) \I_{\{(x, y) \in A_z\}} \, dx \, dy\)
+    \item The pdf is \(p_Z(z) = F'_Z(z)\)
+  \end{enumerate}
+\end{theorem*}
