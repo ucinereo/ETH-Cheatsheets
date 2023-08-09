@@ -51,7 +51,7 @@
       \begin{axis}[
           axis lines = middle,
           domain = -3:6,
-          ymin = -2,
+          ymin = -3,
           ymax = 3,
           width = \linewidth,
           height = 5.5cm,
@@ -63,28 +63,51 @@
           restrict y to domain=-10:10,
       ]
       
-      \addplot[red, smooth]{sin(deg(x))} node[pos=0.75] (endofplotsquare1) {};
-      \node [above,color=red] at (endofplotsquare1) {$\sin(x)$};
+      
+      \addplot[red, smooth, samples=500]{sin(deg(x))} node[pos=0.85] (endofplotsquare1) {};
+      \node [below,color=red] at (endofplotsquare1) {$\sin(x)$};
 
-      \addplot[green, smooth]{cos(deg(x))} node[pos=0.9] (endofplotsquare2) {};
+      \addplot[green, smooth, samples=500]{cos(deg(x))} node[pos=0.9] (endofplotsquare2) {};
       \node [above,color=green] at (endofplotsquare2) {$\cos(x)$};
 
-      \addplot[blue, smooth, samples=51]{tan(deg(x))} node[pos=0.05] (endofplotsquare3) {};
-      \node [above,color=blue] at (endofplotsquare3) {$\tan(x)$};
+      \addplot[blue, smooth, samples=500]{tan(deg(x))} node[pos=0.03] (endofplotsquare3) {};
+      \node [right,color=blue] at (endofplotsquare3) {$\tan(x)$};
       
-      \addplot[cyan, domain=-1:1]{acos(x)/180*pi} node[pos=0.2] (endofplotsquare4) {};
+      \addplot[cyan, domain=-1:1, samples=500]{acos(x)/180*pi} node[pos=0.3] (endofplotsquare4) {};
       \node [above,color=cyan] at (endofplotsquare4) {$\arccos(x)$};
 
-      \addplot[magenta] {atan(x)/180*pi} node[pos=0.6] (endofplotsquare5) {};
+      \addplot[magenta, samples=500] {atan(x)/180*pi} node[pos=0.6] (endofplotsquare5) {};
       \node [above,color=magenta] at (endofplotsquare5) {$\arctan(x)$};
 
-      \addplot[olive, domain=-1:1, samples=51, style=very thick]{asin(x)/180*pi} node[pos=1] (endofplotsquare6) {};
+      \addplot[olive, domain=-1:1, samples=500, style=very thick]{asin(x)/180*pi} node[pos=1] (endofplotsquare6) {};
       \node [above,color=olive] at (endofplotsquare6) {$\arcsin(x)$};
 
-      \addplot[orange, domain=0.001:6, samples=51]{ln(x)} node[pos=0.8] (endofplotsquare7) {};
+      \addplot[orange, domain=0.001:6, samples=500]{ln(x)} node[pos=0.8] (endofplotsquare7) {};
       \node [above,color=orange] at (endofplotsquare7) {$\ln(x)$};
 
       \end{axis}
+      
+      \begin{axis}[
+          axis lines = middle,
+          domain = -3:6,
+          xmin = -3,
+          xmax = 6,
+          x tick label style={yshift={2em}},
+          xticklabels={$-\frac{\pi}{2}$, $0$, $\frac{\pi}{2}$, $\pi$, $\frac{3\pi}{2}$},
+          xtick={-1.5707963267948966, 0.0, 1.5707963267948966, 3.141592653589793, 4.71238898038469},
+          ymin = -3,
+          ymax = 3,
+          width = \linewidth,
+          height = 5.5cm,
+          style = thick,
+          %grid = both,
+          %grid style = {line width=.1pt, draw=gray!10},
+          %major grid style = {line width=.2pt,draw=gray!50},
+          %minor tick num = 5,
+          restrict y to domain=-10:10,
+      ]
+      \end{axis}
+      
   \end{tikzpicture}
 \end{center}
 

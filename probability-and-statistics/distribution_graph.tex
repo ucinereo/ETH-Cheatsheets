@@ -6,7 +6,7 @@
 \tikzstyle{every node}=[font=\scriptsize]
 
 % Define vertices
-\node[cvertex] (Normal) {\(\Normal(\mu, \sigma\))};
+\node[cvertex] (Normal) {\(\Normal(\mu, \sigma^2\))};
 \node[dvertex, above left of=Normal] (Poisson) {\(\Poisson(\lambda)\)};
 \node[dvertex, above right of=Normal] (Binomial) {\(\Bin(n, p)\)};
 \node[dvertex, left of=Poisson] (NegBinomial) {\(\NB(r, p)\)};
