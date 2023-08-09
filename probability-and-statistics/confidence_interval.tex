@@ -22,7 +22,7 @@ If \(X_i \sim \P(\cdot \mid \theta)\) and we want to find a confidence interval 
 
 \begin{enumerate}
   \item Calculate \(c_{\neq} = \Phi^{-1}\left(1 - \frac{\alpha}{2}\right)\)
-  \item Transform \(\P(c_{\neq} \leq \frac{S_n - n \mu}{\sqrt{\sigma^2 n}} \leq c_{\neq}) = \P(\alpha \leq \theta \leq \beta)\)
+  \item Transform \(\P(-c_{\neq} \leq \frac{S_n - n \E(X_1)}{\sqrt{\Var(X_1) n}} \leq c_{\neq}) = \P(\alpha \leq \theta \leq \beta)\)
   \item Then \(C(X_1, \ldots, X_n) = [\alpha, \beta]\)
 \end{enumerate}
 
