@@ -33,7 +33,12 @@
 
 \subsection{Shortcuts, Tips and Tricks}
 \begin{definition}[Covariances and PCA]
-  \(\frac{1}{n}\sum_{i = 1}^n x_i x_i^\top = \frac{1}{n}X^\top X\). Let \(\lambda_1 \geq \ldots \geq \lambda_d \geq 0\) denote eigenvalues of \(\frac{1}{n}X^\top X\) and \(\sigma_i\) denote \(i\)-th singular value of \(X\), then \(\lambda_i = \sigma_i^2/n\). \(L(k) = \sum_{j=k+1}^d \lambda_j\).
+  \(\frac{1}{n}\sum_{i = 1}^n x_i x_i^\top = \frac{1}{n}X^\top X\). Let \(\lambda_1 \geq \ldots \geq \lambda_d \geq 0\) denote eigenvalues of \(\frac{1}{n}X^\top X\) (spd/sym) and \(\sigma_i\) denote \(i\)-th singular value of \(X\), then \(\lambda_i = \sigma_i^2/n\). \(L(k) = \sum_{j=k+1}^d \lambda_j\).
+  If \(\text{Cov}(X, Y) > 0\), then data: \(\nearrow\), \(< 0\): \(\swarrow\).
+  
+  \(\text{Cov}(X, Y) = \E((X - \E(X))(Y - \E(Y))^\top)\)
+
+  \(\Var(WX) = W \Var(X) W^\top\)
 \end{definition}
 
 \begin{definition}[Trace \(\tr\)]
@@ -66,9 +71,17 @@
 
 \begin{definition}[MLE]
   \begin{itemize*}
-    \item \(\hat{\lambda}_{exp} = \hat{p}_{poi} = \hat{\mu}_{\mathcal{N}} = \frac{\sum x_i}{n}\)
-    \item \(\hat{p}_{geo} = \frac{n}{\sum x_i}\)
+    \item \(\hat{p}_{poi} = \hat{\mu}_{\mathcal{N}} = \frac{\sum x_i}{n}\)
+    \item \(\hat{\lambda}_{exp} = \hat{p}_{geo} = \frac{n}{\sum x_i}\)
     \item \(\hat{p}_{bin} = \frac{1}{N}\frac{\sum_{i=1}^N x_i}{n}\)
-    \item \(\hat{\sigma}_{\mathcal{N}} = \frac{1}{n-1}\sum(x_i - \hat{\mu}_{\mathcal{N}})^2\)
+    \item \(\hat{\sigma}_{\mathcal{N}} = \frac{1}{n}\sum(x_i - \hat{\mu}_{\mathcal{N}})^2\)
   \end{itemize*}
+\end{definition}
+
+\begin{definition}[KL-Divergence]
+  Divergence between reference distribution \(P\) and another distribution \(Q\).
+  \begin{align*}
+    D_{KL}(P \parallel Q) &:= \E_{X \sim P}[\log \frac{p(X)}{q(X)}] \\
+    &= \int_\mathbb{R} p(x) \log \frac{p(x)}{q(x)}  dx
+  \end{align*}
 \end{definition}

@@ -19,13 +19,14 @@ With \(f\) as NN with params \(\theta\). Use CE-Loss:
 \end{definition}
 
 \begin{definition}[(Self-)Attention]
-  Learn to predict a weighted, directed graph. \(z_i^{l+1} = \sum_{j=1:k} \text{score}_{i, j}v_j^l\). Score measures directed similarity of word \(i\) to \(j\).
-  Each word has "key" vector \(k_i\) / "query" vector \(q_i\) \ "value" vector \(v_i\).
-  Self-attention restricts both sides to be the same. Then we can add masking, such that only attend to preceding words (adding \(m_{i, j} = - \infty\) if \(j > i\), else 0). \vspace{-11pt}
+  Learn to predict a weighted, directed graph. \(z_i^{l+1} = \sum_{j=1:k} \text{score}_{i, j}v_j^l\). Score measures directed similarity of word \(i\) to \(j\). Self-attention needs both sides to be the same phrase.
+  Each word has a "key" vector \(k_i\), a "query" vector \(q_i\) and a "value" vector \(v_i\) all \textbf{predicted}.
+  Then we can add masking, such that only attend to preceding words (adding \(m_{i, j} = - \infty\) if \(j > i\), else 0).
   \begin{gather*}
-    \text{score}_{i, j} = \frac{\exp(q_i k_j^\top / \sqrt{d} + m_{i,j})}{\sum_{j'}\exp(q_i k_{j'}^\top / \sqrt{d} + m_{i,j'})} \\
+    \text{score}_{i, j} = q_i^\top k_j \propto \frac{\exp(q_i k_j^\top / \sqrt{d_k} + m_{i,j})}{\sum_{j'}\exp(q_i k_{j'}^\top / \sqrt{d_k} + m_{i,j'})} \\
     Z' := \text{softmax}\left(\frac{QK^\top}{\sqrt{d_k}} + M\right)V \quad (\text{SM rowwise})
   \end{gather*}
+  Right of \(\propto\) is the normalized scaled dot product attention, to remove \(0\)-gradients.
 \end{definition}
 
 \begin{definition}[Multi-Head Attention]
