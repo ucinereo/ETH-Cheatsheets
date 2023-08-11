@@ -71,7 +71,7 @@ As this is asymmetric and thus makes it harder to reject \(H_0\) than accepting 
 
 \textbf{How to find \(c_>, c_<, c_{\neq}\):}
 \begin{align*}
-  c_> = t_{n-1} \quad c_< = t_{n-1, \alpha} = -t_{n-1, 1-\alpha} \quad c_{\neq} = t_{n-1, 1 - \frac{\alpha}{2}}
+  c_> = t_{n-1, 1 - \alpha} \quad c_< = t_{n-1, \alpha} = -t_{n-1, 1-\alpha} \quad c_{\neq} = t_{n-1, 1 - \frac{\alpha}{2}}
 \end{align*}
 
 \subsection{Unpaired two-sample z-, t-test}
@@ -103,6 +103,13 @@ Let \(X_1, \ldots, X_n\) be discrete or continuous under \(\P_{\theta_0}\) and \
 \begin{definition*}[LQ-Test (\(c \geq 0\))] \vspace{-7pt}
   \[T = R(X_1, \ldots, X_n) \quad \text{and} \quad K = (c, \infty)\]
 \end{definition*}
+
+\subsection{Binomial Test}
+Assume \(X_1, \ldots, X_n \sim \Ber(\theta)\) iid. under \(\P_\theta\), then the teststatistic \(T = \sum_{i = 1}^n X_i\) with derivation: 
+\[R\left(x_1, \ldots, x_n ; \theta_0, \theta_A\right) = \left(\frac{\theta_A\left(1-\theta_0\right)}{\theta_0\left(1-\theta_A\right)}\right)^{\sum_{i=1}^n x_i}\left(\frac{1-\theta_A}{1-\theta_0}\right)^n\]
+
+If \(H_A: \theta > \theta_0\) then \(\frac{\theta_A\left(1-\theta_0\right)}{\theta_0\left(1-\theta_A\right)} > 1\) and thus we can deduce: 
+\[R\left(x_1, \ldots, x_n ; \theta_0, \theta_A\right) \gg 1 \iff \sum_{i=1}^n x_i \gg 1\]
 
 \subsection{p-Value}
 \begin{definition*}[Ordered Teststatistic]

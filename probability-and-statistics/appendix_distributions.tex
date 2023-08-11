@@ -1,5 +1,4 @@
 \section{List of distributions}
-\subsection*{Discrete}
 
 \renewcommand{\arraystretch}{1.8}
 \begin{ddefinition*}[Bernoulli (\(X \sim \Ber(p)\))]
@@ -42,8 +41,13 @@
   \end{tabularx}
 \end{ddefinition*}
 
-\pagebreak
-\subsection*{Continuous}
+\begin{cdefinition*}[{Gamma (\(X \sim \Ga(\alpha, \lambda)\))}]
+  \textbf{Prerequisites:} \(\DX = \R_{>0}, \, \alpha > 0, \, \lambda > 0\) \\
+  \begin{tabularx}{\linewidth}{@{}lll@{}}
+    \(\bm{f_X(x)} = \frac{1}{\Gamma(\alpha)} \lambda^\alpha x^{\alpha - 1}e^{-\lambda x}\) & \(\bm{\E(X)} = \frac{\alpha}{\lambda}\) & \(\bm{\Var(X)} = \frac{\alpha}{\lambda^2}\)
+  \end{tabularx}
+\end{cdefinition*}
+
 \begin{cdefinition*}[{Uniform (\(X \sim \Unif([a, b])\))}]
   \textbf{Prerequisites:} \(a < b, \, x \notin [a, b] \implies f_X(x) = 0\) \\
   \begin{tabularx}{\linewidth}{@{}ll@{}}
@@ -72,17 +76,14 @@
   \end{tabularx}
 \end{cdefinition*}
 
+\begin{lemma}
+  \(X_1 \sim \Normal(\mu_1, \sigma_1^2), \ldots, X_n \sim \Normal(\mu_n, \sigma_n^2)\) ind., then \(\alpha + \sum_i \lambda_i X_i \sim \Normal(\alpha + \lambda_1 \mu_1 + \sdots + \lambda_n \mu_n, \lambda_1^2 \sigma_1^2 + \sdots + \lambda_n^2 \sigma_n^2)\)
+\end{lemma}
+
 \begin{cdefinition*}[{Chi-Squared (\(X \sim \chi^2(k)\))}]
   \textbf{Prerequisites:} \(k \in \N\), \(\DX = \R_{>0}\) if \(k = 1\), otw. \(\DX = \R_+\) \\
   \begin{tabularx}{\linewidth}{@{}lll@{}}
     \(\bm{f_X(x)} = \frac{1}{2^{\frac{k}{2}}\Gamma(\frac{k}{2})} x^{\frac{k}{2}-1}e^{-\frac{x}{2}}\) & \(\bm{\E(X)} = k\) & \(\bm{\Var(X)} = 2k\)
-  \end{tabularx}
-\end{cdefinition*}
-
-\begin{cdefinition*}[{Gamma (\(X \sim \Ga(\alpha, \lambda)\))}]
-  \textbf{Prerequisites:} \(\DX = \R_{>0}, \, \alpha > 0, \, \lambda > 0\) \\
-  \begin{tabularx}{\linewidth}{@{}lll@{}}
-    \(\bm{f_X(x)} = \frac{1}{\Gamma(\alpha)} \lambda^\alpha x^{\alpha - 1}e^{-\lambda x}\) & \(\bm{\E(X)} = \frac{\alpha}{\lambda}\) & \(\bm{\Var(X)} = \frac{\alpha}{\lambda^2}\)
   \end{tabularx}
 \end{cdefinition*}
 
