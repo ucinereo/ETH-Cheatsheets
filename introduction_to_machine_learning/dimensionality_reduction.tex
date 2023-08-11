@@ -3,7 +3,7 @@
   w^* = \argmin_{w, z, ||w||_2 = 1} \sum_i ||x_i - w z_i||_2^2 \\
   z_i^* = w^\top x_i \implies w^* = \argmin_{||w||_2 = 1} w^\top \Sigma w
 \end{gather*}
-With \(\Sigma = \frac{1}{n} \sum_i x_i x_i^\top\) as the empirical covariance matrix (assuming \(\mu = 0\)). Solution given by principal eigenvector of \(\Sigma\).
+With \(\Sigma = \frac{1}{n} \sum_i x_i x_i^\top\) as the empirical covariance matrix (assuming \(\mu = 0\)). Solution given by principal CV of \(\Sigma\). (= max. empirical var.)
 
 \begin{definition}[PCA problem (\(k > 1\))]
   \(w \to W\) s.t. \(W^\top W = I\), \(W = [v_1 | \ldots | v_k]\) the \(k\)-first eigenvectors of \(\Sigma\).
@@ -22,7 +22,7 @@ With \(\Sigma = \frac{1}{n} \sum_i x_i x_i^\top\) as the empirical covariance ma
     \alpha^* = \argmax_\alpha \frac{\alpha^\top K^\top K \alpha}{\alpha^\top K \alpha}
   \end{gather*} 
   With closed form solution (for any \(k\)): \\
-  \(\alpha^{(i)} = \frac{1}{\lambda_i} v_i\) from \(K = \sum_i \lambda_i v_i v_i^\top, \lambda_1 \geq \sdots \geq \lambda_n\).
+  \(\alpha^{(i)} = \frac{1}{\sqrt{\lambda_i}} v_i\) from \(K = \sum_i \lambda_i v_i v_i^\top, \lambda_1 \geq \sdots \geq \lambda_n\).
   \(\implies z_i = \sum_j \alpha_j^{(i)} k(x_j, x)\) as projection.
 \end{definition}
 

@@ -18,7 +18,7 @@ Best of distribution family \(\mathcal{P} = \{\P_{XY}; \theta \in \Theta\}\)
 
 \subsection[Discriminative]{Discriminative \(p(x, y) = \textcolor{H1}{p(y \mid x ; \gamma)} p(x; \pi)\)}
 
-\textbf{Ex. Reg.} \(X \sim \normal(\mu, 1), \P_{Y \mid x;w} = \N(w^\top x, 1)\):
+\textbf{Ex. Reg.} \(X \sim \normal(\mu, 1), \P_{Y \mid x;w} = \normal(w^\top x, 1)\):
 \begin{enumerate}
   \item \(\hat{\mu}_{\text{MLE}} = \frac{1}{n}\sum x_i\) as sample mean for \(\P_X\).
   \item \(\hat{w}_{\text{MLE}} = \argmin \sum(y_i - w^\top x_i)^2\) for \(\P_{Y \mid x; w}\).

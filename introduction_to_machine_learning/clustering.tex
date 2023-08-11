@@ -11,7 +11,7 @@
   \end{enumerate*}
 \end{definition}
 
-Converges to local optimum. \(\O(nkd)\) per iter.
+Conv. to local opt (exp.). \(\O(nkd)\) per iter. 
 
 \begin{definition}[K-Means++]
   \(\mu_1 = x_i\) with \(i \sim \unif\{1, \sdots, n\}\), then given \(\mu_{1:j}\), pick \(\mu_j+1 = x_i\) with prob. \(p(i) \propto \min_{l \in [j]} ||x_i - \mu_l^{(0)}||_2^2\).
