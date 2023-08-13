@@ -104,6 +104,11 @@ Let \(X_1, \ldots, X_n\) be discrete or continuous under \(\P_{\theta_0}\) and \
   \[T = R(X_1, \ldots, X_n) \quad \text{and} \quad K = (c, \infty)\]
 \end{definition*}
 
+\begin{theorem*}[Neyman-Pearson-Lemma]
+  Let \((T, K)\) be a LQ-Test with \(\alpha^* = \P_{\theta_0}(T \in K)\) and \((T', K')\) be a any test with significance level \(\alpha \leq \alpha^*\), then:
+  \[\P_{\theta_A}(T' \in K') \leq \P_{\theta_A}(T \in K)\]
+\end{theorem*}
+
 \subsection{Binomial Test}
 Assume \(X_1, \ldots, X_n \sim \Ber(\theta)\) iid. under \(\P_\theta\), then the teststatistic \(T = \sum_{i = 1}^n X_i\) with derivation: 
 \[R\left(x_1, \ldots, x_n ; \theta_0, \theta_A\right) = \left(\frac{\theta_A\left(1-\theta_0\right)}{\theta_0\left(1-\theta_A\right)}\right)^{\sum_{i=1}^n x_i}\left(\frac{1-\theta_A}{1-\theta_0}\right)^n\]
@@ -126,7 +131,7 @@ If \(H_A: \theta > \theta_0\) then \(\frac{\theta_A\left(1-\theta_0\right)}{\the
   \[\text{\(p\)-Value}: \Omega \to [0, 1], \quad \omega \mapsto \P_{\theta_0}(T \in K_{T(\omega)})\]
 \end{definition*}
 
-Properties of the \(p\)-Value:
+\pagebreak
 \begin{enumerate}
   \item If \(T\) continuous and \(K_t = (t, \infty)\), then the \(p\)-Value under \(\P_{\theta_0}\) is \(\Unif([0, 1])\).
   \item For \(p\)-Value \(\gamma\) holds, that all tests with significance level \(\alpha > \gamma\) \(H_0\) will be rejected.
