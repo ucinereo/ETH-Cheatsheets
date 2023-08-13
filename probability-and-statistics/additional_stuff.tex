@@ -23,10 +23,17 @@
   Let \(X\) be a R.V and \(t \in \R\), then the MGF is defined as:
   \[M_X(t) := \E(e^{tX})\]
   This is always well defined for \([0, \infty]\). Furthermore:
-  \[\frac{d^k}{dt^k} M_X(t) |_{t=0} = \E(X^k) = m_X^k.\]
+  \[\frac{d^k}{dt^k} M_X(t) |_{t=0} = \E(X^k) = m_X^k \qquad (\text{\(k\)-th Moment}).\]
 \end{definition*}
 
 \begin{theorem*}[Chernoff Bound]
   \(X_1, \ldots, X_n\) iid. s.t. \(\forall t \in \R: \E(e^{tX}) < \infty \), \(S_n := \sum\limits_{i=1}^n X_i\).
   \[\forall b \in \R \quad \P(S_n \geq b) \leq \exp(\underset{t \in \R}{\inf}(n \log M_X(t) - tb))\]
+  
+  For \(X \sim \Bin(n, p)\)
+  \begin{itemize}
+      \item \(\Pr[X \geq (1+\delta)\mathbb{E}[X]] \leq e^{-\frac{1}{3}\delta^2\mathbb{E}[X]} \quad \forall 0 < \delta \leq 1\)
+      \item \(\Pr[X \leq (1-\delta)\mathbb{E}[X]] \leq e^{-\frac{1}{2}\delta^2\mathbb{E}[X]} \quad \forall 0 < \delta \leq 1\)
+      \item \(\Pr[X \geq t] \leq 2^{-t} \quad \text{für } t \geq 2e\mathbb{E}[X]\)
+  \end{itemize}
 \end{theorem*}

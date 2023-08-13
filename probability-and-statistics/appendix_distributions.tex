@@ -41,6 +41,16 @@
   \end{tabularx}
 \end{ddefinition*}
 
+\begin{ddefinition*}[Hypergeometric (\(X \sim \text{HG}(N, K, n)\))]
+  Urn with \(n\) objects: \(r\) type 1, \(n-r\) type 2. Draw \(m\) w/o replacement. \(X\) is type 1 count in sample.
+  
+  \textbf{Prereq.:} \(\DX = \{0, 1, \ldots, \min(m, r)\}; n \in \N;m, r \in [n]\)
+  \begin{center}
+    \(k \in \DX: p_X(k) = \binom{r}{k} \binom{n - r}{m - k}/{\binom{n}{m}} \quad \E(X) = m r / n\)
+  \end{center}
+\end{ddefinition*}
+
+\pagebreak
 \begin{cdefinition*}[{Gamma (\(X \sim \Ga(\alpha, \lambda)\))}]
   \textbf{Prerequisites:} \(\DX = \R_{>0}, \, \alpha > 0, \, \lambda > 0\) \\
   \begin{tabularx}{\linewidth}{@{}lll@{}}
@@ -99,6 +109,7 @@
   \(X \sim \Normal(0, 1), \, Y \sim \chi^2(k) \, \text{ind.}\implies \frac{X}{\sqrt{\frac{1}{k}Y}} \sim t_k\)
 \end{lemma}
 
+\pagebreak
 \begin{cdefinition*}[{Cauchy}]
   \textbf{Prerequisites:} \(\DX = \R\) \\
   \begin{tabularx}{\linewidth}{@{}ll@{}}

@@ -29,6 +29,11 @@ For any random variable \(X: \Omega \to \R_+\) with non-negative values, the exp
   \[\E(\phi(X)) = \int_\R \phi(x) \cdot f_X(x) \, dx\]
 \end{ctheorem*}
 
+\begin{proposition}
+  Falls \(\DX = \R_{\geq 0}\), dann gilt
+  \[\E(X) = \int_0^\infty (1- F_X(x)) \, dx\]
+\end{proposition}
+
 \begin{theorem*}[Linearity of expected value] \vspace{-5pt}
   \[\E(\alpha X + \beta Y) = \alpha \E(X) + \beta \E(Y) \quad (a, b \in \R)\]
 \end{theorem*}
@@ -41,7 +46,7 @@ This theorem also holds for \(X_1, \ldots X_n\) and \(\phi_1, \ldots, \phi_n\).
 \pagebreak
 \subsection{Variance and Covariance}
 \begin{definition*}[Variance]
-  Let \(X\) be a random variable such that \(\E(X^2) < \infty\). The variance of \(X\) is defined as:
+  Let \(X\) be a random variable such that \(\E(X^2) < \infty\).
   \[\Var(X) = \sigma_X^2 = \E((X - \E(X))^2) = \E(X^2) - \E(X)^2\]
   \(\sigma_X\) is called the \textbf{standard deviation} of \(X\).
 \end{definition*}
@@ -51,11 +56,16 @@ This theorem also holds for \(X_1, \ldots X_n\) and \(\phi_1, \ldots, \phi_n\).
   \item If \(S = X_1 + \ldots + X_n\), with \(X_1, \ldots, X_n\) pairwise independent (or uncorrelated), then \(\sigma_S^2 = \sum_{i = 1}^n \sigma_{X_i}^2\)
 \end{itemize}
 
-\begin{definition*}[Covariance]
+\begin{definition*}[Covariance / Correlation]
   Let \(X, Y\) be two random variables with \(\E(X^2) < \infty\) and \(\E(Y^2) < \infty\), then their covariance is defined as
-  \[\Cov(X, Y) = \E((X - \E(X))(Y - \E(Y)))\]
+  \begin{align*}
+    \Cov(X, Y) &= \E((X - \E(X))(Y - \E(Y))) \\
+    &= \E(XY) - \E(X)\E(Y)
+  \end{align*}
   If \(\Cov(X, Y) = 0\), then they are uncorrelated.
+  \[\varrho(X, Y) = \text{corr}(X, Y) = \frac{\Cov(X, Y)}{\sqrt{\Var(X) \Var(Y)}}\]
 \end{definition*}
+
 \begin{itemize}
   \item \(\Cov(X, X) = \sigma_X^2 = \Var(X)\)
   \item \(X, Y\) independent \(\implies \Cov(X, Y) = 0\)
