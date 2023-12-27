@@ -1,0 +1,114 @@
+\section{The Digital Image}
+
+\begin{definition}[Problems]
+   Transmission inference, artifacts, scratches, noise, bad contrast / resolution, motion blur, spilling
+\end{definition}
+
+\begin{definition}[Image]
+  Pattern of a value varying in space and/or time.
+\end{definition}
+
+\begin{definition}[Pixel]
+  Discrete samples of a continuous image function.
+\end{definition}
+
+\subsection{Sensors}
+\begin{definition}[Charge Coupled Device (CCD)]
+  Contains sensor array (array of photosites [bucket of electrical charge]), ADC (digitalize measurement line by line) and image array. \textit{Sequential} readout.
+  \begin{itemize}[label=-]
+    \item \textbf{Blooming}: Oversaturation of photosites \(\implies\) flooding.
+    \item \textbf{Bleeding/Smearing}: Accumulate charges during readout.
+    \item \textbf{Dark Current}: Thermally generated charge \(\Rightarrow\) non-0 output. Reduced by cooling or avg. dark images and subtract.
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[CMOS]
+  Same sensor as CCD, but with amplifiers.
+  \begin{itemize*}
+    \item cheaper
+    \item lower power
+    \item less sensitive
+    \item per pixel amplification
+    \item random pixel access
+    \item no blooming
+    \item on chip integration
+  \end{itemize*}
+
+  For videos: rolling shutter due to sequential read-out of lines.
+\end{definition}
+
+\begin{definition}[Dynamic Vision Sensor (DVS)]
+  Smart pixels: ind. and async.
+\end{definition}
+
+\subsection{Sampling and Quantization}
+\begin{definition}[Sampling]
+  \begin{itemize*}
+    \item Cartesian (grid)
+    \item Hexagonal
+    \item non-uniform
+  \end{itemize*}
+
+  Reconstruction with e.g. bilinear interpolation.
+\end{definition}
+
+\begin{definition}[Quantization]
+  \(\R \to \Z\), lossy, simple quant. with \(k = 2^b\) levels.
+\end{definition}
+
+\begin{definition}[Resolutions]
+  \begin{itemize*}
+    \item \textit{Image}: px \(\times\) px
+    \item \textit{Geometric}: \#pixels per area
+    \item \textit{Radiometric}: \#bits per pixel
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Additive Gaussian Noise]
+  \(I(x, y) = f(x, y) + c, \ c \sim \normal(0, \sigma^2)\)
+\end{definition}
+
+\begin{definition}[Poisson Noise]
+  Shot noise for low light as \(\normal\) can be \(< 0\).
+\end{definition}
+
+\begin{definition}[Quantization Error]
+  \(c \sim \unif([-0.5, 0.5], [-0.5, 0.5])\)
+\end{definition}
+
+\begin{definition}[Rician noise]
+  Noise that appears in MRI.
+\end{definition}
+
+\begin{definition}[SNR]
+  Index of quality: \(s = \frac{F}{\sigma}, \quad F = \frac{1}{XY}\sum_{x=1}^X\sum_{y=1}^Y f(x, y)\). \textit{PSNR} (Peak SNR) \(s_\text{peak} = \frac{F_{\max}}{\sigma}\) often used in practice.
+\end{definition}
+
+\subsection{Color Cameras}
+\begin{definition}[Prism]
+  Separate light in 3 beams to 3 sensors.
+\end{definition}
+
+\begin{definition}[Filter Mosaic]
+  Coat rasterized filter (filter out different colors).
+\end{definition}
+
+\begin{definition}[Filter Wheel]
+  Rotate multiple filters in front of lens.
+\end{definition}
+
+\begin{definition}[CMOS]
+  Absorb colors at different depths \(\implies\) better quality.
+\end{definition}
+
+\begin{tabularx}{\linewidth}{|X|X|X|X|}
+  \hline
+  Approach & Prism & Mosaic & Wheel \\ \hline
+  \# Sensors & 3 & 1 & 1 \\ \hline
+  Separation & High & Avg. & Good \\ \hline
+  Cost & High & Low & Average \\ \hline
+  Framerate & High & High & Low \\ \hline
+  Artifacts & Low & Aliasing & Motion \\ \hline
+  Bands & 3 & 3 & \(\geq 3\) \\ \hline
+  Usage & High-End & Low-end & Scientific \\ \hline
+\end{tabularx}
