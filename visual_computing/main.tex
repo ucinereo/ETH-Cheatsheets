@@ -85,7 +85,13 @@
 \renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
 
 
-% definition environment
+% definition environments
+\newtheoremstyle{compact_theorem}{}{}{\color{H3}\normalfont}{}{\bfseries}{}{0em}{Thm. }
+\theoremstyle{compact_theorem}
+\newtheorem*{theorem}{Theorem}
+\newtheoremstyle{compact_theorems}{}{}{\color{H3}\normalfont}{}{\bfseries}{}{0em}{Thms. }
+\theoremstyle{compact_theorems}
+\newtheorem*{theorems}{Theorems}
 \newtheoremstyle{compact_definition}{}{}{\normalfont}{}{\bfseries}{}{0em}{\thmnote{#3}: }
 \theoremstyle{compact_definition}
 \newtheorem*{definition}{Definition}
@@ -131,6 +137,7 @@
 
 % Chapters
 \input{the_digital_image}
-Hello\input{image_segmentation}
+\input{image_segmentation}
+\input{image_filtering}
 
 \end{document}

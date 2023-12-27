@@ -1,0 +1,165 @@
+\section{Image Filtering}
+Modify pixels based on linear-combination of neighborhood.
+\[I'(x, y) = \sum_{(i, j) \in N(x, y)} K(x, y; i, j)I(i, j)\]
+
+\begin{definition}[Shift-Invariant]
+  \(K\) independent of \((x, y) \iff\) same for all px
+\end{definition}
+
+\begin{definition}[Separable \(K\)]
+  \(K(i, j) = f(i) \cdot g(j) \iff \text{rank}(K) = 1\)
+\end{definition}
+
+\begin{definition}[Correlation (\(K \circ I\))]
+  Also called \textit{pattern matching}.
+  \[I'(x, y) = \sum_{(i, j) \in N(x, y)} K(i, j) I(x + i, y + j)\]
+\end{definition}
+
+\begin{definition}[Convolution (\(K \ast I\))]
+  Also called \textit{point spread}.
+  \begin{align*}
+    I'(x, y) &= \sum_{(i, j) \in N(x, y)} K(i, j) I(x - i, y - j) \\
+    &= \sum_{(i, j) \in N(x, y)} K(-i, -j) I(x + i, y + j) \\
+  (f \ast g)(t) &= \int_{\R} f(t')g(t - t') \, dt' \qquad (\text{cont. case})
+  \end{align*}
+
+  \textit{Properties}:
+  \begin{itemize*}
+    \item Local (only \(N(x, y)\))
+    \item Associative
+    \item Shift invariant
+    \item Linear (\(k \ast (\alpha I_1 + \beta I_2) = \alpha(k \ast I_1) + \beta(k \ast I_2)\))
+    \item Commutative
+    \item Distributive over +
+  \end{itemize*}
+\end{definition}
+
+\begin{theorems}
+  \begin{itemize*}
+    \item \(K(i, j) = K(-i, -j) \implies \circ \equiv \ast\) \\
+    \item convolution is correlation with point-mirrored kernel \(K\)
+  \end{itemize*}
+\end{theorems}
+
+\begin{definition}[Edge Handling]
+  \begin{itemize*}
+    \item clip filter (black)
+    \item wrap around
+    \item copy edge
+    \item reflect across edge
+    \item vary filter near edge
+  \end{itemize*}
+\end{definition}
+
+
+\subsection{Special Filters}
+
+\begin{tabularx}{\linewidth}{cc}
+  Identity \(\delta\): \(\begin{bmatrix}
+    0 & 0 & 0 \\
+    0 & 1 & 0 \\
+    0 & 0 & 0
+  \end{bmatrix}\) & 
+  Left Shift (conv.): \(\begin{bmatrix}
+    0 & 0 & 0 \\
+    1 & 0 & 0 \\
+    0 & 0 & 0
+  \end{bmatrix}\)
+\end{tabularx}
+
+\subsection{Low-Pass Filters (Smoothing)}
+Suppress high frequencies (e.g. fine scale details, edges, noise).
+Result is equivalent to \textit{smoothing}.
+
+\begin{definition}[Box filter]
+  All same values, normalized so sum = 1.
+\end{definition}
+
+\begin{definition}[Gaussian Kernel]
+  \(G_\sigma = \frac{1}{2 \pi \sigma^2} \exp\left(-\frac{(x^2 + y^2)}{2\sigma^2}\right)\)
+
+  \textit{Properties}:
+  \begin{itemize*}
+    \item rotationally symmetric
+    \item single lobe in both domains
+    \item simple relation to \(\sigma\)
+    \item efficient
+  \end{itemize*}
+\end{definition}
+
+\begin{theorem}
+  \(G \sim \normal(0, \sigma^2) \implies G \ast G \sim \normal(0, (\sigma \sqrt{2})^2)\)
+\end{theorem}
+
+\subsection{High-Pass Filters (Sharpening)}
+Suppresses low frequencies which is equivalent to sharpening the edges. Suppressed low frequencies correspond to areas of constant gray level. \textit{Result equivalent to difference between original image and image filtered by Gaussian}.
+
+\begin{definition}[Construction]
+  HPF = Identity - LPF
+\end{definition}
+
+\begin{theorem}
+  Subtracting 1 from centre of LPF, gives negative HPF.
+  \((f - \delta) \ast a = f \ast a - \delta \ast a = f \ast a - a = -(a - (f \ast a))\)
+\end{theorem}
+
+\begin{definition}[Image Sharpening]
+  \(I' = I + \alpha |k \ast I|\), w/ \(k\) HPF and \(\alpha \in [0, 1]\)
+\end{definition}
+
+\begin{tabularx}{\linewidth}{cc}
+  Laplacian: \(\begin{bmatrix}
+    0 & 1 & 0 \\
+    1 & -4 & 1 \\
+    0 & 1 & 0
+  \end{bmatrix}\) & 
+  High-pass: \(\begin{bmatrix}
+    -1 & -1 & -1 \\
+    -1 & 8 & -1 \\
+    -1 & -1 & -1
+  \end{bmatrix}\)
+\end{tabularx}
+
+\subsection{Band Filters}
+
+\begin{definition}[Band pass filter]
+  LPF and HPF with cutoffs \(D_{LP} < D_{HP}\)
+\end{definition}
+
+\begin{definition}[Band reject filter]
+  LPF and HPF with cutoffs \(D_{LP} > D_{HP}\)
+\end{definition}
+
+\subsection{Differential Filters}
+Edges correspond to points with \textit{high} gradient magnitude. Thus we can approximate the derivative with a simple convolution:
+\begin{center}
+  \(\frac{\partial f}{\partial x} = \lim_{\epsilon \to 0}\left(\frac{f(x + \epsilon, y) - f(x, y)}{\epsilon}\right) \approx \left(\frac{f(x_{n+1}, y) - f(x_n, y)}{\varDelta x}\right)\)
+\end{center}
+
+\begin{definition}[Gradient Magnitude]
+  \(M(x, y) = \sqrt{\left(\partial_x f\right)^2 + \left(\partial_y f\right)^2}\)
+\end{definition}
+
+\begin{definition}[Gradient Angle]
+  \(\alpha(x, y) = \tan^{-1}\left(\partial_y f / \partial_x f\right)\)
+\end{definition}
+
+\begin{tabularx}{\linewidth}{cc}
+  Prewitt\(_x\): \(\begin{bmatrix}
+    -1 & 0 & 1 \\
+    -1 & 0 & 1 \\
+    -1 & 0 & 1
+  \end{bmatrix}\) & 
+  Sobel\(_x\): \(\begin{bmatrix}
+    -1 & 0 & 1 \\
+    -2 & 0 & 2 \\
+    -1 & 0 & 1
+  \end{bmatrix}\) \\
+  \(\frac{\partial I}{\partial x} = \begin{bmatrix}
+    -1 & 1
+  \end{bmatrix} \ast I\) &
+  \(\frac{\partial I}{\partial y} = \begin{bmatrix}
+    -1 & 1
+  \end{bmatrix}^\top \ast I\)
+\end{tabularx}
+
