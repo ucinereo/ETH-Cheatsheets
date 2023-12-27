@@ -1,0 +1,54 @@
+\section{Image Segmentation}
+\begin{definition}[Complete Segmentation]
+  \(I = \bigcup_{i=1}^N R_i \land \forall i \neq j. R_i \cap R_j = \emptyset\)
+\end{definition}
+
+\subsection{Thresholding}
+
+\begin{definition}[Thresholding]
+  Produce binary image \(B\) with in/out pixels.
+  \[B(x, y) = 1  \iff I(x, y) \geq \tau\]
+  Find \(\tau\) with ROC Analysis or greylevel histogram. Use surface coherence from the image context to improve result.
+\end{definition}
+
+\begin{definition}[Chromakeying]
+  Use BG color: \(B(x, y) = |I(x, y) - c_{BG}| > \tau\).
+  Problem: variation due to lighting, noise, etc.
+  Thus normalize the color per pixel: \(c = (\frac{R}{I}, \frac{G}{I}, \frac{B}{I}), \quad I = R + G + B\).
+\end{definition}
+
+\begin{definition}[Receiver Operating Characteristic (ROC) Analysis]
+  Find good \(\tau\) by plotting \(\text{TPR} = \frac{\text{TP}}{\text{TP} + \text{FN}}\) against \(\text{FPR} = \frac{\text{FP}}{\text{TN} + \text{FP}}\) for different \(\tau\). 
+  Choose point with gradient \(\beta = \frac{N}{P} \frac{V_{TN} + C_{FP}}{V_{TP} + C_{FN}}\).
+\end{definition}
+
+\subsection{Pixel Connectivity}
+Either 4- or 8-connectivity. A region is \(x\)-connected, if every pair of pixels contains a \(x\)-connected pixel path.
+
+\begin{definition}[Region Growing]
+  Start from \textit{seed point}. Add neighboring pixels that satisfy the inclusion criteria, repeat until fixed.
+
+  \begin{itemize}
+    \item \textbf{Seed region}: by hand or conservative thresholding
+    \item \textbf{Inclusion criteria}: greylevel thresholding, greylevel distribution model (include if \((I(x, y) - \mu^2)^2 < (n \sigma)^2\) and update \(\mu, \sigma\) after each iteration)
+    \item \textbf{Snakes}: Active contour (polygon) where each point moves away from seed while criteria is met.
+    Available \textit{smoothness} constraints.
+    Iteratively minimize the energy function \(E = E_{\text{tension}} + E_{\text{stiffness}} + E_{\text{image}}\).
+  \end{itemize}
+\end{definition}
+
+\subsection{Foreground-Background Segmentation}
+Need info about the BG \(I_{bg}\). Can be a color or even an image!
+\begin{itemize}
+  \item \textit{Simple distance measurement}: \(I_\alpha = |I - I_{bg}| < \tau\).
+  \item \textit{Mahalanobis distance}: \(I_\alpha = \sqrt{(I - I_{bg})^\top \Sigma^{-1}(I - I_{bg})}\) with emp. cov. \(\Sigma = \frac{1}{n - 1} \sum_{i=1}^n (x_i - \mu) (x_i - \mu)^\top\), \(\mu\) sample mean.
+\end{itemize}
+Mean and covariance per pixel, but one threshold for all pixels.
+
+\subsection{Morphological operators}
+Logical transformations based on comparison of neighboring pixels with a pattern.
+\begin{itemize}
+  \item \textbf{Erode} \(\ominus\): Erase FG pixel that has a BG neighbor.
+  \item \textbf{Dilate} \(\oplus\): Paint BG pixel to FG, if it has a FG neighbor.
+  \item \textbf{Opening}: \((I \ominus S) \oplus S \quad \bullet\) \textbf{Closing}: \((I \oplus S) \ominus S\)
+\end{itemize}
