@@ -1,0 +1,91 @@
+\section{Fourier Transform}
+Represent any function in terms of a new basis with basis vectors \(e^{-2\pi i(ux + uv)} = \cos(2\pi(ux + uv)) + i \sin(2\pi(ux + uv))\).
+
+\begin{definition}[1D-FT]
+  \(g(x) \overset{FT}{\to} \F(g)(u) = \int_{\R} g(x) e^{-i2\pi ux} \, dx\)
+\end{definition}
+
+\begin{definition}[2D-FT]
+  \(g(x, y) \overset{FT}{\to} \F(g)(u, v) = \iint_{\R^2} g(x, y) e^{-i2\pi (ux + vy)} \,dx \,dy\)
+\end{definition}
+
+\begin{definition}[Inverse FT]
+  \(g(x, y) = \iint_{\R^2} \F(g)(u, v) e^{i2\pi(ux + uy)} \,du \,dv\)
+\end{definition}
+
+\subsection{Properties of the Fourier Transform}
+
+\begin{definition}[Linearity]
+  \(F(ax(t) + by(t)) = a X(t) + b Y(t)\)
+\end{definition}
+
+\begin{definition}[Time-Shift]
+  \(\F(x(t \pm t_0)) = X(t)e^{\pm 2 \pi i t t_0}\)
+\end{definition}
+
+\begin{algorithm}[Convolution Theorem]
+  Convolution in img space is multiplication in frequency space: \(F \cdot G = \F(f \ast g)\), \(F \ast G = \F(f \cdot g)\)
+\end{algorithm}
+
+\begin{definition}[Unit Impulse]
+  \(\delta \ast f = f\)
+\end{definition}
+
+\subsection{Fourier Transform on Images}
+
+Consider the basis function \(B_{u,v}(x, y) = e^{-2\pi i(ux + uv)}\), then
+
+\begin{itemize*}
+  \item Magnitude of \((u, v) \sim\) frequency
+  \item Direction of \(\sim\) orientation
+\end{itemize*}
+
+\begin{definition}[FT on Images]
+ \(F = Uf\), where \(f\) is image and \(U\) the Fourier transform base.
+ \(\F(u,v) = \sum_{x = 0}^{N - 1}\sum_{y = 0}^{M - 1} f(x, y) e^{-2\pi i (\frac{x}{N}u + \frac{y}{M}v)}\).
+\end{definition}
+
+\begin{theorem}
+  All images have about the same magnitude transform.
+\end{theorem}
+
+\begin{definition}[Magnitude of \(z \in \C\)]
+  \(|z| = \sqrt{z \overline{z}} = \sqrt{a^2 + b^2}\)
+\end{definition}
+
+\begin{definition}[Phase of \(z \in \C\)]
+  \(\phi{z} =\left\{\begin{array}{ll}\arctan \left(\frac{b}{a}\right) & a>0 \\ \arctan \left(\frac{b}{a}\right)+\pi & a<0, b \geq 0 \\ \arctan \left(\frac{b}{a}\right)-\pi & a<0, b<0 \\ +\frac{\pi}{2} & a=0, b>0 \\ -\frac{\pi}{2} & a=0, b<0 \\ \text { undefined } & a=0, b=0\end{array}\right.\)
+\end{definition}
+
+\subsection{Sampling}
+Go from continuous function to discrete vector.
+
+\begin{definition}[Mathematical Description]
+  \(\int_{\R}f(x)\delta(x - a) \,dx = f(a)\). Thus sampling is equivalent to multiplying it by the Dirac delta.
+\end{definition}
+
+\begin{definition}[Image Sampling]
+  Discrete 2D-sampling
+  \[\begin{aligned} \operatorname{S}_{2 \mathrm{D}}(f(x, y)) & =\sum_{i=-\infty}^{\infty} \sum_{j=-\infty}^{\infty} f(x, y) \delta(x-i, y-j) \\ & =f(x, y) \sum_{i=-\infty}^{\infty} \sum_{j=-\infty}^{\infty} \delta(x-i, y-j)\end{aligned}\]
+\end{definition}
+
+\begin{definition}[Fourier transform of a sampled signal]
+  \begin{align*}
+    \F\left(\operatorname{S}_{2 \mathrm{D}}(f(x, y))\right) & = \F(f(x, y)) \ast \F\left(\sum_{i} \sum_{j} \delta(x-i, y-j)\right) \\
+    & = \sum_i \sum_j \F(u - i, v - j)
+  \end{align*}
+\end{definition}
+
+\begin{definition}[Sifting Property]
+  \(\int_{\R} f(x) \delta(x - a) \, dx = f(a)\)
+\end{definition}
+
+\begin{algorithm}[Nyquist Sampling Theorem]
+  Sampling frequency must be at least twice the highest frequency: \(\omega_S \geq 2 \cdot \omega\). If not the case, the signal needs to be bandlimited before sampling.
+\end{algorithm}
+
+\subsection{Image Restoration Problem}
+\begin{center}
+  \(f(x) \to h(x) \to g(x) \to \tilde{h}(x) \to f(x)\)
+\end{center}
+The "inverse" kernel \(\tilde{h}(x)\) should compensate \(h(x)\). May be determined by: \(\F(\tilde{h})(u, v) \cdot \F(h)(u, v) = 1\). Convolution with kernel \(h\) may cancel out some frequencies \& noise amplification. Avoided with regularization: \(\tilde{\F}(\tilde{h})(u, v) = \frac{\F(h)}{|\F(h)|^2 + \epsilon}\).
