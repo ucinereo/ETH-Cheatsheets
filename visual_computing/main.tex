@@ -34,6 +34,8 @@
 \usepackage{multicol}
 \usepackage{xcolor}
 \usepackage{etoolbox}
+\usepackage{mdframed}
+\input{md_fix.tex}
 \usepackage{tikz}
 \usetikzlibrary{positioning, shapes.multipart, fit}
 
@@ -86,15 +88,7 @@
 
 
 % definition environments
-\newtheoremstyle{compact_theorem}{}{}{\color{H3}\normalfont}{}{\bfseries}{}{0em}{Thm. }
-\theoremstyle{compact_theorem}
-\newtheorem*{theorem}{Theorem}
-\newtheoremstyle{compact_theorems}{}{}{\color{H3}\normalfont}{}{\bfseries}{}{0em}{Thms. }
-\theoremstyle{compact_theorems}
-\newtheorem*{theorems}{Theorems}
-\newtheoremstyle{compact_definition}{}{}{\normalfont}{}{\bfseries}{}{0em}{\thmnote{#3}: }
-\theoremstyle{compact_definition}
-\newtheorem*{definition}{Definition}
+\input{theorem_styles.tex}
 
 % ------------------------------------------------------------------
 % Custom Commands

@@ -5,17 +5,17 @@
 
 \subsection{Thresholding}
 
-\begin{definition}[Thresholding]
+\begin{algorithm}[Thresholding]
   Produce binary image \(B\) with in/out pixels.
   \[B(x, y) = 1  \iff I(x, y) \geq \tau\]
   Find \(\tau\) with ROC Analysis or greylevel histogram. Use surface coherence from the image context to improve result.
-\end{definition}
+\end{algorithm}
 
-\begin{definition}[Chromakeying]
+\begin{algorithm}[Chromakeying]
   Use BG color: \(B(x, y) = |I(x, y) - c_{BG}| > \tau\).
   Problem: variation due to lighting, noise, etc.
   Thus normalize the color per pixel: \(c = (\frac{R}{I}, \frac{G}{I}, \frac{B}{I}), \quad I = R + G + B\).
-\end{definition}
+\end{algorithm}
 
 \begin{definition}[Receiver Operating Characteristic (ROC) Analysis]
   Find good \(\tau\) by plotting \(\text{TPR} = \frac{\text{TP}}{\text{TP} + \text{FN}}\) against \(\text{FPR} = \frac{\text{FP}}{\text{TN} + \text{FP}}\) for different \(\tau\). 
@@ -25,7 +25,7 @@
 \subsection{Pixel Connectivity}
 Either 4- or 8-connectivity. A region is \(x\)-connected, if every pair of pixels contains a \(x\)-connected pixel path.
 
-\begin{definition}[Region Growing]
+\begin{algorithm}[Region Growing]
   Start from \textit{seed point}. Add neighboring pixels that satisfy the inclusion criteria, repeat until fixed.
 
   \begin{itemize}
@@ -35,7 +35,7 @@ Either 4- or 8-connectivity. A region is \(x\)-connected, if every pair of pixel
     Available \textit{smoothness} constraints.
     Iteratively minimize the energy function \(E = E_{\text{tension}} + E_{\text{stiffness}} + E_{\text{image}}\).
   \end{itemize}
-\end{definition}
+\end{algorithm}
 
 \subsection{Foreground-Background Segmentation}
 Need info about the BG \(I_{bg}\). Can be a color or even an image!

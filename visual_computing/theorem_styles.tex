@@ -1,0 +1,31 @@
+\newtheoremstyle{compact_theorem}{}{}{\color{H3}\normalfont}{}{\bfseries}{}{0em}{Thm. }
+\theoremstyle{compact_theorem}
+\newtheorem*{theorem}{Theorem}
+\newtheoremstyle{compact_theorems}{}{}{\color{H3}\normalfont}{}{\bfseries}{}{0em}{Thms. }
+\theoremstyle{compact_theorems}
+\newtheorem*{theorems}{Theorems}
+\newtheoremstyle{compact_definition}{}{}{\normalfont}{}{\bfseries}{}{0em}{\thmnote{#3}: }
+\theoremstyle{compact_definition}
+\newtheorem*{definition}{Definition}
+
+% Colored boxes for algorithms
+\mdfdefinestyle{mdalgorithm}{
+  hidealllines=true,
+  innertopmargin=2pt,
+  innerbottommargin=2pt,
+  innerrightmargin=2pt,
+  innerleftmargin=2pt,
+  leftmargin=0pt,
+  rightmargin=0pt,
+  frametitleaboveskip=2pt,
+  frametitlebelowskip=2pt,
+  theoremseparator={},
+  theoremspace={},
+  skipabove=2pt,
+  skipbelow=2pt,
+  backgroundcolor=H1!30,
+}
+
+\newenvironment{algorithm}%
+    {\begin{mdframed}[style=mdalgorithm]\begin{definition}}%
+    {\end{definition}\end{mdframed}}
