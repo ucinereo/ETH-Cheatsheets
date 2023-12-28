@@ -1,0 +1,72 @@
+\section{Image Compression}
+\subsection{JPEG Compression}
+
+\includegraphics*[width=\linewidth]{assets/jpeg.png}
+
+\begin{definition}[DCT (Discrete Cosine Transform)]
+  Like DFT, but only real.
+\end{definition}
+
+\begin{definition}[Quantization]
+  Reduces precision using  quantization matrix \(Q\).
+\end{definition}
+
+\begin{definition}[DC Splitting \& DPCM]
+  Encodes DC coefficients with DPCM.
+\end{definition}
+
+\begin{definition}[DC Huffman Coding]
+  Huffman Encoding of output.
+\end{definition}
+
+\begin{definition}[Zig Zag Scan]
+  Reorders AC coefficients in a zigzag pattern.
+\end{definition}
+
+\begin{definition}[AC Huffman Coding]
+  Huffman Encoding of output.
+\end{definition}
+
+\subsection{Image Pyramids}
+
+\begin{definition}[Scale-space representations]
+  From an original signal \(f(x)\) generate a parametric family of signals \(f^t(x)\) where fine-scale information is successively suppressed.
+
+  \textit{Applications}:
+  \begin{itemize*}
+    \item Search correspondence
+    \item edge tracking
+    \item control of detail and computational cost (textures)
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Gaussian Pyramid]
+  Per level smooth with Gaussian and downsample. Analyse on smallest image. 
+\end{definition}
+
+\pagebreak
+\begin{definition}[Laplacian Pyramid]
+  Preserve difference between unsampled Gaussian pyramid level and Gaussian pyramid level.
+  Band-pass filter: each level represent spatial frequencies that are unrepresented at other layers.
+  Analysis is to reconstruct the Gaussian pyramid, then take top layer.
+\end{definition}
+
+\subsection{Wavelets}
+
+\begin{definition}[1D-Discrete Wavelet transform]
+  Recursive application of two-band filter bank to the lowpass band of the previous stage yield octave band splitting.
+\end{definition}
+
+\begin{algorithm}[Haar transform]
+  Has two major sub-operations:
+  \begin{enumerate}
+    \item scaling captures info at different frequencies
+    \item translation captures info at different locations
+  \end{enumerate}
+
+  \textit{General Idea}: Split signal into low frequency and high frequency pass, then apply the process to low frequency band recursively.
+\end{algorithm}
+
+\begin{theorem}
+  Haar transform has poor energy compaction, thus not good for image compression.
+\end{theorem}
