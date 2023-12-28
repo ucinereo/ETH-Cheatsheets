@@ -136,14 +136,6 @@ Edges correspond to points with \textit{high} gradient magnitude. Thus we can ap
   \(\frac{\partial f}{\partial x} = \lim_{\epsilon \to 0}\left(\frac{f(x + \epsilon, y) - f(x, y)}{\epsilon}\right) \approx \left(\frac{f(x_{n+1}, y) - f(x_n, y)}{\varDelta x}\right)\)
 \end{center}
 
-\begin{definition}[Gradient Magnitude]
-  \(M(x, y) = \sqrt{\left(\partial_x f\right)^2 + \left(\partial_y f\right)^2}\)
-\end{definition}
-
-\begin{definition}[Gradient Angle]
-  \(\alpha(x, y) = \tan^{-1}\left(\partial_y f / \partial_x f\right)\)
-\end{definition}
-
 \begin{tabularx}{\linewidth}{cc}
   Prewitt\(_x\): \(\begin{bmatrix}
     -1 & 0 & 1 \\
@@ -158,8 +150,12 @@ Edges correspond to points with \textit{high} gradient magnitude. Thus we can ap
   \(\frac{\partial I}{\partial x} = \begin{bmatrix}
     -1 & 1
   \end{bmatrix} \ast I\) &
-  \(\frac{\partial I}{\partial y} = \begin{bmatrix}
-    -1 & 1
-  \end{bmatrix}^\top \ast I\)
+  Roberts: \(\begin{bmatrix}
+    0 & 1 \\
+    -1 & 0
+  \end{bmatrix} \begin{bmatrix}
+    1 & 0 \\
+    0 & -1
+  \end{bmatrix}\)
 \end{tabularx}
 

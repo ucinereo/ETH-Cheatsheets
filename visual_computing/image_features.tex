@@ -1,0 +1,168 @@
+\section{Image Features}
+
+\subsection{Template Matching}
+\textbf{Problem}: Locate an object, described by a template \(t(x, y)\).
+{\color{H1}Remove mean before template matching to avoid bias towards bright image areas.}
+Two ways to solve the problem:
+
+\begin{definition}[Minimize MSE]
+  \(E(p, q) = \sum_{x} \sum_{y}[I(x, y) - t(x - p, y - q)]^2\)
+\end{definition}
+
+\begin{definition}[Maximize Area Correlation]
+  \(r(p, q) = I(p, q) \ast t(-p, -q)\)
+\end{definition}
+
+\subsection{Edge Detection}
+
+\begin{definition}[Edge]
+  Local max in 1st \textit{or} zero crossing in 2nd derivative.
+\end{definition}
+
+\begin{definition}[Gradient Magnitude]
+  \(M(x, y) = \sqrt{\left(\partial_x f\right)^2 + \left(\partial_y f\right)^2}\)
+\end{definition}
+
+\begin{definition}[Gradient Angle]
+  \(\alpha(x, y) = \tan^{-1}\left(\partial_y f / \partial_x f\right)\)
+\end{definition}
+
+\begin{algorithm}[Gradient-Thresholding]
+  \begin{enumerate}
+    \item Calculate 1st derivative of img
+    \item \(B(x, y) = 1 \iff M(x, y) > \tau\)
+  \end{enumerate}
+
+  Properties:
+  \begin{itemize*}
+    \item thick edges
+  \end{itemize*}
+\end{algorithm}
+
+\begin{definition}[Laplacian operator]
+  Detect discontinuities by using second derivatives:
+  \(\nabla^2f(x, y) = \partial_{x^2} f(x, y) + \partial_{y^2}f(x, y)\) with discrete approximation kernel \textit{Laplacian} or negative \textit{High-pass}.
+
+  \begin{itemize*}
+    \item Isotropic (rotationally invariant)
+    \item zero-crossing mark edge locations
+    \item sensitive to fine details and noise \(\implies\) blur first
+  \end{itemize*}
+\end{definition}
+
+\begin{algorithm}[LoG]
+  Blur with Gaussian and Laplacian in one convolution:
+  \[\text{LoG}(x, y) = -\frac{1}{\pi \sigma^4} \left[1 - \frac{x^2 + y^2}{2\sigma^2}\right]\exp\left(-\frac{x^2 + y^2}{2\sigma^2}\right)\]
+
+  Calculate zero-crossings for edge detection.
+
+  Properties:
+  \begin{itemize*}
+    \item thin edges
+    \item lines are loops
+    \item sensitive to noise
+  \end{itemize*}
+\end{algorithm}
+
+\pagebreak
+\begin{algorithm}[Canny]
+  \begin{enumerate}
+    \item Smooth with Gaussian filter
+    \item Compute gradient magnitude and angle
+    \item Apply \textbf{non-maxima suppression} to gradient magnitude:
+    \textit{Quantize edge normal. If \(M(x, y)\) smaller than neighbor in edge normal direction, drop. Thin multi-pixel ridges.}
+    \item \textbf{Hysteresis} with \textbf{Double thresholding} to detect strong and weak edge px's. Partition output into three partitions:
+    \begin{center}
+      \(\text{no edge} < \tau_{\text{weak}} \leq \text{weak edge} < \tau_{\text{strong}} \leq \text{strong edge}\)
+    \end{center}
+    Reject weak edge px not connected with strong edge px.
+  \end{enumerate}
+
+  Properties:
+  \begin{itemize*}
+    \item thin edges, edges may be interrupted
+  \end{itemize*}
+\end{algorithm}
+
+\subsection{Primitive Detection}
+
+\begin{definition}[Parameter Space]
+  Space of possible parameter values that define a particular mathematical primitive.
+\end{definition}
+
+\begin{definition}[Line Parameterization]
+  \begin{enumerate}
+    \item \(y = ax + b\): infinite slope, vertical lines cannot be detected. Param space: \(b = -x_i a + y_i\)
+    \item \(x \cos \theta + y \cdot \sin \theta = \rho\): Avoids infinite slope.
+  \end{enumerate}
+\end{definition}
+
+\begin{algorithm}[Hough Transform]
+  \begin{enumerate}
+    \item Subdivide param space into discrete bins, set bin-count to 0 for all bins.
+    \item Draw \textbf{multiple} lines through \((x, y)\) in param space for each edge pixel \((x, y)\) and increment counts along line.
+    \item Detect peaks in bins. These are the edge lines.
+  \end{enumerate}
+\end{algorithm}
+
+\begin{definition}[Hough Transform for circles]
+  If \(r\) known: calculate circles with radius \(r\) around edge pixels. Where lots of them meet is the center of a circle. Else we use 3D hough transform with parameters \(x_0, y_0, r\).
+\end{definition}
+
+\subsection{Keypoint / Corner Detection}
+Edges well localized only in one direction \(\to\) detect corners.
+\textit{Desired Properties}:
+\begin{itemize*}
+  \item accurate localization
+  \item Invariance against shift, rotation, scale, brightness change
+  \item Robust against noise, high repeatability
+\end{itemize*}
+
+\begin{definition}[Local displacement sensitivity]
+For patch at point \((x, y)\), it is the MSE intensity change given a displacement vector \(\Delta\).
+It can be approximated by \(S(\Delta) = \Delta^\top M \Delta\)
+where \(M\) is the normal matrix, given by \(\sum_{(x, y) \in \text{window}} \nabla^2 I(x, y)\).
+
+\end{definition}
+
+
+\begin{algorithm}[Harris Corner Detection]
+  Find points with large \(\min \Delta^\top M \Delta\) for \(||\Delta|| = 1\), which is equivalent to maximize the EVs of \(M\).
+
+  Calculate "cornerness" with \(C(x, y) = \det(M) - k \cdot \tr(M)^2 = \lambda_1 \lambda_2 - k(\lambda_1 + \lambda_2)^2\) where \(k \in [0.04, 0.06]\).
+
+  Furthermore we have the relation:
+
+  \begin{center}
+    \begin{tabularx}{\linewidth}{XX}
+      \(\lambda_1, \lambda_3\) small \(\implies\) flat & \(\lambda_2 \gg \lambda_1 \implies\) edge \\
+      \(\lambda_2 \gg \lambda_1 \implies\) edge & \(\lambda_1, \lambda_3\) small \(\implies\) flat
+    \end{tabularx}
+  \end{center}
+
+  Thus we use a threshold \(\tau\) to decide if it is a corner.
+
+  Properties:
+  \begin{itemize*}
+    \item Invariant to brightness offset
+    \item Invariant to shift and rotation
+    \item Not invariant to scaling
+  \end{itemize*}
+\end{algorithm}
+
+For scale invariance, there is another algorithm:
+
+\begin{algorithm}[Lowe's SIFT features]
+  Look for strong response of DoG filter, only look at local maxima in both position and scale.
+  \[\text{DoG}(x, y) = \frac{1}{\sqrt{k}} e^{- \frac{x^2 + y^2}{(k\sigma)^2}} - e^{- \frac{x^2 + y^2}{\sigma^2}} \quad (\text{e.g.} \ k = \sqrt{2})\]
+
+  \textbf{Orientation}: Create histogram of local gradient directions computed at selected scale, assign canonical orientation at peak of smoothed histogram. Get a SIFT descriptor (threshold image gradients are samples over \(16 \times 16\) array of locations in scale space) and do matching with these.
+
+  Properties:
+  \begin{itemize*}
+    \item Invariant to scale
+    \item Invariant to shift and rotation
+    \item Invariant to brightness offset
+    \item Invariant to viewpoint
+  \end{itemize*}
+\end{algorithm}
