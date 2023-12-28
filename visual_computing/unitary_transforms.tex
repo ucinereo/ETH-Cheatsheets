@@ -1,0 +1,73 @@
+\section{Unitary Transforms}
+
+\begin{definition}[Unitary Transform]
+  Transform \(A\) unitary \(\iff A^{-1} = A^H\)
+\end{definition}
+
+\begin{theorem}
+  \(A\) unitary \(\implies \forall f: ||Af||^2 = ||f||^2\).
+  Thus rotation. Energy conserved, but often unevenly distributed among coeffs.
+\end{theorem}
+
+\begin{definition}[Vectorization]
+  Image rewritten as vector of dimension \(H \cdot W\). 
+\end{definition}
+
+\begin{definition}[Linear Image Processing]
+  \(g = Hf\) and \(H\) need not be square.
+\end{definition}
+
+\begin{definition}[Image collection]
+  \(F = [f_1 \ f_2 \ \ldots \ f_n]\)
+\end{definition}
+
+\begin{definition}[Autocorrelation Function]
+  \(R_{ff} = \E[f_i \cdot f_i^H] = \frac{1}{n} F \cdot F^H\). 
+\end{definition}
+
+\begin{definition}[Autocorrelation Matrix]
+  \(R_{cc} = \E[c \cdot c^H] = A R_{ff} A^H\) w/ \(c = Af\)
+\end{definition}
+
+\begin{definition}[Eigenmatrix of \(R_{ff}\)]
+  \(\Phi\) s.t. \(R_{ff}\Phi = \Phi \Lambda\), with columns as set of eigenvectors and unitary. \(\Lambda = \text{diag}(\lambda_0, \ldots, \lambda_{HW - 1})\).
+\end{definition}
+
+\subsection{Eigenimages / Eigenfaces}
+
+\begin{algorithm}[Karhunen-Loeve Transform (PCA)]
+  \(\Phi\) order by decreasing eigenvalues. Transform coefficients are pairwise uncorrelated: \(R_{cc} = AR_{ff}A^H = \Lambda\) for \(A = \Phi^H\).
+
+  \textit{Energy concentration property}: No other unitary transform packs as much energy in the first \(J\) coeffs and mean squared approx error by choosing only first \(J\) coeffs is minimized.
+\end{algorithm}
+
+\begin{definition}[PCA Steps]
+  \begin{enumerate}
+    \item Standardize image collection.
+    \item Compute covariance matrix
+    \item Perform eigenvalue decomposition or do SVD
+    \item Compute projection \(U_J\) from largest \(J\) components.
+    \item \(\text{PCA}(x) = U_J^\top(x - \mu)\) with \(\mu\) being the mean.
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}[Uses of PCA]
+  Lossy compression of \(I\) by keeping only the most important \(k\) component. Reconstruct original by \(UI_c + \mu\).
+\end{definition}
+
+\begin{algorithm}[Eigenspace matching]
+  Do PCA (with mean subtraction) to get closest rank-\(k\) approx. of database images. For a new query: normalize, subtract mean (of database), project to subspace, then do similarity matching with eigenfaces.
+\end{algorithm}
+
+\begin{theorem}
+  Lighting differences much larger than face differences. Thus works better by removing the first 3 coefficients.
+\end{theorem}
+
+\subsection{Fisherfaces}
+Find directions where ratio between:within individual variance is maximized. Linearly project to basis where dimensions with good SNR is maximized.
+
+\begin{algorithm}[Fisher LDA]
+  Maximize between class scatter while minimizing within class scatter.
+\end{algorithm}
+
+\includegraphics*[width=\linewidth]{assets/variances.png}
