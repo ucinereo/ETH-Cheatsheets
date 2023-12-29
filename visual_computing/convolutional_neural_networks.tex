@@ -1,0 +1,125 @@
+\section{Convolutional Neural Networks}
+
+\begin{definition}[Data-Driven Approach]
+  \(\argmin_\theta \L(y, f(x, \theta))\) with
+  \(x\) input, \(\theta\) kernel weights, \(f(x, \theta)\) prediction, \(y\) target, \(\L\) loss function.
+\end{definition}
+
+\begin{algorithm}[Softmax Classifier]
+  \textit{scores} = unnormalized log probabilities of different classes. Maximize correct probability:
+
+  \(\P(Y = k \mid X = x_i) = \frac{e^{f_k(x_i, \theta)}}{\sum_j e^{f_j(x_i, \theta)}}\) through the softmax loss:
+  
+  \(\L(y, f(x, \theta)) = - \sum_{i=1}^N \log \P(Y = y_i \mid X = x_i)\). Thus minimize negative log likelihood of correct class.
+\end{algorithm}
+
+\begin{algorithm}[Logistic Classifier]
+  Softmax with only two classes \(y_i \in \{0, 1\}\)
+  \begin{center}
+    \(\L(y, f(x, \theta)) = \frac{1}{N}y_i \log \frac{e^{f(x_i, \theta)}}{1 + e^{f(x_i, \theta)}} + (1 - y_i) \log \frac{1}{1 + e^{f(x_i, \theta)}}\)
+  \end{center}
+\end{algorithm}
+
+\subsection{Activation Functions}
+\begin{definition}[Activation Functions]
+  Introduce non-linearity.
+\end{definition}
+
+\begin{definition}[Sigmoid]
+  \(\frac{1}{1 + e^{-x}}\), saturated neurons kill the gradient, outputs not zero-centered, compute expensive
+\end{definition}
+
+\begin{theorem}
+  They really don't like sigmoid in this course :(
+\end{theorem}
+
+\begin{definition}[tanh]
+  \(\tanh(x)\), zero centered, still kills gradients
+\end{definition}
+
+\begin{definition}[ReLU]
+  \(\max(0, x)\), does not saturate, very computationally efficient, converges much faster in practice, actually more biologically plausible, not zero-centered output, not differentiable
+\end{definition}
+
+\begin{itemize*}
+  \item \textbf{Leaky ReLU}: \(\max(0.1x, x)\)
+  \item \textbf{ELU}: \(\begin{cases}
+    x & x \geq 0 \\
+    a(e^x - 1) & x < 0
+  \end{cases}\) \\
+  \item \textbf{Maxout}: \(\max(w_1^\top x + b_1, w_2^\top x + b_2)\)
+\end{itemize*}
+
+\subsection{Multilayer Perceptron (MLP)}
+Stack several linear classifiers with activation function between layers to get \textit{universal approximator}.
+
+\begin{definition}[Gradient Descent]
+  \(\theta_{t+1} = \theta_t + \lambda \nabla \L_\theta\) with \(\lambda\) as learning rate.
+\end{definition}
+
+\begin{definition}[SGD]
+  Approximate loss sum by considering only a batch.
+\end{definition}
+
+\begin{definition}[Forwardpropagation]
+  \(W \in \R^{out \times in}\)
+  \textit{Input layer}: \(v^{(0)} = [x; 1]\)
+  \textit{Output layer}: \(f = W^{(L)}v^{(L-1)}\)
+  \textit{Hidden layer}: \(z^{(l)} = W^{(l)}v^{(l-1)}\) \& output with activation and bias \(v^{(l)} = [\varphi(z^{(l)}); 1]\).
+\end{definition}
+
+\begin{definition}[Backpropagation]
+  \textcolor{H1}{Given from L+1}, \textcolor{H2}{compute}, \textcolor{H3}{given from FP}.
+  \begin{align*}
+    (\nabla_{W^{(L)}}l)^\top &=\textcolor{H2}{\frac{\partial l}{\partial f}}\textcolor{H3}{\frac{\partial f}{\partial W^{(L)}}} = \textcolor{H2}{\frac{\partial l}{\partial f}}\textcolor{H3}{v^{(L-1)}} \\
+    (\nabla_{W^{(L-1)}}l)^\top &= \textcolor{H1}{\frac{\partial l}{\partial f}} \textcolor{H2}{\frac{\partial f}{\partial z^{(L-1)}}}\textcolor{H3}{\frac{\partial z^{(L-1)}}{\partial W^{(L-1)}}} = \textcolor{H1}{\sdots} \textcolor{H2}{\sdots}\textcolor{H3}{v^{(L-2)}}\\
+    (\nabla_{W^{(L-2)}}l)^\top &= \textcolor{H1}{\frac{\partial l}{\partial f} \frac{\partial f}{\partial z^{(L-1)}}} \textcolor{H2}{\frac{\partial z^{(L-1)}}{\partial z^{(L-2)}}}\textcolor{H3}{\frac{\partial z^{(L-2)}}{\partial W^{(L-2)}}}
+  \end{align*}
+  Where error \(\delta^{(l)} = \varphi(z^{(l)}) \odot (W^{(l+1)\top} \delta^{(l_1)})\) and \\ \(\nabla_{W^{(l)}}l = \delta^{(l)}v^{(l-1)\top}\) to calculate the gradient.
+\end{definition}
+
+\subsection{CNN}
+
+\begin{definition}[Motivation]
+  \begin{itemize*}
+    \item Sparse interactions
+    \item Parameter sharing
+    \item Equivariant representations (change the position of an object should not change the classification of it).
+    \item Hierarchical perception (low-level features to high-level concepts)
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[CNN-Formulas] \(\bm{C}\)hannels, \(\bm{K}\)ernel size, \(m = \#\)Kernels
+  \begin{itemize}
+    \item Dimensions: \(f(W) \times f(H) \times m, f(i) = \frac{i + 2P - K_i}{S} + 1\)
+    \item Params: \(p = (K_W \cdot K_H \cdot C \textcolor{H3}{+ 1}) \cdot m\), \(\textcolor{H3}{+ 1} \hat{=}\) Bias
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[Pooling Layers]
+  Pool units to decrease width of output layer. Introduces translation invariance and helps to extract dominant features.
+\end{definition}
+
+\begin{definition}[ResNet]
+  \(v^{(l + 1)} = v^{(l)} + r(v^{(l)})\) with skip connections to rely less on depth.
+\end{definition}
+
+\begin{definition}[Classification]
+  \(f(x_i, \theta)\) as the score. Take the class with larger score and use softmax as loss.
+\end{definition}
+
+\begin{definition}[Regression]
+  \(f(x_i, \theta)\) as the value. Can be used for classification by comparing value. Loss could be MSE. Can be used for \textit{depth estimation}.
+\end{definition}
+
+\begin{definition}[Pixel Loss, semantic segmentation]
+  \(\L =- \sum_i \sum_c y_{ic} \log(p_{ic})\)
+\end{definition}
+
+\begin{definition}[Optical Flow Loss]
+  \(\L =\sum_i ((u_i -\hat{u}_i)^2 + (v_i - \hat{v}_i)^2)\)
+\end{definition}
+
+\begin{definition}[GAN]
+  Generate data through randomized input.
+\end{definition}
