@@ -31,6 +31,14 @@ Represent any function in terms of a new basis with basis vectors \(e^{-2\pi i(u
   \(\delta \ast f = f\)
 \end{definition}
 
+\begin{definition}[Function Scale]
+  Scale function down \(\iff\) scale transform up
+\end{definition}
+
+\begin{definition}[Gaussian]
+  FT of Gaussian is Gaussian
+\end{definition}
+
 \subsection{Fourier Transform on Images}
 
 Consider the basis function \(B_{u,v}(x, y) = e^{-2\pi i(ux + uv)}\), then
@@ -83,6 +91,10 @@ Go from continuous function to discrete vector.
 \begin{algorithm}[Nyquist Sampling Theorem]
   Sampling frequency must be at least twice the highest frequency: \(\omega_S \geq 2 \cdot \omega\). If not the case, the signal needs to be bandlimited before sampling.
 \end{algorithm}
+
+\begin{theorem}
+  To remove aliasing from cameras, change focus!
+\end{theorem}
 
 \subsection{Image Restoration Problem}
 \begin{center}

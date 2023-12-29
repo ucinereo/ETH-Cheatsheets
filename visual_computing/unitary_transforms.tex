@@ -30,13 +30,16 @@
 \end{definition}
 
 \begin{definition}[Eigenmatrix of \(R_{ff}\)]
-  \(\Phi\) s.t. \(R_{ff}\Phi = \Phi \Lambda\), with columns as set of eigenvectors and unitary. \(\Lambda = \text{diag}(\lambda_0, \ldots, \lambda_{HW - 1})\).
+  \(\Phi\) s.t. \(R_{ff}\Phi = \Phi \Lambda\), columns as EVs and unitary.
+  \(\Lambda = \text{diag}(\lambda_0, \sdots, \lambda_{HW - 1})\).
+  Normal: \(R_{ff}^HR_{ff} = R_{ff}R_{ff}^H\).
 \end{definition}
 
 \subsection{Eigenimages / Eigenfaces}
 
 \begin{algorithm}[Karhunen-Loeve Transform (PCA)]
-  \(\Phi\) order by decreasing eigenvalues. Transform coefficients are pairwise uncorrelated: \(R_{cc} = AR_{ff}A^H = \Lambda\) for \(A = \Phi^H\).
+  Unitary transform with \(A = \Phi^H\).
+  \(\Phi\) ordered by decreasing eigenvalues. Transform coefficients are pairwise uncorrelated: \(R_{cc} = AR_{ff}A^H = \Lambda\).
 
   \textit{Energy concentration property}: No other unitary transform packs as much energy in the first \(J\) coeffs and mean squared approx error by choosing only first \(J\) coeffs is minimized.
 \end{algorithm}
@@ -57,6 +60,7 @@
 
 \begin{algorithm}[Eigenspace matching]
   Do PCA (with mean subtraction) to get closest rank-\(k\) approx. of database images. For a new query: normalize, subtract mean (of database), project to subspace, then do similarity matching with eigenfaces.
+  \[\text{argmin}_i D_i = ||I_i - I|| \approx ||p_i - p||\]
 \end{algorithm}
 
 \begin{theorem}
@@ -69,5 +73,7 @@ Find directions where ratio between:within individual variance is maximized. Lin
 \begin{algorithm}[Fisher LDA]
   Maximize between class scatter while minimizing within class scatter.
 \end{algorithm}
+
+FDA tries to create subspace in the direction of the class averages.
 
 \includegraphics*[width=\linewidth]{assets/variances.png}
