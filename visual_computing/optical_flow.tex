@@ -1,0 +1,129 @@
+\section{Optical Flow}
+
+\begin{definition}[Optical Flow]
+  Apparent motion of brightness patterns. Projection of 3D velocity vectors on the image. Hope: equal to motion field!
+\end{definition}
+
+\begin{itemize}
+  \item \textit{Motion/Scene flow}: projection of 3D motion field
+  \item \textit{Normal flow}: observed tangent motion
+\end{itemize}
+
+\begin{definition}[Problem]
+  Cannot distinguish between motion / changing light.
+\end{definition}
+
+\subsection{Assumptions}
+
+\begin{definition}[1. Brightness Constancy]
+  Point brightness remains the same:
+  \begin{center}
+    \(I(x, y, t) = I(x + \delta x, y + \delta y, t + \delta t)\)
+  \end{center}
+\end{definition}
+
+\begin{definition}[2. Small motion]
+  Points to not move far over time.
+\end{definition}
+
+\(\implies\) By applying Taylor expansion with the constraints:
+\begin{flalign*}
+  &&&I(x, y, t) \approx I(x, y, t) + \partial_x I \delta x +\partial_y I \delta y + \partial_t I \delta t  &\\
+  &\iff &&\frac{\partial I}{\partial x}\frac{dx}{dt} + \frac{\partial I}{\partial y}\frac{dy}{dt} + \frac{\partial I}{\partial t} = I_x u + I_y v + I_t \approx 0
+\end{flalign*}
+
+With \(I_x, \ I_y\) spatial derivatives; \(u, \ v\) OF and \(I_t\) frame difference.
+
+\begin{definition}[Aperture Problem]
+  1 equation, 2 unknowns: cannot determine exact location!
+  Take normal flow: 
+  \(u_\bot = - \frac{I_t}{|\nabla I|} \frac{\nabla I}{|\nabla I|}\).
+\end{definition}
+
+\subsection{Algorithms}
+
+\begin{algorithm}[Horn \& Schunck]
+  Add additional smoothness constraints:
+  \(\begin{rcases*}
+    e_s = \iint ((u_x^2 + u_y^2) + (v_x^2 + v_y^2)) \,dx \,dy \\
+    e_c = \iint (I_x u + I_yv +I_t)^2 \,dx \,dy
+  \end{rcases*} \ \text{minimize} \ e_s + \lambda e_c \)
+
+  Really hard to solve. Info spreads from corner-type patterns.
+\end{algorithm}
+
+\begin{algorithm}[Lucas-Kanade]
+  Assume \textbf{spatial coherency}: the same flow for pixels withing a patch \(\Omega = \{p_1, \sdots , p_n\}\). Minimize error:
+  \[E(u, v) = \sum_{x, y \in \Omega} (I_x(x, y) u + I_y(x, y) v + I_t)^2\]
+  
+  Compute derivatives and solve the LSE:
+  \begin{gather*}
+    \begin{bmatrix}
+    I_x(p_1) & I_y(p_1) \\ \vdots & \vdots \\ I_x(p_n) & I_y(p_n)
+  \end{bmatrix} \begin{bmatrix}
+    u \\ v
+  \end{bmatrix} =  \begin{bmatrix}
+    I_t(p_1) \\ \vdots \\ I_t(p_n)
+  \end{bmatrix} \\
+  \to (\sum \nabla I \nabla I^\top)\begin{bmatrix}
+    u \\ v
+  \end{bmatrix} = - \sum \nabla I I_t
+  \end{gather*}
+
+  Solve with normal equations \(A^\top A x = b\).
+
+  \textbf{Problems}: \(A^\top A\) singular at straight edges / uniform planes.
+
+  \textbf{Solvable}: \(A^\top A\) not singular (\(\lambda_1, \lambda_2\) large and \(\lambda_1 / \lambda_2\) small).
+\end{algorithm}
+
+\begin{definition}[Iterative Refinement]
+  Estimate velocity, warp, refine, repeat.
+\end{definition}
+
+\begin{algorithm}[Coarse-to-Fine Estimation]
+  Get larger motion: image pyramid. start small, compute OF, rescale, take larger and initialize with last estimate.
+\end{algorithm}
+
+\begin{definition}[Applications]
+  \begin{itemize*}
+    \item Image stabilization: get flow between two frames and warp image such that OF close to 0.
+    \item frame interpolation
+    \item video compression
+    \item object tracking
+    \item motion segmentation
+  \end{itemize*}
+\end{definition}
+
+\subsection{Parametric Motion Models}
+Offer more constrained solutions than smoothness (Horn and Schunck). Integration over a larger area than a translation-only model can accommodate (LK).
+
+\begin{definition}[2D Models]
+  \begin{itemize*}
+    \item Translation
+    \item Affine
+    \item Quadratic
+    \item Planar projective transform (Homography)
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[3D Models]
+  \begin{itemize*}
+    \item Instantaneous camera motion models
+    \item Homography + epipole
+    \item Plane + Parallax
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Affine Motion]
+  \(I_x(a_i + a_2x + a_3y) + I_y(a_4 + a_5x +a_6y) + I_t \approx 0\).
+  Extension to planar perspective
+\end{definition}
+
+\begin{definition}[SSD tracking]
+  For big displacements: match template against each pixel in small area around, match measure can be (normalized) correlation or SSD, choose max as match.
+\end{definition}
+
+\begin{definition}[Bayesian Optic Flow]
+  Some low-level motion illusions can be explained by adding an underlying model to LK-tracking e.g. brightness constancy with noise.
+\end{definition}
