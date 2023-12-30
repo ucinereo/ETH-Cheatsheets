@@ -1,0 +1,166 @@
+\section{Light and Colors}
+
+\begin{definition}[Light]
+  Electromagnetic radiation (x-rays, micro-, radiowaves). Can be a mixture of many wavelengths.
+\end{definition}
+
+\begin{definition}[Color]
+  \(P(\lambda)\) = intensity at wavelength \(\lambda\). \(P\) is the \textit{spectral power distribution} (SPD), which we perceive as color, by projecting this spectrum onto a lower-dimensional subspace.
+\end{definition}
+
+\subsection{Human Color Perception}
+
+\begin{definition}[Cones]
+    {\color{blue} S-short},
+    {\color{green} M-medium},
+    {\color{red} L-long} wavelength cones.
+    \[P(\lambda) \to \left(\int\limits_{380nm}^{780nm}P(\lambda){\color{blue}S}(\lambda), \int\limits_{380nm}^{780nm}P(\lambda){\color{green}M}(\lambda), \int\limits_{380nm}^{780nm}P(\lambda){\color{red}L}(\lambda)\right)\]
+    Thus project light into visible 3D-subspace.
+\end{definition}
+
+\begin{definition}[Metamers]
+  Light with different spectrum map to same color.
+\end{definition}
+
+\subsection{CIE Primary System}
+
+\begin{definition}[Primaries]
+  Three \textit{single} frequency lights.
+  \(\color{red} r(\lambda) = \delta(\lambda - 700)\), \(\color{green}g(\lambda) = \delta(\lambda - 546.1)\) and \(\color{blue}b(\lambda) = \delta(\lambda - 435.8)\).
+\end{definition}
+
+Experiment tried to find color matching functions for the mixture of these primaries to generate any reference light:
+\[\delta(\lambda - v) \hat{=} \overline{r}(v)r(\lambda) + \overline{g}(v)g(\lambda) + \overline{b}(v) b(\lambda)\]
+
+\(\overline{r}\), \(\overline{g}\), \(\overline{b}\) denote the color target matching functions. Thus we get:
+\begin{align*}
+  P(\lambda) &= \int P(v)\delta(\lambda - v)dv \\
+  &= \left({\color{red}\int P(v)\overline{r}(v)dv}\right)\cdot r(\lambda) + {\color{green}G} \cdot g(\lambda) + {\color{blue}B} \cdot b(\lambda)
+\end{align*}
+
+We get negative values for \(R\)! Thus add red to reference light.
+
+\subsection{CIE XYZ Color Space}
+Basis transformation of RGB space to represent \textit{all perceptible} colors with new \textit{imaginary} primaries:
+\(X = \int_{380}^{780} P(\lambda)\overline{x}(\lambda) d\lambda\), \(Y = \int_{380}^{780} P(\lambda)\overline{y}(\lambda) d\lambda\) and \(Z = \int_{380}^{780} P(\lambda)\overline{z}(\lambda) d\lambda\).
+
+\begin{theorem}
+  Value ranges: \(X \in [0, 1.2], Y \in [0, 1], Z \in [0, 1.6]\)
+\end{theorem}
+
+\begin{definition}[xyY Color Space]
+  Normalization of XYZ space, where \((x, y)\) characterize color and \(Y\) characterizes brightness.
+\end{definition}
+
+\begin{theorem}
+  Value ranges: \(x \in [0, 0.75], y \in [0, 0.86], Y\) see XYZ.
+\end{theorem}
+
+\pagebreak
+\textbf{CIE Chromaticity Diagram}
+\vspace{-10pt}
+\begin{multicols}{2}
+  \includegraphics*[width=\linewidth]{assets/chromaticity.png}
+  
+  \begin{definition}[Color Gamut]
+     Linear combination of 3 colors in \(\triangle\).
+  \end{definition}
+
+  \begin{definition}[Purple Line]
+    Non-spectral colors between 380 and 770.
+  \end{definition}
+
+  \begin{definition}[Dominant Wavelength]
+    From color through whitepoint, intersection in boundary.
+  \end{definition}
+
+  \begin{definition}[Saturation]
+    Distance from color to white point.
+  \end{definition}
+\end{multicols}
+
+\vspace{-10pt}
+\subsection{Other Color Spaces}
+
+\begin{definition}[RGB]
+  Based on three primaries. Used in monitors. Does not cover the whole XYZ space.
+\end{definition}
+
+\begin{theorem}
+  Value ranges: \(R, G, B \in [0, 1]\)
+\end{theorem}
+
+\begin{definition}[CMY]
+  Used in passive color systems (printers) and is the inverse to RGB.
+  \textit{CMYK} adds black as color.
+\end{definition}
+
+\begin{definition}[YIQ]
+  Advantages for natural and skin color. Y = Luminance, I = In-Phase (orange-blue) and Q = quadrature (purple-green) components.
+\end{definition}
+
+\begin{definition}[HSV]
+  Used for interactive color picking.
+  Dimensions no longer primaries:
+  \textit{Hue} = base color, \textit{saturation} = purity of color and \textit{value/lightness/brightness}. Take RGB, CMY cubes and project to hexagon.
+\end{definition}
+
+\begin{theorem}
+  Hue \(\in [0, 360]\), Saturation \& Value \(\in [0, 100]\)
+\end{theorem}
+
+\begin{definition}[CIELAB/CIELUV]
+  Perceptually "uniform": color difference can be measured as distance in chart.
+  \textbf{MaxAdams ellipses} become nearly circular.
+\end{definition}
+
+\subsection{Transformations}
+
+\begin{definition}[RGB \(\to\) XYZ]
+  \[\begin{bmatrix}
+    \overline{x}(\lambda) \\ \overline{y}(\lambda) \\ \overline{z}(\lambda)
+  \end{bmatrix} = \begin{bmatrix}
+    2.36 & -0.515 & 0.005 \\ -0.89 & 1.426 & 0.014 \\ -0.46 & 0.088 & 1.009
+  \end{bmatrix} \begin{bmatrix}
+    \overline{r}(\lambda) \\ \overline{g}(\lambda) \\ \overline{b}(\lambda)
+  \end{bmatrix}\]
+\end{definition}
+
+\begin{definition}[XYZ \(\to\) xyY]
+  \[x = \frac{X}{X + Y + Z} \quad y = \frac{Y}{X + Y + Z} \quad Y = Y \quad \color{H3}X = \frac{xY}{y} \quad Z = \frac{(1 - x - y)Y}{y}\]
+\end{definition}
+
+\begin{definition}[RGB \(\to\) CMY]
+  \[\begin{bmatrix}
+    C \\ M \\ Y
+  \end{bmatrix} = \begin{bmatrix}
+    1 \\ 1 \\ 1
+  \end{bmatrix} - \begin{bmatrix}
+    R \\ G \\ B
+  \end{bmatrix}\]
+\end{definition}
+
+\begin{definition}[RGB \(\to\) YIQ]
+  \[\begin{bmatrix}
+    Y \\ I \\ Q
+  \end{bmatrix} = \begin{bmatrix}
+    0.299 & 0.587 & 0.114 \\ 0.596 & -0.275 & -0.321 \\ 0.212 & -0.523 & 0.311
+  \end{bmatrix} \begin{bmatrix}
+    R \\ G \\ B
+  \end{bmatrix}\]
+\end{definition}
+
+\begin{definition}[RGB \(\to\) HSV] \
+  \vspace{-8pt}
+  \lstset{basicstyle=\ttfamily\footnotesize,breaklines=true}
+  \begin{center}
+    \begin{lstlisting}
+  min = min(R, G, B)
+  max = max(R, G, B)
+  V = max;
+  If (max != 0) S = (max - min) / max
+  Else S = 0;
+  H = Hue (V, S, R, G, B); // proced.
+    \end{lstlisting}
+  \end{center}
+\end{definition}
