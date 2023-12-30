@@ -1,0 +1,60 @@
+\section{Radon Transform}
+
+\begin{definition}[Radon Transform]
+  \(Rf(L) = \int_L f(x) |dx|\) where \(L\) is the line where the ray goes through and \(f\) is the signal function.
+\end{definition}
+
+\begin{definition}[Polar Coordinate RT]
+  \begin{align*}
+    R(\rho, \theta) & = \int u(\rho \cos \theta - s \sin \theta, \rho \sin \theta + s \cos \theta) ds \\
+    & = \iint_{\R^2} u(x, y) \delta(\rho - x \cos \theta -y \sin \theta) \,dx \,dy
+  \end{align*}
+  Where \(u\) is the reparameterization of \(f\).
+\end{definition}
+
+\begin{definition}[Properties]
+  \begin{itemize*}
+    \item Linear
+    \item Shifting only changes the \(\rho\) coordinate
+    \item Rotation of the coordinate system also rotates the Radon transformation
+    \item The Radon transform of a 2D convolution is a 1D convolution of the Randon transformed function with respect to \(\rho\)
+  \end{itemize*}
+\end{definition}
+
+\begin{algorithm}[Image Reconstruction]
+  Assume: attenuation of material in each px constant and \(\propto\) area of the px illuminated by the beam.
+  \(k_{ij} = \frac{\text{are of pixel} \ j \ \text{illuminated by ray} \ i}{\text{total area of pixel} \ j}\) for \(i \in [l], j \in [nm]\). Thus the model reads:
+  \(Kf = g\) with \(f\) BW plane/volumetric image to be retrieved, \(g\) attenuation measurement from the CT system. Can be solved with normal equations. Big system!
+\end{algorithm}
+
+\begin{theorem}
+  Up until know, we only saw image \(\to\) sinogram.
+\end{theorem}
+
+\subsection{Backtransformation}
+Find better way to solve the system of equations.
+
+\begin{definition}[Central Slice Theorem]
+  \(\mathcal{G}(q, 0) = \F(q \cos 0, q \sin 0)\). It tells us that 1D Fourier transformation of the measurement \(g = Rf\) (for fixed \(\theta\)) is equal to the 2D Fourier transformation of the object slice \(f(x, y)\) evaluated at a particular point.
+\end{definition}
+
+\begin{algorithm}[Filtered backprojection]
+  For all projection angles:
+  \begin{enumerate}
+    \item Measure attenuation (projection) data
+    \item 1D-FT of projection data
+    \item High-Pass filter in Fourier domain \((2 \pi |w| / K)\)
+    \item 2D-Inverser FT
+    \item Sum over all images
+  \end{enumerate}
+
+  \textit{Issues without HPF}:
+  \begin{itemize*}
+    \item Requires many precise attenuation measurements
+    \item Sensitive to noise
+    \item Unstable \& hard to implement accurately
+    \item blurring the final image
+  \end{itemize*}
+
+  Filter can be a physical filter on the CT scanner.
+\end{algorithm}
