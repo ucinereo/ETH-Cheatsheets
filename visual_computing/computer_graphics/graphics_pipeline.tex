@@ -1,0 +1,81 @@
+\section{Graphics Pipeline}
+
+\begin{definition}[Input]
+  \begin{itemize*}
+    \item Geometry representation of primitives
+    \item material and lighting models
+    \item virtual camera
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[The pipeline]
+  \begin{enumerate}
+    \item \textit{Modeling Transform}: Object to world space
+    \item \textit{Viewing Transform}: World to camera space
+    \item \textit{Primitive Processing}: Output from transformed vertices
+    \item \textit{3D Clipping}: Remove parts of primitives outside frustum
+    \item \textit{Projection to Screen Space}: 3D to 2D screen space
+    \item \textit{Scan Conversion}: Discretize primitives and interpolate
+    \item \textit{Lighting, Shading, Texturing}: Compute color
+    \item \textit{Occlusion Handling}: depth handling via \(z\)-buffer.
+    \item \textit{Display}: Display the final result
+  \end{enumerate}
+\end{definition}
+
+\subsection{Programmers View}
+
+\begin{center}
+  CPU \(\to\) \textit{Vertex Proc.} \(\to\) Rast. \(\to\) \textit{Fragment Proc.} \(\to\) Display
+\end{center}
+
+\begin{definition}[Vertex Processing]
+  Per-vertex operations: transform, lighting, flow control. Programmed in \textit{vertex shader}.
+\end{definition}
+
+\begin{definition}[Fragment Processing]
+  Per-fragment operations: shading, texturing, blending. Programmed in \textit{fragment shader}.
+\end{definition}
+
+
+\begin{tikzpicture}[
+	node distance = 1cm, on grid,
+	mvertex/.style = {draw, rectangle, align=center, draw=H2, color=white, fill=H3, thick},
+	vertex/.style = {draw, rectangle, align=center, draw=H1, thick},
+  every edge/.style={draw, ->, auto, semithick}
+]
+  % Define vertices
+  \node[vertex] at (0, 0) (attr) {Attributes};
+  \node[mvertex] at (1, -0.6) (vs) {Vertex Shader};
+  \node[vertex] at (1.5, 0.2) (vvar) {Varying \\ (per vertex)};
+  \node[mvertex] at (2.8, -0.6) (inter) {Interpolation};
+  \node[vertex] at (3.3, 0.2) (fvar) {Varying \\ (per fragment)};
+  \node[mvertex] at (4.8, -0.6) (fs) {Fragment Shader};
+  \node[vertex] at (5.3, 0) (fc) {Fragment Color};
+  \node[vertex] at (2.8, -1.2) (unif) {Uniforms (constants)};
+
+  \draw (unif) edge (vs);
+  \draw (unif) edge (fs);
+  \draw (attr) edge (vs);
+  \draw (vs) edge (vvar);
+  \draw (vvar) edge (inter);
+  \draw (inter) edge (fvar);
+  \draw (fvar) edge (fs);
+  \draw (fs) edge (fc);
+\end{tikzpicture}
+
+\begin{definition}[Fragment]
+  Fragment \(\neq\) Pixel! A fragment can store:
+  \begin{itemize*}
+    \item color
+    \item position
+    \item depth
+    \item depth
+    \item texture coordinates
+    \item window id
+    \item \(\sdots\)
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Graphics API]
+  Access to hardware with universal interface.
+\end{definition}
