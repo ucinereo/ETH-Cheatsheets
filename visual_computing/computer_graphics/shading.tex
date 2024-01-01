@@ -1,0 +1,57 @@
+\section{Shading}
+
+\begin{definition}[Shading]
+  Process of determining the color of a pixel.
+\end{definition}
+
+\begin{definition}[Flat Shading]
+  One color per primitive. Screen space shading.
+\end{definition}
+
+\begin{theorem}
+  Color is a per vertex attribute normally!
+\end{theorem}
+
+\begin{algorithm}[Gouraud Shading]
+  Linear interpolation of vertex intensities. Screen space shading.
+  \begin{enumerate}
+    \item Calculate face normals
+    \item Calculate vertex normal by averaging
+    \item Interpolate vertex color bilinearly on current scan line.
+  \end{enumerate}
+
+  \textit{Problems}:
+  \begin{itemize*}
+    \item perspective distortion
+    \item orientation dependence
+    \item shared vertices
+    \item quality depends on vertices
+  \end{itemize*}
+\end{algorithm}
+
+
+\begin{algorithm}[Phong Shading]
+  Barycentric interpolation of normal on the triangle. Thus color of fragment \(x\) is determined by interpolated normals.
+
+  \textit{Problems}:
+  \begin{itemize*}
+    \item Normal not defined/representative.
+  \end{itemize*}
+\end{algorithm}
+
+\subsection{Transparency}
+
+Use \textbf{RGBA} channels to calculate the overlapping objects.
+
+\begin{algorithm}[Alpha Blending]
+  Linearizes exponential attenuation of light intensity. \(I_\lambda = I_A \alpha_1 \Delta t + I_Be^{-\alpha_1\Delta t} \approx I_A \alpha_1 + I_B(1 - \alpha)\). Where object \(A\) is in front of \(B\) and has a thickness of \(\Delta t\).
+\end{algorithm}
+
+\begin{definition}[Back to front rendering]
+  Sorted traversal of polygons from back to front.
+  \textit{Problems}: overlapping objects.
+\end{definition}
+
+\begin{definition}[Depth peeling]
+  Multiple passes which render the next closest fragment.
+\end{definition}

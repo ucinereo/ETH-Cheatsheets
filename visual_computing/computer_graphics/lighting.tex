@@ -66,7 +66,7 @@
   Intensity per unit area or flux density per unit solid angle, per perpendicular unit area. Most fundamental in raytracing!
 \end{definition}
 
-\subsection{Reflection Models}
+\subsection{Lighting Models}
 \begin{definition}[BRDF]
   Bidirectional reflectance distribution function. Relationship between incident radiance and differential reflected radiance. \(\omega_i\) = incoming angle, \(\omega_r\) reflected angle.
   \[f_r(x, \omega_i, \omega_r) = \frac{dL_r(x, \omega_r)}{dE_i(x, \omega_i)} = \frac{dL_r(x, \omega_r)}{L_i(x, \omega_i) \cos \theta_i d\omega_i}\]
@@ -117,4 +117,12 @@
 \begin{definition}[Attenuation]
   Quadratic due to spatial radiation. \(f_{att} = (d_L^2)^{-1}\) or often used in OpenGL:
   \(f_{att} = \min((c_1 + c_2d_L + c_3d_L^2)^{-1}, 1)\)
+\end{definition}
+
+\begin{definition}[Cook-Torrence]
+  For metal objects which replaces the specular term. Has self-shadowing effects.
+\end{definition}
+
+\begin{definition}[Ashikhmin]
+  Anisotropic lighting model.
 \end{definition}
