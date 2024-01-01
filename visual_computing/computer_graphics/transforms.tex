@@ -1,0 +1,282 @@
+\section{Transformations}
+
+Transformations map geometry (change position, etc.)
+
+\begin{definition}[Affine Transform]
+  \(Ax + b\)
+\end{definition}
+
+\begin{definition}[Linear]
+  \(Ax\)
+\end{definition}
+
+\begin{definition}[Rigid]
+  \(Ax + b\), where \(A^{-1} = A^\top\) and \(\det(A) = 1\). Thus translation, rotation, reflection and glide reflection (mirror, then glide)
+\end{definition}
+
+\begin{definition}[Homogeneous Coordinates]
+  Used to represent translation using matrix multiplication. \(p = \begin{bmatrix}
+    x & y & 1
+  \end{bmatrix}^\top\)
+\end{definition}
+
+\begin{theorem}
+  A point ahs infinitely many homogeneous coordinates.
+\end{theorem}
+
+\subsection{2D Transformations}
+
+\makecell{
+  \textbf{Translation} \\
+  \(\begin{bmatrix}
+    1 & 0 & t_x \\ 0 & 1 & t_y \\ 0 & 0 & 1
+  \end{bmatrix}\)
+}
+\makecell{
+  \textbf{Scale} \\
+  \(\begin{bmatrix}
+    s_x & 0 & 0 \\ 0 & s_y & 0 \\ 0 & 0 & 1
+  \end{bmatrix}\)
+}
+\makecell{
+  \textbf{Rotation} \\
+  \(\begin{bmatrix}
+    \cos \theta & - \sin \theta & 0 \\ \sin \theta & \cos \theta & 0 \\ 0 & 0 & 1
+  \end{bmatrix}\)
+}
+\makecell{
+  \textbf{Sheer X} \\
+  \(\begin{bmatrix}
+    1 & a & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1
+  \end{bmatrix}\)
+}
+\makecell {
+  \textbf{Rotation around point} \\
+  \(\begin{bmatrix}
+    \cos \theta & -\sin \theta & -a \cos \theta + b \sin \theta + a \\
+    \sin \theta & \cos \theta & -a \sin \theta - b \cos \theta + b \\
+    0 & 0 & 1
+  \end{bmatrix}\)
+}
+\makecell{
+  \textbf{Sheer Y} \\
+  \(\begin{bmatrix}
+    1 & 0 & 0 \\ b & 1 & 0 \\ 0 & 0 & 1
+  \end{bmatrix}\)
+}
+\makecell{
+  \textbf{Rotation \(\to\) Translation} \\
+  \(\begin{bmatrix}
+    r_{11} & r_{12} & t_x \\ r_{21} & r_{22} & t_y \\ 0 & 0 & 1
+  \end{bmatrix}\)
+}
+\makecell{
+  \textbf{Commutativity 2D} \\
+  Translate / Translate \\
+  Rotate / Rotate \\
+  Scale / Scale \\
+  Scale / Rotate \\
+}
+
+\subsection{3D-Transformations}
+\makecell{
+  \textbf{Rotate X} \\
+  \(\begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & \cos \theta & - \sin \theta & 0 \\
+    0 & \sin \theta & \cos \theta & 0 \\
+    0 & 0 & 0 & 1
+  \end{bmatrix}\)
+}
+\makecell{
+  \textbf{Rotate Y} \\
+  \(\begin{bmatrix}
+    \cos \theta & 0 & \sin \theta & 0 \\
+    0 & 1 & 0 & 0 \\
+    - \sin \theta & -0 & \cos \theta & 0 \\
+    0 & 0 & 0 & 1
+  \end{bmatrix}\)
+}
+\makecell{
+  \textbf{Rotate Z} \\
+  \(\begin{bmatrix}
+    \cos \theta & - \sin \theta & 0 & 0 \\
+    \sin \theta & \cos \theta & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1
+  \end{bmatrix}\)
+}
+\makecell{
+  \textbf{Shear XY} \\
+  \(\begin{bmatrix}
+    1 & 0 & sh_x & 0 \\
+    0 & 1 & sh_y & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1
+  \end{bmatrix}\)
+}
+\makecell{
+  \textbf{Shear XZ} \\
+  \(\begin{bmatrix}
+    1 & sh_x & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & sh_z & 1 & 0 \\
+    0 & 0 & 0 & 1
+  \end{bmatrix}\)
+}
+\makecell{
+  \textbf{Shear YZ} \\
+  \(\begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    sh_y & 1 & 0 & 0 \\
+    sh_z & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1
+  \end{bmatrix}\)
+}
+
+\textbf{Change of coordinate systems}
+\vspace{-10pt}
+\begin{multicols}{2}
+  \(\begin{bmatrix}
+    r_1 & r_2 & r_3 & t \\
+    0 & 0 & 0 & 1
+  \end{bmatrix} \begin{bmatrix}
+    p_x \\ p_y \\ p_z \\ 1
+  \end{bmatrix} = p'\)
+
+  \(r_\alpha\) is old \(\alpha\)-axis in new system.
+  \(t\) is translation in new system.
+  \(p'\) is the new point.
+  Basically rotation then translation.
+\end{multicols}
+
+\vspace{-10pt}
+\begin{definition}[Transforming Normals]
+  When \(p' = Mp\), then \(n' = (M^{-1})^\top n\).
+\end{definition}
+
+\subsection{Perspective and Projection}
+\(d\) is the distance from the camera point:
+
+\makecell{
+  \textbf{Perspective Projection} \\
+  \(\begin{bmatrix}
+    I_{2} & 0 & 0 \\
+    0 & 1 & 0 \\
+    0 & 1/d & 0
+  \end{bmatrix}\)
+}
+\makecell{
+  \textbf{Parallel Projection} \\
+  \(\begin{bmatrix}
+    I_{2} & 0 & 0 \\
+    0 & 0 & 0 \\
+    0 & 0 & 1
+  \end{bmatrix}\)
+}
+
+\begin{theorem}
+  These transformations are not considered affine!
+\end{theorem}
+
+\begin{definition}[Clipping Planes]
+  In front of front-clipping-plane and after back-clipping-plane objects are not rendered anymore.
+\end{definition}
+
+\pagebreak
+\subsection{OpenGL Transformations}
+
+\begin{tikzpicture}[
+	node distance = 1cm, on grid,
+	mvertex/.style = {draw, rectangle, align=center, draw=H2, color=white, fill=H3, thick},
+	vertex/.style = {draw, rectangle, align=center, draw=H1, thick},
+  every edge/.style={draw, ->, auto, semithick}
+]
+  % Define vertices
+  \node[mvertex] at (0, 0) (vertex) {Vertex \\ \((x, y, z, 1)^\top\)};
+  \node[mvertex] at (1.4, 0) (ec) {Eye \\ Coords.};
+  \node[mvertex] at (2.7, 0) (cc) {Clip \\ Coords.};
+  \node[mvertex] at (4.2, 0) (ndc) {Normalized \\ Device \\ Coords.};
+  \node[mvertex] at (5.6, 0) (wsc) {Window \\ (Screen) \\ Coords.};
+  \node[vertex] at (0, -1) (mvt) {ModelView \\ Transform};
+  \node[vertex] at (1.4, -1) (proj) {Proj.};
+  \node[vertex] at (2.7, -1) (pd) {Perspective \\ Division};
+  \node[vertex] at (4.2, -1) (vt) {Viewport \\ Transform};
+
+  % Edges
+  \draw (vertex) edge (mvt);
+  \draw (mvt) edge (ec);
+  \draw (ec) edge (proj);
+  \draw (proj) edge (cc);
+  \draw (cc) edge (pd);
+  \draw (pd) edge (ndc);
+  \draw (ndc) edge (vt);
+  \draw (vt) edge (wsc);
+\end{tikzpicture}
+
+\begin{definition}[Model View Transform]
+  First model to world coordinates:
+  \begin{center}
+    \(\begin{bmatrix}
+      r_1 & r_2 & r_3 & t \\ 0 & 0 & 0 & 1
+    \end{bmatrix} \begin{bmatrix}
+      \rotatebox{90}{model } \\ 1
+    \end{bmatrix}  = \begin{bmatrix}
+      \rotatebox{90}{world } \\ 1
+    \end{bmatrix}\)
+  \end{center}
+  Then world to camera:
+
+  \begin{center}
+    \(\begin{bmatrix}
+      \text{left} & \text{up} & \text{-dir} & \text{eye} \\ 0 & 0 & 0 & 1
+    \end{bmatrix} \begin{bmatrix}
+      \rotatebox{90}{cam } \\ 1
+    \end{bmatrix} = \begin{bmatrix}
+      \rotatebox{90}{world } \\ 1
+    \end{bmatrix}\)
+  \end{center}
+\end{definition}
+
+\begin{definition}[Projection]
+  \ \\
+  Either parallel:
+  \(\begin{bmatrix}
+    \frac{2}{r -l} & 0 & 0 & - \frac{r + l}{r - l} \\
+    0 & \frac{2}{t - b} & 0 & - \frac{t + b}{t - b} \\
+    0 & 0 & - \frac{2}{n - f} & - \frac{f + n}{f - n} \\
+    0 & 0 & 0 & 1
+  \end{bmatrix} \begin{bmatrix}
+    c \\ 1
+  \end{bmatrix} = \begin{bmatrix}
+    c' \\ 1
+  \end{bmatrix}\)
+
+  Or perspective:
+  \
+  \(\begin{bmatrix}
+    \frac{2n}{r - l} & 0 & \frac{r + l}{r - l} & 0 \\
+    0 & \frac{2n}{t - b} & \frac{t + b}{t - b} & 0 \\
+    0 & 0 & - \frac{f + n}{f - n} & - \frac{2 f n}{f - n} \\
+    0 & 0 & -1 & 0
+  \end{bmatrix} \begin{bmatrix}
+    c \\ 1
+  \end{bmatrix} = \begin{bmatrix}
+    c' \\ -c_z
+  \end{bmatrix}\)
+\end{definition}
+
+\begin{definition}[Perspective Divison]
+  \(\frac{1}{- c_z}c' = \begin{bmatrix}
+      d_x & d_y & d_z
+  \end{bmatrix}^\top\)
+  which are the normalized device coordinates. \(d_x, d_y\) position and \(d_z\) depth.
+\end{definition}
+
+\begin{definition}[Viewport Transform]
+  \(\text{screen cord.} = \begin{bmatrix}
+    \frac{w}{2}d_x + (o_x  + \frac{w}{2}) \\
+    \frac{h}{2}d_y + (o_y + \frac{h}{2}) \\
+    \frac{f - n}{2}d_z + \frac{f + n}{2}
+  \end{bmatrix}\)
+\end{definition}
