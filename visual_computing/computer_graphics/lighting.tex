@@ -1,0 +1,120 @@
+\section{Lighting}
+
+\begin{definition}[Lighting]
+  Modeling physical interaction between materials and light sources.
+\end{definition}
+
+\begin{definition}[Radiometry]
+  Studies measurement of radiation (w/ lighting).
+\end{definition}
+
+\begin{definition}[Angle]
+  \(\theta = \frac{\text{arc-length}}{r}\), for circle \(2 \pi\) radians.
+\end{definition}
+
+\begin{definition}[Solid Angle]
+  \(\Omega = \frac{A}{r^2}\).
+  For sphere: \(4\pi\) steradians.
+\end{definition}
+
+\begin{definition}[Angle]
+  Point on unit sphere parameterized by \(\omega = (\theta, \phi)\).
+
+  Zenith and Azimuth.
+  Thus \(\text{lat} =\frac{90}{\pi}(\pi - \theta)\) and \(\text{long} = \frac{90}{\pi}\phi\).
+\end{definition}
+
+\begin{definition}[Differential Solid Angle]
+  \(dA = (rd\theta)(r \sin \theta d \phi)\) as well as
+  \(d\omega = \frac{dA}{r^2} = \sin \theta d \theta d \phi\).
+\end{definition}
+
+\begin{definition}[Light]
+  Photons with position \(x\), direction \(\omega\) and wavelength \(\lambda\).
+\end{definition}
+
+\begin{definition}[Photon Energy]
+  \(\frac{hc}{\lambda} \ [J]\) with \(h\) being Planck's  constant.
+\end{definition}
+
+\subsection{Radiometry}
+\begin{definition}[Flux/Radiant Flux/Power]
+  \(\Phi(A) \ \left[\frac{J}{s} = W\right]\): amount of energy (\#photons) passing through surface or space per unit time.
+\end{definition}
+
+\begin{definition}[Irradiance]
+  \(E(x) = \frac{d \Phi(A)}{d A(x)} \ \left[\frac{W}{m^2}\right]\):
+  flux per \textit{unit area arriving}.
+\end{definition}
+
+\begin{algorithm}[Lambert's Cosine Law]
+  \(E =\frac{\Phi}{A / \cos \theta} = \frac{\Phi}{A} \cos \theta = E_{\vec{n}} \cos \theta\).
+\end{algorithm}
+
+\begin{definition}[Radiosity]
+  \(B(x) = \frac{d\Phi(A)}{dA(x)} \ \left[\frac{W}{m^2}\right]\):
+  flux per \textit{unit area leaving}.
+\end{definition}
+
+\begin{definition}[Intensity]
+  \(I(\omega) = \frac{d\Phi}{d\omega} \ \left[\frac{W}{sr}\right]\):
+  Flux per solid angle (direction). Thus \(\Phi = \int_{S^2} I(\omega) d\omega = 4 \pi I\) for an isotropic point source.
+\end{definition}
+
+\begin{definition}[Radiance]
+  \(L(x, \omega) = \frac{d^2 \Phi(A)}{\cos \theta dA(x) d\omega} \ \left[\frac{W}{m^2sr}\right]\):
+  Intensity per unit area or flux density per unit solid angle, per perpendicular unit area. Most fundamental in raytracing!
+\end{definition}
+
+\subsection{Reflection Models}
+\begin{definition}[BRDF]
+  Bidirectional reflectance distribution function. Relationship between incident radiance and differential reflected radiance. \(\omega_i\) = incoming angle, \(\omega_r\) reflected angle.
+  \[f_r(x, \omega_i, \omega_r) = \frac{dL_r(x, \omega_r)}{dE_i(x, \omega_i)} = \frac{dL_r(x, \omega_r)}{L_i(x, \omega_i) \cos \theta_i d\omega_i}\]
+\end{definition}
+
+\begin{definition}[Reflection Equation]
+  Describes \textit{local illumination} model to compute the reflected radiance. \(H^2\) is the hemisphere.
+  \[L_r(x, \omega_r) = \int_{H^2}f_r(x, \omega_i, \omega_r)L_i(x, \omega_i) \cos \theta_i d \omega_i\]
+\end{definition}
+
+\includegraphics*[width=\linewidth]{assets/reflections.png}
+
+\begin{definition}[Diffuse Reflection]
+  For diffuse reflection, the BRDF is a constant.
+  \(L_r(x) = f_r E_i(x)\).
+\end{definition}
+
+\begin{algorithm}[Phong Illuminiation Model]
+  \[I_\lambda = \underbrace{I_a k_a}_{\text{Ambient}} + f_{att}I_p[\underbrace{k_d(N \cdot L)}_{\text{Diffuse}} + \underbrace{k_s(R \cdot V)^n}_{\text{Specular}}]\]
+  \begin{itemize}
+    \item \textit{Material param}: \(k_a, k_d, k_s,\) \(n\) specular size
+    \item \textit{Light param}: \(I_a\) global ambient, \(I_p\) light intensity
+    \item \textit{Geometry}: \(N\) face normal, \(L\) light pos, \(V\) camera pos
+  \end{itemize}
+\end{algorithm}
+
+\begin{theorem}
+  For multiple lights, sum diffuse/specular for each light.
+\end{theorem}
+
+\begin{definition}[Ambient]
+  Light inherent in scene \(\approx\) global illuminiation.
+\end{definition}
+
+\begin{definition}[Diffuse]
+  Reflection on matt, dull surfaces. Follows Lambertian's law.
+  \(I = I_pk_d\cos \theta = I_p k_d(N \cdot L)\).
+\end{definition}
+
+\begin{definition}[Specular]
+  Reflection on shiny surfaces. Depends on angle between the reflection and viewing ray. \(R=2N(N \cdot L) - L\).
+\end{definition}
+
+\begin{theorem}
+  Using halfway vectors would be faster to compute the cosine power: \(\cos^n \beta = (N \cdot H)^n\) with \(H = \frac{L + V}{||L + V||}\).
+\end{theorem}
+
+\begin{definition}[Attenuation]
+  Quadratic due to spatial radiation. \(f_{att} = (d_L^2)^{-1}\) or often used in OpenGL:
+  \(f_{att} = \min((c_1 + c_2d_L + c_3d_L^2)^{-1}, 1)\)
+\end{definition}
