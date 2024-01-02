@@ -1,0 +1,181 @@
+\section{Geometry \& Textures}
+\begin{definition}[Sources of Geometry]
+  \begin{itemize*}
+    \item 3D Scanning
+    \item Point clouds
+    \item 3D modeling
+    \item procedural modeling
+  \end{itemize*}
+\end{definition}
+
+\subsection{Geometric Representations}
+
+\begin{definition}[Parametric Surfaces]
+  i.e. \(f(x, y , z) = 0\).
+  \begin{itemize*}
+    \item implicit
+    \item simple storage
+    \item fst in/out test
+    \item only works for easy surfaces
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Subdivision surfaces]
+  \begin{itemize*}
+    \item explicit
+    \item surface piecewise linear
+    \item increase sub.div. for more precision
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Point Set]
+  \begin{itemize*}
+    \item explicit
+    \item collection of points
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Polygonal Meshes]
+  \begin{itemize*}
+    \item explicit
+    \item boundary of objects
+    \item geometry + connectivity
+    \item attributes (color, normals, \(\sdots\))
+    \item fast on GPU
+    \item should support rendering, geometry queries, modifications
+  \end{itemize*}
+\end{definition}
+
+\subsection{Mesh Datastructures}
+
+\begin{definition}[Polygon]
+  \(\langle V, E\rangle\), planar and non self-intersecting.
+\end{definition}
+
+\begin{definition}[Polygonal Mesh]
+  \(M = \langle V, E, F\rangle\).
+  \textit{Properties}:
+  \begin{itemize*}
+    \item every edge belongs to at least one polygon
+    \item intersection of two polygons in \(M\) is either empty, a vertex, or an edge.
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Valence]
+  Number of edges incident to a vertex
+\end{definition}
+
+\begin{definition}[Boundary]
+  The set of all edges that belong to only 1 polygon.
+\end{definition}
+
+\begin{definition}[Manifold]
+  Surface locally homeomorphic to a disk. Closed manifolds divide space into two.
+\end{definition}
+
+\begin{definition}[Triangle List]
+  List of triangles.
+  \begin{itemize*}
+    \item simple
+    \item no connectivity
+    \item redundant
+    \item STL file format
+    \item easy queries
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Indexed Face Set]
+  Two arrays, one describes the triangles with vertex indices and the index array contains the coordinates per vertex index.
+  \begin{itemize*}
+    \item avoids redundancy
+    \item stores connectivity (costly geometric queries and mesh modifications)
+    \item OBJ, OFF, WRL
+  \end{itemize*}
+\end{definition}
+
+\subsection{Maps}
+
+\begin{definition}[Texture Mapping]
+  Increase detail without more geometry.
+
+  \textit{Desirable}:
+  \begin{itemize*}
+    \item low distortion
+    \item bijective
+    \item efficient to compute
+  \end{itemize*}
+
+  \textit{Issues}:
+  \begin{itemize*}
+    \item texture atlases
+    \item finding cuts
+    \item anti-aliasing
+    \item details
+  \end{itemize*}
+\end{definition}
+
+\begin{theorem}
+  Sphere Param:
+  \((u, v)^\top \to (\sin u \sin v, \cos v, \cos u \sin v)^\top\)
+\end{theorem}
+
+\begin{theorem}
+  Mapping textures could cause aliasing \(\to\)
+  Use LPF, but isotropic Gauss in screen space is anisotropic in texture space.
+  Use an anisotropic spatially-varying texture filter.
+\end{theorem}
+
+\begin{theorem}
+  Textures can be procedurally generated via \textbf{Perlin noise} or \textbf{Gabor noise} (more control over spectral properties)
+\end{theorem}
+
+\begin{definition}[Solid Textures]
+  Textures for each 3D coordinate.
+\end{definition}
+
+\begin{definition}[Light Map]
+  Brightness map, similar to texture mapping.
+\end{definition}
+
+\begin{definition}[Environment Map]
+  For reflective objects. Intersect ray with surrounding sphere/cube instead of scene. Really fast.
+\end{definition}
+
+\begin{definition}[Bump Mapping]
+  small-scale geometry per fragment.
+  Adapt normal to texture.
+  Does not affect silhouette shadow.
+  No self-occlusions and self-shadowing.
+\end{definition}
+
+\begin{definition}[Displacement Map]
+  Per vertex, changes actual geometry.
+\end{definition}
+
+\begin{definition}[Normal Map]
+  Each pixel has its own normal.
+  For each pixel: \(n' = (2r - 1, 2g - 1, 2b - 1)^\top\).
+\end{definition}
+
+\begin{theorem}
+  Normals are stored in texture space \((u, v, n)\) and thus need to be transformed into the object space \((N, T, B)\).
+  Each point \(p = (x, y, z)^\top\) has linear relation \(A\) to its texture coordinate \(\vec{u} = (u, v)^\top\).
+  For each triangle compute Tangent and Bitangent.
+  \(T\) and \(B\) correspond to \((1, 0)\) and \((0, 1)\) in texture space:
+  \[p = A \vec{u} \to \begin{bmatrix}
+    \vec{T} & \vec{B}
+  \end{bmatrix} = A I_{2 x 2} = A\]
+  For triangle \(p_1, p_2, p_3\) got two conditions:
+  \[p_2 = A \vec{u}_2 \ \land \ p_3 = A \vec{u}_3 \implies \begin{bmatrix}
+    p_2 & p_3
+  \end{bmatrix} = A \begin{bmatrix}
+    \vec{u}_2 & \vec{u}_3
+  \end{bmatrix}\]
+  Solve for \(A\) and you got \(\begin{bmatrix}
+    \vec{T} & \vec{B}
+  \end{bmatrix}\).
+\end{theorem}
+
+\begin{definition}[Mip Map]
+  Store texture with image pyramid. Choose res based on projected size of triangle. LERP in-between depths.
+\end{definition}
