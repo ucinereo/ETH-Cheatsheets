@@ -1,0 +1,78 @@
+\section{Visibility and Shadows}
+
+\begin{algorithm}[Painter's algorithm]
+  Render from furthest to nearest.
+
+  \textit{Problems}:
+  \begin{itemize*}
+    \item cyclic overlaps
+    \item intersections
+  \end{itemize*}
+\end{algorithm}
+
+\begin{algorithm}[Z-Buffering]
+  Store depth to nearest object per pixel.
+
+  \begin{enumerate}
+    \item Initialize all \(z\) values to \(\infty\)
+    \item For each polygon: If new value smaller, replace!
+  \end{enumerate}
+
+  \textit{Problems}:
+  \begin{itemize*}
+    \item limited resolution
+    \item resolution is non-linear
+  \end{itemize*}
+\end{algorithm}
+
+\subsection{Shadows}
+
+\begin{definition}[Planar Shadows]
+  Draw projection on the ground.
+
+  \textit{Limitations}:
+  No self shadows or on other objects.
+  Problems with curved surfaces.
+\end{definition}
+
+\begin{definition}[Projective texture shadows]
+  Separate obstacle and receiver. Compute b/w image from light and use as projective texture.
+
+  \textit{Limitations}:
+  Need to specify obstacle \& receiver.
+  No self-shadows.
+\end{definition}
+
+\begin{algorithm}[Shadow Maps]
+  Compute depths from light \(d(x_L)\) and camera.
+  For each pixel in camera plane:
+  \begin{enumerate}
+    \item Compute point in world coordinates
+    \item Project onto light plane \(z_L\)
+    \item If \(d(x_L) < z_L\), then \(x\) is in shadow.
+  \end{enumerate}
+
+  Add bias for stability (\(d(x_L) + b < z_L\)).
+
+  A point to shadow can be outside the FoV of shadow map, thus use cubical shadow map or spot lights.
+
+  Should \textbf{not} filter depth, but take weighted average.
+\end{algorithm}
+
+\begin{algorithm}[Shadow Volumes]
+  Explicitly represent the volume of space in shadow. If polygon in volume, it is in shadow.
+
+  \begin{enumerate}
+    \item Shoot a ray from the camera
+    \item ++/-- counter each time volume is intersected.
+    \item if counter \(> 0\), then primitive is in shadow
+  \end{enumerate}
+
+  Use silhouette edges only!
+
+  \textit{Limitations}:
+  Lots of geometry.
+  Expensive to rasterize long skinny triangles.
+  Object must be watertight
+  Rasterization of polygons sharing an edge must not overlap and not have gap.
+\end{algorithm}
