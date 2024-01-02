@@ -1,0 +1,30 @@
+\section{Scan Conversion (Rasterization)}
+
+Approximation of a primitive by a finit number of pixels.
+
+\begin{algorithm}[Bresenham Line]
+  Fast decision which pixel has to be drawn next.
+  \textit{Criterion}: Position of midpoint \(m\) to intersection \(q\).
+  Consider the line equation: \(f(x, y) = ax + by + c = 0\): 
+
+  \begin{enumerate}
+    \item \(d = f(m) = f(x_p + 1, y_p + 1/2) > 0 \implies\) NE, else E
+    \item NE \(\implies d_{new} = d_{old} + \Delta y - \Delta x\), else \(d_{new} = d_{old}+ \Delta y\).
+  \end{enumerate}
+\end{algorithm}
+
+\begin{theorem}
+  For polygons an inside test for each px is too inefficient.
+\end{theorem}
+
+\begin{definition}[Polygon Span]
+  Group of (neighboring) px's within scan line.
+\end{definition}
+
+\begin{algorithm}[SC of Polygons]
+  \begin{enumerate}
+    \item Calc all intersections on scan line
+    \item Sort intersection points by ascending \(x\)-coordinate
+    \item Fill all spans in between two consecutive intersections points if the parity is odd.
+  \end{enumerate}
+\end{algorithm}
