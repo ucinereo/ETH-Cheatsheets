@@ -1,0 +1,228 @@
+\section{Splines}
+
+\begin{definition}[Local Coordinate System]
+  \(u \in \R: x(u) = (x(u), y(u), z(u))^\top\)
+  Thus map the 1D param space into 3D or 2D.
+\end{definition}
+
+\subsection{Bézier Curves}
+
+\begin{center}
+  \(x(t) = b_0B_0^n(t) + \ldots + b_n B_n^n(t)\) where \(b_i \in \R^3\)
+\end{center}
+
+\begin{itemize}
+  \item \textbf{Affine invariance}: Affine transform of all points is accomplished by the affine transform of its control points.
+  \item \textbf{Convex Hull Property}: The curve lies in the convex hull.
+  \item Control polygon gives rough sketch of curve.
+  \item \textbf{Endpoint interpolation}, since \(B_0^n(0) = B_n^n(1) = 1\)
+  \item \textbf{Variation diminishing property}: Maximum number of intersections of a line with the curve is less or equal to the number of intersection with its control polygon.
+  \color{red}
+  \item \textbf{Global Support}: Control points influence whole curve.
+  \item Insertion of new control point comes along with degree evaluation.
+\end{itemize}
+
+\begin{definition}[Control Point]
+  Points defining the hull of the spline: \(b_i\).
+\end{definition}
+
+\begin{definition}[Bernsteinpolynomial]
+  \(B_i^n(t) = \binom{n}{i} t^i(1 - t)^{n-1}\), \(i \notin [1, n]: 0\)
+
+  \textit{Properties}:
+  \begin{itemize*}
+    \item Partition of unity (meaning at every point the sum of polynomials is 1)
+    \item positive definite
+    \item recursion
+    \item symmetry
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Polynomial Degree]
+  Highest exponent of the polynomial = number of control points.
+\end{definition}
+
+\begin{definition}[Polynomial Order]
+  order = degree + 1
+\end{definition}
+
+\begin{theorem}
+  Cubic Bézier curve has 4 control points!
+\end{theorem}
+
+\begin{algorithm}[DeCasteljau Algorithm]
+  \lstset{
+    basicstyle=\small\ttfamily,
+    language=Pascal,
+    captionpos=b
+  }
+  Interpolation in \(\O(n^2)\) \vspace{-5pt}
+  \begin{lstlisting}[mathescape=true]
+fun DeCasteljau(t, {b_0, b_1, ..., b_n}):
+  for i from n to 1 do
+    for j from 0 to i-1 do
+      $b_j$ = (1 - t) * $b_j$ + t * $b_{j+1}$
+  return $b_0$ // Final interpolated point
+\end{lstlisting}
+Basically interpolate, till you no longer can interpolate. If you write \(b_0\) out and factor out the original control points, you get the sum of Bernsteinpolynomials again.
+\end{algorithm}
+
+\begin{theorem}
+  Derivative is another Bézier of order \(n-1\).
+\end{theorem}
+
+\begin{theorem}
+  Combining Bézier curves makes the whole curve \(C^0\).
+\end{theorem}
+
+\begin{definition}[Piecewise Bézier Curves]
+  Two composed Bézier curves (e.g. segments \(b_0, \ldots b_n\) in \([u_0, u_1]\) and \(b_n, \ldots b_{2n}\) in \([u_1, u_2]\)) need the following constraint to enforce \(C^r\)-continuity:
+  \(b_{n+i} = b_{n-i}^i(t)\) for \(i = 0, \ldots, r\) where \(t = (u - u_0) / (u_1 - u_0)\) stands for the local coordinate of \(u_2\) relative to \(u_0, u_1\).
+\end{definition}
+
+\begin{definition}[Joining Cubic Béziers]
+  Curve \(A \cup B\) is \(C^n\) continuous if segment \(A^{(i)}(t_{end}) = B^{(i)}(t_{start})\) for \(i = 0, \ldots n\).
+\end{definition}
+
+\begin{theorem}
+  Thus for \(C^1\), we need \(b_{n-1}\) to be mirrored on \(b_n\) by \(b_{n+1}\).
+\end{theorem}
+
+\pagebreak
+\begin{definition}[Matrix Form]
+  We can rewrite the curve equation with vectors:
+  \(x(t) = \sum_i^n b_i B_i^n(t) = (b_0, \sdots, b_n)(B_0^n(t), \sdots, B_n^n(t))^\top\).
+  Then we use a basis transformation to get a monomial representation:
+  \[\begin{bmatrix}
+    B_0^n(t) \\ \vdots \\ B_n^n(t)
+  \end{bmatrix} = \begin{bmatrix}
+    m_{00} & \ldots & m_{0n} \\ \vdots & & \vdots \\ m_{m0} & \ldots & m_{mn}
+  \end{bmatrix} \begin{bmatrix}
+    t^0 \\ \vdots \\ t^n
+  \end{bmatrix}\]
+\end{definition}
+
+\begin{theorem}
+  For Bernstein polynomials we get  \(m_{ij} = (-1)^{j-i}\binom{n}{j} \binom{j}{i}\).
+\end{theorem}
+
+\begin{definition}[Spline Interpolation]
+  Interpolate \(\{p_0, \ldots, p_n\}\) with \(x(t_i) = p_i\).
+  
+  \begin{center}
+    \(\begin{bmatrix}
+      1 & t_0 & \ldots & t_0^n \\ \vdots & \vdots & & \vdots \\ 1 & t_n & \ldots & t_n^n
+    \end{bmatrix} \begin{bmatrix}
+      a_0 \\ \vdots \\ a_n
+    \end{bmatrix} = \begin{bmatrix}
+      p_0 \\ \vdots \\p_n
+    \end{bmatrix}\)
+  \end{center}
+
+  Where \(a_i\) are the polynomial coefficients.
+\end{definition}
+
+\subsection{B-Spline Curves}
+
+\begin{center}
+  \(s(u) = \sum_{i=0}^n d_i N_i^n(u)\) where \(d_i \in \R^3\)
+\end{center}
+
+Coefficients \(d_i\) are \textit{de Boor} points. Bases are piecewise, recursively defined polynomials over a sequence of knots defined in the knot vector \(T = (u_0, \ldots, u_{k+n+1})\).
+
+\begin{itemize}
+  \item Different degrees
+  \item Piecewise polynomial
+  \item Local support (de Boor points only have local influence)
+  \item uniform/non-uniform (distance from \(u_i\) to \(u_{i+1}\))
+\end{itemize}
+
+\begin{definition}[B-Spline Functions]
+  \[N_i^n(u) = (u - u_i)\frac{N_i^{n-1}(u)}{u_{i+n} - u_i} + (u_{i+n+1} - u)\frac{N_{i+1}^{n-1}(u)}{u_{i+n+1} - u_{i+1}}\]
+  where \(N_i^0(u) = \begin{cases}
+    1 & u \in [u_i, u_{i+1}] \\ 0 & \text{otw.}
+  \end{cases}\)
+
+  \textit{Properties}:
+  \begin{itemize*}
+    \item Partition of unity
+    \item Positivity (\(N_i^n(u) \geq 0\))
+    \item Compact (\(N_i^n(u) = 0, u \notin [u_i, u_{i+1}]\))
+    \item Continuity (\(N_i^n\) is \(C^{n-1}\)).
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[B-Spline filters]
+  Cardinal B-Splines over uniform knot sequences can be computed using the convolution:
+  \[N_i^n = N^{n-1} \ast N^0 \quad N^0: \text{box} - \text{function}\]
+\end{definition}
+
+\begin{theorem}
+  Curve is globally \(C^{n-1}\) except multiple knots of order \(p\) with \(u_j = \ldots u_{j+p-1}\) lead to \(C^{n-p}\).
+\end{theorem}
+
+\begin{algorithm}[deBoor Algorithm]
+  Successive linear interpolation:
+  \[d_i^k = (1 - a_i^k)d_{i-1}^{k-1} + a_i^k d_i^{k-1} \quad a_i^k = \frac{t - u_i}{u_{i+n+1-k} - u_i}\]
+  where \(d_i^0 = d_i\) and \(d_n^n = s(t)\).
+\end{algorithm}
+
+\begin{theorem}
+  With first and last knot multiplicity of \(n+1\) we have that the deBoor Algorithm = DeCasteljau Algorithm.
+\end{theorem}
+
+\begin{definition}[Spline Interpolation]
+  System is under-determined. Need \(k+n\) control points to interpolate \(k+1\) points. \(k-1\) define the interior intervals and \(n+1\) the boundaries.
+\end{definition}
+
+\subsection{Tensor Product Surfaces}
+From curve to a surface involves taking a tensor product.
+\[x(u, v) = \sum_{i=0}^{n}\sum_{j=0}^{m}\alpha_{i, j} F_i(u)G_j(v)\]
+
+\begin{definition}[Bézier Patches]
+  \(F_i = B_i^m\) and \(G_j = B_i^n\).
+
+  \textit{Properties}:
+  \begin{itemize*}
+    \item Affine invariance
+    \item convex hull property
+    \item variation diminishing property
+    \item boundary curves (patch boundaries are Bézier curves)
+  \end{itemize*}
+\end{definition}
+
+\begin{algorithm}[2D DeCasteljau]
+  There exists the 2D DeCasteljau algorithm.
+\end{algorithm}
+
+\pagebreak
+\begin{definition}[Warping as a 2D Parametric Function]
+  Given a matrix of vector valued landmark points:
+  \[m(u_i, v_j) = \begin{bmatrix}
+    B_0(u_i) & \ldots & B_n(u_i)
+  \end{bmatrix} \begin{bmatrix}
+    b_{00} & \ldots & b_{0m} \\ \vdots && \vdots \\ b_{n0} & \ldots & b_{nm}
+  \end{bmatrix} \begin{bmatrix}
+    B_0(v_j) \\ \vdots \\ B_m(v_j)
+  \end{bmatrix}\]
+  Solve this interpolation problem.
+\end{definition}
+
+\begin{definition}[Matrix Form]
+  Same as in 1D. Rewrite in monomial basis:
+  \[b^{m, n}(u, v) = (u^0, \ldots, u^m)M^\top[b_{ij}]_{i\in[m], j\in[n]}N (v^0, \ldots, v^n)^\top\]
+  With \(m_{ij} = (-1)^{j - i} \binom{m}{j}\binom{j}{i}\) and \(n_{ij} = (-1)^{j - i} \binom{n}{j}\binom{j}{i}\)
+\end{definition}
+
+\begin{definition}[B-Spline Patches]
+  \(F_i = N_i^n\) and \(G_j = M_j^m\).
+\end{definition}
+
+\begin{algorithm}[2D DeBoor Algorithm]
+  It exists :)
+\end{algorithm}
+
+\begin{definition}[Rational B-Spline Patches (Nurbs)]
+  Most advanced modelling and animation systems are based on NURBS. They are \textbf{not} tensor product surfaces, since bases are non-separable.
+  \[s(u,v) = \frac{\sum_i \sum_j w_{i, j} d_{i, j}N_i^m(u)N_j^n(v)}{\sum_i \sum_j w_{i, j}N_i^m(u)N_j^n(v)}\]
+\end{definition}
