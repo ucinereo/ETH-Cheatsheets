@@ -1,0 +1,69 @@
+\section{Ray Tracing}
+
+\begin{definition}[Ray Casting]
+  Shoot ray through from the camera through the pixels and in first intersection, evaluate the illumination model.
+\end{definition}
+
+\begin{definition}[Forward Raytracing]
+  Rays from light source (not efficient).
+\end{definition}
+
+\begin{definition}[Backward Raytracing]
+  Shoot rays from the camera.
+\end{definition}
+
+\begin{definition}[The Pipeline]
+  \begin{enumerate}
+    \item \textit{Ray Generation}: Shoot ray from origin.
+    \item \textit{Intersection}: Calculate first intersection. Calculate illumination at that point by recursion (either reflect or refract).
+    \item \textit{Shading}: Shoot ray from intersection to directly to light source. Intersection \(\implies\) Point in shadow.
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}[Supersampling]
+  Shoot multiple rays to remove aliasing.
+\end{definition}
+
+\subsection{The Math}
+
+\begin{definition}[Ray Equation]
+  \(r(t) = \vec{o} + t \vec{d}\) with \(\vec{o}\) origin and \(\vec{d}\) direction.
+\end{definition}
+
+\begin{definition}[Sphere Intersection]
+  \(||x - \text{center}||^2 - \text{radius}^2 = 0\), then we plug in the ray equation into \(x\).
+\end{definition}
+
+\begin{definition}[Triangle]
+  Use barycentric coordinates: \(x = s_1 p_1 + s_2 p_2 + s_3 p_3\) for the triangle \(p_1p_2p_3\).
+  Intersect with triangle's plane:
+  \[(\vec{o} + t\vec{d} - p_1) \cdot \vec{n} = 0 \quad t = \frac{(\vec{o} - p_1) \cdot n}{\vec{d} \cdot n} \quad n = (p_2 - p_1) \times (p_3 - p_1)\]
+  We compute \(s_i\), then test: \(s_1 + s_2 + s_3 = 0 \ \land \ s_i \in [0,1]\)
+\end{definition}
+
+\subsection{Shading}
+Physical shading too costly, thus simple assumptions:
+\begin{itemize}
+  \item \textit{Surface Reflectance}: Diffuse, specular, ambient, transp.
+  \item \textit{Shadows}: Shadow rays as described above
+\end{itemize}
+
+\begin{definition}[Refraction]
+  Add probability to refract from turned normal.
+\end{definition}
+
+\begin{definition}[Multiple lights]
+  Iterate shadow rays over multiple lights.
+\end{definition}
+
+\begin{definition}[Area lights]
+  Add soft shadows with area lights.
+\end{definition}
+
+\begin{definition}[Motion Blur]
+  Sample objects and intersect in time.
+\end{definition}
+
+\begin{definition}[Depth of field]
+  Add virtual "lens" with focal length.
+\end{definition}
