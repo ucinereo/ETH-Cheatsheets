@@ -1,0 +1,76 @@
+\section{Accelerating Data Structures}
+
+\begin{definition}[Few intersection computations]
+  \begin{itemize*}
+    \item uniform grid
+    \item binary space partition tree, kd tree, octree
+    \item bounding volume hierarchies
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Fewer rays]
+  \begin{itemize*}
+    \item early ray termination
+    \item adaptive sampling
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Generalized rays]
+  \begin{itemize*}
+    \item beam tracing
+    \item cone tracing
+  \end{itemize*}
+\end{definition}
+
+\begin{definition}[Ray Tracing Cost]
+  \(\O(\#\text{px} \cdot \#\text{Objs})\), thus for each ray \(\O(\#\text{Objs})\)
+\end{definition}
+
+\subsection{Spatial Decomposition}
+Insert objects into disjoint spatial regions. Top-Down.
+
+\begin{definition}[Axis Aligned Bounding Boxes (AABB)]
+  Each box is defined by two vectors. Easy check if intersection into box.
+\end{definition}
+
+\begin{definition}[Uniform Grid]
+  Partition space into voxels.
+  Each cell contains primitives that overlap cell.
+  Resolution heuristic: \(3 \sqrt[3]{n}\).
+  Store reference for each object in cell.
+  Incrementally rasterize ray.
+
+  \textbf{Problems}: non-uniform scenes (use hierarchical grids)
+\end{definition}
+
+\begin{definition}[Octree]
+  Adaptive binary splits like uniform grid. Recursively subdivide each cell into 8 \textbf{equal} subcells.
+\end{definition}
+
+\begin{definition}[KD-Tree]
+  Recursively binary split via \textbf{axis-aligned} planes until termination criteria (number of objects or maximum depth). Only leaf nodes store reference to geometry.
+\end{definition}
+
+\begin{definition}[BSP-Trees]
+  Recursively split space using \textbf{arbitrary} planes.
+\end{definition}
+
+\begin{theorem}
+  Complexity increases from Octree to KD to BSP, but it increases the flexibility and has fewer intersections.
+\end{theorem}
+
+\subsection{Object decomposition}
+Partition objects into disjoint sets where the bounding volumes may overlap.
+Either bottom-up or top-down.
+
+\begin{definition}[Bounding Volumes]
+  \begin{itemize*}
+    \item Spheres
+    \item AABB
+    \item Oriented bounding box (OBB)
+    \item K-discrete orientation polytopes
+    \item Convex hulls
+  \end{itemize*}
+
+  \textit{Tradeoff}: complex, tight fit, fewer intersections \(\leftrightarrow\) simple, fast
+\end{definition}
