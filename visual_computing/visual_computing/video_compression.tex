@@ -1,5 +1,11 @@
 \section{Video Compression}
 
+\begin{itemize}
+    \item Perception limited to $<24Hz$ (images will be perceived as continuous if frequency is sufficiently high)
+    \item Still need to avoid aliasing (wheel effect) (high FPS desired in games, due to absence of motion blur)
+    \item Flicker can be perceived up to $>60Hz$.
+\end{itemize}
+
 \begin{definition}[Bloch's Law]
   We perceive same image even if the intensity different, but longer screen time. Thus FPS \(> 10 \text{Hz}\).
 \end{definition}
@@ -32,6 +38,8 @@
     \item Partition frame into blocks (e.g. 16 x 16 pixel)
     \item Per block, find best match in new frame with e.g. SSD.
   \end{enumerate}
+
+  \textit{Is an approximation of ME}.
 \end{algorithm}
 
 \begin{definition}[Candidate blocks]
@@ -41,24 +49,6 @@
 \begin{definition}[Search strategies]
   Full search, partial (fast) search
 \end{definition}
-
-\begin{algorithm}[Motion Compensation Algorithm (MC)]
-  Use best matching of reference frame as prediction of blocks in current frame.
-
-  \(\to\) Gives motion vectors \& MC prediction error or residual.
-\end{algorithm}
-
-\begin{definition}[Motion Vector]
-  Relative horizontal and vertical offsets of a given block from one frame to another (not limited by integers).
-\end{definition}
-
-\begin{algorithm}[Half-pixel ME (corse-fine) algorithm]
-  w/ bilinear interp.
-  \begin{enumerate}
-    \item \textit{Coarse step}: find best integer MV
-    \item \textit{Fine step}: Refine by spatial interp. and best-matching
-  \end{enumerate}
-\end{algorithm}
 
 \begin{definition}[Advantages]
   \begin{itemize*}
@@ -75,6 +65,29 @@
   \end{itemize*}
 \end{definition}
 
+\begin{algorithm}[Motion Compensation Algorithm (MC)]
+  Use best matching of reference frame as prediction of blocks in current frame.
+
+  \(\to\) Gives motion vectors \& MC prediction error or residual.
+\end{algorithm}
+
+\begin{definition}[Motion Vector]
+  Relative horizontal and vertical offsets of a given block from one frame to another (not limited by integers).
+\end{definition}
+
+\begin{algorithm}[Half-pixel ME (corse-fine) algorithm]
+  Bilinear interpolate spatially to get sub-integer px offsets \(\to\) averaging effect and reduced prediction error \& noise \(\to\) improved compression.
+  \begin{enumerate}
+    \item \textit{Coarse step}: find best integer MV
+    \item \textit{Fine step}: Refine by spatial interp. and best-matching
+  \end{enumerate}
+\end{algorithm}
+
+\pagebreak
+\begin{definition}[Bidirectional MC predicition]
+  Use \(I\), \(P\) and \(B\)-frames, the average of a block from the previous frame and a block from the future frame (skip \(B\) frames i multiple in a row).
+\end{definition}
+
 \begin{algorithm}[MPEG GOP]
   {\color{H1}I-B-B-P-B-B-P-B-B}-{\color{H3}I-B-B-\(\ldots\)}
 \end{algorithm}
@@ -88,6 +101,10 @@
 \end{definition}
 
 \begin{definition}[Error Measures]
-  MSE per pixel between orig. and decoded.
-  Or PSN. 
+  Pixel wise MSE with decoded or PSNR.
+  \(PSNR = \frac{\max x^2}{e_{\text{MSE}}^2} = 10 \cdot \log_10 (\frac{255^2}{e^2_{\text{MSSE}}}) dB\).
+\end{definition}
+
+\begin{definition}[Subjective evaluation]
+  1 very annoying to 5 imperceptible
 \end{definition}

@@ -7,7 +7,11 @@ Modify pixels based on linear-combination of neighborhood.
 \end{definition}
 
 \begin{definition}[Separable \(K\)]
-  \(K(i, j) = f(i) \cdot g(j) \iff \text{rank}(K) = 1\)
+  \(K(i, j) = f(i) \cdot g(j) \iff \text{rank}(K) = 1\).
+  Improves computation from \(\O(MN \cdot mn) \to \O(MN \cdot (m + n))\).
+\[
+K * I = f * (g * I(N(m,n)))=\sum_{i=-M}^M f(i) \left(\sum_{j=-N}^N g(j) I(m,n-j) \right)
+\]
 \end{definition}
 
 \begin{definition}[Correlation (\(K \circ I\))]
@@ -16,7 +20,7 @@ Modify pixels based on linear-combination of neighborhood.
 \end{definition}
 
 \begin{definition}[Convolution (\(K \ast I\))]
-  Also called \textit{point spread}.
+  Also called \textit{point spread}. Describes how one pixel is distributed over wider area.
   \begin{align*}
     I'(x, y) &= \sum_{(i, j) \in N(x, y)} K(i, j) I(x - i, y - j) \\
     &= \sum_{(i, j) \in N(x, y)} K(-i, -j) I(x + i, y + j) \\
@@ -159,3 +163,7 @@ Edges correspond to points with \textit{high} gradient magnitude. Thus we can ap
   \end{bmatrix}\)
 \end{tabularx}
 
+\subsection{Integral Images}
+Also known as summed-area tables, allow for efficiently compute the convolution with a constant rectangle.
+
+\(II(x, y) = \int_0^x \int_0^y I(x', y') dx' dy'\) then if image is patched into regions \(A, B, C, D\) we have \(A = II(1)\), \(A + C = II(3)\), \(A + B = II(2)\), \(A + B + C + D = II(4)\) and thus \(D = II(4) - II(2) - II(3) + II(1)\). If \(1, 2, 3, 4\) are corners of \(D\).

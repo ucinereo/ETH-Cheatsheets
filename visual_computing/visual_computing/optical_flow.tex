@@ -6,7 +6,7 @@
 
 \begin{itemize}
   \item \textit{Motion/Scene flow}: projection of 3D motion field
-  \item \textit{Normal flow}: observed tangent motion
+  \item \textit{Normal flow}: observed tangent motion (\(\bot\) to motion line)
 \end{itemize}
 
 \begin{definition}[Problem]
@@ -50,6 +50,8 @@ With \(I_x, \ I_y\) spatial derivatives; \(u, \ v\) OF and \(I_t\) frame differe
   \end{rcases*} \ \text{minimize} \ e_s + \lambda e_c \)
 
   Really hard to solve. Info spreads from corner-type patterns.
+
+  It is an example for regularization with parameter \(\lambda\).
 \end{algorithm}
 
 \begin{algorithm}[Lucas-Kanade]
@@ -70,9 +72,9 @@ With \(I_x, \ I_y\) spatial derivatives; \(u, \ v\) OF and \(I_t\) frame differe
   \end{bmatrix} = - \sum \nabla I I_t
   \end{gather*}
 
-  Solve with normal equations \(A^\top A x = b\).
+  Solve with normal equations \(A^\top A x = b\) (which the above is).
 
-  \textbf{Problems}: \(A^\top A\) singular at straight edges / uniform planes.
+  \textbf{Problems}: \(A^\top A\) singular at straight edges / uniform planes. And thus when gradient vectors point in the same direction.
 
   \textbf{Solvable}: \(A^\top A\) not singular (\(\lambda_1, \lambda_2\) large and \(\lambda_1 / \lambda_2\) small).
 \end{algorithm}
@@ -81,13 +83,24 @@ With \(I_x, \ I_y\) spatial derivatives; \(u, \ v\) OF and \(I_t\) frame differe
   Estimate velocity, warp, refine, repeat.
 \end{definition}
 
+\begin{definition}[Limits of local gradient method]
+  \begin{itemize}
+    \item Brightness is not constant in images (use pre-filter to make images look similar)
+    \item Fails when intensity structure within window is poor
+    \item Fails when the displacement is large (\(> 1 px\)); linearization of brightness is suitable only for small displacements.
+  \end{itemize}
+\end{definition}
+
 \begin{algorithm}[Coarse-to-Fine Estimation]
-  Get larger motion: image pyramid. start small, compute OF, rescale, take larger and initialize with last estimate.
+  Get larger motion: start small, compute OF, rescale, take larger and init w/ last OF estimate.
 \end{algorithm}
+\begin{center}
+  \includegraphics*[width=.7\linewidth]{assets/coarse-to-fine.jpg}
+\end{center}
 
 \begin{definition}[Applications]
   \begin{itemize*}
-    \item Image stabilization: get flow between two frames and warp image such that OF close to 0.
+    \item Image stabilization: get flow between frames, warp image such that OF close to 0.
     \item frame interpolation
     \item video compression
     \item object tracking

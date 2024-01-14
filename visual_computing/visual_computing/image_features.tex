@@ -64,7 +64,6 @@ Two ways to solve the problem:
   \end{itemize*}
 \end{algorithm}
 
-\pagebreak
 \begin{algorithm}[Canny]
   \begin{enumerate}
     \item Smooth with Gaussian filter
@@ -75,7 +74,7 @@ Two ways to solve the problem:
     \begin{center}
       \(\text{no edge} < \tau_{\text{weak}} \leq \text{weak edge} < \tau_{\text{strong}} \leq \text{strong edge}\)
     \end{center}
-    Reject weak edge px not connected with strong edge px.
+    Reject weak edge px not connected with strong edge px. Typical is \(\tau_{\text{strong}} / \tau_{\text{weak}} \approx 2.5\).
   \end{enumerate}
 
   Properties:
@@ -135,8 +134,8 @@ where \(M\) is the normal matrix, given by \(\sum_{(x, y) \in \text{window}} \na
 
   \begin{center}
     \begin{tabularx}{\linewidth}{XX}
-      \(\lambda_1, \lambda_3\) small \(\implies\) flat & \(\lambda_2 \gg \lambda_1 \implies\) edge \\
-      \(\lambda_2 \gg \lambda_1 \implies\) edge & \(\lambda_1, \lambda_3\) small \(\implies\) flat
+      \(\lambda_1, \lambda_2\) small \(\implies\) flat & \(\lambda_2 \gg \lambda_1 \implies\) edge \\
+      \(\lambda_2 \gg \lambda_1 \implies\) edge & \(\lambda_1, \lambda_2\) small \(\implies\) flat
     \end{tabularx}
   \end{center}
 

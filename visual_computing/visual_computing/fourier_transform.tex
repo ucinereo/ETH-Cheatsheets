@@ -16,7 +16,7 @@ Represent any function in terms of a new basis with basis vectors \(e^{-2\pi i(u
 \subsection{Properties of the Fourier Transform}
 
 \begin{definition}[Linearity]
-  \(F(ax(t) + by(t)) = a X(t) + b Y(t)\)
+  \(\F(ax(t) + by(t)) = a X(t) + b Y(t)\)
 \end{definition}
 
 \begin{definition}[Time-Shift]
@@ -37,6 +37,11 @@ Represent any function in terms of a new basis with basis vectors \(e^{-2\pi i(u
 
 \begin{definition}[Gaussian]
   FT of Gaussian is Gaussian
+\end{definition}
+
+\begin{definition}[Smoothing]
+  Before sampling remove high frequencies by multiply filter with signal in Fourier domain.
+  Box filter is bad, as kernel has infinite support.
 \end{definition}
 
 \subsection{Fourier Transform on Images}
@@ -88,6 +93,7 @@ Go from continuous function to discrete vector.
   \(\int_{\R} f(x) \delta(x - a) \, dx = f(a)\)
 \end{definition}
 
+\pagebreak
 \begin{algorithm}[Nyquist Sampling Theorem]
   Sampling frequency must be at least twice the highest frequency: \(\omega_S \geq 2 \cdot \omega\). If not the case, the signal needs to be bandlimited before sampling.
 \end{algorithm}
@@ -101,3 +107,6 @@ Go from continuous function to discrete vector.
   \(f(x) \to h(x) \to g(x) \to \tilde{h}(x) \to f(x)\)
 \end{center}
 The "inverse" kernel \(\tilde{h}(x)\) should compensate \(h(x)\). May be determined by: \(\F(\tilde{h})(u, v) \cdot \F(h)(u, v) = 1\). Convolution with kernel \(h\) may cancel out some frequencies \& noise amplification. Avoided with regularization: \(\tilde{\F}(\tilde{h})(u, v) = \frac{\F(h)}{|\F(h)|^2 + \epsilon}\).
+
+\subsection{Transformation Examples}
+\includegraphics*[width=\linewidth]{assets/fourier-functions.png}

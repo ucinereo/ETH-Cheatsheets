@@ -29,6 +29,8 @@
 
 \subsection{Image Pyramids}
 
+The general concept works as follows: Let $I_j$ be the image of level $j$. $I_{j-1} = \operatorname{ApproximationFilter}(I_j) \circ 2 \downarrow$. The level $j$ prediction residual is $I_j - (\operatorname{ApproximationFilter}(I_j) \circ 2 \downarrow \circ 2 \uparrow \circ \operatorname{Interpolation filter})$
+
 \begin{definition}[Scale-space representations]
   From an original signal \(f(x)\) generate a parametric family of signals \(f^t(x)\) where fine-scale information is successively suppressed.
 
@@ -48,6 +50,10 @@
   Preserve difference between unsampled Gaussian pyramid level and Gaussian pyramid level.
   Band-pass filter: each level represent spatial frequencies that are unrepresented at other layers.
   Analysis is to reconstruct the Gaussian pyramid, then take top layer.
+\end{definition}
+
+\begin{definition}[Oriented pyramids]
+  Apply oriented filter to determine the orientations at each layer. Represents image information at a particular scale and orientation.
 \end{definition}
 
 \subsection{Wavelets}
