@@ -17,7 +17,7 @@
   For sphere: \(4\pi\) steradians.
 \end{definition}
 
-\begin{definition}[Angle]
+\begin{definition}[Direction]
   Point on unit sphere parameterized by \(\omega = (\theta, \phi)\).
 
   Zenith and Azimuth.
@@ -29,8 +29,8 @@
   \(d\omega = \frac{dA}{r^2} = \sin \theta d \theta d \phi\).
 \end{definition}
 
-\begin{definition}[Light]
-  Photons with position \(x\), direction \(\omega\) and wavelength \(\lambda\).
+\begin{definition}[Light Assumption]
+  Photons with pos \(x\), dir \(\omega\) and WL \(\lambda\).
 \end{definition}
 
 \begin{definition}[Photon Energy]
@@ -63,7 +63,7 @@
 
 \begin{definition}[Radiance]
   \(L(x, \omega) = \frac{d^2 \Phi(A)}{\cos \theta dA(x) d\omega} \ \left[\frac{W}{m^2sr}\right]\):
-  Intensity per unit area or flux density per unit solid angle, per perpendicular unit area. Most fundamental in raytracing!
+  Intensity per unit area or flux density per unit solid angle, per perpendicular unit area. Most fundamental in raytracing! Constant along ray.
 \end{definition}
 
 \subsection{Lighting Models}
@@ -84,13 +84,14 @@
   \(L_r(x) = f_r E_i(x)\).
 \end{definition}
 
-\begin{algorithm}[Phong Illuminiation Model]
+\begin{algorithm}[Phong Illumination Model]
   \[I_\lambda = \underbrace{I_a k_a}_{\text{Ambient}} + f_{att}I_p[\underbrace{k_d(N \cdot L)}_{\text{Diffuse}} + \underbrace{k_s(R \cdot V)^n}_{\text{Specular}}]\]
   \begin{itemize}
     \item \textit{Material param}: \(k_a, k_d, k_s,\) \(n\) specular size
     \item \textit{Light param}: \(I_a\) global ambient, \(I_p\) light intensity
     \item \textit{Geometry}: \(N\) face normal, \(L\) light pos, \(V\) camera pos
   \end{itemize}
+  \textit{All vectors should be normalized}.
 \end{algorithm}
 
 \begin{theorem}

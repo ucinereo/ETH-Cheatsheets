@@ -15,7 +15,7 @@
   \begin{itemize*}
     \item implicit
     \item simple storage
-    \item fst in/out test
+    \item fast in/out test
     \item only works for easy surfaces
   \end{itemize*}
 \end{definition}
@@ -44,6 +44,10 @@
     \item fast on GPU
     \item should support rendering, geometry queries, modifications
   \end{itemize*}
+\end{definition}
+
+\begin{definition}[Implicit Surface]
+  Created by some method (e.g. water).
 \end{definition}
 
 \subsection{Mesh Datastructures}
@@ -125,6 +129,10 @@
   Use an anisotropic spatially-varying texture filter.
 \end{theorem}
 
+\begin{definition}[Anisotropic Gauss]
+  \[f(x, y) = \frac{1}{2 \pi \sigma_x \sigma_y}\exp\left(- \left(\frac{x^2}{2 \sigma^2_x} + \frac{y^2}{2 \sigma_y^2}\right)\right)\]
+\end{definition}
+
 \begin{theorem}
   Textures can be procedurally generated via \textbf{Perlin noise} or \textbf{Gabor noise} (more control over spectral properties)
 \end{theorem}
@@ -142,6 +150,7 @@
 \end{definition}
 
 \begin{definition}[Bump Mapping]
+  Positional peturbation!
   small-scale geometry per fragment.
   Adapt normal to texture.
   Does not affect silhouette shadow.

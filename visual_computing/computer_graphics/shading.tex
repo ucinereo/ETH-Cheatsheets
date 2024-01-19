@@ -17,6 +17,7 @@
   \begin{enumerate}
     \item Calculate face normals
     \item Calculate vertex normal by averaging
+    \item Evaluate illumination model for each vertex
     \item Interpolate vertex color bilinearly on current scan line.
   \end{enumerate}
 
@@ -32,6 +33,7 @@
 
 \begin{algorithm}[Phong Shading]
   Barycentric interpolation of normal on the triangle. Thus color of fragment \(x\) is determined by interpolated normals.
+  Object space shading.
 
   \textit{Problems}:
   \begin{itemize*}
@@ -44,7 +46,9 @@
 Use \textbf{RGBA} channels to calculate the overlapping objects.
 
 \begin{algorithm}[Alpha Blending]
-  Linearizes exponential attenuation of light intensity. \(I_\lambda = I_A \alpha_1 \Delta t + I_Be^{-\alpha_1\Delta t} \approx I_A \alpha_1 + I_B(1 - \alpha)\). Where object \(A\) is in front of \(B\) and has a thickness of \(\Delta t\).
+  Linearizes exponential attenuation of light intensity.
+  \(I_\lambda = I_A \alpha_1 \Delta t + I_Be^{-\alpha_1\Delta t} \approx I_A \alpha_1 + I_B(1 - \alpha_1)\).
+  Where object \(A\) is in front of \(B\) and has a thickness of \(\Delta t\).
 \end{algorithm}
 
 \begin{definition}[Back to front rendering]
