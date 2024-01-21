@@ -16,7 +16,7 @@ Two ways to solve the problem:
 \subsection{Edge Detection}
 
 \begin{definition}[Edge]
-  Local max in 1st \textit{or} zero crossing in 2nd derivative.
+  Local max in 1st \textit{and} zero crossing in 2nd derivative.
 \end{definition}
 
 \begin{definition}[Gradient Magnitude]
@@ -108,6 +108,7 @@ Two ways to solve the problem:
   If \(r\) known: calculate circles with radius \(r\) around edge pixels. Where lots of them meet is the center of a circle. Else we use 3D hough transform with parameters \(x_0, y_0, r\).
 \end{definition}
 
+\pagebreak
 \subsection{Keypoint / Corner Detection}
 Edges well localized only in one direction \(\to\) detect corners.
 \textit{Desired Properties}:
@@ -123,7 +124,6 @@ It can be approximated by \(S(\Delta) = \Delta^\top M \Delta\)
 where \(M\) is the normal matrix, given by \(\sum_{(x, y) \in \text{window}} \nabla^2 I(x, y)\).
 
 \end{definition}
-
 
 \begin{algorithm}[Harris Corner Detection]
   Find points with large \(\min \Delta^\top M \Delta\) for \(||\Delta|| = 1\), which is equivalent to maximize the EVs of \(M\).

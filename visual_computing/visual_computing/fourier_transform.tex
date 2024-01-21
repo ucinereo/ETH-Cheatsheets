@@ -1,5 +1,5 @@
 \section{Fourier Transform}
-Represent any function in terms of a new basis with basis vectors \(e^{-2\pi i(ux + uv)} = \cos(2\pi(ux + uv)) + i \sin(2\pi(ux + uv))\).
+Represent any function in terms of a new basis with basis vectors \(e^{-2\pi i(ux + vy)} = \cos(2\pi(ux + uv)) + i \sin(2\pi(ux + uv))\).
 
 \begin{definition}[1D-FT]
   \(g(x) \overset{FT}{\to} \F(g)(u) = \int_{\R} g(x) e^{-i2\pi ux} \, dx\)
@@ -13,14 +13,25 @@ Represent any function in terms of a new basis with basis vectors \(e^{-2\pi i(u
   \(g(x, y) = \iint_{\R^2} \F(g)(u, v) e^{i2\pi(ux + uy)} \,du \,dv\)
 \end{definition}
 
+\begin{definition}[Dirac Delta]
+  \(\delta(x) = \begin{cases}
+    0 & x \neq 0 \\
+    \text{undefined} & x = 0
+  \end{cases} \ \text{s.t.} \ \int_{\R} \delta(x) \,dx = 1\)
+\end{definition}
+
 \subsection{Properties of the Fourier Transform}
 
-\begin{definition}[Linearity]
-  \(\F(ax(t) + by(t)) = a X(t) + b Y(t)\)
+\begin{definition}[Lin.]
+  \(\F(\alpha f(x) + \beta g(x))(u) = \alpha \F(f(x))(u) + \beta \F(g(x))(u)\)
 \end{definition}
 
 \begin{definition}[Time-Shift]
-  \(\F(x(t \pm t_0)) = X(t)e^{\pm 2 \pi i t t_0}\)
+  \(\F(f(t - t_0))(u) = e^{-2 \pi iwt_0 } F(u)\)
+\end{definition}
+
+\begin{definition}[Frequency-Shift]
+  \(\F(e^{2 \pi iu_0t}f(t))(u) = F(u - u_0)\)
 \end{definition}
 
 \begin{algorithm}[Convolution Theorem]
@@ -28,7 +39,21 @@ Represent any function in terms of a new basis with basis vectors \(e^{-2\pi i(u
 \end{algorithm}
 
 \begin{definition}[Unit Impulse]
-  \(\delta \ast f = f\)
+  \(\F(\delta(x - x_0))(u) = e^{-2\pi i u x_0}\), \(\delta \ast f = f\)
+\end{definition}
+
+\begin{definition}[Sifting Property]
+  \(\int_{\R} f(x)\delta(x - a) \,dx = f(a)\)
+\end{definition}
+
+\begin{definition}[FT on separable signal]
+  If \(f\) is separable (\(x, y\) independent), then \(\F(f)(u, x) = \F(f_x)(x) \cdot \F(f_y)(y)\).
+\end{definition}
+
+\begin{definition}[Sin and Cos identities]
+  \makecell{\(e^{ix} = \cos(x) = i \sin(x)\)}
+  \makecell{\(\sin(z) = \frac{e^{iz} - e^{-iz}}{2i}\)}
+  \makecell{\(\cos(z) = \frac{e^{iz} + e^{-iz}}{2}\)}
 \end{definition}
 
 \begin{definition}[Function Scale]
@@ -46,7 +71,7 @@ Represent any function in terms of a new basis with basis vectors \(e^{-2\pi i(u
 
 \subsection{Fourier Transform on Images}
 
-Consider the basis function \(B_{u,v}(x, y) = e^{-2\pi i(ux + uv)}\), then
+Consider the basis function \(B_{u,v}(x, y) = e^{-2\pi i(ux + vy)}\), then
 
 \begin{itemize*}
   \item Magnitude of \((u, v) \sim\) frequency
@@ -89,11 +114,6 @@ Go from continuous function to discrete vector.
   \end{align*}
 \end{definition}
 
-\begin{definition}[Sifting Property]
-  \(\int_{\R} f(x) \delta(x - a) \, dx = f(a)\)
-\end{definition}
-
-\pagebreak
 \begin{algorithm}[Nyquist Sampling Theorem]
   Sampling frequency must be at least twice the highest frequency: \(\omega_S \geq 2 \cdot \omega\). If not the case, the signal needs to be bandlimited before sampling.
 \end{algorithm}

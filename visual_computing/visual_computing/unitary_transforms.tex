@@ -47,8 +47,7 @@
 \begin{definition}[PCA Steps]
   \begin{enumerate}
     \item Standardize image collection.
-    \item Compute covariance matrix
-    \item Perform eigenvalue decomposition or do SVD
+    \item Compute covariance matrix + its eigenvalue decomposition or do SVD on original matrix.
     \item Compute projection \(U_J\) from largest \(J\) components.
     \item \(\text{PCA}(x) = U_J^\top(x - \mu)\) with \(\mu\) being the mean.
   \end{enumerate}

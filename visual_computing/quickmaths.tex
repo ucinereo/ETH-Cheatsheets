@@ -1,14 +1,26 @@
 \section{Quick Maths}
 
-\subsection{Signal Processing}
+\subsection{Quaternions}
 
-\begin{definition}[Dirac Delta]
-  \(\delta(x) = \begin{cases}
-    0 & x \neq 0 \\
-    \text{undefined} & x = 0
-  \end{cases} \ \text{s.t.} \ \int_{\R} \delta(x) \,dx = 1\)
+Properties:
+\begin{align*}
+	i^2=j^2=k^2 = -1, \quad ijk = -1, \quad ij=k, \quad ji=-k \\ \quad jk=i, \quad kj = -i, \quad ki = j, \quad ik = -j \\
+	\lVert q \rVert = \sqrt{a^2+b^2+c^2+d^2},\\ \text{where } q = a + \left[\begin{smallmatrix} b & c & d \end{smallmatrix}\right] \left[\begin{smallmatrix} i \\ j \\ k \end{smallmatrix}\right] = a + v \text{ ,v not vector!} \\
+	\overline{z} = a - bi - cj - dk, \quad z^{-1} = \frac{\overline{z}}{\lVert z \rVert}
+\end{align*}
+
+\subsection{Rotation with quaternions} Rotate \( p = \left[\begin{smallmatrix} x & y & z \end{smallmatrix}\right] \) around axis \( u = \left[\begin{smallmatrix} u_{1} & u_{2} & u_{3} \end{smallmatrix}\right] \) by angle \( \theta  \).
+\begin{enumerate}
+    \item Convert \( p \) to quaternion \( p_Q = xi + yj + zk \)
+    \item Convert u to quaternion \( q'' = u_{1}i+u_{2}j+u_{3}k \) and \\ normalize \( q'' \) to \( q' = \sfrac{q''}{\lVert q'' \rVert} \)
+    \item Rotation quaternion \( q = \cos (\theta /2) + \sin (\theta /2) q' \) \\ and \( q^{-1} = \cos (\theta /2) - \sin (\theta /2) q' \)
+    \item Rotated point \( p' = q p q^{-1} \)
+    \item Convert \( p' \) back to cartesian
+\end{enumerate}
+Half angle because rotate twice, one from left, and once from right (using inverse). This is done to undo the scaling and use inverse to rotate further in the same direction (multiplied from the other side), otherwise, also rotation is undone.
+
+\subsection{Interpolation}
+
+\begin{definition}[Bilinear Interpolation]
+    \(f(x,y) = (1-a)(1-b) \cdot f(i,j) + a(1-b) \cdot f(i+1,j) + ab \cdot f(i+1, j+1) + (1-a)b \cdot f(i,j+1)\)
 \end{definition}
-
-\begin{theorem}
-  \(\forall f: \int_{\R} f(x)\delta(x - \lambda) \,dx = f(\lambda)\)
-\end{theorem}

@@ -18,7 +18,7 @@
 \end{algorithm}
 
 \begin{definition}[Receiver Operating Characteristic (ROC) Analysis]
-  Find good \(\tau\) by plotting \(\text{TPR} = \frac{\text{TP}}{\text{TP} + \text{FN}}\) against \(\text{FPR} = \frac{\text{FP}}{\text{TN} + \text{FP}}\) for different \(\tau\). 
+  Find good \(\tau\) by plotting \(\text{TPR} (y) = \frac{\text{TP}}{\text{TP} + \text{FN}}\) against \(\text{FPR}(x) = \frac{\text{FP}}{\text{TN} + \text{FP}}\) for different \(\tau\). 
   Choose point with gradient \(\beta = \frac{N}{P} \frac{V_{TN} + C_{FP}}{V_{TP} + C_{FN}}\).
 \end{definition}
 
@@ -51,9 +51,13 @@ Mean and covariance per pixel, but one threshold for all pixels.
 
 \subsection{Morphological operators}
 Logical transformations based on comparison of neighboring pixels with a pattern.
+
 \begin{itemize}
-  \item \textbf{Erode} \(\ominus\): Erase FG pixel that has a BG neighbor.
-  \item \textbf{Dilate} \(\oplus\): Paint BG pixel to FG, if it has a FG neighbor.
+  \item \(S\) fits at \(x\) \(\iff \{y : y = x + s, s \in S\} \subset I\). (Complete cover)
+  \item \(S\) hits at \(x\) \(\iff \{y : y = x - s, s \in S\} \cap I \neq \emptyset\)
+  \item \(S\) misses at \(x\) \(\iff \{y : y = x - s, s \in S\} \cap I = \emptyset\)
+  \item \textbf{Erode} \(\ominus\): Erase FG px that has a BG neighbor \(\iff S\) \textbf{fits}!
+  \item \textbf{Dilate} \(\oplus\): Promote BG px with FG neighbor \(\iff S\) \textbf{hits}!
   \item \textbf{Opening}: \((I \ominus S) \oplus S \quad \bullet\) \textbf{Closing}: \((I \oplus S) \ominus S\)
   \item To remove holes in foreground and islands in the background, do opening and closing.
   \item \textbf{Hit and Miss} \(\otimes\): Searches for exact match of $S$.

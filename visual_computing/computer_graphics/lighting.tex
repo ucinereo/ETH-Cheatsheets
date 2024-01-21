@@ -66,6 +66,8 @@
   Intensity per unit area or flux density per unit solid angle, per perpendicular unit area. Most fundamental in raytracing! Constant along ray.
 \end{definition}
 
+\includegraphics*[width=\linewidth]{assets/angles.png}
+
 \subsection{Lighting Models}
 \begin{definition}[BRDF]
   Bidirectional reflectance distribution function. Relationship between incident radiance and differential reflected radiance. \(\omega_i\) = incoming angle, \(\omega_r\) reflected angle.
@@ -91,7 +93,12 @@
     \item \textit{Light param}: \(I_a\) global ambient, \(I_p\) light intensity
     \item \textit{Geometry}: \(N\) face normal, \(L\) light pos, \(V\) camera pos
   \end{itemize}
-  \textit{All vectors should be normalized}.
+
+  \vspace{-15pt}
+  \begin{multicols}{2}
+    \includegraphics*[width=\linewidth]{assets/phong_lighting.png}
+    \textit{All vectors \(L\), \(N\), \(R\) and \(V\) should be normalized}.
+  \end{multicols}
 \end{algorithm}
 
 \begin{theorem}
