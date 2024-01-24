@@ -60,18 +60,29 @@ With \(I_x, \ I_y\) spatial derivatives; \(u, \ v\) OF and \(I_t\) frame differe
   
   Compute derivatives and solve the LSE:
   \begin{gather*}
-    \begin{bmatrix}
-    I_x(p_1) & I_y(p_1) \\ \vdots & \vdots \\ I_x(p_n) & I_y(p_n)
-  \end{bmatrix} \begin{bmatrix}
+    \left[\begin{smallmatrix}
+    I_x(p_1) & I_y(p_1) \\ \cdots & \cdots \\ I_x(p_n) & I_y(p_n)
+  \end{smallmatrix}\right] \left[\begin{smallmatrix}
     u \\ v
-  \end{bmatrix} =  \begin{bmatrix}
-    I_t(p_1) \\ \vdots \\ I_t(p_n)
-  \end{bmatrix} \\
-  \to (\sum \nabla I \nabla I^\top)\begin{bmatrix}
-    u \\ v
-  \end{bmatrix} = - \sum \nabla I I_t
+  \end{smallmatrix}\right] =  - \left[\begin{smallmatrix}
+    I_t(p_1) \\ \cdots \\ I_t(p_n)
+  \end{smallmatrix}\right]
   \end{gather*}
-
+\[
+\underbrace{
+\left(\begin{array}{cc}
+\sum I_x^2 & \sum I_x I_y \\
+\sum I_x I_y & \sum I_y^2
+\end{array}\right)}_{=M= \sum (\nabla I)(\nabla I)^T}
+\underbrace{\left(\begin{array}{l}
+u \\
+v
+\end{array}\right)}_{U}=
+\underbrace{-\left(\begin{array}{l}
+\sum I_x I_t \\
+\sum I_y I_t
+\end{array}\right)}_{=b=-\sum \nabla I I_t}
+\]
   Solve with normal equations \(A^\top A x = b\) (which the above is).
 
   \textbf{Problems}: \(A^\top A\) singular at straight edges / uniform planes. And thus when gradient vectors point in the same direction.

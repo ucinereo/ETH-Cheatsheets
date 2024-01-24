@@ -129,12 +129,14 @@ Basically interpolate, till you no longer can interpolate. If you write \(b_0\) 
 
 Coefficients \(d_i\) are \textit{de Boor} points. Bases are piecewise, recursively defined polynomials over a sequence of knots defined in the knot vector \(T = (u_0, \ldots, u_{k+n+1})\).
 
-\begin{itemize}
+\begin{itemize*}
   \item Different degrees
   \item Piecewise polynomial
   \item Local support (de Boor points only have local influence)
   \item uniform/non-uniform (distance from \(u_i\) to \(u_{i+1}\))
-\end{itemize}
+  \item Affine invariance
+  \item Smoothness (\(C^k\) with \(k\) less than degree of curve)
+\end{itemize*}
 
 \begin{definition}[B-Spline Functions]
   \[N_i^n(u) = (u - u_i)\frac{N_i^{n-1}(u)}{u_{i+n} - u_i} + (u_{i+n+1} - u)\frac{N_{i+1}^{n-1}(u)}{u_{i+n+1} - u_{i+1}}\]

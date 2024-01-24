@@ -92,3 +92,16 @@ Half angle because rotate twice, one from left, and once from right (using inver
   \end{itemize*}
 \end{definition}
 
+\subsection{Gouraud Shading}
+\includegraphics*[width=\linewidth]{assets/gs.jpg}
+
+\subsection{Nyquist Proof Nr. 2}
+{Function $f(t)$, sampling function $S_{\Delta t}(t)$ with sampling frequency $w_s$}. Fourier transform of the sampled function can be derived as
+\begin{align*}
+    \tilde{F}(u) &= F(f(t) \cdot S_{\Delta t}(t)) \\
+                 &= F(u) * S_{\Delta t}(w) \\
+                 &= \int_{-\infty}^{\infty} F(\tilde{t}) S_{\Delta t}(w - \tilde{t}) \, d\tilde{t} \\
+                 &= \int_{-\infty}^{\infty} F(\tilde{t}) \frac{1}{\Delta T} \sum_{n = -\infty}^{\infty} \delta (w - \tilde{t} - \frac{n}{\Delta T}) \, d\tilde{t} \\
+                 &= \frac{1}{\Delta T} \sum_{n = -\infty}^{\infty} F(w - n w_s).
+\end{align*}
+If we want to reconstruct the signal $f(t)$ from $F$ and $S_{\Delta t}$, $F(w)$ cannot overlap with its neighbors $F(w - w_s)$ and $F(w + w_s)$. Thus, $w_s$ should be larger than $w_n$. {\color{gray}Highest frequency of $f(t)$}.
