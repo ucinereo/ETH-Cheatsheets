@@ -20,6 +20,20 @@ Represent any function in terms of a new basis with basis vectors \(e^{-2\pi i(u
   \end{cases} \ \text{s.t.} \ \int_{\R} \delta(x) \,dx = 1\)
 \end{definition}
 
+\begin{theorem}
+  \begin{itemize*}
+    \item \(\delta(K - k) = \int_{\R} e^{2 \pi i (K - k)x \,dx}\)
+    \item \(\delta(x) = \delta(-x)\) \\
+    \item \(\delta({\color{red} \alpha} + {\color{orange} \beta}) = \int_{\R}e^{2 \pi i ({\color{red}\alpha}) x} e^{-2\pi i({\color{orange}\beta})x}\, dx\)
+  \end{itemize*}
+\end{theorem}
+
+\begin{definition}[Sin and Cos identities]
+  \makecell{\(e^{ix} = \cos(x) = i \sin(x)\)}
+  \makecell{\(\sin(z) = \frac{e^{iz} - e^{-iz}}{2i}\)}
+  \makecell{\(\cos(z) = \frac{e^{iz} + e^{-iz}}{2}\)}
+\end{definition}
+
 \subsection{Properties of the Fourier Transform}
 
 \begin{definition}[Lin.]
@@ -48,12 +62,6 @@ Represent any function in terms of a new basis with basis vectors \(e^{-2\pi i(u
 
 \begin{definition}[FT on separable signal]
   If \(f\) is separable (\(x, y\) independent), then \(\F(f)(u, x) = \F(f_x)(x) \cdot \F(f_y)(y)\).
-\end{definition}
-
-\begin{definition}[Sin and Cos identities]
-  \makecell{\(e^{ix} = \cos(x) = i \sin(x)\)}
-  \makecell{\(\sin(z) = \frac{e^{iz} - e^{-iz}}{2i}\)}
-  \makecell{\(\cos(z) = \frac{e^{iz} + e^{-iz}}{2}\)}
 \end{definition}
 
 \begin{definition}[Function Scale]
@@ -92,7 +100,7 @@ Consider the basis function \(B_{u,v}(x, y) = e^{-2\pi i(ux + vy)}\), then
 \end{definition}
 
 \begin{definition}[Phase of \(z \in \C\)]
-  \(\phi{z} =\left\{\begin{array}{ll}\arctan \left(\frac{b}{a}\right) & a>0 \\ \arctan \left(\frac{b}{a}\right)+\pi & a<0, b \geq 0 \\ \arctan \left(\frac{b}{a}\right)-\pi & a<0, b<0 \\ +\frac{\pi}{2} & a=0, b>0 \\ -\frac{\pi}{2} & a=0, b<0 \\ \text { undefined } & a=0, b=0\end{array}\right.\)
+  \(\phi{z} = \arctan(\frac{b}{a})\) with case distinctions.
 \end{definition}
 
 \subsection{Sampling}
@@ -117,6 +125,14 @@ Go from continuous function to discrete vector.
 \begin{algorithm}[Nyquist Sampling Theorem]
   Sampling frequency must be at least twice the highest frequency: \(\omega_S \geq 2 \cdot \omega\). If not the case, the signal needs to be bandlimited before sampling.
 \end{algorithm}
+
+\textbf{Proof}:
+Sampling with frequency \(\omega\) involves elementwise multiplication of the signal \(h\) by a grid \(g\) with equal spaces of \(1/\omega\).
+By the convolution theorem, the Fourier Transform of \(h \cdot g\) is the convolution \(H * G\), where \(H = \mathcal{F}(h)\) and \(G = \mathcal{F}(g)\).
+If the signal \(h\) has a maximal frequency \(\omega_{\text{max}}\), its Fourier Transform \(H\) ranges between \(-\omega_{\text{max}}\) and \(\omega_{\text{max}}\).
+The Fourier Transform of a grid \(g\) with spaces \(1/\omega\) is another grid \(G\) with spaces \(\omega\).
+Convolution of the spectrum \(H\) with \(G\) copies it in the frequency domain, shifting by \(\omega\).
+If \(\omega\) is smaller than \(2\omega_{\text{max}}\), overlapping spectra occur, preventing the reconstruction of the original signal \(h\).
 
 \begin{theorem}
   To remove aliasing from cameras, change focus!

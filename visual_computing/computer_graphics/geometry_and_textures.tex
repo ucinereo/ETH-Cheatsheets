@@ -32,6 +32,8 @@
   \begin{itemize*}
     \item explicit
     \item collection of points
+    \item \color{red} difficult to draw in undersampled regions
+    \item \color{red} hard to do processing / simulation
   \end{itemize*}
 \end{definition}
 
@@ -150,9 +152,8 @@
 \end{definition}
 
 \begin{definition}[Bump Mapping]
-  Positional peturbation!
+  Positional peturbation in direction of normal!
   small-scale geometry per fragment.
-  Adapt normal to texture.
   Does not affect silhouette shadow.
   No self-occlusions and self-shadowing.
 \end{definition}

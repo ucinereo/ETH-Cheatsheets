@@ -53,8 +53,20 @@
   \end{enumerate}
 \end{definition}
 
+\begin{theorem}
+  Mean subtraction is necessary for performing PCA to ensure that the first principal component describes direction of maximum variance and not to the mean.
+\end{theorem}
+
 \begin{definition}[Uses of PCA]
   Lossy compression of \(I\) by keeping only the most important \(k\) component. Reconstruct original by \(UI_c + \mu\).
+\end{definition}
+
+\begin{definition}[Face Location with PCA]
+  \begin{itemize*}
+    \item Compute PCA of human face images
+    \item Go over patches and compute reconstruction error
+    \item find location with minimal error.
+  \end{itemize*}
 \end{definition}
 
 \begin{algorithm}[Eigenspace matching]

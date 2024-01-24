@@ -52,7 +52,8 @@ Use \textbf{RGBA} channels to calculate the overlapping objects.
 
 \begin{algorithm}[Alpha Blending]
   Linearizes exponential attenuation of light intensity.
-  \(I_\lambda = I_A \alpha_1 \Delta t + I_Be^{-\alpha_1\Delta t} \approx I_A \alpha_1 + I_B(1 - \alpha_1)\).
+  \(I_\lambda = I_A \alpha_1 \Delta t + \alpha_2 I_Be^{-\alpha_1\Delta t} \approx I_A \alpha_1 + \alpha_2 I_B(1 - \alpha_1)\).
+
   Where object \(A\) is in front of \(B\) and has a thickness of \(\Delta t\).
 \end{algorithm}
 

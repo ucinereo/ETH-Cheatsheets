@@ -18,8 +18,9 @@
 \end{algorithm}
 
 \begin{definition}[Receiver Operating Characteristic (ROC) Analysis]
-  Find good \(\tau\) by plotting \(\text{TPR} (y) = \frac{\text{TP}}{\text{TP} + \text{FN}}\) against \(\text{FPR}(x) = \frac{\text{FP}}{\text{TN} + \text{FP}}\) for different \(\tau\). 
-  Choose point with gradient \(\beta = \frac{N}{P} \frac{V_{TN} + C_{FP}}{V_{TP} + C_{FN}}\).
+  Find good \(\tau\) by plotting \(\text{TPR} (y) = \frac{\text{TP}}{\text{TP} + \text{FN}}\) against \(\text{FPR}(x) = \frac{\text{FP}}{\text{TN} + \text{FP}}\).
+  Choose p w/ gradient \(\beta = \frac{N}{P} \frac{V_{TN} + C_{FP}}{V_{TP} + C_{FN}}\).
+  \(PRE = TP / (TP + FP)\).
 \end{definition}
 
 \subsection{Pixel Connectivity}

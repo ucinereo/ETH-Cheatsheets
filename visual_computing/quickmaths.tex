@@ -4,23 +4,91 @@
 
 Properties:
 \begin{align*}
-	i^2=j^2=k^2 = -1, \quad ijk = -1, \quad ij=k, \quad ji=-k \\ \quad jk=i, \quad kj = -i, \quad ki = j, \quad ik = -j \\
-	\lVert q \rVert = \sqrt{a^2+b^2+c^2+d^2},\\ \text{where } q = a + \left[\begin{smallmatrix} b & c & d \end{smallmatrix}\right] \left[\begin{smallmatrix} i \\ j \\ k \end{smallmatrix}\right] = a + v \text{ ,v not vector!} \\
-	\overline{z} = a - bi - cj - dk, \quad z^{-1} = \frac{\overline{z}}{\lVert z \rVert}
+  i^2=j^2=k^2 = -1, \quad ijk = -1, \quad ij=k, \quad ji=-k \\ \quad jk=i, \quad kj = -i, \quad ki = j, \quad ik = -j \\
+  \lVert q \rVert = \sqrt{a^2+b^2+c^2+d^2},\\ \text{where } q = a + \left[\begin{smallmatrix} b & c & d \end{smallmatrix}\right] \left[\begin{smallmatrix} i \\ j \\ k \end{smallmatrix}\right] = a + v \text{ ,v not vector!} \\
+  \overline{z} = a - bi - cj - dk, \quad z^{-1} = \frac{\overline{z}}{\lVert z \rVert}
 \end{align*}
 
-\subsection{Rotation with quaternions} Rotate \( p = \left[\begin{smallmatrix} x & y & z \end{smallmatrix}\right] \) around axis \( u = \left[\begin{smallmatrix} u_{1} & u_{2} & u_{3} \end{smallmatrix}\right] \) by angle \( \theta  \).
+\subsection{Rotation with quaternions}
+
+Rotate \( p = \left[\begin{smallmatrix} x & y & z \end{smallmatrix}\right] \) around axis \( u = \left[\begin{smallmatrix} u_{1} & u_{2} & u_{3} \end{smallmatrix}\right] \) by angle \( \theta  \).
 \begin{enumerate}
-    \item Convert \( p \) to quaternion \( p_Q = xi + yj + zk \)
-    \item Convert u to quaternion \( q'' = u_{1}i+u_{2}j+u_{3}k \) and \\ normalize \( q'' \) to \( q' = \sfrac{q''}{\lVert q'' \rVert} \)
-    \item Rotation quaternion \( q = \cos (\theta /2) + \sin (\theta /2) q' \) \\ and \( q^{-1} = \cos (\theta /2) - \sin (\theta /2) q' \)
-    \item Rotated point \( p' = q p q^{-1} \)
-    \item Convert \( p' \) back to cartesian
+  \item Convert \( p \) to quaternion \( p_Q = xi + yj + zk \)
+  \item Convert u to quaternion \( q'' = u_{1}i+u_{2}j+u_{3}k \) and \\ normalize \( q'' \) to \( q' = \sfrac{q''}{\lVert q'' \rVert} \)
+  \item Rotation quaternion \( q = \cos (\theta /2) + \sin (\theta /2) q' \) \\ and \( q^{-1} = \cos (\theta /2) - \sin (\theta /2) q' \)
+  \item Rotated point \( p' = q p q^{-1} \)
+  \item Convert \( p' \) back to cartesian
 \end{enumerate}
 Half angle because rotate twice, one from left, and once from right (using inverse). This is done to undo the scaling and use inverse to rotate further in the same direction (multiplied from the other side), otherwise, also rotation is undone.
 
 \subsection{Interpolation}
 
 \begin{definition}[Bilinear Interpolation]
-    \(f(x,y) = (1-a)(1-b) \cdot f(i,j) + a(1-b) \cdot f(i+1,j) + ab \cdot f(i+1, j+1) + (1-a)b \cdot f(i,j+1)\)
+  \(f(x,y) = (1-a)(1-b) \cdot f(i,j) + a(1-b) \cdot f(i+1,j) + ab \cdot f(i+1, j+1) + (1-a)b \cdot f(i,j+1)\)
 \end{definition}
+
+\subsection{Trigonometry}
+\(\sin(x) = \frac{e^{ix} - e^{-ix}}{2i} \quad \cos(x) = \frac{e^{ix} + e^{-ix}}{2}\) \\
+\(\sin(2x) = 2\sin(x)\cos(x) \\ \cos(2x) = \cos^2(x) - \sin^2(x) \\ \sin(x+y) = \sin(x)\cos(y) + \cos(x)\sin(y) \\ \cos(x+y) = \cos(x)\cos(y) + \sin(x)\cos(y) \\ \sin^2(x) + \cos^2(x) = 1\)
+
+\begin{center}
+  \begin{tabular}{|c|c|c|c|c|c|c|}
+  \hline
+  & \(0\) & \(\pi/6\) & \(\pi/4\) & \(\pi/3\) & \(\pi/2\) & \(\pi\) \\
+  \hline
+  \textbf{Sine} & \(0\) & \(\frac{1}{2}\) & \(\frac{\sqrt{2}}{2}\) & \(\frac{\sqrt{3}}{2}\) & \(1\) & \(0\) \\
+  \hline
+  \textbf{Cosine} & \(1\) & \(\frac{\sqrt{3}}{2}\) & \(\frac{\sqrt{2}}{2}\) & \(\frac{1}{2}\) & \(0\) & \(-1\) \\
+  \hline
+  \end{tabular}
+\end{center}
+
+\subsection{Lucas Kanade Levels}
+
+\textbf{Given}: \(\text{FPS}[\sfrac{f}{s}]\), \(v[\sfrac{m}{s}] = \frac{1}{3,6} \cdot (v^k[\sfrac{km}{h}])\), \(R[\sfrac{px}{m}]\).
+
+\begin{enumerate}
+  \item Calculate pixel per frame: \(\text{PPF}[\sfrac{px}{f}] = \frac{v[\sfrac{m}{s}] \cdot R[\frac{px}{m}]}{\text{FPS}[\sfrac{f}{s}]}\)
+  \item Calculate levels: \(1 + \lceil \log_2 \text{PPF} \rceil\)
+\end{enumerate}
+
+\subsection{PCA Proofs}
+
+\begin{definition}[Optimal Energy Concentration of KLT]
+  Consider truncated coefficient vector \(\vec{b} = I_J \vec{c}\) {\color{gray}(\(I_J\): ID matrix with first \(J\) columns)} Energy in first \(J\) coefficients for an arbitrary transform \(A\):
+
+  \(E = \text{Tr}(R_{bb}) = \text{Tr}(I_J R_{cc} I_{J}) = \text{Tr}(I_J A R_{ff} A^H I_J) = \sum_{k = 0}^{J - 1} a_k^T R_{ff} a_k^*\) where \(a_k^T\) is \(k\)-th row of \(A\).
+  Lagrangian cost function to enforce unit-length basis vectors:
+  \(L = E + \sum_{k = 0}^{J - 1} \lambda_k (1 - a_k^T a_k^*) =\) \\
+  \( \sum_{k = 0}^{J - 1} a_k^T R_{ff} a_k^* + \sum_{k = 0}^{J - 1} \lambda_k (1 - a_k^T a_k^*)\)
+
+  Differentiating \(L\) with respect to \(a_j\): \(R_{ff} a_j^* = \lambda_i a_j^* \quad \forall_j < J\) {\color{gray}{necessary condition}}
+\end{definition}
+
+\pagebreak
+
+\begin{definition}[Energy Concentration of first principal component]
+  The one corresponding to the largest eigenvalue.
+  \[
+  \begin{aligned}
+  E_k & =\sum_i\left[\left(\sum_j z_{i, j} \boldsymbol{u}_{\boldsymbol{j}}+\overline{\boldsymbol{x}}\right)-\left(z_{i, k} \boldsymbol{u}_{\boldsymbol{k}}+\overline{\boldsymbol{x}}\right)\right]^2 \\
+  & =\sum_i\left[\sum_{j \neq k} z_{i, j} \boldsymbol{u}_{\boldsymbol{j}}\right]^2 \\
+  & \left.=\sum_i \sum_{j \neq k} z_{i, j}^2(\text { eigenvectors are linearly independent })\right) \\
+  & =\sum_i \sum_{j \neq k}\left[\boldsymbol{u}_{\boldsymbol{j}} \cdot\left(\boldsymbol{x}_{\boldsymbol{i}}-\overline{\boldsymbol{x}}\right)^T\right]^2 \\
+  & =\sum_i \sum_{j \neq k} \boldsymbol{u}_{\boldsymbol{j}} \cdot\left(\boldsymbol{x}_{\boldsymbol{i}}-\overline{\boldsymbol{x}}\right)^T \cdot\left(\boldsymbol{x}_{\boldsymbol{i}}-\overline{\boldsymbol{x}}\right) \cdot \boldsymbol{u}_{\boldsymbol{j}}{ }^T \\
+  & =\sum_{j \neq k} \boldsymbol{u}_{\boldsymbol{j}} \boldsymbol{\Sigma} \boldsymbol{u}_{\boldsymbol{j}}{ }^T=\sum_{j \neq k} \lambda_j
+  \end{aligned}
+  \]
+  As shown, \(E_k\) is the sum of all eigenvalues except \(\lambda_k\). Therefore, \(E_k\) is minimized if \(\lambda_k\) is the largest eigenvalue.
+\end{definition}
+
+\begin{definition}[PCA Cost]
+  Consider \(K\) eigenfaces, \(N\) images, \(L \times W\) dimensions of images.
+  \begin{itemize*}
+    \item \textit{Mean image}: \(L \times W\)
+    \item \textit{Eigenfaces}: \(K \times L \times W\)
+    \item \textit{Compressed images}: \(N \times K\)
+    \item \textit{save space}: \(K < \frac{(N - 1) \times L \times W}{N + L \times W}\)
+  \end{itemize*}
+\end{definition}
+

@@ -135,13 +135,17 @@ Basis transformation of RGB space to represent \textit{all perceptible} colors w
 \end{definition}
 
 \begin{definition}[RGB \(\to\) CMY]
-  \[\begin{bmatrix}
-    C \\ M \\ Y
-  \end{bmatrix} = \begin{bmatrix}
-    1 \\ 1 \\ 1
-  \end{bmatrix} - \begin{bmatrix}
-    R \\ G \\ B
-  \end{bmatrix}\]
+  \(\begin{bmatrix}
+    C \ M \ Y
+  \end{bmatrix}^\top = \begin{bmatrix}
+    1 \ 1 \ 1
+  \end{bmatrix}^\top - \begin{bmatrix}
+    R \ G \ B
+  \end{bmatrix}^\top\)
+\end{definition}
+
+\begin{definition}[CMY \(\to\) CMYK]
+  \(K = \min(C, M, Y), c \in \{C, M, Y\}: c' = c - K\)
 \end{definition}
 
 \begin{definition}[RGB \(\to\) YIQ]
@@ -155,16 +159,53 @@ Basis transformation of RGB space to represent \textit{all perceptible} colors w
 \end{definition}
 
 \begin{definition}[RGB \(\to\) HSV] \
-  \vspace{-8pt}
-  \lstset{basicstyle=\ttfamily\footnotesize,breaklines=true}
-  \begin{center}
-    \begin{lstlisting}
-  min = min(R, G, B)
-  max = max(R, G, B)
-  V = max;
-  If (max != 0) S = (max - min) / max
-  Else S = 0;
-  H = Hue (V, S, R, G, B); // proced.
-    \end{lstlisting}
-  \end{center}
+  % \vspace{-8pt}
+  % \lstset{basicstyle=\ttfamily\footnotesize,breaklines=true}
+  % \begin{center}
+  %   \begin{lstlisting}
+  % min = min(R, G, B)
+  % max = max(R, G, B)
+  % V = max;
+  % If (max != 0) S = (max - min) / max
+  % Else S = 0;
+  % H = Hue (V, S, R, G, B); // proced.
+  %   \end{lstlisting}
+  % \end{center}
+  \[C_{\max} = \max(R, G, B) \quad C_{\min} = (R, G, B) \quad \Delta = C_{\max} - C_{\min}\]
+
+  \resizebox{\linewidth}{!}{
+    \(
+    H = \begin{cases}
+        \frac{\pi}{3} \cdot \left(\frac{G - B}{\Delta} \mod 6 \right) & C_{\max} = R \\
+        \frac{\pi}{3} \cdot \left(\frac{B - R}{\Delta}    + 2 \right) & C_{\max} = G \\
+        \frac{\pi}{3} \cdot \left(\frac{R - G}{\Delta}    + 4 \right) & C_{\max} = R
+    \end{cases}
+    \
+    \begin{array}{c}
+    S = \begin{cases}
+        0 & C_{\max} = 0 \\
+        \frac{\Delta}{C_{\max}} & C_{\max} \neq 0
+    \end{cases} \\
+        V = C_{\max}
+    \end{array}
+    \)
+  }
+
 \end{definition}
+
+\begin{definition}[HSV \(\to\) RGB]
+  \[C = V \cdot S \qquad X = C \cdot \left(1 - \left|\frac{H}{\sfrac{\pi}{3}} mod 2 - 1\right|\right) \qquad m = V - C\]
+
+  \resizebox{\linewidth}{!}{
+    \(
+    (R', G', B') = \begin{cases}(C, X, 0) & , 0^{\circ} \leq H< \sfrac{\pi}{3} \\ (X, C, 0) & , \sfrac{\pi}{3} \leq H< \sfrac{2\pi}{3} \\ (0, C, X) & , \sfrac{2\pi}{3} \leq H< \pi \\ (0, X, C) & , \pi \leq H< \sfrac{4\pi}{3} \\ (X, 0, C) & , \sfrac{4\pi}{3} \leq H<\sfrac{5\pi}{3} \\ (C, 0, X) & , \sfrac{5\pi}{3} \leq H<2 \pi\end{cases}
+    \qquad
+    \begin{array}{c}
+        R = R' + m \\
+        G = G' + m \\
+        B = B' + m
+    \end{array}
+    \)
+  }
+\end{definition}
+
