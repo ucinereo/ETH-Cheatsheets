@@ -1,0 +1,62 @@
+\section{Probability Recap}
+
+\begin{definition*}[Probability Space \((\O, \F, \P)\)]
+  \begin{itemize}
+    \item \(\bm{\O} \neq \emptyset\): \textbf{Sample space} with \(\omega \in \O\) as outcome.
+    \item \(\bm{\F}\subseteq \Pow(\O)\): \textbf{\(\bm{\sigma}\)-algebra}
+    \begin{enumerate}
+      \item \(\Omega \in \F\)
+      \item \(A \in \F \implies A^\complement \in \F\) where \(A\) is an event.
+      \item \(A_1, A_2, \ldots \in \F \implies \bigcup_{i=1}^\infty \in \F\)
+    \end{enumerate}
+    \item \(\pmb{\P}\): \textbf{Probability measure} on \((\O, \F)\)
+    \begin{enumerate}
+      \item[\(\P:\)] \(\F \to [0, 1], A \mapsto \P(A)\)
+      \item \(\P(\O) = \sum_{\omega \in \O} p(\omega) = 1\) if \(p(\omega) := \P(\{\omega\})\).
+      \item \(P(A) = \sum_{i=1}^\infty P(A_i)\) if \(A = \bigcup_{i=1}^\infty A_i\) disjoint.
+    \end{enumerate}
+  \end{itemize}
+\end{definition*}
+
+We have some further consequences of this definition:
+\begin{enumerate}
+  \item \(\emptyset \in \F\)
+  \item \(A_1, \ldots \in \F \Rightarrow \bigcap_{i=1}^\infty A_i \in \F\)
+  \item \(A, B \in \F \implies A \cup B \in \F\)
+  \item \(A, B \in \F \implies A \cap B \in \F\)
+\end{enumerate}
+
+\begin{definition*}[Sum rule (marginalization)]
+  \[p(x_{1:i-1}, x_{i+1,n}) = \int_{X_i(\Omega)}p(x_{1:i-1}, x_i, x_{i+1:n}) \,dx_i\]
+\end{definition*}
+
+\begin{definition*}[Product rule (chain rule)]
+  \[p(x_{1:n}) = p(x_1)\cdot \prod_{i=2}^n p(x_i \mid x_{1:i-1})\]
+\end{definition*}
+
+\begin{theorem*}[Law of total probability (LOTP)]
+  \[p(\x) = \int_{\Y(\Omega)} p(\x, \y) \, d\y = \int_{\Y(\Omega)} p(\x \mid \y) \cdot p(\y) \, d\y\]
+\end{theorem*}
+
+\begin{definition*}[Independence]
+  \begin{align*}
+    \X \bot \Y &\overset{\text{def}}{\Leftrightarrow} p_{\X, \Y}(\x \y) = p_{\X}(\x) \cdot p_{\Y}(\y) \\
+    &\Leftrightarrow p_{\X \mid \Y}(\x \mid \y) = p_{\X}(\x)
+  \end{align*}
+\end{definition*}
+
+\begin{definition*}[Conditional Independence]
+  \begin{align*}
+    \X \bot \Y \mid \Z &\overset{\text{def}}{\Leftrightarrow} p_{\X, \Y \mid \Z}(\x, \y \mid \z) = p_{\X \mid \Z}(\x \mid \z) \cdot p_{\Y \mid \Z}(\y \mid \z) \\
+    &\Leftrightarrow p_{\X \mid \Y, \Z}(\x \mid \y, \z) = p_{\X \mid \Z}(\x \mid \z)
+  \end{align*}
+\end{definition*}
+
+\begin{theorem*}[Reichenbach's common cause principle]
+  \[\forall \X, \Y \ \exists \Z: \X \not\bot \Y \implies \X \bot \Y \mid \Z\]
+\end{theorem*}
+
+\subsection{Probabilistic Inference}
+\[\overbrace{p(\x \mid \y)}^{\text{posterior}} = \frac{\overbrace{p(\y \mid \x)}^{\text{likelihood}} \cdot \overbrace{p(\x)}^{\text{prior}}}{\underbrace{p(\y)}_{\text{marginal likelihood}}}\]
+
+\todo{Add tower property, variance definition, etc.}

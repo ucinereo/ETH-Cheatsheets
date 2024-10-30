@@ -1,0 +1,116 @@
+\section{Bayesian Linear Regression}
+
+\textbf{Key idea}: Reason about \textit{full posterior} of \(\w\), not only  mode.
+
+\resizebox{\linewidth}{!}{
+\(\Normal(\x ; \m, \S) = \frac{1}{(2 \pi)^{n/2} \sqrt{\vert\S\vert}}\exp\left(-\frac{1}{2}(\x - \m)^\top \S^{-1}(\x - \m)\right)\)
+}
+
+\begin{theorem*}[Marginal and conditional distribution]
+    Let \(\X\) be a Gaussian random vector and let \(A \subseteq [n]\) and \(B \subseteq [n]\) be two index sets, then:
+    \[\X_A \sim \Normal(\m_A, \S_{AA}),\]
+    and for any conditional distribution,
+    \begin{align*}
+        \X_A \mid \X_B &= \x_b \sim \Normal (\m_{A \mid B}, \S_{A \mid B}) \ \text{where} \\
+        \m_{A \mid B} &= \m_A + \S_{AB}\S_{BB}^{-1}(\x_B - \m_B),\\
+        \S_{A \mid B} &= \S_{AA} - \S_{AB}\S_{BB}^{-1}\S_{BA}.
+    \end{align*}
+
+    Some interesting notes:
+    \begin{itemize}
+        \item Variance can only shrink and depends purely on the choice of \(B\) and not on what the observations are.
+        \item The posterior mean depends affinely on \(\m_B\).
+    \end{itemize}
+\end{theorem*}
+
+\begin{lemma}
+    As a consequence of this, given any Gaussian random vector, \(\X_A\) and \(\X_B\), \(\X_A\) can be expressed as an affine function of \(\X_B\):
+    \begin{align*}
+        \X_A &= A \X_B + \vb{b} + \epsilon \qquad \text{where} \\
+        A &= \S_{AB}\S_{BB}^{-1}, \\
+        b &= \m_A - \S_{AB}\S_{BB}^{-1}\m_B, \\
+        \epsilon &\sim \Normal(\0, \S_{A \mid B}).
+    \end{align*}
+    and hence \(\X_A \sim \Normal(\m_A, \S_{AA})\).
+\end{lemma}
+
+\todo{Maybe add single variable cases? (set 2, slide 7)}
+
+
+\begin{theorem*}[Affine Transformations]
+    Let \(\X \sim \Normal(\m_{\X}, \S_{\X})\) be a Gaussian random vector, then
+    \[\Y = \vb{M}\X + \vb{b} \sim \Normal(\vb{M}\m_{\X} + \vb{b}, \vb{M}\S_{\X}\vb{M}^\top)\]
+\end{theorem*}
+
+\begin{theorem*}[Conditional Linear Gaussian]
+    Given any jointly Gaussian random vectors \(\X_A\) and \(\X_B\), \(\X_A\) can be expressed as affine function of \(\X_B\):
+    \begin{align*}
+        \X_A &= \vb{A}\X_B + \vb{b} + \vb*{\epsilon} \ \text{where} \\
+        \vb{A} &= \S_{AB}\S_{BB}^{-1}, \\
+        \vb{b} &= \m_A - \S_{AB}\S_{BB}^{-1}\m_B, \\
+        \vb*{\epsilon} &= \Normal(0, \S_{A \mid B})
+    \end{align*}
+\end{theorem*}
+
+\begin{definition*}[Linear Regression Interpretation]
+    Consider the dataset \(\{(\x_i, y_i)\}_{i=1}^n\) iid., we assume the relationship is defined through
+    \[y_i = (\w^{\ast})^\top \x_i + \epsilon_i \qquad \epsilon_i \sim \Normal(0, \sigma_n^2).\]
+    Hence equivalently we can define the likelihood:
+    \[y_i \mid \x_i, \w \sim \Normal(\w^\top\x_i, \sigma_n^2),\]
+    which is essentially the noise.
+
+    With this assumption and the prior \(\w \sim \Normal(\0, \I)\), we can describe the posterior of \(\w\):
+    \begin{align*}
+        \w \mid \X, \y &\sim \Normal(\bar\m, \bar\S) \qquad \text{where} \\
+        \bar\m &= (\X^\top\X + \sigma_n^2 \I)^{-1} \X^\top \y, \\
+        \bar\S &= (\sigma_n^{-2}\X^\top\X + \I)^{-1}.
+    \end{align*}
+
+    The nice thing about this instantiation is if we calculate the MAP of \(\w\), we get that it's equal to the least squares solution of the regression.
+\end{definition*}
+
+\begin{definition*}[Regularized Linear Regression Interpretation]
+    If we add the Gaussian prior to \(\w \sim \Normal(\vb{0}, \sigma_p^2 \I)\), then the MAP of \(\w\) is:
+    \[\argmin\w \norm{\y - \X \w}_2^2 + \frac{\sigma_n^2}{\sigma_p^2}\norm{\w}_2^2\]
+    which is exactly the minimizer of Ridge-Regression.
+\end{definition*}
+
+\begin{note*}[Independence Assumption of Posterior]
+    We assume \(\w \bot \x_{i:n}\) and thus
+    \[p(\w \mid \x_{1:n}, y_{1:n}) = \frac{1}{Z} \underbrace{p(\w \mid x_{1:n})}_{= p(\w)} \cdot p(y_{1:n} \mid \w, \x_i)\]
+\end{note*}
+
+\begin{corollary}
+    If we change the prior to Laplace, then the MAP is equal to a Lasso regularization.
+\end{corollary}
+
+\begin{note*}[Noises]
+    We denote \(\sigma_n^2\) for the noise variance and \(\sigma_p^2\) for the prior variance.
+\end{note*}
+
+\todo{Add that if the log-posterior is a quadratic form, the posterior distribution must be Gaussian.}
+
+\subsection{Probabilistic Inference}
+
+For test point \(\x^*\) define \(f^* = \w^\top \x^*\), then
+\begin{enumerate}
+    \item \(f^* \mid \x^*, \x_{1:n}, y_{1:n} \sim \Normal(\m^\top\x^*, {\x^*}^\top \S\x^*)\) by transform.
+    \item \(y^* \mid \x^*, \x_{1:n}, y_{1:n} \sim \Normal(\m^\top\x^*, \underbrace{{\x^*}^\top \S\x^*}_{\text{epistemic}} + \underbrace{\sigma_n^*}_{\text{aleatoric}})\).
+
+    where epistemic is about \(f^*\), aleatoric about \(y^*\).
+\end{enumerate}
+
+\begin{theorem*}[Ridge regression vs Bayesian lin. Regression]
+    \textbf{Ridge}: we predict using MAP estimate for weights:
+    \begin{gather*}
+       \hat\w = \arg\max_{\w} p(\w\mid\x_{1:n}, y_{1:n}) \quad \text{and predict with} \\
+       y^* \mid \x^*, \hat\w \sim \Normal(\hat\w^\top x^*, \sigma_n^2).
+    \end{gather*}
+    \textbf{BLR}: Predict by averaging all \(\w\) acc. to posterior:
+    \[y^* \mid \x^*, \x_{1:n}, y_{1:n} \sim \Normal(y^*, \hat\w^\top \x^*, \sigma_n^2 + {\x^*}^\top \bar\S\x^*).\]
+    Hence ridge regression can be viewer as approximating the full posterior by its mode.
+\end{theorem*}
+
+\todo{add chapter about decision theory}
+
+\todo{add recursive updates}

@@ -1,0 +1,161 @@
+\documentclass[a4paper, 10pt]{article}
+
+% ------------------------------------------------------------------
+% Imports
+% ------------------------------------------------------------------
+
+% Formatting
+\usepackage[landscape, left=0.75cm, top=1.0cm, right=0.75cm, bottom=1.5cm, footskip=15pt]{geometry}
+\setlength{\columnsep}{0.5cm}
+\usepackage{flowfram}
+\ffvadjustfalse
+\Ncolumn{3}
+\usepackage[compact]{titlesec}
+\usepackage{parskip}
+\setlength{\parskip}{3pt}
+
+% Language stuff
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+% Math imports
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{centernot}
+\usepackage{esint}
+\usepackage{mathtools}
+\usepackage{physics}
+
+% Colored boxes
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{framed}
+
+% Fix for MDFramed
+\input{md_fix.tex}
+
+% Tables
+\usepackage{tabularx} % tabularx since the width should be handled automatically
+\usepackage{booktabs}
+\usepackage{makecell}
+
+% Graphics
+\usepackage{pgfplots}
+\usepackage{physics}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage{graphics}
+\usetikzlibrary{arrows, matrix, angles, quotes, intersections}
+
+% Miscellaneous
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{multicol}
+
+% ------------------------------------------------------------------
+% Formatting
+% ------------------------------------------------------------------
+\mdfsetup{skipabove=5pt,skipbelow=5pt}
+\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue}
+\setlist{itemsep=0.5pt, topsep=0.5pt, leftmargin=6mm}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+
+% Change the top/bottom margin of math environment
+\makeatletter
+\g@addto@macro\normalsize{%
+  \setlength\abovedisplayskip{4pt}
+  \setlength\belowdisplayskip{4pt}
+  \setlength\abovedisplayshortskip{4pt}
+  \setlength\belowdisplayshortskip{4pt}
+}
+\makeatother
+
+% Theorems and Styles
+\input{theorems_and_styles.tex}
+
+% ------------------------------------------------------------------
+% Custom Commands
+% ------------------------------------------------------------------
+
+% Math general
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+% \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Pow}{\mathcal{P}}
+\newcommand{\argmin}[1]{\underset{#1}{\text{argmin}}}
+
+% Probability Stuff
+\renewcommand{\O}{\Omega}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\I}{1}
+\renewcommand{\L}{\mathcal{L}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Ber}{Ber}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\NB}{NB}
+\DeclareMathOperator{\Geom}{Geom}
+\DeclareMathOperator{\Cat}{Cat}
+\DeclareMathOperator{\Poisson}{Poisson}
+\DeclareMathOperator{\Unif}{\mathcal{U}}
+\DeclareMathOperator{\Exp}{Exp}
+\DeclareMathOperator{\Normal}{\mathcal{N}}
+\DeclareMathOperator{\Ga}{Ga}
+\DeclareMathOperator{\Atom}{Atom}
+\DeclareMathOperator{\DX}{\mathcal{X}}
+
+% Common Vectors and Matrices
+\newcommand{\x}{\vb{x}}
+\newcommand{\y}{\vb{y}}
+\newcommand{\z}{\vb{z}}
+\newcommand{\w}{\vb{w}}
+\newcommand{\Y}{\vb{Y}}
+\newcommand{\X}{\vb{X}}
+\newcommand{\Z}{\vb{Z}}
+\renewcommand{\S}{\vb*{\Sigma}}
+\newcommand{\m}{\vb*{\mu}}
+\renewcommand{\I}{\vb{I}}
+\newcommand{\0}{\vb{0}}
+
+% Statistical stuff
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\MLE}{MLE}
+\DeclareMathOperator{\ML}{ML}
+
+% Misc
+\newcommand{\sdots}{\ifmmode\mathinner{\ldotp\kern-0.2em\ldotp\kern-0.2em\ldotp}\else.\kern-0.13em.\kern-0.13em.\fi}
+\newcommand{\todo}[1]{{\color{red}\textbf{TODO}: #1}}
+
+% ------------------------------------------------------------------
+% Meta Data
+% ------------------------------------------------------------------
+\title{\vspace{-3ex}Probabilistic Artificial Intelligence}
+\author{Nicola Studer \\ \href{mailto:nicstuder@student.ethz.ch}{nicstuder@student.ethz.ch}}
+\date{\vspace{-5ex}}
+
+
+% ------------------------
+% Document
+% ------------------------
+
+\begin{document}
+
+% Title
+\maketitle
+% \begin{align*}
+%   \color{general} \blacksquare \ & \text{General} & \color{discrete_highlight} \blacksquare \ & \text{Discrete} & \color{cont_highlight} \blacksquare \ & \text{Continuous}
+% \end{align*}
+
+% Sections
+\input{probability_recap.tex}
+\input{bayesian_linear_regression.tex}
+
+\end{document}

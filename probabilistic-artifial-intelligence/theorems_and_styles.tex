@@ -1,0 +1,88 @@
+% ------------------------------------------------------------------
+% Colors
+% ------------------------------------------------------------------
+\definecolor{general}{HTML}{333333}
+\definecolor{discrete_highlight}{HTML}{8B6CEF}
+\definecolor{cont_highlight}{HTML}{2ECC71}
+\definecolor{cont_bg}{HTML}{2f2f2f}
+
+% ------------------------------------------------------------------
+% Color Boxes Formatting
+% ------------------------------------------------------------------
+\mdfsetup{
+  linecolor=general,
+  linewidth=3pt,
+  topline=false,
+  bottomline=false,
+  rightline=false,
+  innertopmargin=5pt,
+  innerbottommargin=5pt,
+  innerrightmargin=5pt,
+  innerleftmargin=5pt,
+  leftmargin=0pt,
+  rightmargin=0pt,
+  frametitleaboveskip=2pt,
+  frametitlebelowskip=2pt,
+  theoremseparator={},
+  theoremspace={},
+  skipabove=2pt,
+  skipbelow=2pt,
+}
+
+\mdfdefinestyle{discrete_definition}{
+  linecolor=discrete_highlight,
+  backgroundcolor=gray!20,
+  frametitlebackgroundcolor=gray!30,
+}
+
+\mdfdefinestyle{discrete_theorem}{
+  linecolor=discrete_highlight,
+  innertopmargin=0pt,
+}
+
+\mdfdefinestyle{cont_definition}{
+  linecolor=cont_highlight,
+  backgroundcolor=gray!20,
+  frametitlebackgroundcolor=gray!30,
+}
+
+\mdfdefinestyle{cont_theorem}{
+  linecolor=cont_highlight,
+  innertopmargin=0pt,
+}
+
+\mdfdefinestyle{definition}{
+  backgroundcolor=gray!20,
+  frametitlebackgroundcolor=gray!30,
+}
+
+\mdfdefinestyle{theorem}{
+  innertopmargin=0pt,
+}
+
+\mdfdefinestyle{note}{
+  leftline=false,
+  backgroundcolor=blue!10,
+  frametitlebackgroundcolor=blue!15,
+}
+
+% ------------------------------------------------------------------
+% Custom Commands
+% ------------------------------------------------------------------
+
+% Normal theorem environments
+\newtheorem*{corollary}{Cor}
+\newtheorem*{lemma}{Lemma}
+\newtheorem*{proposition}{Proposition}
+
+\theoremstyle{definition}
+\newtheorem*{example}{Exp}
+
+% Colored theorem environments
+\mdtheorem[style=discrete_theorem]{dtheorem}{}
+\mdtheorem[style=discrete_definition]{ddefinition}{}
+\mdtheorem[style=cont_theorem]{ctheorem}{}
+\mdtheorem[style=cont_definition]{cdefinition}{}
+\mdtheorem[style=theorem]{theorem}{}
+\mdtheorem[style=definition]{definition}{}
+\mdtheorem[style=note]{note}{}
