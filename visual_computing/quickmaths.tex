@@ -105,3 +105,33 @@ Half angle because rotate twice, one from left, and once from right (using inver
                  &= \frac{1}{\Delta T} \sum_{n = -\infty}^{\infty} F(w - n w_s).
 \end{align*}
 If we want to reconstruct the signal $f(t)$ from $F$ and $S_{\Delta t}$, $F(w)$ cannot overlap with its neighbors $F(w - w_s)$ and $F(w + w_s)$. Thus, $w_s$ should be larger than $w_n$. {\color{gray}Highest frequency of $f(t)$}.
+
+\section{Past Questions}
+\subsection{True/False + Justification} 
+\begin{itemize}
+    \item[\cmark] The DC Fourier coefficient \( F(0,0) \) corresponds to the average intensity value of the image.\\
+    This is true, because the DC component is the result of integrating the function over its entire domain without any multiplication by sinusoidal functions. Thus for an image it sums up all pixel values and divides them by the number of pixels \( \to  \) average intensity.
+    \item[\cmark] Fourier Transforms can be used to perform template matching efficiently.\\
+    This is true, because template matching involves computing correlations. We can do this using the Fourier Transform (Convolution theorem) and with e.g. the FFT algorithm this provides a speed up over bruteforcing in the spatial domain.
+    \item[\xmark] In a discrete 1D signal composed of \( N \) samples equally distributed between \( 0 \) and \( 1 \), the maximum frequency is \( \frac{N}{2} \).\\
+    This is false, because we have no information about the sampling frequency. Depending on the time span these samples were collected over, the maximum frequency changes.
+\end{itemize}
+
+\subsection{True/False without justification}
+
+\begin{itemize}
+    \item[\cmark] All 3D rotation matrices \( R \) have the property \( R^{-1} = R^\top \).
+    \item[\cmark] Bézier curves are special cases of B-spline curves.
+    \item[\cmark] In subdivision surfaces, the mesh surface converges to smooth limit surface.
+    \item[\cmark] The color buffer is updated only when the depth test is passed.
+    \item[\cmark] Radiance is constant along a ray (in a vacuum).
+    \item[\cmark] A pinhole camera measures radiance.
+    \item[\cmark] \( f_r(\omega_i, \omega_o) = f_r(\omega_o, \omega_i) \) is true for any valid BRDF function.
+    \item[\cmark] Given a material with a BRDF function that satisfies \( \int_\Omega f_r(\omega_i, \omega_o) \mathop{d\omega_i} = 1 \), then it means that all the incoming energy from the light is reflected.
+    \item[\cmark] For a perfect mirror material, its \( f_r \omega _i, \omega _o) \) is non-zero if and only if \( \omega _i \) is the reflection vector of \( \omega _o \) against the surface normal at the point of interest.
+    \item[\cmark] Due to the perspective projection, barycentric coordinates of values on a triangle of diffrent depths are not an affine function of screen space positions.
+    \item[\xmark] Sample points that are drawn uniformly from screen space remain uniform on the texture space
+    \item[\xmark] Loop subdivision scheme works for any polygonal meshes.
+    \item[\xmark] Interpenetration of triangles could not be handled correctly if one were to draw them on a per-sample basis.
+    \item[\xmark] If one were to sample points uniformly from screen space, they always remain uniform on the texture space.
+\end{itemize}
