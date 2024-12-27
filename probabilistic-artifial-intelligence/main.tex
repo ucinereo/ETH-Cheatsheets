@@ -1,18 +1,15 @@
-\documentclass[a4paper, 10pt]{article}
+\documentclass[a4paper, 11pt]{article}
 
 % ------------------------------------------------------------------
 % Imports
 % ------------------------------------------------------------------
 
 % Formatting
-\usepackage[landscape, left=0.75cm, top=1.0cm, right=0.75cm, bottom=1.5cm, footskip=15pt]{geometry}
-\setlength{\columnsep}{0.5cm}
+\usepackage[landscape, left=.2cm, top=.2cm, right=.2cm, bottom=.2cm]{geometry}
 \usepackage{flowfram}
-\ffvadjustfalse
-\Ncolumn{3}
 \usepackage[compact]{titlesec}
 \usepackage{parskip}
-\setlength{\parskip}{3pt}
+\usepackage{mathptmx} % times font
 
 % Language stuff
 \usepackage[english]{babel}
@@ -23,58 +20,86 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{bm}
-\usepackage{centernot}
-\usepackage{esint}
-\usepackage{mathtools}
 \usepackage{physics}
-
-% Colored boxes
-\usepackage{xcolor}
-\usepackage{mdframed}
-\usepackage{framed}
-
-% Fix for MDFramed
-\input{md_fix.tex}
 
 % Tables
 \usepackage{tabularx} % tabularx since the width should be handled automatically
-\usepackage{booktabs}
-\usepackage{makecell}
 
 % Graphics
-\usepackage{pgfplots}
-\usepackage{physics}
-\usepackage{tikz}
-\usepackage{tikz-3dplot}
 \usepackage{graphics}
-\usetikzlibrary{arrows, matrix, angles, quotes, intersections}
 
 % Miscellaneous
 \usepackage{hyperref}
 \usepackage{enumerate}
-\usepackage{enumitem}
+\usepackage[inline]{enumitem}
 \usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{tikz}
+\usetikzlibrary{positioning, shapes.multipart, fit}
 
 % ------------------------------------------------------------------
 % Formatting
 % ------------------------------------------------------------------
-\mdfsetup{skipabove=5pt,skipbelow=5pt}
-\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue}
-\setlist{itemsep=0.5pt, topsep=0.5pt, leftmargin=6mm}
-\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
 
-% Change the top/bottom margin of math environment
+% Colors
+\definecolor{accent}{HTML}{2563eb}
+\definecolor{H1}{HTML}{2ecc71}
+\definecolor{H2}{HTML}{3498db}
+\definecolor{H3}{HTML}{9b59b6}
+
+% Column format
+\setlength{\columnsep}{3pt}
+\ffvadjustfalse
+\Ncolumn{4}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0cm}
+
+% Compact titles
+\newcommand{\colorsection}[2]{\colorbox{#1}{\parbox{\dimexpr\linewidth-2\fboxsep}{\centering\ #2}}}
+\titlespacing{\section}{0pt}{0pt}{0pt}
+\titleformat{\section}{\bfseries\color{white}}{}{0pt}{\colorsection{accent}}
+
+\titlespacing{\subsection}{0pt}{0pt}{0pt}
+\titleformat{\subsection}{\bfseries\color{white}}{}{0pt}{\colorsection{black!60}}
+
+% Compact math mode
 \makeatletter
 \g@addto@macro\normalsize{%
-  \setlength\abovedisplayskip{4pt}
-  \setlength\belowdisplayskip{4pt}
-  \setlength\abovedisplayshortskip{4pt}
-  \setlength\belowdisplayshortskip{4pt}
+  \setlength{\abovedisplayskip}{0pt}
+  \setlength{\belowdisplayskip}{0pt}
+  \setlength{\abovedisplayshortskip}{0pt}
+  \setlength{\belowdisplayshortskip}{0pt}
+  \setlength{\jot}{0pt}
 }
+\let\displaystyle\textstyle
 \makeatother
 
-% Theorems and Styles
-\input{theorems_and_styles.tex}
+% Set each display in math mode to be rendered as \textstyle
+\renewcommand{\[}{\phantom{}\begin{center}\(}
+\renewcommand{\]}{\)\end{center}}
+
+% frames
+\usepackage{tcolorbox}
+\newenvironment{colored}
+{\begin{tcolorbox}[colback=H2!10, colframe=white, boxrule=0.0pt,
+                   enlarge top by=-0.1cm, enlarge bottom by=-0.1cm, 
+                   enlarge left by=0cm, left=6pt, right=6pt,
+                   boxsep=-1.5mm, outer arc=1pt,
+                   arc=1pt]}
+{\end{tcolorbox}}
+
+
+% Misc
+\hypersetup{colorlinks=true, urlcolor=accent, linkcolor=accent, citecolor=accent}
+\setlist{itemsep=0.2pt, topsep=0.5pt, leftmargin=5mm}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+
+
+% definition environment
+\newtheoremstyle{compact_definition}{}{}{\normalfont}{}{\bfseries}{}{0em}{\thmnote{#3}: }
+\theoremstyle{compact_definition}
+\newtheorem*{definition}{Definition}
 
 % ------------------------------------------------------------------
 % Custom Commands
@@ -84,10 +109,14 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\N}{\mathbb{N}}
+\newcommand{\OB}{\mathcal{O}}
+\renewcommand{\iff}{\Leftrightarrow}
+\renewcommand{\implies}{\Rightarrow}
 % \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\Pow}{\mathcal{P}}
-\newcommand{\argmin}[1]{\underset{#1}{\text{argmin}}}
+\newcommand{\argmin}[1]{\text{argmin}_{#1}}
+\newcommand{\argmax}[1]{\text{argmax}_{#1}}
 
 % Probability Stuff
 \renewcommand{\O}{\Omega}
@@ -97,7 +126,8 @@
 \newcommand{\B}{\mathcal{B}}
 \newcommand{\I}{1}
 \renewcommand{\L}{\mathcal{L}}
-\DeclareMathOperator{\Var}{Var}
+\newcommand{\GP}{GP}
+\DeclareMathOperator{\Var}{\mathbb{V}}
 \DeclareMathOperator{\Cov}{Cov}
 \DeclareMathOperator{\Ber}{Ber}
 \DeclareMathOperator{\Bin}{Bin}
@@ -108,6 +138,7 @@
 \DeclareMathOperator{\Unif}{\mathcal{U}}
 \DeclareMathOperator{\Exp}{Exp}
 \DeclareMathOperator{\Normal}{\mathcal{N}}
+\DeclareMathOperator{\Laplace}{Laplace}
 \DeclareMathOperator{\Ga}{Ga}
 \DeclareMathOperator{\Atom}{Atom}
 \DeclareMathOperator{\DX}{\mathcal{X}}
@@ -120,6 +151,9 @@
 \newcommand{\Y}{\vb{Y}}
 \newcommand{\X}{\vb{X}}
 \newcommand{\Z}{\vb{Z}}
+\newcommand{\f}{\vb{f}}
+\newcommand{\K}{\vb{K}}
+\renewcommand{\k}{\vb{k}}
 \renewcommand{\S}{\vb*{\Sigma}}
 \newcommand{\m}{\vb*{\mu}}
 \renewcommand{\I}{\vb{I}}
@@ -134,13 +168,6 @@
 \newcommand{\sdots}{\ifmmode\mathinner{\ldotp\kern-0.2em\ldotp\kern-0.2em\ldotp}\else.\kern-0.13em.\kern-0.13em.\fi}
 \newcommand{\todo}[1]{{\color{red}\textbf{TODO}: #1}}
 
-% ------------------------------------------------------------------
-% Meta Data
-% ------------------------------------------------------------------
-\title{\vspace{-3ex}Probabilistic Artificial Intelligence}
-\author{Nicola Studer \\ \href{mailto:nicstuder@student.ethz.ch}{nicstuder@student.ethz.ch}}
-\date{\vspace{-5ex}}
-
 
 % ------------------------
 % Document
@@ -149,13 +176,15 @@
 \begin{document}
 
 % Title
-\maketitle
-% \begin{align*}
-%   \color{general} \blacksquare \ & \text{General} & \color{discrete_highlight} \blacksquare \ & \text{Discrete} & \color{cont_highlight} \blacksquare \ & \text{Continuous}
-% \end{align*}
+% \begin{center}
+%   \large Probabilistic Artificial Intelligence \\
+%   \small \(\langle\)\href{https://google.com}{nicstuder@student.ethz.ch}\(\rangle\)
+% \end{center}
 
-% Sections
-\input{probability_recap.tex}
-\input{bayesian_linear_regression.tex}
+% Chapters
+\input{chapters/01_introduction.tex} \pagebreak
+\input{chapters/02_bayesian_linear_regression.tex}
+\input{chapters/03_gaussian_processes.tex}
+\input{chapters/04_variational_inference.tex}
 
 \end{document}

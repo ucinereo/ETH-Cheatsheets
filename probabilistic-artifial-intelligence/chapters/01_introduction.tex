@@ -1,0 +1,83 @@
+\section{Probability Stuff}
+
+\begin{center}
+    \textbf{Normal:} \(\frac{\exp\left(-\frac{1}{2}(\x - \m)^\top \S^{-1}(\x - \m)\right)}{(2 \pi)^{n/2} \sqrt{\vert\S\vert}}\)
+\end{center}
+
+\begin{colored}
+    \textbf{Expectation Dump}
+
+    \begin{itemize}
+        \item \(\E[\vb{A}\X + \vb{B}\Y + \vb{b}] = \E[\vb{A}\X] + \E[\vb{B}\Y] + \vb{b}\)
+        \item \(\E[\X\Y^\top] = \E[\X] \E[\Y]^\top\) if \(\X \bot \Y\)
+        \item \textbf{LOTUS} \(\E[f(\X)] = \int_{\X(\Omega)} f(\x)p(\x)\,d\x\)
+        \item \textbf{TOWER} \(\E_{\Y} [\E_{\X}[\X \mid \Y]] = \E[\X]\)
+    \end{itemize}
+\end{colored}
+
+\begin{colored}
+    \textbf{Independence Dump}
+    
+    \(\X\bot\Y \iff p(\x\y) = p(\x)p(\y) \iff p(\x \mid y) = p(\x) \)
+    \begin{align*}
+    \X\bot\Y\mid\Z &\iff p(\x, \y \mid \z) = p(\x\mid\z) p(\y \mid \z) \\
+    &\iff p(\x \mid \y, \z) = p(\x \mid \z)
+    \end{align*}
+
+    Reichenbach: \(\forall\X, \Y \exists \Z: \X \not\bot \Y \implies \X \bot \Y \mid \Z\)
+\end{colored}
+
+\begin{colored}
+    \textbf{Variance Dump} (\(\X \in \R^n, \Y \in \R^m\))
+
+    \begin{itemize*}
+        \item \(\Cov[\X, \Y] = \E[(\X - \E[\X])(\Y - \E[\Y])^\top]\) \\
+        \item \(\Var[\X] = \Cov[\X, \X]\)
+        \item Uncorr: \( \Cov[\X, \Y] = 0\)
+        \item \(\Var[\vb{A}\X + \vb{b}] = \vb{A}\Var[\X]\vb{A}^\top\) \\
+        \item \(\Var[\X + \Y] = \Var[\X] + \Var[\Y] + 2 \Cov[\X, \Y]\) \\
+        \item \textbf{LOTV} \(\Var[\X] = \E_{\Y}[\Var_{\X}[\X \mid \Y]] + \Var_{\Y}[\E_{\X}[\X \mid \Y]]\)
+    \end{itemize*}
+\end{colored}
+
+\begin{colored}
+    \textbf{Probability Dump}
+    
+    \begin{itemize*}
+        \item \(p(x_{1:i-1}, x_{i+1,n}) = \int_{X_i(\Omega)}p(x_{1:i-1}, x_i, x_{i+1:n}) \,dx_i\)
+        \item \textbf{Chain} \(p(x_{1:n}) = p(x_1)\cdot \prod_{i=2}^n p(x_i \mid x_{1:i-1})\) \\
+        \item \textbf{LOTP} \(p(\x) = \int_{\Y(\Omega)} p(\x \mid \y) \cdot p(\y) \, d\y\) \\
+        \item \(\Y = f(\X) : p(\y) = p_{\X}(f^{-1}(\y)) \cdot |\det Df^{-1}(\y)|\)
+    \end{itemize*}
+\end{colored}
+
+\vspace{-10pt}
+\[\x \ \text{model}, \, \y \ \text{obs.} \ : \overbrace{p(\x \mid \y)}^{\text{posterior}} = \frac{\overbrace{p(\y \mid \x)}^{\text{likelihood}} \cdot \overbrace{p(\x)}^{\text{prior}}}{\underbrace{p(\y) ({\scriptscriptstyle = \int p(\y \mid \x) p(\x) \, d\x})}_{\text{marginal likelihood}}}\]
+
+\begin{colored}
+    \textbf{Multiv. Gaussian Dump} (\(\X \sim \Normal, A, B \subseteq [n]\))
+    \begin{align*}
+        \X_A \mid \X_B &= \x_b \sim \Normal (\m_{A \mid B}, \S_{A \mid B}) \ \text{where} \\
+        \m_{A \mid B} &= \m_A + \S_{AB}\S_{BB}^{-1}(\x_B - \m_B),\\
+        \S_{A \mid B} &= \S_{AA} - \S_{AB}\S_{BB}^{-1}\S_{BA}.
+    \end{align*}
+
+    \begin{itemize*}
+        \item Mean affine f. of \(\m_B\)
+        \item \(\Var\) can only shrink and does not depend on the observations \(\x_B\).
+    \end{itemize*}
+
+    Equivalently, if \(\X_A\), \(\X_B\) jointly gaussian, then
+        \(\X_A = \vb{A}\X_B + \vb{b} + \vb*{\epsilon}\), where
+        \(\vb{A} = \S_{AB}\S_{BB}^{-1}\), \\
+        \(\vb{b} = \m_A - \S_{AB}\S_{BB}^{-1}\m_B\) and 
+        \(\vb*{\epsilon} = \Normal(0, \S_{A \mid B})\)
+\end{colored}
+
+\textbf{Bayesian Learning}
+\begin{itemize*}
+    \item Prior: \(p(\theta)\)
+    \item Likelihood: \(p(\y \mid \X, \theta) = \prod p(y_i \mid \x_i, \theta)\) 
+    \item Posterior: \\ \(p(\theta \mid \y, \X) = \frac{1}{Z}p(\theta)\prod p(y_i \mid \x_i, \theta)\)
+    \item Prediction: \(p(y^\star \mid \x^\star, \X, \y) = \int p(y^\star \mid \x^\star, \theta) p(\theta \mid \X, \y) \, d\theta\)
+\end{itemize*}

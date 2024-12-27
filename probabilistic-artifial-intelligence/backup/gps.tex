@@ -1,0 +1,8 @@
+\section{Gaussian Processes}
+\begin{definition*}[Gaussian Process]
+    A GP is an infinite set of random variables s.t. any finite number of them are jointly Gaussian.
+    It is characterized by a \textit{mean function} \(\mu: \XD \to \R\) and \textit{covariance function} \(k: \XD \times \XD \to \R\) s.t. for any \(A = \{x_1, \ldots, x_n\} \subseteq \XD\) we have:
+    \[f_A = [f_{x_1}, \ldots, f_{x_n}]^\top \sim \Normal(\mu_A, K_{AA}),\]
+    with \(f_x = f(x)\) and we write \(f \sim GP(\mu, k)\)
+\end{definition*}
+GPs are normal distributions over \textit{functions}, where finite marginals are multivariate Gaussians.
