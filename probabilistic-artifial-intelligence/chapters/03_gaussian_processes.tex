@@ -8,7 +8,7 @@
 \end{definition}
 
 \begin{definition}[Inference]
-    Given prior \(f \sim \GP(\mu, k)\) and noisy observations \(\y\) (\(y_i = f(\x_i) + \epsilon_i\)) and noise-free prediction \(f^\star\) at \(\x^\star\): \(\begin{bmatrix}
+    Given prior \(f \sim \GP(\mu, k)\), noisy obs. \(\y\) (\(y_i = f(\x_i) + \epsilon_i\)) and noise-free pred. \(f^\star\) at \(\x^\star\), joint Gauss.: \(\begin{bmatrix}
         \y \\ f^\star 
     \end{bmatrix}\mid \x^\star, \x_{1:n} \sim \Normal(\tilde\m, \tilde\K)\)
 
@@ -30,7 +30,8 @@
 \end{definition}
 
 \begin{definition}[Posterior]
-    \(f \mid \x_{1:n}, y_{1:n} \sim \GP(\mu', k')\) where
+    Use {\color{H3} cond. multiv. Gauss.} for closed form post.:
+    \(f^\star \mid \x_{1:n}, y_{1:n} \sim \GP(\mu', k')\) where
     \begin{footnotesize}\vspace{-5pt}
         \begin{align*}
             \mu'(\x) &= \mu(x) + \k_{\x, A}^\top(\K_{AA} + \sigma_n^2\I)^{-1}(\y_A - \mu_A) \\
@@ -39,6 +40,7 @@
     \end{footnotesize}
 \end{definition}
 
+\vspace{-8pt}
 \begin{definition}[Forward Sampling]
     Sample recursively: \\
     \(p(\x_1, \ldots, \x_n) = p(f_1)p(f_2 \mid f_1)\ldots p(f_n \mid f_{1:n})\)

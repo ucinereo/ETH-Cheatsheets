@@ -1,5 +1,79 @@
 \section{Variational Inference}
 
 \begin{definition}[Idea]
-    Approximate intractable posterior \[p(\theta \mid \X, \y)\]
+    Approximate intractable posterior: \[p(\theta \mid \X, \y) = \frac{1}{\color{H4}Z}{\color{H1}p(\theta, \y \mid \X)} \approx q(\theta \mid \lambda) = q_\lambda(\theta)\]
 \end{definition}
+
+\begin{colored}
+    \textbf{Laplace Approximation}: 2nd-Taylor on log-posterior.
+    \(q(\theta) = \Normal(\hat\theta, \Lambda^{-1})\) with: \\
+    \(\Lambda = -\nabla\nabla\log p(\hat\theta \mid \y, \X)\) (SPSD) inverse covariance matrix and \(\hat\theta = \argmax{\theta}p(\theta\mid \y, \X)\).
+    {\color{H4} \(\Lambda\) does not depend on normalizer \(Z\)!}
+\end{colored}
+
+\begin{definition}[Prediction via Variational Posterior]
+    \begin{gather*}
+        p(y^\star \mid \x^\star, \X, \y) \approx \int p(y^\star \mid \x^\star, \theta) q_\lambda(\theta) \, d\theta \\
+        = \E_{\theta \sim q_\lambda}[p(y^\star, \x^\star, \theta)
+        \overset{\text{MC}}{\approx} \frac{1}{m}\sum p(y^\star \mid \x^\star, \theta_j)]
+    \end{gather*}
+\end{definition}
+
+\begin{definition}[KL-Divergence]
+    Find \(q^\star \in \argmin{\lambda}\KL(q\Vert p)\) for variational family \(q^\star \in \mathcal{Q}\) and \(\KL\) as:
+    \[\KL(q \Vert p) = \int q(\theta) \log \frac{q(\theta)}{p(\theta)} \,d\theta = \E_{\theta \sim q}[\log \frac{q(\theta)}{p(\theta)}]\]
+    \begin{itemize*}
+        \item \(\KL(q \Vert p) \leq 0\)
+        \item \(\KL(q \Vert p) = 0 \iff q = p\) a.e.
+        \item \(\exists q, p: \KL(q \Vert p) \neq \KL(p \Vert q)\)
+    \end{itemize*}
+\end{definition}
+
+\begin{definition}[Forward KL]
+    \(q_1^\star = \argmin{q}\KL(p \Vert q)\)
+\end{definition}
+
+\begin{definition}[Backward KL]
+    \(q_1^\star = \argmin{q}\KL(q \Vert p)\), which tends to select mode and underestimate \(\Var\).
+\end{definition}
+
+\subsection{Information Theory}
+
+\begin{definition}[Suprise]
+    Of event with prob. \(u: S[u] = - \log u\).
+    \begin{itemize*}
+        \item Anti-\(\nearrow\)
+        \item cont.
+        \item \(S[uv] = S[u] + S[v]\) for ind. E.
+    \end{itemize*}
+\end{definition}
+
+\begin{definition}[Entropy (\(X \sim p\))]
+    \(\Ent[\X] = \Ent[p] = \E_{x \sim p}[S[p(x)]]\)
+\end{definition}
+
+\begin{definition}[Cross-Entropy]
+    \(\Ent[p\Vert q] = \E_{x \sim p}[S[q(x)]]\) or \\
+    \(\Ent[p\Vert q] = \Ent[p] + \KL(p \Vert q) \geq H[p]\)
+\end{definition}
+
+\begin{definition}[Evidence Lower Bound (ELBO)] \
+    \vspace{-15pt}
+    \begin{align*}
+        L(q, p; \mathcal{D}_n) &= \log p(\y \mid \X) - \KL(q \Vert \overbrace{p(\cdot \mid \X, \y)}^{\text{Posterior}}) \\
+        &= {\color{H2}\E_{\theta \sim q}[\log p (\y, \theta \mid \X)]} + \Ent[q]\\
+        &= \underbrace{{\color{H2}\E_{\theta \sim q}[\log p (\y \mid \X, \theta)]}}_{\text{log-likelihood}} - \underbrace{\KL(q\Vert p)}_{\hspace{-20pt}\text{proximity to prior}}
+    \end{align*}
+    \(\implies\) min. posterior \(\KL \equiv\) max. ELBO.
+\end{definition}
+
+% Interpretation: prefer distributions q that maximize the expected (joint/conditional) data likelihood, but are also "uncertain"/"close to the prior"
+
+\begin{definition}[Reparameterization trick]
+    Given RV \(\eps \sim \phi\), \(\theta = g(\eps, \lambda)\), then
+    \(q(\theta \mid \lambda) = \phi(\eps) \vert\nabla_{\eps} g(\eps, \lambda)\vert^{-1}\)
+    and \({\color{H2}\E_{\theta \sim q_\lambda}[f(\theta)]} = \E_{\eps \sim \phi}[f(g(\epsilon, \lambda))]\), hence  \\
+    \(\nabla_\lambda \E_{\theta \sim q_\lambda}[f(\theta)] = \E_{\eps \sim \phi}[\nabla_\lambda f(g(\eps, \lambda))]\)
+\end{definition}
+
+\todo{Add gauss reparam.}

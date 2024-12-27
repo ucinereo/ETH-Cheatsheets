@@ -51,11 +51,8 @@
     \end{itemize*}
 \end{colored}
 
-\vspace{-10pt}
-\[\x \ \text{model}, \, \y \ \text{obs.} \ : \overbrace{p(\x \mid \y)}^{\text{posterior}} = \frac{\overbrace{p(\y \mid \x)}^{\text{likelihood}} \cdot \overbrace{p(\x)}^{\text{prior}}}{\underbrace{p(\y) ({\scriptscriptstyle = \int p(\y \mid \x) p(\x) \, d\x})}_{\text{marginal likelihood}}}\]
-
 \begin{colored}
-    \textbf{Multiv. Gaussian Dump} (\(\X \sim \Normal, A, B \subseteq [n]\))
+    \textbf{\color{H3} Multiv. Gaussian Dump} (\(\X \sim \Normal, A, B \subseteq [n]\))
     \begin{align*}
         \X_A \mid \X_B &= \x_b \sim \Normal (\m_{A \mid B}, \S_{A \mid B}) \ \text{where} \\
         \m_{A \mid B} &= \m_A + \S_{AB}\S_{BB}^{-1}(\x_B - \m_B),\\
@@ -74,10 +71,16 @@
         \(\vb*{\epsilon} = \Normal(0, \S_{A \mid B})\)
 \end{colored}
 
-\textbf{Bayesian Learning}
-\begin{itemize*}
-    \item Prior: \(p(\theta)\)
-    \item Likelihood: \(p(\y \mid \X, \theta) = \prod p(y_i \mid \x_i, \theta)\) 
-    \item Posterior: \\ \(p(\theta \mid \y, \X) = \frac{1}{Z}p(\theta)\prod p(y_i \mid \x_i, \theta)\)
-    \item Prediction: \(p(y^\star \mid \x^\star, \X, \y) = \int p(y^\star \mid \x^\star, \theta) p(\theta \mid \X, \y) \, d\theta\)
-\end{itemize*}
+\subsection{Bayesian Learning (conditioned on \(\X\))}
+\vspace{-8pt}
+
+\[\overbrace{p(\theta \mid \X, \y)}^{\text{Posterior}} = \frac{\overbrace{p(\theta)}^{\text{Prior}} \overbrace{\prod p(y_i \mid \x_i, \theta)}^{\text{Likelihood} \ (p(\y \mid \X, \theta))}}{\underbrace{p(\y \mid \X) ({\scriptscriptstyle = \int p(\theta) \prod p(y_i \mid \x_i, \theta) \, d\theta})}_{\text{Marginal Likelihood ({\color{H4} mostly intracable})}}}\]
+
+\begin{enumerate*}
+    \item Define Prior and LL (BLR, GPR)
+    \item Predict: \\ \(p(y^\star \mid \x^\star, \X, \y) = \int p(y^\star \mid \x^\star, \theta) p(\theta \mid \X, \y) \, d\theta\)
+\end{enumerate*}
+\begin{center}
+\color{H1}For BLR and GPR, this has a closed form!
+\end{center}
+
