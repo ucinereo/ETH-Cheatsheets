@@ -1,0 +1,36 @@
+\section{Bayesian Deep Learning}
+
+\begin{definition}[BNN]
+    \resizebox{.85\linewidth}{!}{\(\theta \sim \Normal(\0, \sigma_p^2\I)\),\(y \mid \X, \theta \sim \Normal({\color{H2}f(\x, \theta)}, \sigma_n^2)\)}
+    GA: \(\theta \leftarrow \theta(1 - \frac{1}{\sigma_p^2}\eta_t) + \eta_t \sum\nabla\log p(y_i \mid \x_i, \theta)\)
+\end{definition}
+
+\begin{definition}[Heteroscedastic Noise] Use complex likeli-\\hood:
+    \(y \mid \X, \theta \sim \Normal({\color{H2}f_\mu(\x, \theta)}, \exp({\color{H3}f_{\sigma^2}(\x, \theta)}))\)
+    Use following log-likelihood to find MAP: \\
+    \(\log p(y_i \mid \x_i, \theta)) = \text{const} - \frac{1}{2}\left[\log {\color{H3}f_{\sigma^2}}+ \frac{(y_i - {\color{H2}f_\mu})^2}{\color{H3}f_{\sigma^2}}\right]\)
+\end{definition}
+
+\subsection{Approximate Inference}
+
+Want to know epistemic uncertainty -- but {\color{H4}intractable} if no homoscedastic noise.
+
+\begin{definition}[Bayes by Backprop]
+Use VI and maximize ELBO \todo{reparam trick.}
+\end{definition}
+
+\begin{definition}[MCMC]
+    SGLD / SG-HMC on \(\color{H2}p(y^\star \mid \x^\star, \X, \y)\). {\color{H4} Can't} afford to store \(T\) samples \(\theta \implies\) Store selected \(m\) (\textit{subsampling}) or approximate weights by learning \(\theta \sim \Normal(\m, \S)\), where
+    \(\m = \frac{1}{T}\sum \theta^{(i)}\), \(\S = \frac{1}{T-1}\sum (\theta^{(i) - \m})(\theta^{(i)} - \m)^\top\) (SGD \(\scriptstyle\to\){\color{H1}SWAG}).
+\end{definition}
+
+\begin{definition}[Dropout]
+    VI with \(q(\theta\mid\lambda) = \prod q_j(\theta_j \mid \lambda_j)\) w/ \(q_j(\theta_j \mid \lambda_j) = p \delta_0(\theta_j) + (1 - p)\delta_{\lambda_j}(\theta_j)\)
+\end{definition}
+
+\begin{definition}[Probabilistic Ensembles]
+    Train multiple models on random subsamples of data.
+\end{definition}
+
+\todo{Calibration}
+
