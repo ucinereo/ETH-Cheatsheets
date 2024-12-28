@@ -14,7 +14,7 @@
 \begin{definition}[Prediction via Variational Posterior]
     \begin{gather*}
         p(y^\star \mid \x^\star, \X, \y) \approx \int p(y^\star \mid \x^\star, \theta) q_\lambda(\theta) \, d\theta \\
-        = \E_{\theta \sim q_\lambda}[p(y^\star, \x^\star, \theta)
+        = \E_{\theta \sim q_\lambda}[p(y^\star \mid \x^\star, \theta)
         \overset{\text{MC}}{\approx} \frac{1}{m}\sum p(y^\star \mid \x^\star, \theta_j)]
     \end{gather*}
 \end{definition}

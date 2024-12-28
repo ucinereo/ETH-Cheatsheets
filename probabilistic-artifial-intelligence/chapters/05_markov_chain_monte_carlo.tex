@@ -1,0 +1,66 @@
+\section{Markov Chain Monte Carlo}
+
+\begin{definition}[Idea]
+    Use \(p(y^\star \mid \x^\star, \X, \y) \overset{\text{LLN}}{\approx} \frac{1}{m}\sum p(y^\star \mid \x^\star, \theta^{(i)})\)
+    and use MC to sample distribution.
+\end{definition}
+
+\begin{definition}[MC]
+    Over states \(S = [n]\) is sequence of RVs s.t.
+    \begin{itemize*}
+        \item \(P(X_{t+1} \mid X_t)\) independent of \(t\)
+        \item \(X_{t+1} \bot X_{1:t-1} \mid X_t\)
+    \end{itemize*}
+\end{definition}
+
+\begin{definition}[Stationary]
+    \(\pi(x) = \sum_{x'} p(x \mid x')\pi(x')\)
+\end{definition}
+
+\begin{definition}[Irreducible]
+    \(\forall s, s' \in S: \P[s \to s'] > 0\)
+\end{definition}
+
+\begin{definition}[Ergodic]
+    \(\exists t \in \N_0\) s.t. every state can be reached from every state in exactly \(t\) steps.
+\end{definition}
+
+Irreducible \(\to\) Ergodic: \(\PM' = \frac{1}{2}\PM + \frac{1}{2}\I\)
+
+\begin{colored}
+    Ergodic MC has unique stat. \(\pi\) (with full support) and \(\lim_{t \to \infty q_t} = \pi\), independently of \(q_0\).
+\end{colored}
+
+\begin{definition}[Detailed Balance]
+    If MC satisfies \(\frac{1}{Z}q(x)p(x'\mid x) = \frac{1}{Z}q(x')p(x \mid x')\), then \(\frac{1}{Z}q(x)\) is stat. dist.
+\end{definition}
+
+\begin{definition}[Ergodic Theorem]
+    For an ergodic MC and stat. dist \(\pi\), as well as \(f: D \to \R\), then \(\frac{1}{n} \sum f(x_i) \overset{\text{a.s.}}{\to} \sum_{x \in S} \pi(x)f(x) = \E_{x \in \pi}[f(x)]\) for \(x_i \sim X_i \mid x_{i-1}\).
+\end{definition}
+
+\subsection{Transition Distributions}
+
+\begin{colored}
+    \textbf{Metro. Hast.} \(\alpha(x'\mid x) = \min\left\{1, \frac{q(x') r(x\mid x')}{q(x) r(x' \mid x)}\right\}\)
+    \begin{enumerate*}
+        \item Sample \(x' \sim r(x' \mid x)\)
+        \item Accept w/ prob. \(\alpha\)
+    \end{enumerate*}
+    Stationary dist. is \(\frac{1}{z}q(x) = p(x)\).
+\end{colored}
+
+\begin{definition}[Gibbs Sampling]
+    Pick \(i \in [n]\) at random, update \(x_i\) by sampling according to \(p(x_i \mid \x_{-i})\).
+\end{definition}
+
+\begin{definition}[Continuous Case]
+    Focus on \textit{Gibbs Distributions} of the form \(p(\x) = \frac{1}{Z}\exp(-f(\x))\) w/ energy function \(f\). If \(f\) convex \(p\) is log-concave.
+    \(\alpha(x'\mid x) = \min \left\{1, \frac{r(x \mid x')}{r(x' \mid x)} \exp(f(x) - f(x'))\right\}\)
+\end{definition}
+
+\begin{definition}[Langevin Dynamics]
+    Shift proposal distribution perpendicular to the gradient of the energy:
+    \(r(x' \mid x) = \Normal(x'; x - \eta_t \nabla f(x), 2\eta_t \I)\).
+\end{definition}
+
