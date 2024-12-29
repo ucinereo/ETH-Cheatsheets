@@ -10,6 +10,7 @@
 \usepackage[compact]{titlesec}
 \usepackage{parskip}
 \usepackage{mathptmx} % times font
+\usepackage{mathtools}
 
 % Language stuff
 \usepackage[english]{babel}
@@ -170,6 +171,7 @@
 \DeclareMathOperator{\MSE}{MSE}
 \DeclareMathOperator{\MLE}{MLE}
 \DeclareMathOperator{\ML}{ML}
+\DeclareMathOperator{\MI}{I}
 
 % Misc
 \newcommand{\sdots}{\ifmmode\mathinner{\ldotp\kern-0.2em\ldotp\kern-0.2em\ldotp}\else.\kern-0.13em.\kern-0.13em.\fi}
@@ -194,6 +196,7 @@
 \input{chapters/03_gaussian_processes.tex}
 \input{chapters/04_variational_inference.tex}
 \input{chapters/05_markov_chain_monte_carlo.tex}
-\input{chapters/06_bayesian_deep_learning.tex}
+\input{chapters/06_bayesian_deep_learning.tex} \pagebreak
+\input{chapters/07_active_learning.tex}
 
 \end{document}

@@ -1,0 +1,61 @@
+\section{Active Learning}
+
+\begin{colored}
+    \textbf{Entropy}
+    \(\Ent[\X, \Y] = \E_{(\x,\y)[-\log p(\x, \y)]}\),
+    \(\Ent[\X\mid\Y] = \E_{\y}[\Ent[\X \mid \Y = \y]] = \E_{(\x,\y)}[-\log p(\x \mid \y)]\)
+    \begin{itemize}
+        \item \(\Ent[\X, \Y] = \Ent[\Y] + \Ent[\X \mid \Y]\)
+        \item \(\Ent[\X \mid \Y] = \Ent[\Y \mid \X] + \H[\X] - \H[\Y]\) (Bayes)
+        \item \(\Ent[\X\mid\Y] \leq \Ent[\X]\) (Information never hurts)
+    \end{itemize}
+\end{colored}
+
+\begin{colored}
+    \textbf{Mutual Info}
+    \(\MI(\X; \Y) = \Ent[\X] - \Ent[\X \mid \Y] = \Ent[\X] + \Ent[\Y] - \Ent[\X, \Y]\)
+    Can be seen as information loss assuming \(\X \bot \Y\).
+    % \(\MI(\X; \Y) = \E_{\y}[\KL(p(\x \mid \y)) \Vert p(\x)]\)
+    \textbf{Conditional MI}:
+    \begin{gather*}
+        \MI(\X; \Y \mid \Z) = \Ent[\X \mid \Z] - \Ent[\X \mid \Y, \Z]
+    \end{gather*}
+\end{colored}
+
+\begin{definition}[Mar. Gain]
+    \(\x \in \DX\), \( A\subseteq \DX\), \(F: \mathcal{P}(\DX) \to \R\):
+    \begin{gather*}
+    \Delta_F(\x \mid A) = F(A \cup \{\x\}) - F(A) \\
+    \end{gather*}
+\end{definition}
+
+\vspace{-15pt}
+\begin{definition}[Submodular]
+    \(\iff \forall \x \in \DX, A \subseteq B \subseteq \DX:\)
+    \begin{gather*}
+        F(A \cup \{\x\}) - F(A) \geq F(B \cup \{\x\}) - F(B)
+    \end{gather*}
+    \textit{Monotone} if \(F(A) \leq F(B)\)
+\end{definition}
+
+\begin{definition}[Maximization Objective (Info. Gain)]\ \\
+    \(\MI(S) = I(\f_S; \y_S) = \overbrace{\Ent[\f_S]}^{\mathclap{\hspace{-60pt}\text{Uncertainty before eval}}} - \overbrace{\Ent[\f_S \mid \y_S]}^{\mathclap{\text{After evaluating } \y_S}}\)
+\end{definition}
+
+\begin{definition}[Greedy Algorithm]
+    Pick \(\x \in S\), which maximizes mutual information \(I(S \cup \{\x\})\)
+\end{definition}
+
+\begin{definition}[Uncertainty Sampling]
+    If \(f\) is Gauss, and homoscedastic noise, then \(\x_{t+1} = \argmax{\x}\Delta_{\MI}(\x \mid S_t)\). Not good with heteroscedastic noise, as alreatoric may dominate epistemic.
+\end{definition}
+
+\begin{definition}[Classification]
+    \textit{US} is max. \(\Ent\) of predicted label:
+    \(\x_{t+1}\in\argmax{\x}\Ent(y_{\x} \mid \X,\y)\)
+\end{definition}
+
+\begin{definition}[BALD]
+    Select points where models are confident, but different:
+    \(\x_{t+1} = \argmax{\x} \MI(\theta;y_{\x} \mid \X, \y) = \argmax{\x} \Ent[y_{\x} \mid \X, \y] - \E_{\theta \mid \X, \y}[\Ent[y_{\x} \mid \theta]]\)
+\end{definition}
