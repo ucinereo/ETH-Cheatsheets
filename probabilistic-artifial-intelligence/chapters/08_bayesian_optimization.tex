@@ -1,0 +1,47 @@
+\section{Bayesian Optimization}
+
+\begin{definition}[Regret]
+    \(R_T = \sum(\underbrace{\max_{\x} f^\star(\x) - f^\star(\x_t))}_{\text{instantaneous regret}}\)
+
+    Goal is to get sublinear regret \(\frac{R_T}{T} \to 0\)
+\end{definition}
+
+\begin{definition}[BO-GP]
+    \begin{enumerate*}
+        \item init \(f \sim \GP\)
+        \item choose new point \(\x_t = \argmax{}F(\x; \mu_{t-1}, k_{t-1})\)
+        \item \(\y_t = f(\x_t) + \epsilon_t\)
+        \item Update \(\mu_t, k_t\)
+    \end{enumerate*}
+    ({\color{H5} \(F\) acqui. func. (e.g. US, UCB)})
+\end{definition}
+
+\begin{definition}[UCB]
+    \(\x_{t+1} = \argmax{} \mu_t(\x) + \beta_{t+1} \sigma_t(\x)\) with \\ \(\sigma_t(\x) = \sqrt{k_t(\x,\x)}\), \(\beta=0\): exploit., \(\beta \to \infty\): US.
+    {\color{H4} Non-convex: Lipschitz optim. or GA}
+\end{definition}
+
+\begin{colored}
+    \textbf{GP-UCB Regret}: \(\frac{1}{T}R_T = \OB^*(\sqrt{\frac{\gamma_T}{T}})\) where
+    \(\gamma_T = \max_{|S| \leq T} \MI(f_S; \y_S)\) is information gain.
+    Info. gain bounds for common kernels:
+    \begin{itemize}
+        \item \textit{Linear}: \(\gamma_T = \OB(d \log T)\)
+        \item \textit{Gaussian}: \(\gamma_T = \OB((\log T)^{d+1})\)
+        \item \textit{Matérn}: \(\gamma_T = \OB(T^{\frac{d}{2\nu + d}} (\log T)^{\frac{2\nu}{2\nu + d}})\)
+    \end{itemize}
+\end{colored}
+
+\begin{definition}[PI]
+    % \(\x_{t+1} = \argmax{} \P(I_t(\x) > 0 \mid \X, \y) = \argmax{} \Phi(\frac{\mu_t(\x) - \hat f_t}{\sigma_t(\x)})\)
+    \(\x_{t+1} = \argmax{} \Phi(\frac{\mu_t(\x) - \hat f_t}{\sigma_t(\x)})\)
+\end{definition}
+
+\begin{definition}[EI]
+    \(\x_{t+1} = \argmax{} \E[I_t(\x) \mid \X, \y] \, ({\scriptstyle I_t = (f(\x) - \hat f_t)_+})\)
+\end{definition}
+
+\begin{definition}[Thompson Sampling]
+    At time \(t+1\), sample \(\tilde f_{t+1} \sim p(\cdot \mid \X, \y)\) from post. The, simply max \(\tilde f_{t+1}, \x_{t+1} = \argmax{} \tilde f_{t+1}(\x)\).
+\end{definition}
+
