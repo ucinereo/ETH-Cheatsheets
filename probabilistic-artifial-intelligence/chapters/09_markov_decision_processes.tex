@@ -1,0 +1,65 @@
+\section{Markov Decision Processes}
+
+\begin{definition}[MDP]
+    States \(X\), Actions \(A\), \textit{\color{H2} known} Trans. Prob. \(p(x' \mid x, a)\) and reward f. \(r: X \times A \to \R\).
+\end{definition}
+\begin{center}
+    Stochastic env. \(\iff\) output of \(a\) is random.
+\end{center}
+
+\begin{definition}[Policy]
+    \(\pi(a \mid x)\) prob. dist. over actions. Induces MC:
+    \(p^\pi(x'\mid x) = \sum_a \pi(a \mid x) p(x' \mid x, a)\).
+\end{definition}
+
+\begin{definition}[Discounted Payoff]
+    \(G_t = \sum_{m=0}^\infty \gamma^m R_{t + m}\)
+\end{definition}
+
+\begin{definition}[St. V. F.]
+    \(v_t^\pi(x) = \E_\pi[G_t \mid X_t = x] = q^\pi(x, \pi(x))\)
+\end{definition}
+
+\begin{definition}[St. V-A./Q]
+    \(q_t^\pi(x, a) = \E_\pi[G_t \mid X_t = x, A_t = a]\) \\ \(= r(x, a) + \gamma \sum_{x'}p(x' \mid x, a) v_{t+1}^\pi(x')\)
+\end{definition}
+
+\begin{definition}[Stochastic Bellmann Equations] \, \\
+    \begin{enumerate*}
+        \item \resizebox{.95\linewidth}{!}{
+            \(v^\pi(x) = r(x, \pi(x)) + \gamma\sum_{x'}p(x' \mid x, \pi(x)) v^\pi(x')\)
+        }
+        \item \resizebox{.95\linewidth}{!}{
+            \(v^\pi(x) = \sum_a \pi(a \mid x)\left(r(x, a) + \gamma\sum_{x'}p(x' \mid x, a) v^\pi(x')\right)\)
+        }
+        \item \resizebox{.95\linewidth}{!}{
+            \(q^\pi(x, a) = r(x, a) + \gamma \sum_{x'}p(x' \mid x, a) \sum_{a'} \pi(a' \mid x') q^\pi(x', a')\)
+        }
+        \item \(v^\star(x) = \max_a[r(x, a) + \gamma \sum_x' p(x' \mid x, a) v^\star(x')]\)
+    \end{enumerate*}
+
+    { \color{H1} Allows us to define state-values from the next!} \(\implies\) find \(v^\pi\), given policy \(\pi\).
+\end{definition}
+
+\begin{definition}[Pol.-Eval.]
+    BE \(\implies v^\pi = (\I - \gamma \vb{P}^\pi)^{-1}\r^\pi\), solve iter. with \(v^\pi \leftarrow \r^\pi + \gamma \PM^\pi v^\pi\)
+\end{definition}
+
+\begin{definition}[Pol.-Opt.]
+    Find \(\pi^\star = \argmax{}\E_{\pi}[G_0]\), which is greedy w.r.t. s.v.f.: \(\pi^\star(x) = \argmax{a} q^\star(x, a)\).
+\end{definition}
+
+\begin{definition}[PI]
+    rand \(\pi_0 \overset{\text{PE}}{\to} v_0 \overset{\text{PO}}{\to} \pi_1 \overset{\text{PE}}{\to} \ldots \pi^\star\). Take poly-\# steps, converge to optimal policy, \(\OB(n^3)\).
+\end{definition}
+
+\begin{definition}[VI]
+    BE4 with DP, start with \(v_0(x) = \max_a r(x, a)\).
+    \(\epsilon\)-opt sol in poly-\# steps, \(\OB(nm)\).
+\end{definition}
+
+\begin{definition}[POMDP]
+    \(p(y \mid b_t, a_t) = \sum_{x, x'}b_t(x) p(x' \mid x, a_t)p(y \mid x')\)
+    \(b_{t+1}(x') = \frac{1}{Z} \sum_x b_t(x)p(x' \mid x, a_t)p(y_{t+1} \mid x')\)
+    For finite horizon \(T\), set of reachable belief states is finite but exponential in \(T\).
+\end{definition}
