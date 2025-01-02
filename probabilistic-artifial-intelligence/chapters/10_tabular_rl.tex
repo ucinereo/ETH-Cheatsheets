@@ -1,0 +1,65 @@
+\section{Tabular Reinforcement Learning}
+
+\begin{definition}[On-Policy]
+    % Learn using current policy's data.
+    Learn and act using same policy
+    % Agent has control over its own actions.
+    % Update policy based on data collected using current policy only
+\end{definition}
+
+\begin{definition}[Off-Policy]
+    % Learn using any policy's data.
+    Learn policy using anothers' data.
+    % Use purely obervational data.
+    % Update policy based on data collected using any policy.
+\end{definition}
+
+\subsection{Model-Based (learn \(p(x' \mid x, a)\) of MDP)}
+
+off-policy.  Mem: \(\OB(n^2m)\), Compt: \(\OB(nm)\)
+
+\begin{definition}[MC-Control]
+    \(\hat p(x' \mid x, a) = \frac{N(x' \mid x, a)}{N(a \mid x)}\) for MLE and \(\hat r(x, a) = \frac{1}{N(a \mid x)} \sum_{t=0, x_t = x, a_t = a}r^t\)
+\end{definition}
+
+\begin{definition}[\(\epsilon\)-greedy]
+    \begin{enumerate*}
+        \item \(u \sim \Unif\)
+        \item \(u \leq \epsilon_t\): rand \(a\), else best
+    \end{enumerate*}
+\end{definition}
+
+\begin{definition}[\(\bm R_{\max}\)]
+    Add state \(x^\ast\) and set \(\forall x, a: \hat r(x, a) = R_{\max}\), \(\hat p(x^* \mid x, a) = 1\), then compute optimal policy \(\hat\pi\).
+    Quickly eliminate suboptimal, with prob \(1 - \delta\), reaches \(\eps\)-opt policy, \(\#\) of steps poly. in \(|X|, |A|, T, \frac{1}{\epsilon}, \log(\frac{1}{\delta}), R_{\max}\).
+\end{definition}
+
+% TODO: Might add softmax exploration
+
+\subsection{Model-Free (learn \(v\) directly)}
+
+\begin{definition}[Bootstrapping]
+    Approx. \(v^\pi(x) \approx r + \gamma v^\pi(x')\) using estimate \(V^\pi\), which itself samples \(v^\pi\).
+\end{definition}
+
+\begin{definition}[TD-learning]
+    % \begin{enumerate*}
+    %     \item \(V^\pi\) arb.
+    %     \item use \(\pi\): \((x, a, r, x')\)
+    %     \item \(V^\pi(x) = (1 - \alpha_t)V^\pi(x) + \alpha_t(r + \gamma V^\pi(x'))\)
+    % \end{enumerate*}
+    \textit{on-policy}, \(\alpha^t\) (*) \(V^\pi \to v^\pi\) with prob 1.
+    Use bootstrapping to reduce variance
+    \(V^\pi(x) = V^\pi(x) + \alpha_t(r + \gamma V^\pi(x') - V^\pi(x))\).
+\end{definition}
+
+\begin{definition}[SARSA]
+    TD with \(Q^\pi(x, a) = (1 - \alpha_t) Q^\pi(x, a) + \alpha_t(r + \gamma Q^\pi(x', a'))\)
+\end{definition}
+
+\begin{definition}[Q-learning]
+    \textit{Off-policy}, same conv. cond, bootstrapped. Mem \(\OB(nm)\), Compt. \(\OB(m)\).\\
+    \resizebox{\linewidth}{!}{
+    \(Q^\star(x, a) = (1 - \alpha_t)Q^\star(x, a) + \alpha_t(r + \gamma \max_{a'}Q^\star(x', a'))\)
+    }
+\end{definition}

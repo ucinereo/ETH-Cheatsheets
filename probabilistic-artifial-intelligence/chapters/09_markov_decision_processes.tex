@@ -36,6 +36,7 @@
             \(q^\pi(x, a) = r(x, a) + \gamma \sum_{x'}p(x' \mid x, a) \sum_{a'} \pi(a' \mid x') q^\pi(x', a')\)
         }
         \item \(v^\star(x) = \max_a[r(x, a) + \gamma \sum_x' p(x' \mid x, a) v^\star(x')]\)
+        \item \(q^\star(x, a) = r(x, a) + \gamma \sum_{x'} p(x' \mid x, a) v^\star(x')\)
     \end{enumerate*}
 
     { \color{H1} Allows us to define state-values from the next!} \(\implies\) find \(v^\pi\), given policy \(\pi\).
