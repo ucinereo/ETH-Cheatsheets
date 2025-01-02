@@ -1,0 +1,15 @@
+\section{Model-Based RL}
+Start wiht init \(\pi\) and data \(\mathcal{D}\). For several eps:
+\begin{enumerate}
+    \item Roll outpolicy \(\pi\) to collect data
+    \item Learn dynamics \(f\) and rewards \(r\) from data
+    \item Plan new \(\pi\) based on estimated models
+\end{enumerate}
+
+\begin{definition}[MPC]
+    \begin{enumerate*}
+        \item Observe \(x_t\)
+        \item Plan over finite Horizon \(\max_{a_{t:t+H-1}} \sum_{\tau = t}^{t + H - 1} \gamma^{\tau - t}r(x_\tau, a_\tau)\) s.t valid trans. \(x_{\tau + 1} = f(x_\tau, a_\tau)\)
+        \item carry out action \(a_t\).
+    \end{enumerate*}
+\end{definition}
