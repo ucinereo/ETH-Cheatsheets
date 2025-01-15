@@ -1,9 +1,9 @@
 \section{Bayesian Optimization}
+Not only learn, but also optmimize for reward.
 
 \begin{definition}[Regret]
-    \(R_T = \sum(\underbrace{\max_{\x} f^\star(\x) - f^\star(\x_t))}_{\text{instantaneous regret}}\)
-
-    Goal is to get sublinear regret \(\frac{R_T}{T} \to 0\)
+    \(R_T = \sum(\max_{\x} f^\star(\x) - f^\star(\x_t))\)
+    Goal is to get sublinear regret \(\frac{R_T}{T} \to 0\) \(\to\) gain info
 \end{definition}
 
 \begin{definition}[BO-GP]
@@ -17,7 +17,7 @@
 \end{definition}
 
 \begin{definition}[UCB]
-    \(\x_{t+1} = \argmax{} \mu_t(\x) + \beta_{t+1} \sigma_t(\x)\) with \\ \(\sigma_t(\x) = \sqrt{k_t(\x,\x)}\), \(\beta=0\): exploit., \(\beta \to \infty\): US.
+    \(\x_{t+1} = \argmax{} \mu_t(\x) + \beta_{t+1} \sigma_t(\x)\) with \\ \(\color{H3}\sigma_t(\x) = \sqrt{k_t(\x,\x)}\), \(\beta=0\): exploit., \(\beta \to \infty\): US.
     {\color{H4} Non-convex: Lipschitz optim. or GA}
 \end{definition}
 
@@ -39,6 +39,7 @@
 
 \begin{definition}[EI]
     \(\x_{t+1} = \argmax{} \E[I_t(\x) \mid \X, \y] \, ({\scriptstyle I_t = (f(\x) - \hat f_t)_+})\)
+    Has weird non-linearities.
 \end{definition}
 
 \begin{definition}[Thompson Sampling]

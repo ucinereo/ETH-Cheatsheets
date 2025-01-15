@@ -5,7 +5,7 @@
 \end{definition}
 
 \begin{colored}
-    \textbf{Laplace Approximation}: 2nd-Taylor on log-posterior.
+    \textbf{Laplace Approximation}: 2nd-Taylor on log-posterior mode.
     \(q(\theta) = \Normal(\hat\theta, \Lambda^{-1})\) with: \\
     \(\Lambda = -\nabla\nabla\log p(\hat\theta \mid \y, \X)\) (SPSD) inverse covariance matrix and \(\hat\theta = \argmax{\theta}p(\theta\mid \y, \X)\).
     {\color{H4} \(\Lambda\) does not depend on normalizer \(Z\)!}
@@ -14,8 +14,8 @@
 \begin{definition}[Prediction via Variational Posterior]
     \begin{gather*}
         p(y^\star \mid \x^\star, \X, \y) \approx \int p(y^\star \mid \x^\star, \theta) q_\lambda(\theta) \, d\theta \\
-        = \E_{\theta \sim q_\lambda}[p(y^\star \mid \x^\star, \theta)
-        \overset{\text{MC}}{\approx} \frac{1}{m}\sum p(y^\star \mid \x^\star, \theta_j)]
+        = \E_{\theta \sim q_\lambda}[p(y^\star \mid \x^\star, \theta)]
+        \overset{\text{MC}}{\approx} \frac{1}{m}\sum p(y^\star \mid \x^\star, \theta_j)
     \end{gather*}
 \end{definition}
 
@@ -52,6 +52,10 @@
     \(\Ent[\X] = \Ent[p] = \E_{x \sim p}[S[p(x)]]\)
 \end{definition}
 
+\begin{definition}[Gauss.]
+    \(\Ent(\Normal(\mu, \Sigma)) = \frac{1}{2} \ln \det (2 \pi e \Sigma)\)
+\end{definition}
+
 \begin{definition}[Cross-Entropy]
     \(\Ent[p\Vert q] = \E_{x \sim p}[S[q(x)]]\) or \\
     \(\Ent[p\Vert q] = \Ent[p] + \KL(p \Vert q) \geq H[p]\)
@@ -76,4 +80,4 @@
     \(\nabla_\lambda \E_{\theta \sim q_\lambda}[f(\theta)] = \E_{\eps \sim \phi}[\nabla_\lambda f(g(\eps, \lambda))]\)
 \end{definition}
 
-\todo{Add gauss reparam.}
+% \todo{Add gauss reparam.}

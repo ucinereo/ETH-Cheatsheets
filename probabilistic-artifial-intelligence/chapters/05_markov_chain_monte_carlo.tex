@@ -1,8 +1,9 @@
 \section{Markov Chain Monte Carlo}
 
 \begin{definition}[Idea]
-    Use \(p(y^\star \mid \x^\star, \X, \y) \overset{\text{LLN}}{\approx} \frac{1}{m}\sum p(y^\star \mid \x^\star, \theta^{(i)})\)
-    and use MC to sample distribution.
+    Use \(p(y^\star \mid \x^\star, \X, \y) \overset{\text{LLN}}{\approx} \underbrace{\frac{1}{m}\sum p(y^\star \mid \x^\star, \theta^{(i)})}_{\approx \E_{\theta \mid \X, \y}[p(y^\star \mid \x^*, \theta)]}\)
+
+   \vspace{-15pt} and MC to sample posterior.
 \end{definition}
 
 \begin{definition}[MC]
@@ -35,9 +36,9 @@ Irreducible \(\to\) Ergodic: \(\PM' = \frac{1}{2}\PM + \frac{1}{2}\I\)
     If MC satisfies \(\frac{1}{Z}q(x)p(x'\mid x) = \frac{1}{Z}q(x')p(x \mid x')\), then \(\frac{1}{Z}q(x)\) is stat. dist.
 \end{definition}
 
-\begin{definition}[Ergodic Theorem]
-    For an ergodic MC and stat. dist \(\pi\), as well as \(f: D \to \R\), then \(\frac{1}{n} \sum f(x_i) \overset{\text{a.s.}}{\to} \sum_{x \in S} \pi(x)f(x) = \E_{x \in \pi}[f(x)]\) for \(x_i \sim X_i \mid x_{i-1}\).
-\end{definition}
+% \begin{definition}[Ergodic Theorem]
+%     For an ergodic MC and stat. dist \(\pi\), as well as \(f: S \to \R\), then \(\frac{1}{n} \sum f(x_i) \overset{\text{a.s.}}{\to} \sum_{x \in S} \pi(x)f(x) = \E_{x \in \pi}[f(x)]\) for \(x_i \sim X_i \mid x_{i-1}\).
+% \end{definition}
 \vspace{-12pt}
 \[\color{H2}p(y^\star \mid \x^\star, \X, \y) \approx \frac{1}{T - t_0}\sum_{i = t_0 +1}^T p(y^\star \mid \x^\star, \theta^{(i)})\]
 
@@ -52,8 +53,9 @@ Irreducible \(\to\) Ergodic: \(\PM' = \frac{1}{2}\PM + \frac{1}{2}\I\)
     Stationary dist. is \(\frac{1}{z}q(x) = p(x)\).
 \end{colored}
 
-\begin{definition}[Gibbs Sampling]
-    Pick \(i \in [n]\) at random, update \(x_i\) by sampling according to \(p(x_i \mid \x_{-i})\).
+\begin{definition}[Gibbs S.]
+    Pick \(i \in [n]\), update \(x_i\) by sampling according to \(r(x' \mid x) = p(x_i \mid \x_{-i})\).
+    \(\alpha(x' \mid x) = 1\)
 \end{definition}
 
 \begin{definition}[Continuous Case]

@@ -56,11 +56,11 @@
 
 \begin{definition}[VI]
     BE4 with DP, start with \(v_0(x) = \max_a r(x, a)\).
-    \(\epsilon\)-opt sol in poly-\# steps, \(\OB(nm)\).
+    \(\epsilon\)-opt sol in poly-\# steps, \(\OB(nm)\). Non-\(\nearrow\).
 \end{definition}
 
 \begin{definition}[POMDP]
-    \(p(y \mid b_t, a_t) = \sum_{x, x'}b_t(x) p(x' \mid x, a_t)p(y \mid x')\)
+    \(p(y \mid b_t, a_t) = \sum_{x, x'}b_t(x) p(x' \mid x, a_t)p(y \mid x')\);
     \(b_{t+1}(x') = \frac{1}{Z} \sum_x b_t(x)p(x' \mid x, a_t)p(y_{t+1} \mid x')\)
     For finite horizon \(T\), set of reachable belief states is finite but exponential in \(T\).
 \end{definition}

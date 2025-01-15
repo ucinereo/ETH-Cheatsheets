@@ -24,7 +24,7 @@
         \item \hspace{-2pt}\resizebox{1.01\linewidth}{!}{
         \(\delta_{\text{DQN}} = { r + \gamma \max_{a'} Q^\star(x', a'; \TH^{\text{old}}) - Q^\star(x, a; \TH)}\)
         } \\ % note that the update of the online-network still happens with a random sample of the replay buffer. the summation is implicit.
-        It suffers from maximization bias.
+        Use replay buf. for training. Maintain data of transitions. Clone/fix network accross epis.
         \item \hspace{-2pt}\resizebox{1.01\linewidth}{!}{
         \(\delta_{\text{DDQN}} = { r + \gamma Q^\star(x', a^\star(x';\TH); \TH^{\text{old}}) - Q^\star(x, a; \TH)}\)
         } \\
@@ -33,19 +33,18 @@
 \end{definition}
 
 \subsection{Policy Gradient Methods \(\pi^\star(x) \approx \pi_\varphi(x)\)}
-
 \begin{center}
     \(j(\pi) = \E_\pi[G_0], \quad \nabla_\varphi j(\varphi) \approx {\color{H2}\nabla_\varphi \E_{\tau \sim \Pi_\varphi}[G_0]}\) \\
     \(\Pi_\varphi(\tau) = p(x_0) \Pi_{t=0}^{T-1} \pi_\varphi(a_t \mid x_t) p(x_{t+1} \mid x_t, a_t)\)
 \end{center}
 
 \begin{definition}[Score-Gr-Est]
-    \({\color{H2} \E_{\tau \sim \Pi_\varphi}[(G_0 - b)\nabla_\varphi \log \Pi_\varphi(\tau)]}\)
+    \({\color{H2} \E_{\tau \sim \Pi_\varphi}[(G_0{\color{gray}- b})\nabla_\varphi \log \Pi_\varphi(\tau)]}\)
 \end{definition}
 
 \begin{definition}[REINFORCE]
     SGE with downstream return:
-    \(\varphi \leftarrow \varphi + \eta {\color{H2}\gamma^t g_{t:T} \nabla_\varphi \log \pi_\varphi(a_t \mid x_t)}\)
+    \(\varphi \leftarrow \varphi + \eta {\color{H2}\gamma^t g_{t:T} \nabla_\varphi \log \pi_\varphi(a_t \mid x_t)}\) using MC.
 \end{definition}
 
 \begin{definition}[Adv. F.]

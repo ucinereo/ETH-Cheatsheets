@@ -14,12 +14,12 @@
     % Update policy based on data collected using any policy.
 \end{definition}
 
-\subsection{Model-Based (learn \(p(x' \mid x, a)\) of MDP)}
+\subsection{Model-Based (learn \(p(x' \mid x, a), r\) of MDP)}
 
 off-policy.  Mem: \(\OB(n^2m)\), Compt: \(\OB(nm)\)
 
 \begin{definition}[MC-Control]
-    \(\hat p(x' \mid x, a) = \frac{N(x' \mid x, a)}{N(a \mid x)}\) for MLE and \(\hat r(x, a) = \frac{1}{N(a \mid x)} \sum_{t=0, x_t = x, a_t = a}r^t\)
+    \(\hat p(x' \mid x, a) = \frac{\text{count}(x' \mid x, a)}{\text{count}(a \mid x)}\) for MLE and \(\hat r(x, a) = \frac{1}{N(a \mid x)} \sum_{t=0, x_t = x, a_t = a}r^t\)
 \end{definition}
 
 \begin{definition}[\(\epsilon\)-greedy]
@@ -27,6 +27,7 @@ off-policy.  Mem: \(\OB(n^2m)\), Compt: \(\OB(nm)\)
         \item \(u \sim \Unif\)
         \item \(u \leq \epsilon_t\): rand \(a\), else best
     \end{enumerate*}
+    % {\color{H4} does not eliminate suboptimal actions.}
 \end{definition}
 
 \begin{definition}[\(\bm R_{\max}\)]
@@ -48,13 +49,14 @@ off-policy.  Mem: \(\OB(n^2m)\), Compt: \(\OB(nm)\)
     %     \item use \(\pi\): \((x, a, r, x')\)
     %     \item \(V^\pi(x) = (1 - \alpha_t)V^\pi(x) + \alpha_t(r + \gamma V^\pi(x'))\)
     % \end{enumerate*}
-    \textit{on-policy}, \(\alpha^t\) (*) \(V^\pi \to v^\pi\) with prob 1.
-    Use bootstrapping to reduce variance
+    \textit{on-policy}, \(\alpha^t\) (\(\sum_t \alpha_t = \infty, \sum_t \alpha_t^2 < \infty\)) \(V^\pi \to v^\pi\) with prob 1.
+    Use bootstrap. to \(\searrow \sigma^2\):
     \(V^\pi(x) = V^\pi(x) + \alpha_t(r + \gamma V^\pi(x') - V^\pi(x))\).
 \end{definition}
 
 \begin{definition}[SARSA]
-    TD with \(Q^\pi(x, a) = (1 - \alpha_t) Q^\pi(x, a) + \alpha_t(r + \gamma Q^\pi(x', a'))\)
+    TD with \(Q^\pi(x, a) = (1 - \alpha_t) Q^\pi(x, a) + \alpha_t(r + \gamma Q^\pi(x', a'))\),
+    \(a'\) is from 2nd transition.
 \end{definition}
 
 \begin{definition}[Q-learning]

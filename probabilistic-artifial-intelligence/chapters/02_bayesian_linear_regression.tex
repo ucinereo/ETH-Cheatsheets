@@ -7,28 +7,48 @@
     With this model we find \(\hat\w_{\text{MLE}}  = \hat\w_{\text{ls}}\).
 \end{definition}
 
-\begin{colored}
-    \textbf{Ridge Interpretation}: Ass. \(\w \sim \Normal(\0, \sigma_p^2\I)\), \(\w \bot \x_{1:n}\), \(y_i \bot y_j \mid \x_{1:n}, \w\). Then log-posterior is
-    \(\log p(\w \mid \x_{1:n}, y_{1:n}) = -\frac{1}{2} [\w^\top \S \w - 2\m] + \text{const}\) \\
-    w/ \(\S = (\sigma_n^{-2}\X^\top\X + \sigma_p^{-2}\I)^{-1}\), \(\m=\sigma_n^{-2}\S\X^\top\y\).
-    Note we used \(p(\w \mid \y, \X) = \frac{p(\y \mid \X, \w)p(\w)}{p(\y\mid\X)}\), where we condition everywhere on \(\X\), but \(\w \bot \X\).
-    \textbf{MAP}: \(\hat\w_{\text{MAP}} = \text{argmin}_{\w} \norm{\y - \X\w}_2^2 + \frac{\sigma_n^2}{\sigma_p^2}\norm{\w}_2^2\).
-    \(\hat\w_{\text{ridge}} = (\X^\top\X + \lambda \I)^2 + \lambda\norm{\w}_2^2 \quad (\X\in\R^{n \times d})\)
-    Note if \(\w \sim \Laplace(\0, l) \implies \lambda = \sigma_n^2/l\).
-\end{colored}
+\begin{definition}[Ass.]
+    \(\w \sim \Normal(\0, {\color{H2}\sigma_p^2}\I)\), \(y_1 \mid \x_i, \w \sim \Normal(\w^\top \x, \sigma_n^2)\),
 
-MAP approximates full posterior by placing all mass on its mode, BLR predicts by averaging.
+    \hspace{-10pt}
+    \(\rightarrow \w \mid \X, \y \sim \Normal(\m, \S)\), \(\S = (\sigma_n^{-2}\X^\top\X + \sigma_p^{-2}\I)^{-1}\),
+    \(\m = \sigma_n^{-2}\S\X^\top \y\).
+    \(\w_{\text{MAP}} = \w_{\text{RIDGE}}\) for \(\lambda = \frac{\sigma_n^2}{\sigma_p^2}\)
+
+    \vspace{-5pt} 
+    and \(\w_{\text{LASSO}}\) for \(\lambda = \frac{\sigma_n^2}{l}\) and \(\w \sim \Laplace(\0, l)\).
+\end{definition}
 
 \begin{definition}[Inf.]
-    \resizebox{0.88\linewidth}{!}{\(y^\star \mid \x^\star, \x_{1:n}, y_{1:n} \sim \Normal(\mu^\top \x^\star, {x^\star}^\top \S \x^\star + \sigma_n^2)\)}
+  \resizebox{0.88\linewidth}{!}{
+    \(f^\star \mid \x^\star, \X, \y \sim \Normal(\mu^\top \x^\star, {x^\star}^\top \S \x^\star)\) (\(f^\star = \w^\top \x^*\))
+  }
 
-    \resizebox{\linewidth}{!}{\(\Var[y^\star \mid \x^\star] = \underbrace{\E_\theta[\Var_{y^\star}[y^\star \mid \x^\star, \theta]]}_{\text{Aleatoric (Data)}} + \underbrace{\Var[\E_{y^\star}[y^\star \mid \x^\star, \theta]]}_{\text{Epistemic (Model)}}\)}
+    \resizebox{\linewidth}{!}{\(y^\star \mid \x^\star, \x_{1:n}, y_{1:n} \sim \Normal(\mu^\top \x^\star, {x^\star}^\top \S \x^\star + {\color{H1}\sigma_n^2})\)}
+
+    \resizebox{\linewidth}{!}{\(\Var[y^\star \mid \x^\star] = \underbrace{\color{H1} \E_\theta[\Var_{y^\star}[y^\star \mid \x^\star, \theta]]}_{\text{Aleatoric (Data)}} + \underbrace{\color{H2}\Var[\E_{y^\star}[y^\star \mid \x^\star, \theta]]}_{\text{Epistemic (Model)}}\)}
 \end{definition}
+
+% \begin{colored}
+%     \textbf{Ridge Interpretation}: Ass. \(\w \sim \Normal(\0, \sigma_p^2\I)\), \(\w \bot \x_{1:n}\), \(y_i \bot y_j \mid \x_{1:n}, \w\). Then log-posterior is
+%     \(\log p(\w \mid \x_{1:n}, y_{1:n}) = -\frac{1}{2} [\w^\top \S \w - 2\m] + \text{const}\) \\
+%     w/ \(\S = (\sigma_n^{-2}\X^\top\X + \sigma_p^{-2}\I)^{-1}\), \(\m=\sigma_n^{-2}\S\X^\top\y\).
+%     Note we used \(p(\w \mid \y, \X) = \frac{p(\y \mid \X, \w)p(\w)}{p(\y\mid\X)}\), where we condition everywhere on \(\X\), but \(\w \bot \X\).
+%     \textbf{MAP}: \(\hat\w_{\text{MAP}} = \text{argmin}_{\w} \norm{\y - \X\w}_2^2 + \frac{\sigma_n^2}{\sigma_p^2}\norm{\w}_2^2\).
+%     \(\hat\w_{\text{ridge}} = (\X^\top\X + \lambda \I)^2 + \lambda\norm{\w}_2^2 \quad (\X\in\R^{n \times d})\)
+%     Note if \(\w \sim \Laplace(\0, l) \implies \lambda = \sigma_n^2/l\).
+% \end{colored}
+
+% MAP approximates full posterior by placing all mass on its mode, BLR predicts by averaging.
+
+% \begin{definition}[Inf.]
+%     \resizebox{0.88\linewidth}{!}{\(y^\star \mid \x^\star, \x_{1:n}, y_{1:n} \sim \Normal(\mu^\top \x^\star, {x^\star}^\top \S \x^\star + \sigma_n^2)\)}
+
+%     \resizebox{\linewidth}{!}{\(\Var[y^\star \mid \x^\star] = \underbrace{\E_\theta[\Var_{y^\star}[y^\star \mid \x^\star, \theta]]}_{\text{Aleatoric (Data)}} + \underbrace{\Var[\E_{y^\star}[y^\star \mid \x^\star, \theta]]}_{\text{Epistemic (Model)}}\)}
+% \end{definition}
 
 \subsection{Kernelized BLR}
-\begin{definition}[Kernelized BLR] (\(\Phi = \phi(\X)\), prior \(\w \sim \Normal\))
-    \(\f \mid \X \sim \Normal(\Phi \E[\w], \Phi\Var[\w]\Phi^\top) = \Normal(\0, \K)\), with \(\K = \sigma_p\Phi\Phi^\top\), hence \(k(\x, \x') = \Cov[f(\x), f(\x')]\).
-\end{definition}
+  \(\f \mid \X \sim \Normal(\Phi \E[\w], \Phi\Var[\w]\Phi^\top) = \Normal(\0, \K)\), w/ \(\K = \sigma_p\Phi\Phi^\top\), hence \(k(\x, \x') = \Cov[f(\x), f(\x')]\).
 
 Conditions for a valid kernel function \(k\): \\
 \begin{itemize*}
@@ -58,10 +78,10 @@ Conditions for a valid kernel function \(k\): \\
 \end{definition}
 
 \begin{definition}[Stationary]
-  \(\iff \exists \tilde k: \tilde k (\x - \x') = k(\x, \x')\)
+  \(\tilde k (\x - \x') = k(\x, \x')\)
 \end{definition}
 
 \begin{definition}[Isotropic]
-  \(\iff \exists \tilde k: \tilde k (\norm{\x - \x'}_2) = k(\x, \x')\)
+  \(\tilde k (\norm{\x - \x'}_2) = k(\x, \x') \implies\) Stationary
 \end{definition}
 

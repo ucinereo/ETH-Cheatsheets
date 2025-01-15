@@ -1,46 +1,44 @@
 \section{Gaussian Processes}
 
 \begin{definition}[GP]
-    Collection of infinite RVs \(\DX\), any finite number of which are jointly Gaussian. Uses
-    \textit{mean function} \(\mu: \DX \to \R\) and \textit{covariance function} \(k: \DX \times \DX \to \R\), denoted \(f \sim \GP(\mu, k)\).
-    Given \(\mu\) and \(k\) and using homoscedastic noise:
-    \[y^\star \mid \x^\star, \mu, k \sim \Normal(\mu(\x^\star), k(\x^\star, \x^\star) + \sigma_n^2)\]
+    Infinite RVs \(\DX\), any finite num. of which are jointly Gaussian. Prior \(f \sim \GP(\mu, k)\).
+
+    % Given \(\mu\) and \(k\) and using homoscedastic noise:
+    % \[y^\star \mid \x^\star, \mu, k \sim \Normal(\mu(\x^\star), k(\x^\star, \x^\star) + \sigma_n^2)\]
 \end{definition}
+
+% \begin{definition}[Inference]
+%     Given prior \(f \sim \GP(\mu, k)\), noisy obs. \(\y\) (\(y_i = f(\x_i) + \epsilon_i\)) and noise-free pred. \(f^\star\) at \(\x^\star\), joint Gauss.: \(\begin{bmatrix}
+%         \y \\ f^\star 
+%     \end{bmatrix}\mid \x^\star, \x_{1:n} \sim \Normal(\tilde\m, \tilde\K)\)
+
+%     \resizebox{\linewidth}{!}{\(
+%         \tilde\m = \begin{bmatrix}
+%             \m_A \\
+%             \mu(\x^\star)
+%         \end{bmatrix}, \qquad
+%         \tilde\K = \begin{bmatrix}
+%             \K_{AA} & \k_{\x^\star, A} \\
+%             \k_{\x^\star, A}^\top & k(\x^\star, \x^\star)
+%         \end{bmatrix}, \qquad
+%         \k_{\x^\star, A} = \begin{bmatrix}
+%             k(\x^\star, \x_1) \\
+%             \vdots \\
+%             k(\x^\star, \x_n)
+%         \end{bmatrix}
+%     \)}
+% \end{definition}
 
 \begin{definition}[Inference]
-    Given prior \(f \sim \GP(\mu, k)\), noisy obs. \(\y\) (\(y_i = f(\x_i) + \epsilon_i\)) and noise-free pred. \(f^\star\) at \(\x^\star\), joint Gauss.: \(\begin{bmatrix}
-        \y \\ f^\star 
-    \end{bmatrix}\mid \x^\star, \x_{1:n} \sim \Normal(\tilde\m, \tilde\K)\)
-
-    \resizebox{\linewidth}{!}{\(
-        \tilde\m = \begin{bmatrix}
-            \m_A \\
-            \mu(\x^\star)
-        \end{bmatrix}, \qquad
-        \tilde\K = \begin{bmatrix}
-            \K_{AA} & \k_{\x^\star, A} \\
-            \k_{\x^\star, A}^\top & k(\x^\star, \x^\star)
-        \end{bmatrix}, \qquad
-        \k_{\x^\star, A} = \begin{bmatrix}
-            k(\x^\star, \x_1) \\
-            \vdots \\
-            k(\x^\star, \x_n)
-        \end{bmatrix}
-    \)}
-\end{definition}
-
-\begin{definition}[Posterior]
+    Obs. \(y_i = f(\x_i) + \epsilon_i\), \(\epsilon_i \sim \Normal(0, \sigma_n^2)\)
     Use {\color{H3} cond. multiv. Gauss.} for closed form post.:
-    \(f^\star \mid \x_{1:n}, y_{1:n} \sim \GP(\mu', k')\) where
-    \begin{footnotesize}\vspace{-5pt}
-        \begin{align*}
-            \mu'(\x) &= \mu(x) + \k_{\x, A}^\top(\K_{AA} + \sigma_n^2\I)^{-1}(\y_A - \mu_A) \\
-            k'(\x, \x') &= k(\x, \x') - \k_{\x, A}^\top (\K_{AA} + \sigma_n^2\I)^{-1}\k_{\x', A}.
-        \end{align*}
-    \end{footnotesize}
+    \(f^\star \mid \X, \y \sim \GP(\mu', k')\) with updated:
+    \begin{align*}
+        \mu'(\x) &= \mu(x) + \k_{\x, A}^\top(\K_{AA} + \sigma_n^2\I)^{-1}(\y_A - \mu_A) \\
+        k'(\x, \x') &= k(\x, \x') - \k_{\x, A}^\top (\K_{AA} + \sigma_n^2\I)^{-1}\k_{\x', A}.
+    \end{align*}
 \end{definition}
 
-\vspace{-8pt}
 \begin{definition}[Forward Sampling]
     Sample recursively: \\
     \(p(\x_1, \ldots, \x_n) = p(f_1)p(f_2 \mid f_1)\ldots p(f_n \mid f_{1:n})\)
@@ -57,16 +55,15 @@
         &=\argmax{\theta} \Normal(\y; \0, \K_{\y, \theta} ({\scriptstyle = \K_{f, \theta} + \sigma_n^2\I})) \\
         &= \argmin{\theta} \underbrace{\frac{1}{2}\y^\top \K_{\y, \theta}^{-1} \y}_{\text{Fit}} + \underbrace{\frac{1}{2} \log\det(\K_{\y, \theta})}_{\text{Volume}}
     \end{align*}
-    taking the negative logarithm at the last step.
     Using full posterior would be intractable.
 \end{definition}
 
 \begin{definition}[Empirical Bayes]
-    Closed form MLL loss: \\
+    with \(\vb{\alpha} = \K_{\y, \theta}^{-1}\y\):
+
     \resizebox{\linewidth}{!}{
         \(\partial_{\theta_j}\log p(y_{1:n} \mid \x_{1:n}, \theta) = \frac{1}{2} \tr\left((\vb{\alpha}\vb{\alpha}^\top - \K_{\y, \theta}^{-1})\partial_{\theta_j}\K_{\y, \theta}\right)\)
     }
-    with \(\vb{\alpha} = \K_{\y, \theta}^{-1}\y\).
 \end{definition}
 
 \subsection{Approximations as GP \(\in \OB(n^3)\)}
@@ -81,5 +78,9 @@
 \end{definition}
 
 \begin{definition}[RFF]
-    Stationary \(k\) can be interpreted with FT: \(k(\x-\x') = \int_{\R^d} p(\omega) e^{i \omega^\top(\x - \x')} \, d\omega\) \todo{.}
+    Stationary \(k\) can be interpreted with FT: \(k(\x-\x') = \int_{\R^d} p(\omega) e^{i \omega^\top(\x - \x')} \, d\omega\)
+\end{definition}
+
+\begin{definition}[Inducing Points]
+    Get \(f\) vals at points by sampling/heuristic/equal space/hyperp. SoR, FITC.
 \end{definition}

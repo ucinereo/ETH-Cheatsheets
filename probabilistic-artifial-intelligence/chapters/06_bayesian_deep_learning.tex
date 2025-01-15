@@ -7,20 +7,35 @@
 
 \begin{definition}[Heteroscedastic Noise] Use complex likeli-\\hood:
     \(y \mid \X, \theta \sim \Normal({\color{H2}f_\mu(\x, \theta)}, \exp({\color{H3}f_{\sigma^2}(\x, \theta)}))\)
-    Use following log-likelihood to find MAP: \\
-    \(\log p(y_i \mid \x_i, \theta)) = \text{const} - \frac{1}{2}\left[\log {\color{H3}f_{\sigma^2}}+ \frac{(y_i - {\color{H2}f_\mu})^2}{\color{H3}f_{\sigma^2}}\right]\)
+    \textbf{MAP}:
+    \(\arg\min_\theta \lambda \Vert \theta \Vert_2^2 - \frac{1}{2}\left[\log {\color{H3}f_{\sigma^2}}+ \frac{(y_i - {\color{H2}f_\mu})^2}{\color{H3}f_{\sigma^2}}\right]\)
+
+    \begin{enumerate*}
+        \item prior
+        \item penalize big \(\sigma\)
+        \item penalize error on \(\mu\)
+    \end{enumerate*}
 \end{definition}
 
-\subsection{Approximate Inference}
+\subsection{Approximate Inference (heteroscedastic)}
 
-Want to know epistemic uncertainty -- but {\color{H4}intractable} if no homoscedastic noise.
+% Want epistemic uncertainty -- but {\color{H4}intractable} if no homoscedastic noise.
 
 \begin{definition}[Bayes by Backprop]
-Use VI and maximize ELBO \todo{reparam trick.}
+VI for BNNs.
+Pred post dist \(q\) instead of value (VI).
+Optimize ELBO via SGD / For Gaussian \(q(\theta \mid \lambda) = \Normal(\theta; \mu, \Sigma)\),
+
+\resizebox*{\linewidth}{!}{
+    \(\nabla_\lambda L(\lambda) = \nabla_\lambda \E_{\theta \sim q(\cdot \mid \lambda)}[\log p(y \mid \theta)] - \nabla \lambda \KL(q_\lambda \Vert p(\cdot))\)
+}
+
+\(\approx \nabla_{C, \mu}\E_{\epsilon \sim \Normal(0, \I)}[\log p(y \mid C\epsilon + \mu)]\) \\ \(+ \nabla_{C, \mu}\KL(q_{C, \mu} \mid p(\cdot))\)
+w/ \(\theta^{(j)} = C\epsilon^(j) + \mu, x_{i_j}\).
 \end{definition}
 
 \begin{definition}[MCMC]
-    SGLD / SG-HMC on \(\color{H2}p(y^\star \mid \x^\star, \X, \y)\). {\color{H4} Can't} afford to store \(T\) samples \(\theta \implies\) Store selected \(m\) (\textit{subsampling}) or approximate weights by learning \(\theta \sim \Normal(\m, \S)\), where
+    SGLD / SG-HMC on \(\color{H2}p(y^\star \mid \x^\star, \X, \y)\). Store \(m < T\) (\textit{subsampling}) or approx. weights by learning \(\theta \sim \Normal(\m, \S)\), where
     \(\m = \frac{1}{T}\sum \theta^{(i)}\), \(\S = \frac{1}{T-1}\sum (\theta^{(i) - \m})(\theta^{(i)} - \m)^\top\) (SGD \(\scriptstyle\to\){\color{H1}SWAG}).
 \end{definition}
 
@@ -32,5 +47,7 @@ Use VI and maximize ELBO \todo{reparam trick.}
     Train multiple models on random subsamples of data.
 \end{definition}
 
-\todo{Calibration}
+\begin{definition}[Calib. Err.]
+    \(\text{ECE} = \sum_{m=1}^M \frac{\vert B_m}{m} \vert \text{fr}(B_m) - \text{cf} (B_m) \vert\), \(\text{fr}(B_m) = \frac{1}{\vert B_m \vert} \sum_{i} \vb{1}(\hat y_i = 1)\), \(\text{cf}(B_m) = \frac{1}{\vert B_m \vert} \sum_{i} \hat p_i\)
+\end{definition}
 
