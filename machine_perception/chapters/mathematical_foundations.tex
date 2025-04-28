@@ -1,0 +1,142 @@
+\section{Mathematical Foundations}
+
+\subsection{Vector Calculus}
+
+\subsection{Probability Theory}
+
+\begin{definition}[MLE]
+    \(\p^{*} = \argmax{\p} p(\y \mid \X, \p) = \argmax{\p} \prod p(y\i \mid \x\i, \p)\)\(= \argmax\p \sum \log p(y\i \mid \x\i, \p)\) (Log-Likelihood)
+\end{definition}
+
+\begin{colored}
+    \begin{enumerate}
+        \item \(p(\y \mid \X, \p) = \Normal(y \mid \theta^\top \x, \sigma) \implies \p^* = \argmin{\theta} \norm{\theta^\top \x - y}_2^2\)
+        \item \(p(\y \mid \X, \p)\) Laplace \(\implies \argmin\theta \norm{\theta^\top \x - y}_1\)
+        \item Assume \(\p\) Gauss, then MAP is Ridge
+        \item Assume \(\p\) Laplace, then MAP is LASSO
+    \end{enumerate}
+
+    \begin{itemize*}
+        \item \(\p_{\MLE}\) unbiased and lowest variance. 
+        \item \(\p_{\MLE} \overset{N \to \infty}{\to}\) true \(\p\).
+    \end{itemize*}
+\end{colored}
+
+
+\begin{definition}[NLL]
+    \(\L(\p) = - p(\y \mid \X, \p)\)
+\end{definition}
+
+\begin{definition}[BCE]
+    Assume \(y\i \sim \Ber(\sigma(\theta^\top \x\i))\), i.e. \(p(\hat y) = p^{\hat y}(1 - p)^{1 - \hat y}\), then \(\L(\theta) = - \frac 1 N \sum y\i \log \hat y\i + ( 1 - y\i) \log(1 - \hat y\i)\).
+\end{definition}
+
+\begin{definition}[Softmax NLL]
+    \(\L(\theta) = - \sum_i^k y\i \log (\hat y\i)\) (Generalized BCE)
+\end{definition}
+
+\subsection{Activation Functions}
+
+\begin{definition}[Sigmoid]
+    \(\sigma(x) = \frac{1}{1 + e^{-x}} = \frac{e^x}{e^x + 1}\), \(\partial_x \sigma(x) = \sigma(x) \odot (1 - \sigma(x))\)
+    \adv{Mapping to prob space.}
+    \disadv{Diminishing gradients}
+\end{definition}
+
+\begin{definition}[Tanh]
+    \(\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} = 2\sigma(2x) - 1\), \(\partial_x \tanh(x) = 1 - \tanh^2(x)\)
+    \adv{Better than \(\sigma\), as close to identity}
+\end{definition}
+
+\begin{definition}[Relu]
+    \(f(x) = \max(0, x)\), \(\partial_x f(x) = 0\), if \(x < 0\), else \(1\)
+\end{definition}
+
+\subsection{Regularizatoin}
+Any modification we make intended to reduce generalizaiton error, but not training error.
+\begin{center}
+    \(\tilde \L(\p, \X, \y) = \L(\p; \X, \y) + \lambda \Omega(\p)\)
+\end{center}
+
+\begin{definition}[Ridge]
+    \(\Omega(\p) = \frac{1}{2} \norm{\p}_2^2 \to \p_t = (1 - \alpha \lambda)\p - \alpha \nabla_\p \L(\p; \X, \y)\) (weight decay).
+\end{definition}
+
+\begin{definition}[Lasso]
+    \(\Omega(\p) = \norm{\p}_1 \to \nabla \tilde \L = \nabla \L + \lambda sign(\p)\) (sparse)
+\end{definition}
+
+\begin{definition}[Ensemble Methods]
+    Train different models, acc. result.
+    \begin{enumerate}
+        \item Train diff. model classes (LR, Trees, NN)
+        \item Train same model on diff. data
+    \end{enumerate}
+    Examples: dropout, bagging.
+\end{definition}
+
+\begin{definition}[Bagging (Bootstr. Agg.)]
+    \(k\) models, \(k\) datasets w/ replacement; Agg. result. Independent models.
+\end{definition}
+
+\begin{definition}[Dropout]
+    Rand. ign. neurons in training (\adv{robust}). In test, use weight scaling \(\tilde\p = p\p\). Models are dependent (share weights). Train small percentage of models.
+\end{definition}
+
+\begin{definition}[Data Normalization]
+    Update params in similar scales. At test, use \(\mu, \sigma\) from training.
+\end{definition}
+
+\begin{definition}[Batch Normalization]
+    Normalize weights for each layer. Solve internal covaraite shift (distribution of inputs changes as ealier layers change, gradient falsely assumes constancy). Smoothens loss landscape \(\to\) predictive and stable gradients \(\to\) enables higher LR \(\to\) faster convergence.
+    Makes deeper layers more robust. Slight reg. effect since mean/variance introduce noise. During test, tracking running avg. of \(\mu, \sigma^2\).
+    \(\tilde z_i = \gamma z_i^{\text{norm}} + \beta\), \(\z_i^{\text{norm}} = \frac{z_i - \mu}{\sqrt{\epsilon + \sigma^2}}\), \(\sigma^2 = \frac{1}{n-1}\sum_i(z_i - \mu)^2\) (\(\gamma, \beta\) learnable).
+\end{definition}
+
+\begin{definition}[Data Augmentation]
+    Createa new fake data by augmenting existing. Exploit invariances (classification) and equivariances (regression) of target. Either \textit{geometric} or \textit{noise injective}.
+\end{definition}
+
+\begin{definition}[Transfer learning]
+    If not sufficient data, train model on different task with more data available, then fine-tune on original task.
+\end{definition}
+
+\subsection{Optimizations}
+\begin{definition}[GD]
+    \(\p^{(t+1)} = \p^{(t)} - \eta \cdot \nabla_\p \L(\p)\)
+\end{definition}
+
+\begin{definition}[SGD]
+    \(\p^{(t+1)} = \p^{(t)} - \eta \cdot \nabla_\p \L(\p; \x\i; y\i)\).
+    \adv{Unbiased, high efficiency per iter, avoids local minima};
+    \disadv{High \(\Var\); may overshoot; near min, dominated by stochastisity \(\to\) decrease \(\eta\) over time}.
+\end{definition}
+
+\begin{definition}[MB-GD]
+    \(\p^{(t+1)} = \p^{(t)} - \frac 1 m \nabla_\p \sum_i \L(f(\x\i; \p), y\i)\).
+    \adv{Faster than GD, reduces varainceof SGD}
+\end{definition}
+
+\begin{definition}[Polyak's Momentum]
+    \(\p^{(t+1)} = \p^{(t)} + v\), \(v = \alpha v - \eta \nabla_\p\left(\frac 1 m \sum_i \L(f(x\i; \p), y\i)\right)\). If \(\alpha > \eta\), then previous gradient affect more \(\implies\) larger step size, for successive steps in same direction.
+    \disadv{May not conerge.}
+\end{definition}
+
+\begin{definition}[Nesterov's Momentum]
+    \(\p^{(t+1)} = \p + v\), \(v = \alpha v - \eta \nabla_\p\left(\frac 1 m \sum_i \L(f(x\i; \p + \alpha v), y\i)\right)\). Look ahead before taking a step.
+\end{definition}
+
+\begin{definition}[AdaGrad]
+    Keep sum of past squared gradients (\(\nabla_2\)). Then \(\eta \frac{\nabla_\p}{\alpha \nabla_2} \).
+\end{definition}
+
+\begin{definition}[RMSprop]
+    AdaGrad with exp. decay in \(\nabla_2\) to forget. 
+\end{definition}
+
+\begin{definition}[Adam]
+    Momentum + Adaptive LR. \(\p^{(t+1)} = \p^t - \frac{\alpha m_t}{\sqrt{v_t} + \epsilon}\). \(m_t\) bias-corrected 1st order stimate of momentum. \(v_t\) bias corrected squared gradients.
+\end{definition}
+
+% TODO: Maybe add ensambling
+

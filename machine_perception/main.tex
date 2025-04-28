@@ -1,0 +1,207 @@
+\documentclass[a4paper, 11pt]{article}
+
+% ------------------------------------------------------------------
+% Imports
+% ------------------------------------------------------------------
+
+% Formatting
+\usepackage[landscape, left=.2cm, top=.2cm, right=.2cm, bottom=.2cm]{geometry}
+\usepackage{flowfram}
+\usepackage[compact]{titlesec}
+\usepackage{parskip}
+\usepackage{mathptmx} % times font
+\usepackage{mathtools}
+
+% Language stuff
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+% Math imports
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{physics}
+
+% Tables
+\usepackage{tabularx} % tabularx since the width should be handled automatically
+
+% Graphics
+\usepackage{graphics}
+
+% Miscellaneous
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage[inline]{enumitem}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{tikz}
+\usetikzlibrary{positioning, shapes.multipart, fit}
+
+% ------------------------------------------------------------------
+% Formatting
+% ------------------------------------------------------------------
+
+% Colors
+\definecolor{accent}{HTML}{2563eb}
+\definecolor{H1}{HTML}{2ecc71}
+\definecolor{H2}{HTML}{3498db}
+\definecolor{H3}{HTML}{9b59b6}
+\definecolor{H4}{HTML}{e74c3c}
+\definecolor{H5}{HTML}{95a5a6}
+
+% Column format
+\setlength{\columnsep}{3pt}
+\ffvadjustfalse
+\Ncolumn{3}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0cm}
+
+% Compact titles
+\newcommand{\colorsection}[2]{\colorbox{#1}{\parbox{\dimexpr\linewidth-2\fboxsep}{\centering\ #2}}}
+\titlespacing{\section}{0pt}{0pt}{0pt}
+\titleformat{\section}{\bfseries\color{white}}{}{0pt}{\colorsection{accent}}
+
+\titlespacing{\subsection}{0pt}{0pt}{0pt}
+\titleformat{\subsection}{\bfseries\color{white}}{}{0pt}{\colorsection{black!60}}
+
+% Compact math mode
+\makeatletter
+\g@addto@macro\normalsize{%
+  \setlength{\abovedisplayskip}{0pt}
+  \setlength{\belowdisplayskip}{0pt}
+  \setlength{\abovedisplayshortskip}{0pt}
+  \setlength{\belowdisplayshortskip}{0pt}
+  \setlength{\jot}{0pt}
+}
+\let\displaystyle\textstyle
+\makeatother
+
+% Set each display in math mode to be rendered as \textstyle
+\renewcommand{\[}{\phantom{}\begin{center}\(}
+\renewcommand{\]}{\)\end{center}}
+
+% frames
+\usepackage{tcolorbox}
+\newenvironment{colored}
+{\begin{tcolorbox}[colback=H2!10, colframe=white, boxrule=0.0pt,
+                   enlarge top by=-0.1cm, enlarge bottom by=-0.1cm, 
+                   enlarge left by=0cm, left=6pt, right=6pt,
+                   boxsep=-1.5mm, outer arc=1pt,
+                   arc=1pt]}
+{\end{tcolorbox}}
+
+
+% Misc
+\hypersetup{colorlinks=true, urlcolor=accent, linkcolor=accent, citecolor=accent}
+\setlist{itemsep=0.2pt, topsep=0.5pt, leftmargin=5mm}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+
+
+% definition environment
+\newtheoremstyle{compact_definition}{}{}{\normalfont}{}{\bfseries}{}{0em}{\thmnote{#3}: }
+\theoremstyle{compact_definition}
+\newtheorem*{definition}{Definition}
+
+% ------------------------------------------------------------------
+% Custom Commands
+% ------------------------------------------------------------------
+
+% Math general
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\OB}{\mathcal{O}}
+\renewcommand{\iff}{\Leftrightarrow}
+\renewcommand{\implies}{\Rightarrow}
+% \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Pow}{\mathcal{P}}
+\newcommand{\argmin}[1]{\text{argmin}_{#1}}
+\newcommand{\argmax}[1]{\text{argmax}_{#1}}
+
+% Probability Stuff
+\renewcommand{\O}{\Omega}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\PM}{\vb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\I}{1}
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\GP}{GP}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Var}{\mathbb{V}}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Ent}{H}
+\DeclareMathOperator{\Ber}{Ber}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\NB}{NB}
+\DeclareMathOperator{\Geom}{Geom}
+\DeclareMathOperator{\Cat}{Cat}
+\DeclareMathOperator{\Poisson}{Poisson}
+\DeclareMathOperator{\Unif}{\mathcal{U}}
+\DeclareMathOperator{\Exp}{Exp}
+\DeclareMathOperator{\Normal}{\mathcal{N}}
+\DeclareMathOperator{\Laplace}{Laplace}
+\DeclareMathOperator{\Ga}{Ga}
+\DeclareMathOperator{\Atom}{Atom}
+\DeclareMathOperator{\DX}{\mathcal{X}}
+
+% Common Vectors and Matrices
+\newcommand{\x}{\vb{x}}
+\renewcommand{\r}{\vb{r}}
+\newcommand{\y}{\vb{y}}
+\newcommand{\z}{\vb{z}}
+\newcommand{\w}{\vb{w}}
+\newcommand{\Y}{\vb{Y}}
+\newcommand{\X}{\vb{X}}
+\newcommand{\Z}{\vb{Z}}
+\newcommand{\f}{\vb{f}}
+\newcommand{\K}{\vb{K}}
+\renewcommand{\H}{\vb{H}}
+\renewcommand{\k}{\vb{k}}
+\renewcommand{\S}{\vb*{\Sigma}}
+\renewcommand{\TH}{\vb*{\theta}}
+\newcommand{\m}{\vb*{\mu}}
+\newcommand{\eps}{\vb*{\epsilon}}
+\renewcommand{\I}{\vb{I}}
+\newcommand{\0}{\vb{0}}
+
+% Statistical stuff
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\MLE}{MLE}
+\DeclareMathOperator{\ML}{ML}
+\DeclareMathOperator{\MI}{I}
+
+% Machine learning
+\newcommand{\p}{\Theta}
+\renewcommand{\i}{^{(i)}}
+
+% Misc
+\newcommand{\sdots}{\ifmmode\mathinner{\ldotp\kern-0.2em\ldotp\kern-0.2em\ldotp}\else.\kern-0.13em.\kern-0.13em.\fi}
+\newcommand{\todo}[1]{{\color{red}\textbf{TODO}: #1}}
+\newcommand{\adv}[1]{{\color{green}#1}}
+\newcommand{\disadv}[1]{{\color{red}#1}}
+
+
+% ------------------------
+% Document
+% ------------------------
+
+\begin{document}
+
+% Title
+% \begin{center}
+%   \large Machine Perception \\
+%   \small \(\langle\)\href{mailto:nicstuder@student.ethz.ch}{nicstuder@student.ethz.ch}\(\rangle\)
+% \end{center}
+
+% Chapters
+\input{chapters/mathematical_foundations.tex}
+\input{chapters/mlp_uat.tex}
+\input{chapters/cnn.tex}
+
+\end{document}
