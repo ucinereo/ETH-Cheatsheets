@@ -1,0 +1,13 @@
+\section{MLP and UAT}
+Output layer \(l\): \(\z\l l = \sigma(\W\l l \z\l{l - 1})\).
+\begin{itemize}
+    \item Sens. to weights: \(\frac{\partial \L}{\partial w_{ij}\l{l}} = \frac{\partial \L}{\partial z_i\l l} \frac{\partial z_i\l l }{\partial w_{ij}\l l}\), \(\frac{\partial \L}{\partial \W\l l } = \frac{\partial \L}{\partial \z\l l } \frac{\partial \z \l l}{\partial \W \l l}\).
+    \item Sens. to out.: \(\delta_i\l{l-1} = \frac{\partial \L}{\partial z_i\l{l-1}} = \sum_j \frac{\partial \L}{\partial z_j\l l} \frac{\partial z_j\l l}{\partial z_i \l{l-1}} = \sum_j \delta_j\l l \frac{\partial z_j\l l}{\partial z_i \l{l-1}}\).
+    Or for full entire layer: \(\vb*{\delta}\l{l-1} = \frac{\partial \L}{\partial \z \l l} \frac{\partial \z\l l}{\partial \z \l {l-1}}\)
+\end{itemize}
+
+\begin{definition}[UAT]
+    \(\sigma\) any act-f. bounded + cont. \(I_m\) \(m\)-dim hyperc and space of real f. on \(I_m\) is \(C(I_m)\). Then given \(\epsilon > 0\), \(N\) int, \(v_i, b_i \in \R\) and \(\w_i \in \R^m\) for \(i \in [N]\), then \(\forall f \in C(I_m) \forall \x \in I_m:\)
+    \[f(\x) \approx \sum_{i=1}^N v_i \sigma(\w_i^\top \x + b_i) \ \text{and} \  \vert g(\x) - f(\x)\vert < \epsilon.\]
+\end{definition}
+
