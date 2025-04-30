@@ -1,0 +1,55 @@
+\section{CNN}
+\begin{definition}[Linearity]
+    \(T(\alpha \u + \beta \v) = \alpha T(\u) + \beta T(\v)\)
+\end{definition}
+
+\begin{definition}[Invariance]
+    \(T(f(\u)) = T(\u)\) (e.g. classification)
+\end{definition}
+
+\begin{definition}[Equivariance]
+    \(T(f(\u)) = f(T(\u))\) (e.g. edge detection)
+\end{definition}
+
+Any linear, shift-equivariant transform can be a convolution.
+
+\begin{definition}[Correlation]
+    \(I'(i, j) = \sum_{m=-k}^k \sum_{n=-k}^k K(m, n) I(i+m, j+n)\)
+\end{definition}
+
+\begin{definition}[Convolution]
+    \(I'(i, j) = \sum_{m=-k}^k \sum_{n=-k}^k I(i -m, j - n) K(m, n)\)
+
+    \begin{itemize*}
+        \item Corr \(\iff K(m, n) = K(-m, -n)\)
+        \item Commutative
+        \item Toepliz MM
+    \end{itemize*}
+
+    Fitler same depth as input map, but can stack multiple filters.
+\end{definition}
+
+\begin{definition}[CNN-formulas]
+    \(\bm{C}\)han., \(\bm{K}\)er. s., \(m = \#\)Ker., \(\bm{{D}}\)ill., \(\bm{P}\)ad, \(\bm{S}\)tride
+    \begin{itemize}
+        \item Dim: \(f(W) \times f(H) \times m\), \(f(i) = \frac{i + 2P_i - D_i(K_i - 1) - 1}{S_i} + 1\)
+        \item Params: \(p = (K_W \cdot K_H \cdot C + 1) \cdot m \ {\color{H3}+ 1 \hat{=} \ \text{Bias}}\).
+        \item Recptive field increases with depth, stride and dilation.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Backprop]
+    \(\delta\l{l-1}_{i, j} = \sum_{i'}\sum_{j'}\delta_{i', j'}\l l w_{i'-i, j'-j}\l l = \delta\l l \ast \ROT(W\l l)\)
+\end{definition}
+
+\begin{definition}[Update]
+    \(\frac{\partial L}{\partial w_{m, n}\l l} = \sum_i \sum_j \delta_{i, j} \l l z_{i-m, j-n}\l{l -1} = \delta\l l \ast \ROT(\Z\l{l-1})\)
+\end{definition}
+
+\begin{definition}[Max-Pool]
+    \(z_{i, j}\l l = \max\{Z_{is:is+k, js:js+k}\l{l-1}\}\) (\(s\) stride), \(\frac{\partial z_{i, j}\l l}{\partial z_{i', j'} \l{l-1}} = 1\) iff \((i',j') = (i^*, j^*)\) (max indices) and 0 otw. \(\delta\l{l-1} = \{\delta\l l\}_{i^*, j^*}\).
+\end{definition}
+
+\begin{definition}[Upsampling]
+    Nearest Neighbor(fill all with values), Bed of nails (fill upper left with value, rest 0), Max Unpooling (remember max location), Learnable Upsampling (transpose conv: filter moves stride in output for 1 in input, sum overlap).
+\end{definition}
