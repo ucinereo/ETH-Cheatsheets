@@ -1,0 +1,75 @@
+\section{Autoencoder}
+\begin{center}
+    Input \(\quad\overset{f}{\underset{\text{encoder}}{\to}}\quad\) Latent Space \(\quad\overset{g}{\underset{\text{decoder}}{\to}}\quad\) Reconstruction
+\[\hat{\p}_f, \hat{\p}_g = \argmin{\p} \sum \norm{\x_i - g(f(\x_i; \p_f); \p_g)}^2\]
+\end{center}
+
+\begin{definition}[Undercomplete]
+    \(\dim(Z) < \dim(X)\): learn important features
+\end{definition}
+
+\begin{definition}[Overcomplete]
+    \(\dim(Z) > \dim(X)\): used for denoising and impaiting. Enter noise/non-complete input and compare to noiseless/complete output.
+\end{definition}
+
+\begin{definition}[AE Limitations]
+    Latent space not well structured, lacks continuity, good reconstruction, but bad generator.
+\end{definition}
+
+\subsection{Variational Autoencoder}
+\textbf{Idea}: Latent space is continuous, by splitting it into \(\m\) and \(\s\).
+Choose \(p(\z)\) to be simple distribution and NN to train \(p(x \mid z)\).
+\begin{tabular}{@{}lll@{}}
+ & \textbf{SL} & \textbf{VAE} \\
+LH & $p(y \mid x, \theta)$ & $p_\theta(x \mid z)$ \\
+Pri. & $p(\theta)$ & $p(z)$ \\
+Post. & $p(\theta \mid X, y)$ & $p_\theta(z \mid x) \approx q_\phi(z \mid x)$ \\
+MLH & $p(y \mid X) {\scriptstyle = \int p(\theta) p(y \mid X, \theta) d\theta}$ & $p_\theta(x) = \int p_\theta(x \mid z) p(z) dz$ \\
+\end{tabular}
+
+\begin{definition}[Objective]
+    Find \(\p^*\) which maximizes Marginal Likelihood: \\ \(p_\p(x) = \int p(x \mid z) p(z) \, dz\) (intractable) \(\implies p(z \mid x)\) intractable.
+
+    \(\implies\) use surrogate loss with approximate \(q_\phi(z \mid x) \approx p(z \mid x)\).
+
+\end{definition}
+
+\begin{definition}[Training]
+    Maximize \(p_\p(x) \iff \) maximize \(\log p_\p(x)\):
+    \begin{gather*}
+        \log(p_\p(x)) = \E_{z \sim q_\phi(z \mid x)}[\log p_\p(x)] \\
+        = \E_{z \sim q_\phi(z \mid x)}\left[\log \frac{p_\p(x \mid z) p(z)}{p_\p(z \mid x)} \frac{q_\phi(z \mid x)}{q_\phi(z \mid x)}\right] \\
+        = \E_z[\log p_\p(x \mid z)] - \E_{z\mid x}\left[\log \frac{q_\phi(z \mid x)}{p_\p(z)}\right] + \E_{z \mid x}\left[\log\frac{q_\phi(z \mid x)}{p_\p(z \mid x)}\right]
+    \end{gather*}
+    \resizebox{\linewidth}{!}{
+        \(= \underbrace{\E_z[\log p_\p(x \mid z)]}_{\substack{\text{reconstruction}\\\text{should match GT}}} - \underbrace{D_{KL}(q_\phi(z \mid x) \Vert p(z)))}_{\substack{\text{posterior should}\\ \text{be close to prior}}} + \underbrace{D_{KL}[q_\phi(z \mid x) \vert p_\p(z \mid x)]}_{\text{intractable, but \(\geq\) 0}}\)
+    }
+    \resizebox{\linewidth}{!}{
+        \(\geq \underbrace{\E_z[\log p_\p(x \mid z)]}_{\text{Maximize}} - \underbrace{D_{KL}(q_\phi(z \mid x) \Vert p(z))}_{\text{Minimize}} = \text{ELBO} = -L(x, \theta, \phi)\)
+    }
+    \begin{itemize}
+        \item Only decoder recon. likelihood: sharp recon, sparse latent.
+        \item Only Prior KL: compact, bad recon. enforces smooth interp.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Reparameterization]
+    Sampling problematic for backfrop: \(\z \sim \Normal(\m, \s)\), cannot take gradient w.r.t \(\m, \s\). Hence assume underlying \(\eps \sim \Normal(0, 1)\), then \(\z = \m + \s\eps\). Assuming \(\eps\) fixed enables backprop.
+\end{definition}
+
+\begin{definition}[Training]
+    \begin{enumerate*}
+        \item \(\text{Enc}(\x) = (\m, \s)\)
+        \item Sample \(\eps\)
+        \item \(\z = \m + \eps\s\)
+        \item \(\text{Dec}(\z)\)
+        \item Comp. \(L\) and Backprop.
+    \end{enumerate*}
+\end{definition}
+
+\begin{definition}[\(\beta\)-VAE]
+    \(L = - \E_{z \sim q_\phi(z \mid x)}[\log p_\theta(x \mid z)] + \beta D_{KL}(q\phi(z \mid x)\Vert p(z))\).
+
+    Learn disentangled rep. w/o supervis. AE(\(\beta = 0\)), VAE \(\beta = 1\).
+\end{definition}
+

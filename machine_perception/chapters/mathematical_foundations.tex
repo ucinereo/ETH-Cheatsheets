@@ -35,6 +35,25 @@
     \(\L(\theta) = - \sum_i^k y\i \log (\hat y\i)\) (Generalized BCE)
 \end{definition}
 
+\begin{definition}[Jensen Inequality]
+    \(\E[\psi(x)] \leq \psi(\E[x])\) for concave (e.g. \(\log\)).
+\end{definition}
+
+\subsection{Divergences}
+
+% \begin{definition}[KL-Divergence]
+    \(D_{KL}(P \Vert Q) = \int_x p(x) \log \frac{p(x)}{q(x)} = \E_x\left[\log\frac{p(x)}{q(x)}\right]\)
+
+    \begin{itemize*}
+        \item non-symm
+        \item \(D_{KL} \geq 0\) with equality when \(P = Q\).
+    \end{itemize*}
+% \end{definition}
+
+% \begin{definition}[JS-Divergence]
+    \(D_{JS}(P \Vert Q) = D_{JS}(Q \Vert P) = \frac 1 2 D_{KL}(p \Vert \frac{p+q}{2})+ \frac 1 2 D_{KL}(q \Vert \frac{p + q}{2})\)
+% \end{definition}
+
 \subsection{Activation Functions}
 
 \begin{definition}[Sigmoid]
