@@ -1,0 +1,65 @@
+\section{Normalizing Flows}
+Let \(\z\) lat. var. and obs. \(\x = f(\z)\) were \(f\) invertible \& cont. differentiable, then \(d\x = \left|\text{det}\frac{\partial f(\z)}{\partial \z}\right|d\z\) and hence we express:
+\[p_{\x}(\x) = p_{\z}(f^{-1}(\x))\left|\text{det}\frac{\partial f^{-1}(\x)}{\partial \x}\right| = p_{\z}(f^{-1}(\x))\left|\text{det}\frac{\partial f(\z)}{\partial \z}\right|^{-1}\]
+Note that for invertible matrices \(|\det(A^{-1})| = |\det(A)|\).
+
+\textbf{Idea}: \(f\) as NN, which maps simple dist to complex w/ simple MLP. \textit{Needs}: diff., inv., preserve dim., Jac. comp. efficient.
+
+\begin{definition}[Coupling Layers]
+    Split \(\x \to \x^A, \x^B\) \textbf{randomly}. Have \textit{element-wise} \(h\) and arbitrary complex \(\beta\) (e.g. CNN). Then
+    \[\textbf{FP}\begin{pmatrix}
+        \y^A \\ \y^B
+    \end{pmatrix} = \begin{pmatrix}
+        h(\x^A, \beta(\x^B)) \\ \x^B
+    \end{pmatrix} \,
+    \textbf{BP} \begin{pmatrix}
+        \x^A \\ \x^B
+    \end{pmatrix} = \begin{pmatrix}
+        h^{-1}(\y^A, \beta(\y^B)) \\ \y^B
+    \end{pmatrix}\]
+    and \(J = \left(\begin{smallmatrix}
+        h' & h'\beta' \\ \0 &\I
+    \end{smallmatrix}\right)\) and thus very easy to ompute it's determinant.
+\end{definition}
+
+\begin{definition}[Flow]
+    Get complex output
+    \(\x = f(\z) = f_k \circ \ldots \circ f_1(\z)\) from simple dist. \(\z\) and use \(p_{\x}(\x) = p_{\z}(f^{-1}(\x)) \prod_k \left|\det\left(\partial \frac{f_k^{-1}(\x)}{\partial \x}\right)\right|\).
+\end{definition}
+
+\begin{definition}[Training]
+    Use NLL loss with i.i.d. samples over likelihood:
+    \[\log p_{\x}(\mathcal D) = \sum_{\x \in \mathcal D} \log p_{\z}(f^{-1}(\x)) + \sum_k \log \left|\det \frac{\partial f_k^{-1}(\x)}{\partial \x}\right|\]
+\end{definition}
+
+\begin{definition}[Inference]
+    To get \(p_{\x}(\x)\), use inv. \(\z = f^{-1}(\x)\) and calc \(p_{\z}(\z)\).
+\end{definition}
+
+\adv{
+    \begin{itemize*}
+        \item Can evaluate likelihood of new observation \(\x\) (can't with VAE or GAN)
+        \item Invertibility
+        \item Bijective mapping
+        \item \textbf{Exact} LH
+    \end{itemize*}
+}
+
+\begin{definition}[Conditional Coupling]
+    \(\beta(\x^B, \w)\) for arbitrary conditional \(\w\).
+\end{definition}
+
+\begin{definition}[NICE]
+    Additive coupling, swapping, single scale
+\end{definition}
+
+\begin{definition}[RealNVP]
+    Affine coupling, checkboard split, multi-scale.
+
+    \textit{Additive}: \(\y^A = \x^A + h(\x^B)\), \textit{Affine}: \(\y^A = \x^A \odot \exp(s(\x^B)) + t(\x^B)\) (\(s, t\) NN)
+\end{definition}
+
+\begin{definition}[GLOW]
+    Affine coupling, inv. 1x1 conv, multi-scale. \(L\) levels of \(K\) steps (actnorm, inv 1x1 conv, coupling layer).
+\end{definition}
+
