@@ -1,0 +1,74 @@
+\section{GAN}
+\textbf{Idea}: Likelihood-free model as LL not best indicator of quality. Can have (\(\uparrow\) LL, \(\downarrow\) Samples) or vice verca.
+
+\begin{definition}[Generator]
+    \(G: \z \in \R^Q \sim \Normal \mapsto \x \in \R^D\). Sample from prior \(p(\z)\) to represent \(p_{\text{model}}\). Maximize error for discriminator \(D\).
+
+    \textit{Obj:} maximzie \(\log(D(G(\z)))\) or minimize \(\log(1 - D(G(\z)))\).
+\end{definition}
+
+\begin{definition}[Discriminator]
+    \(D: \x \in \R^D \mapsto [0, 1]\) "learned loss function".
+\end{definition}
+
+\begin{definition}[Min-Max Game]
+    \(G^*, D^* = \argmin{G} \, \argmax{D} V(G, D) = \)
+    \begin{align*}
+    &= \log(D(\x)) + \log(1 - D(G(\z))) \\
+    &= \E_{\x \sim p_{\text{data}}}[\log D(\x)] + \E_{z \sim p_z}[\log(1 - D(G(\z)))] \\
+    &= \int_{\x} p_{\text{data}}(\x)\log(D(\x)) \, d\x + \int_{\z} p(\z) \log91 - D(G(\z)) \, d\z \\
+    &= \int_{\x} p_{\text{data}}\x \log(D(\x)) + p_{\text{model}}(\x) \log(1 - D(\x)) \, d\x
+    \end{align*}
+\end{definition}
+
+\textit{Optimal} \(D^* = \frac{p_{\text{data}}(\x)}{p_{\text{data}}(\x) + p_{\text{model}}(\x)}\), \(G^*\) if \(p_{\text{model}}(\x) = p_{\text{data}}(\x)\) at opt. \(V(G^*, D^*) = -\log 4\) as \(V(G, D^*) = 2 \cdot D_{JS}(p_{\text{data}} \Vert p_{\text{model}}) - \log 4\).
+
+\begin{definition}[Convergence]
+    If capacity is sufficient, \(D^*\) can be reached and optimize \(p_{\text{model}}\) directly. In practice, computationally prohibitive and would overfit finite data. Thus alternative \(k \in [5]\) steps \(D\), 1 step \(G\) (low \texttt{lr}). "Keep \(D\) near opt, change \(G\) slowly.
+\end{definition}
+
+\begin{definition}[Training]
+    \begin{enumerate*}
+        \item do \(k\) times: sample \(N \times\) \(\x\i \sim p_{\text{data}}(\x)\), \(\z\i \sim p(\z)\), then \textit{ascend}
+        \(\nabla_{\p_D}\frac 1 N \sum (\log(D(G(\x\i))) + \log(1 - D(G(\z\i)))\) \\
+
+        \item Sample \(N \times\) \(\z\i\sim p(\z)\), \textit{descend} \(\nabla_{\p_G} \frac 1 N \log(1 - D(G(\z\i)))\)
+    \end{enumerate*}
+
+    \textbf{Issue}: \(\log(1 - D(G(\z)))\) flat if \(D(G(\z))\) close to \(0\) (\(G\) poor, \(D\) good). Thus use \(- \log(D(G(\z)))\), steep if \(D(G(\z))\) close to \(0\), but flattens out. Larger grads when \(G\) poor, flat as \(D(G(\z))\) reaches \(0.5\). Thus \textit{ascend}
+    \(\nabla_{\p_G} \frac 1 N \sum \log(D(G(\z\i)))\).
+\end{definition}
+
+\subsection{Issues}
+
+\begin{definition}[Mode Collapse]
+    \(G\) predict only one cluster. \(D\) assumes all else real, guesses on that cluster. \(G\) switches to new mode, expliting naive \(D\).
+    \textit{Solution}: Unroll GAN, such that \(G\) must fool current and previous \(D\) (\(\approx\) average grad over iter.).
+\end{definition}
+
+\begin{definition}[Instability]
+    Downhill for \(G\) moves \(D\) uphill. Want balance, tradeoff in loss curves, not divergence.
+    \textit{Solution}: optimization scheme, training ojectives, network architecture. Add to \(D\):
+    \(V = \E_{\x \sim p_{\text{d}}}[\log D(\x) - {\color{H1} \lambda \norm{\nabla_{\x}D(\x)}}^2] + \E_{z \sim p_z}[\log(1 - D(G(\z)))]\)
+\end{definition}
+
+\begin{definition}[Wasserstein]
+    If no overlapping support, \(D\) becomes optimal and saturates \(\implies\) bad grads. \(D_{JS}\) only measures similarity, not "work requried".
+    Doesn't correlate direclty with sample quality. Use Wasserstein.
+\end{definition}
+
+\subsection{Advanced Applications}
+\begin{definition}[Grow]
+    Grow \(G/D\) resolution by adding layers while training.
+\end{definition}
+
+\begin{definition}[Feature Modulation]
+    Either concat condition or add \textit{affinely}.
+\end{definition}
+
+\begin{definition}[Cycle GAN]
+    \(2G, 2D\), \(G_1: X \to Y, G_2: Y \to X\). Cycle loss: \(\L(G_1, G_2, D_X, D_Y) = \L(G_1, D_Y) + \L(G_2, D_X) + \lambda \L(G_1, G_2)\)
+    \resizebox{\linewidth}{!}{
+    \(\L(G_1, G_2) = \E_{\x \sim p_{\x}}[\norm{G_2(G_1(\x)) - \x}_1] + \E_{y \sim p_{\y}}[\norm{G_1(G_2(\y)) - \y}_1]\)
+    }
+\end{definition}
