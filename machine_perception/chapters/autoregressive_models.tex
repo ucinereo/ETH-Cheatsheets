@@ -1,0 +1,46 @@
+\section{Autoregressive Models}
+\textbf{Explicit density model}: \(p(\x) = \prod p(x_i \mid \x_{<i})\) which we want to maximize. \(p(\x)\)
+\adv{tractable \(\implies\) easy to train and sample.}
+\disadv{No natural latent repr., slow inference, tricky to train fast}.
+
+\begin{definition}[FVSBN]
+    Model \(f_i(\x_{<i}) = \sigma(\alpha_0^i + \alpha_1^ix_1 + \ldots + \alpha_{i-1}^i x_{i-1})\) via logistic regression. Thus \(\p = (\alpha_1, \ldots \alpha_{i-1})\) (\(\frac{n^2 + n}{2}\) params).
+    
+    \adv{simple, tractable, easy to train}.
+    \disadv{no latent space, slow to enerate, not very expressive}.
+\end{definition}
+
+\begin{definition}[NADE]
+    AE like for binary data.
+    \(\h_i = \sigma(\vb{b} + \W_{:, <i \x_{<i}})\), \(\hat x_i = \sigma(c_i + \vb{V}_{i, :} \h_i)\).
+    Training by maximizing average log-likelihood.
+    During training, take samples from taining data. During inference, use prev. predictions.
+
+    \adv{Effcient, optimizable, extend beyond binary}.
+\end{definition}
+
+\begin{definition}[MADE]
+    AE, enforce AR property with random masking.
+    \adv{Training same complexity as autoencoder}.
+    \disadv{Inference longer because of seq. generation}.
+    Negative log-likelihood for binary \(\x\).
+\end{definition}
+
+\begin{definition}[PixelRNN]
+    Start at corner, generate pixels in some order using RNN (LSTM). \disadv{Seq. generation is slow}.
+\end{definition}
+
+\begin{definition}[PixelCNN]
+    Start at corner, only condition on context region (\adv{fast training}). Masking for AR property. Explicit likelihood (\adv{good eval}, \disadv{slow inference}).
+\end{definition}
+
+\begin{definition}[Wavenet]
+    Temporal dependencies w/ Dilated Convolutions.
+\end{definition}
+
+\begin{definition}[Transformer]
+    Key \(K= XW_k\), Value \(V = XW_v\), Query \(Q = XW_q\) with learnable \(W_k, W_v, W_q \in \R^{D \times D}\) and \(X \in \R^{T \times D}\).
+    Attention \(\alpha = \text{softmax}\left(\frac{QK^\top}{\sqrt D}\right)\), \(X = (\alpha + M)V\) with \(M = \begin{smallmatrix}-\infty & -\infty \\ \0 & -\infty\end{smallmatrix}\) mask for AR.
+    Apply pos. encoding cause vanially attention doesn't give any notion of sequence.
+    Complexity in \(\OB(T^2D)\).
+\end{definition}
