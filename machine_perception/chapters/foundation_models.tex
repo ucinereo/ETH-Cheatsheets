@@ -1,0 +1,66 @@
+\section{Foundation Models}
+Model trained on broad data (typically using self-supervision at scale) that can be adapted to wide range of downstream tasks. 
+
+\begin{definition}[First Gen]
+    Generalized Encoder + Task Decoder;
+    {\color{H1}
+    \begin{itemize*}
+        \item ELMO
+        \item BERT
+        \item ERNIE
+    \end{itemize*}}
+    {\color{H2}
+    \begin{itemize*}
+        \item ViT
+        \item MAE
+        \item SAM
+        \item CLIP
+        \item DINOv2
+    \end{itemize*}}
+\end{definition}
+
+\begin{definition}[Second Gen]
+    Generalized Model + Task Finetuning
+    {\color{H1}
+    \begin{itemize*}
+        \item GPT-3
+    \end{itemize*}}
+    {\color{H2}
+    \begin{itemize*}
+        \item Diffusion Models (DreamBooth, Zero-1-to-3, SiTH)
+    \end{itemize*}}
+\end{definition}
+
+\begin{definition}[Third Gen]
+    LLMs
+    {\color{H1}
+    \begin{itemize*}
+        \item ChatGPT
+        \item LLaMa
+        \item Gemini
+        \item DeepSeek
+    \end{itemize*}}
+\end{definition}
+
+\begin{definition}[ViT]
+    Separate images into patches, add additional "patch + Position Embedding" (CLS token).
+    Use MLP head for tasks.
+
+    \textbf{Transformer}: Norm \(\to\) MHA \(\overset{\text{res}}{\to}\) Norm \(\to\) MLP \(\overset{\text{res}}{\to}\) next t.
+\end{definition}
+
+\begin{definition}[CLIP]
+    CLIP features as conditions. Lookup table for class labels. E.g. image feature and text feature as close as possible.
+\end{definition}
+
+\begin{definition}[DINOv2]
+    Self-supervised learning to learn general-purpose visual features. Self-Distillation with \textit{no} features.
+\end{definition}
+
+\begin{definition}[DreamBooth]
+    Customized Text-to-Image Generation.
+\end{definition}
+
+\begin{definition}[Zero-1-to-3]
+    Zero-shot novel view synthesis and 3D reconstruction from a single image.
+\end{definition}
