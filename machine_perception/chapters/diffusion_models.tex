@@ -1,0 +1,75 @@
+\section{Diffusion Models}
+\textbf{Why?} GAN unstable; VAE, AR low qual.; NF needs invert.
+
+\begin{definition}[Diffusion]
+    Add noise: \(q(\x_{t}\mid \x_{t-1}) = \Normal(\sqrt{1 - \beta}\x_{t-1}, \beta_t \I)\) and with reparam trick:
+    \(\x_t = \sqrt{1 - \beta_t}\x_{t-1} + \sqrt{\beta_t}\eps\), \(\eps \sim \Normal(\0, \I)\).
+    \textit{Any step}, \(\alpha_t = 1 - \beta_t\), \(\bar a_t = \prod_{i=1}^t \alpha_i \implies x_t = \sqrt{\bar\alpha_t}\x_0 + \sqrt{1 - \bar\alpha_t}\eps\).
+    \(\x_0 \sim p(\x_0)\): sample for orig dist and \(\x_T \sim \Normal(\0, \I)\) for \(T \to \infty\).
+\end{definition}
+
+% \begin{definition}[Denoising]
+%     Learn \(p_\p(\x_{t-1} \mid \x_{t}) = \Normal(\mu_\p(\x_t, t), \Sigma_\p(\x_t, t))\) for small steps. Infeasible, thus approximate via \(q(\x_{t-1} \mid \x_t, \x_0)\)
+% \end{definition}
+
+\begin{definition}[Denoising]
+    Learn \(p_\p(\x_{t-1} \mid \x_{t}) = \Normal(\mu_\p(\x_t, t), \Sigma_\p(\x_t, t))\). True reverse \(q(\x_{t-1} \mid \x_t)\) is intractable, so we train via variational bound using known \(q(\x_{t-1} \mid \x_t, \x_0)\) (Gaussian, since forward is Gaussian). Loss: \(\KL[q(\x_{t-1} \mid \x_t, \x_0) \,\|\, p_\p(\x_{t-1} \mid \x_t)]\).
+\end{definition}
+
+\begin{definition}[Denoising]
+    Learn \(p_\p(\x_{t-1} \mid \x_{t}) = \Normal(\mu_\p(\x_t, t), \Sigma_\p(\x_t, t))\) as approx. of the true, intractable \(q(\x_{t-1} \mid \x_t)\). 
+    
+    Forward process is Markov: \(q(\x_t \mid \x_{t-1}, \x_0) = q(\x_t \mid \x_{t-1})\). Use Bayes:
+    \(
+    q(\x_{t-1} \mid \x_t, \x_0) = \frac{q(\x_t \mid \x_{t-1}) q(\x_{t-1} \mid \x_0)}{q(\x_t \mid \x_0)}.
+    \)
+    All terms are Gaussian \(\implies q(\x_{t-1} \mid \x_t, \x_0) = \) is tractable. Use it to minimize ELBO:
+
+    \vspace{-10pt}
+    \begin{align*}
+        \log p(\boldsymbol{x}) &\geq \mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}\left[\log \frac{p\left(\boldsymbol{x}_{0: T}\right)}{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}\right] \\
+        &=\mathbb{E}_{q\left(\boldsymbol{x}_1 \mid \boldsymbol{x}_0\right)}\left[\log p_{\boldsymbol{\theta}}\left(\boldsymbol{x}_0 \mid \boldsymbol{x}_1\right)\right]-D_{\mathrm{KL}}\left(q\left(\boldsymbol{x}_T \mid \boldsymbol{x}_0\right) \| p\left(\boldsymbol{x}_T\right)\right) \\
+        &- \sum_{t=2}^T \mathbb{E}_{q\left(\boldsymbol{x}_t \mid \boldsymbol{x}_0\right)}\left[D_{\mathrm{KL}}\left(q\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t, \boldsymbol{x}_0\right) \| p_{\boldsymbol{\theta}}\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t\right)\right)\right]
+    \end{align*}
+    \begin{center}
+    Recon. - prior matching (0 by def.) - denoising matching.
+    \end{center}
+    Conditioning on \(\x_0\) removes uncertainty about where \(x_t\) comes from (get error signal).
+\end{definition}
+
+\begin{definition}[Training]
+    Assume same \(\Sigma_q\) for both distributions, then:
+    \[D_{KL}(q(\x_{t-1} \mid \x_t, \x_0) \Vert p_{\p}(\x_{t-1} \mid \x_t)) = \frac{1}{2\sigma_q^2(t)}\Vert\m_{\p} - \m_q\Vert_2^2\]
+    Thus optimize \(\m_{\p}(\x_t, t)\) to match \(\m_q(\x_t, \x_0)\), where
+
+    \vspace{-12pt}
+    \resizebox{\linewidth}{!}{
+    \(\m_q(\x_t, \x_0) = \frac{1}{\sqrt{\alpha_t}}\x_t -\frac{1 - \alpha_t}{\sqrt{1 - \bar\alpha_t} \sqrt{\alpha_t}}\eps_0\) and \(\m_{\p}(\x_t) = \frac{1}{\sqrt{\alpha_t}}\x_t -\frac{1 - \alpha_t}{\sqrt{1 - \bar\alpha_t} \sqrt{\alpha_t}}\overbrace{\hat\eps_{\p}(\x_t, t)}^{\text{NN}}\)
+    }
+
+    Repeat until converged: Sample \(\x_0 \sim q(\x_0)\), \(t \sim \Unif([T]), \eps \sim \Normal(\0, \I)\), grad step on: \(\nabla_{\p} \Vert\eps - \eps_{\p}(\sqrt{\alpha_t}\x_0 + \sqrt{1 - \alpha_t}\eps, t)\Vert^2\)
+\end{definition}
+
+\begin{definition}[Sampling]
+    Sample \(\x_T \sim \Normal(\0, \I)\). For \(t = T, \ldots, 1\) do:
+    
+    Sample \(\z \sim \Normal(\0, \I)\) if \(t > 1\), else \(\z = \0\). Predict noise and remove: \(\x_{t-1} = \frac{1}{\sqrt{\alpha_t}}(\x_t - \frac{1 - \alpha_t}{\sqrt{1 - \alpha_t}}\eps_{\p}(\x_t, t)) + \sigma_t \z\) \(\to\) return \(\x_0\) where
+    \(\sigma_2^2 = \beta_t, \eps_{\p}(\x_t, t)\) is predicted noise.
+\end{definition}
+
+\subsection{Extensions}
+\begin{definition}[Conditional]
+    Change \(p(\x_{0:T}) = p(\x_T)\prod p_{\p}(\x_{t-1} \mid \x_t)\) by conditioning: \(p(\x_{0:T} \mid y) = p(\x_T)\prod p_{\p}(\x_{t-1} \mid \x_t, y)\).
+\end{definition}
+
+\begin{definition}[Guidance]
+    Mix conditional and regressive mixed in lin combo.
+    \(\downarrow\) Diversity \(\uparrow\) Quality. Classifier-free needs double the time.
+\end{definition}
+
+\begin{definition}[Latent Diffusion]
+    Diffusion cheaper in latent space.
+
+    Noise \(\to\) DM \(\to\) Latent \(\to\) Decoder \(\to\) Image.
+\end{definition}
+
