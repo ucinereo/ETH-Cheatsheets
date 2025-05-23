@@ -1,0 +1,39 @@
+\section{Parametric Human Bodies}
+\begin{definition}[2D Pictorial Structure Model]
+    Body as graph. Maximize
+    \[S(I, L, M) = \sum_{i \in V} \alpha_i^{m_i} \phi(I, l_i) + \sum_{ij \in E} \beta_{ij}^{m_im_j} \cdot \psi(l_i, l_j) + S(M),\]
+    where \(\phi\) likelihood of joint at loc \(l_i\) in img \(I\), \(\psi\) measures deformation between \(ij\) with spring \(\beta\), \(S\) co-occurence bias.
+\end{definition}
+
+\begin{definition}[Feature Loc.]
+    Regress \(x, y\) joints w/ \textit{heatmap}, \textit{points} or \textit{gauss}.
+\end{definition}
+
+\begin{definition}[Dense Correspondences]
+    Chicken-egg-problem, use \(\Alg\) for init. registration \(S_0\) \(\to\) build templ. \(\mathcal{M}_0\) and fit data. Use \(\Alg\) to explain \(\delta\), get new registration \(\mathcal{M}_1 = \mathcal{M}_0 + S_0\), repeat.
+\end{definition}
+
+\begin{definition}[SMPL]
+    \(M(\beta, \theta) = W(T_p(\beta, \theta), J(\beta), \theta, \mathcal{W})\); \(M \in \R^{3N}\): out, \(\beta \in \R^{|\beta|}\): shape param (10), \(\theta \in \R^{3K + 3}\): pose param, \(W\): LBS, \(J: \R^{|\beta|} \to \R^{3K}\): joint mapper, \(\mathcal W \in \R^{K' \times 3N}\): skinning weights.
+    \(T_P(\beta, \theta) + \bar T + B_S(\beta) + B_P(\theta)\); \(\bar T \in \R^{3N}\): rest pose, \(B_S \in \R^{3N}\): Shape blend shapes, \(B_P \in \R^{3N}\): pose blend shapes.
+\end{definition}
+
+\begin{definition}[Shape Blend Shape]
+    \(B_S(\beta, \mathcal S) = \sum_{n=1}^{|\beta|} \beta_n S_n\), \(S_n \in \R^n\) shape displacements learned with PCA, stacked into \(\mathcal S\).
+\end{definition}
+
+\begin{definition}[Pose Blend Shapes]
+    \(B_P(\theta, \mathcal P) = \sum_{n=1}^{9K}(R_n(\theta) - R_n(\theta^*))P_n\); \(R(\theta)\): angle to rot mat. \(P_n \in \R^{3N}\) blend shapes, stacked in \(\mathcal P\). 
+\end{definition}
+
+\begin{definition}[Joint Locations]
+    \(J(\beta) = \mathcal J(\bar T + B_S(\beta))\), where \(\mathcal J\) is regression matrix learned from LSQ. SMPL has \(K = 23\).
+\end{definition}
+
+\begin{definition}[LBS]
+    \(\vb t_i' = \sum_{k=1}^K w_{k, i} G_k'(\theta, J)\vb t_i\), computes posed position \(\vb t_i'\); rigid trans. \(G_k'(\theta, J) \in \R^{4 \times 4}\) of joint \(k\) using global joint center \(J_k\).
+\end{definition}
+
+\begin{definition}[Param. Finding]
+    \(\Theta = (\bar T, \mathcal W, \mathcal J, \mathcal S, \mathcal P)\). \(\{\mathcal W, \mathcal J, \mathcal P\}\) from min surface reconstruction error (distance to cloud point); uses regularization. \(\{\bar T, \mathcal S\}\) on shape dataset running PCA - needs pose normalization.
+\end{definition}
