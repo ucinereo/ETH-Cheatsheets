@@ -1,0 +1,67 @@
+\section{Egocentric Vision}
+\begin{definition}[FPV]
+    \adv{Dynamic uncurated content, long-form video stream, driven by goals, interactions and attention}.
+    \disadv{occlusion, motion blur}.
+\end{definition}
+
+\begin{definition}[TPV]
+    \adv{static setup, controlled field of view}
+    \disadv{curated moment in time, disembodied}.
+\end{definition}
+
+\begin{definition}[Gaze Tracker]
+    Eye movements and track correlation to actions.
+\end{definition}
+
+\begin{definition}[Ego4D Benchmarks and Challenges]
+    \begin{itemize*}
+        \item \textit{Past}: episodic memory (where is \(X\))
+        \item \textit{Present}: Hands \& Objects: what am I doing? who said what? who is attending?
+        \item \textit{Future}: Forecasting
+    \end{itemize*}
+\end{definition}
+
+\begin{definition}[Egocentric Vision Tasks]
+    \begin{itemize*}
+        \item Localisation
+        \item 3D scene understanding
+        \item Anticipation
+        \item Action Recognition
+        \item Gaze Understanding and Prediction
+        \item Social behaviour understanding
+        \item full body pose estimation
+        \item hand and hand-object interactions
+        \item person identification
+        \item privacy
+        \item summarisation
+        \item visual question answering
+    \end{itemize*}
+\end{definition}
+
+\begin{definition}[Hand Interaction]
+    Use \textit{Faster-RCNN}, predict bounding box, left/right side, contact state (none/self/person/portable/non-portable object)
+\end{definition}
+
+\begin{definition}[HaMeR]
+    Output 3D Mesh from monocular image,s left/right hand info using ViT.
+\end{definition}
+
+\begin{definition}[TransFusion]
+    Use past-observable frames + predition frame for LLM features. LMM features + predition frame go to Multimodal Fusion Model and predicts location + (VERB, NOUN, TTC).
+\end{definition}
+
+\begin{definition}[Language Context Generation]
+    Get (verb, noun) pairs using CLIP and aggregate action context.
+\end{definition}
+
+\begin{definition}[PALM]
+    Predict actions through language models.
+\end{definition}
+
+\begin{definition}[Egocentric Gaze Estimation]
+    Using Path Complexity Index (PCI), prediction for example car direction using gaze.
+\end{definition}
+
+\begin{definition}[LMK]
+    Lift (2D obs. to 3D coords), Match (connect obs over time), Keep (maintain object track).
+\end{definition}
