@@ -1,0 +1,99 @@
+\section{Implicit Surfaces / Nerfs}
+\begin{definition}[Voxels]
+    3D grid; \disadv{memory \(\OB(n^3) \to\) resolution limited}
+\end{definition}
+
+\begin{definition}[Points]
+    Surface as 3D points; \disadv{no connecitivity / topology}
+\end{definition}
+
+\begin{definition}[Meshes]
+    vertices + faces; requires templates or maximum number of vertices. \disadv{approx. error with self-intersections}
+\end{definition}
+
+\begin{definition}[Implicit]
+    learn 3D surface function; \adv{no approx. error + smooth and continuous}, \disadv{no graphical repr. without convert to explicit. Hard to obtain high frequency details}. \(S = \{x \mid f(x) = 0\}\) surface, \(f(x) < 0\) inside, \(f(x) > 0 \) outside.
+\end{definition}
+
+\subsection{Neural Implicit Representation}
+Fit function with NN to represent complex shapes.
+
+\begin{definition}[Occupancy Net.]
+    Occupancy probability: \(f_\theta: \R^3 \times \chi \to [0, 1]\).
+\end{definition}
+
+\begin{definition}[DeepSDF]
+    Model SDF: \(f_\theta: \R^3 \times \chi \to \R\). \(\chi\) condition.
+    \adv{continuous, arbitrary topology + resolution, low memory footprint}.
+\end{definition}
+
+\begin{definition}[Learning via Watertight Meshes]
+    Sample 3D points in space. Query GT occupancy or SDF. Train with cross-entropy (inside/outside):
+    \(L(\theta, \psi) = \sum_{j=1}^K \text{BCE}(f_\theta(p_{ij}, z_i), o_{ij})\).
+    Marching cubes for surface reconstruction. Extandable to other properties such as color, lighting, radiance, deformation, force, etc.
+\end{definition}
+
+\begin{definition}[Learning via Point Clouds]
+    Sparse 3D input makes training hard. Getting data is easier. Approximate SDF or surface \(\mathcal M\) without additional supervision.
+    \[L(\theta) = \sum_{i} \vert f_\theta(x_i) \vert^2 + \lambda \E_x(\Vert \nabla_x f_\theta(x)\Vert - 1)^2,\]
+    \textit{Vanish term} for training points and \textit{Eikonal term} s.t. spacial gradiant at surface is 1 to encourage smoothness.
+\end{definition}
+
+\begin{definition}[Learning from Images (Differentiable Volume Rendering)]
+    No 3D superviison / render images in a differentiable way. Good for solids, no thin/opaque objects. \textit{forward} + \textit{backward} pass.
+\end{definition}
+
+\begin{definition}[Forward Pass]
+    For all px \(u\), find surface point \(\hat p\) along ray \(r(d) = r_0 + wd\) via ray marching and root finding (secant method, march until sign changes, then linearly interpolate). Evaluate texture field \(t_\theta(\hat p)\). Insert color \(t_\theta(\hat p)\) at pixel \(u \to \hat I\)  image.
+\end{definition}
+
+\begin{definition}[Backward Pass]
+    \(\L(\hat I, I) = \sum_u \norm{\hat I_u - I_u}\),
+    
+    then \(\frac{\partial \L}{\partial \theta} = \sum \frac{\partial \L}{\partial \hat I_u} \cdot \frac{\partial \hat I_u}{\partial \theta}\), \(\frac{\partial \hat I_u}{\partial \theta} = \frac{\partial t_\theta(\hat p)}{\partial \theta} + \frac{\partial t_\theta(\hat p)}{\partial \hat p} \cdot \frac{\partial \hat p}{\partial \theta}\),
+    
+    \(\frac{\partial \hat p}{\partial \theta} = - w\left(\frac{\partial f_\theta(\hat p)}{\partial \hat p} \cdot w\right)^{-1} \frac{\partial f_\theta(\hat p)}{\partial \theta}\) at \(f_\theta(\hat p) = \tau\).
+\end{definition}
+
+\begin{definition}[Secant Method]
+    \(y_2 = \frac{f(x_1) - f(x_0)}{x_1 - x_0}(x_2 - x_1) + f(x_1)\). root of the function is \(y_2 = 0\): \(x_2 = x_1 - f(x_1) \frac{x_1 - x_0}{f(x_1) - f(x_0)}\).
+\end{definition}
+
+\subsection{Scene Representation}
+Given images + poses, render novel images. More flexible, but worse geometry.
+
+\begin{definition}[Neural Radiance Fields (NeRF)]
+    Shoot ray into scene, sample points, query MLP to obtain color+ density. Alpha composite pixel color. BP loss with origin image. Geometry independent of viewing direction, thus only apply at a layer layer.
+
+    \adv{Can model transparency and thin structure.} \disadv{worse geometry, requires 50+ calibrated views, slow rendering, only static scenes}.
+\end{definition}
+
+\begin{definition}[Training]
+    \(F_\theta: (x, y, z, \theta, \phi) \to (r, g, b, \sigma), \ \L = \sum_i \norm{\hat I_i - I_i}^2\).
+\end{definition}
+
+\begin{definition}[\(\alpha\)-compositing]
+    \(\alpha = 1 - e^{-\sigma_i \delta_i}\), \(\delta_i = t_{i+1} - t_i\).
+    \(T_i = \prod_{j = 1}^{i-1}(1 - \alpha_j)\), \(c = \sum_{i = 1}^N T_i \alpha_{ij} c_i\). \(\sigma\) large \(\alpha\) large \(T_i\) reduces quickly \(c\) only first colors.
+\end{definition}
+
+\begin{definition}[Hierarchical Sampling]
+    Sample more where weights (i.e. \(T_i \alpha_i\)) are high.
+\end{definition}
+
+\begin{definition}[Positional Encoding]
+    Capture high frequency details with:
+    
+    \(\gamma(\v) = (\sin(2^0 \pi \v), \cos(2^0 \pi \v), \sin(2^{L-1}\pi\v), \cos(2^{L-1}\pi\v))\).
+\end{definition}
+
+\begin{definition}[SNARF]
+    NeRF with canonical (pose-independent) space.
+\end{definition}
+
+\begin{definition}[Gaussian Splatting]
+    For every pixel, sort all Gaussians by depth. Calculate opacity for each: \(\alpha = o \cdot \exp(- 0.5(\x - \m')^\top \S^{'-1}(\x - \m'))\); \(o\) is gaussian opacity, \(\m', \S'\) are means and cov mats of 2D projection. Use volumetric rendering equation. \(C = T_1 \alpha_1 c_1 + \ldots\) and \(T_1 = 1, T_2 = 1 - \alpha_1, T_3 = (1 - \alpha_1)(1 - \alpha_2)\)
+    
+    Covariance is \(\S = RSS^\top R^\top\)
+\end{definition}
+
