@@ -21,13 +21,15 @@
     
     Forward process is Markov: \(q(\x_t \mid \x_{t-1}, \x_0) = q(\x_t \mid \x_{t-1})\). Use Bayes:
     \(
-    q(\x_{t-1} \mid \x_t, \x_0) = \frac{q(\x_t \mid \x_{t-1}) q(\x_{t-1} \mid \x_0)}{q(\x_t \mid \x_0)}.
+    q(\x_{t-1} \mid \x_t, \x_0) = \frac{q(\x_t \mid \x_{t-1}, \x_0) q(\x_{t-1} \mid \x_0)}{q(\x_t \mid \x_0)}.
     \)
-    All terms are Gaussian \(\implies q(\x_{t-1} \mid \x_t, \x_0) = \) is tractable. Use it to minimize ELBO:
+    All terms are Gaussian \(\implies q(\x_{t-1} \mid \x_t, \x_0) = \) is tractable. Optimize for marginal likelihood:
+    \(p(\x_0) = \int p(\x_{0:T}) \, d\x_{1:T} = \E_{q(\x_{1:T} \mid \x_0)}[p(\x_{0:T})]\).    
+    Use it to minimize ELBO:
 
     \vspace{-10pt}
     \begin{align*}
-        \log p(\boldsymbol{x}) &\geq \mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}\left[\log \frac{p\left(\boldsymbol{x}_{0: T}\right)}{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}\right] \\
+        \log p(\boldsymbol{x_0}) &\geq \mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}\left[\log \frac{p\left(\boldsymbol{x}_{0: T}\right)}{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}\right] \\
         &=\mathbb{E}_{q\left(\boldsymbol{x}_1 \mid \boldsymbol{x}_0\right)}\left[\log p_{\boldsymbol{\theta}}\left(\boldsymbol{x}_0 \mid \boldsymbol{x}_1\right)\right]-D_{\mathrm{KL}}\left(q\left(\boldsymbol{x}_T \mid \boldsymbol{x}_0\right) \| p\left(\boldsymbol{x}_T\right)\right) \\
         &- \sum_{t=2}^T \mathbb{E}_{q\left(\boldsymbol{x}_t \mid \boldsymbol{x}_0\right)}\left[D_{\mathrm{KL}}\left(q\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t, \boldsymbol{x}_0\right) \| p_{\boldsymbol{\theta}}\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t\right)\right)\right]
     \end{align*}

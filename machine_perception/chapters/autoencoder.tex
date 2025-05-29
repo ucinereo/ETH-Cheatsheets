@@ -34,6 +34,13 @@ MLH & $p(y \mid X) {\scriptstyle = \int p(\theta) p(y \mid X, \theta) d\theta}$ 
 
 \end{definition}
 
+\begin{definition}[Reparameterization]
+    Sampling problematic for backfrop:
+    
+    \(\z \sim \Normal(\m, \s)\), cannot take gradient w.r.t \(\m, \s\). Hence assume underlying \(\eps \sim \Normal(0, 1)\), then \(\z = \m + \s\eps\). Assuming \(\eps\) fixed enables backprop. Just sample from \(\eps\) instead of \(\z\).
+\end{definition}
+
+\begin{colored}
 \begin{definition}[Training]
     Maximize \(p_\p(x) \iff \) maximize \(\log p_\p(x)\):
     \begin{gather*}
@@ -53,18 +60,25 @@ MLH & $p(y \mid X) {\scriptstyle = \int p(\theta) p(y \mid X, \theta) d\theta}$ 
     \end{itemize}
 \end{definition}
 
-\begin{definition}[Reparameterization]
-    Sampling problematic for backfrop: \(\z \sim \Normal(\m, \s)\), cannot take gradient w.r.t \(\m, \s\). Hence assume underlying \(\eps \sim \Normal(0, 1)\), then \(\z = \m + \s\eps\). Assuming \(\eps\) fixed enables backprop.
-\end{definition}
+\begin{enumerate*}
+    \item \(\text{Enc}(\x) = (\m, \s)\)
+    \item Sample \(\eps\)
+    \item \(\z = \m + \eps\s\)
+    \item \(\text{Dec}(\z)\)
+    \item Comp. \(L\) and Backprop.
+\end{enumerate*}
+\end{colored}
 
-\begin{definition}[Training]
-    \begin{enumerate*}
-        \item \(\text{Enc}(\x) = (\m, \s)\)
-        \item Sample \(\eps\)
-        \item \(\z = \m + \eps\s\)
-        \item \(\text{Dec}(\z)\)
-        \item Comp. \(L\) and Backprop.
-    \end{enumerate*}
+\begin{definition}[General Reparameterization]
+    We know \(p(\z) \vert d\z\vert = p(\eps)\vert d\eps\vert\):
+    \begin{enumerate}
+        \item \(p(\z) = p(\eps)\vert\frac{d\eps}{d\z}\vert = \vert\frac{d\z}{d\eps}\vert^{-1} = \vert \frac{d g(\eps)}{d\eps}\vert^{-1}\) (density transform)
+        \item \(\z = g(\eps) \implies d\z \implies d\z = \vert\frac{d g(\eps)}{d\eps}\vert d\eps\) (measure transform)
+    \end{enumerate}
+    \begin{align*}
+       \{(1), (2)\} \implies &\int p(\z)f(\z)\, d\z = \int p(\z) f(g(\eps)) \vert\frac{dg(\eps)}{d\eps}\vert\, d\eps  \\
+       &= \int p(\eps) \frac{\vert \frac{dg(\eps)}{d\eps}\vert}{\vert \frac{dg(\eps)}{d\eps}\vert} f(g(\eps)) \, d\eps = \int p(\eps) f(g(\eps)) \, d\eps
+    \end{align*}
 \end{definition}
 
 \begin{definition}[\(\beta\)-VAE]

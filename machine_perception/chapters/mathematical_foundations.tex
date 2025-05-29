@@ -1,6 +1,15 @@
 \section{Mathematical Foundations}
 
 \subsection{Vector Calculus}
+Let \(\x \in \R^n\), \(\y \in \R^m\), then
+\begin{itemize}
+    \item \textbf{Numerator}: \(\frac{\partial \y}{\partial \x} \in \R^{m \times n}\) and \(\nabla f(\x) = \left[\frac{\partial f(\x)}{\x}\right]^\top\) (used here)
+    \item \textbf{Denominator}: \(\frac{\partial \y}{\partial \x} \in \R^{n \times m}\) and \(\nabla f(\x) = \frac{\partial f(\x)}{\x}\)
+\end{itemize}
+
+\begin{definition}[Matrix Det. Lemma]
+    \(\text{det}(\A + \U\V^\top) = (\I + \V^\top \A^{-1} \U)\text{det}(\A)\)
+\end{definition}
 
 \subsection{Probability Theory}
 
@@ -39,6 +48,12 @@
     \(\E[\psi(x)] \leq \psi(\E[x])\) for concave (e.g. \(\log\)).
 \end{definition}
 
+\begin{definition}[Gauss]
+    \(p(\x) = \frac{1}{(2\pi)^{m/2} \vert \S \vert^{\frac 1 2}} \exp(-\frac 1 2 (\x - \m)^\top \S^{-1} (\x - \m))\)
+
+    \(\X\), \(\Y\) independent gauss \(\implies\) \(\Var[\X + \Y] = \Var[\X] = \Var[\Y]\).
+\end{definition}
+
 \subsection{Divergences}
 
 % \begin{definition}[KL-Divergence]
@@ -71,7 +86,7 @@
     \(f(x) = \max(0, x)\), \(\partial_x f(x) = 0\), if \(x < 0\), else \(1\)
 \end{definition}
 
-\subsection{Regularizatoin}
+\subsection{Regularization}
 Any modification we make intended to reduce generalizaiton error, but not training error.
 \begin{center}
     \(\tilde \L(\p, \X, \y) = \L(\p; \X, \y) + \lambda \Omega(\p)\)
@@ -82,7 +97,7 @@ Any modification we make intended to reduce generalizaiton error, but not traini
 \end{definition}
 
 \begin{definition}[Lasso]
-    \(\Omega(\p) = \norm{\p}_1 \to \nabla \tilde \L = \nabla \L + \lambda sign(\p)\) (sparse)
+    \(\Omega(\p) = \norm{\p}_1 \to \nabla \tilde \L = \nabla \L + \lambda (-1)^{\mathbb{1}_{\p < 0}}\) (sparse)
 \end{definition}
 
 \begin{definition}[Ensemble Methods]
@@ -137,16 +152,23 @@ Any modification we make intended to reduce generalizaiton error, but not traini
 \end{definition}
 
 \begin{definition}[Polyak's Momentum]
-    \(\p^{(t+1)} = \p^{(t)} + v\), \(v = \alpha v - \eta \nabla_\p\left(\frac 1 m \sum_i \L(f(x\i; \p), y\i)\right)\). If \(\alpha > \eta\), then previous gradient affect more \(\implies\) larger step size, for successive steps in same direction.
-    \disadv{May not conerge.}
+    Use prev. velocity:
+    \(\p^{(t+1)} = \p^{(t)} + v\), 
+    
+    \(v = \alpha v - \eta \nabla_\p\left(\frac 1 m \sum_i \L(f(x\i; \p), y\i)\right)\). If \(\alpha > \eta\), then previous gradient affect more \(\implies\) larger step size, for successive steps in same direction.
+    \disadv{May not converge.}
 \end{definition}
 
 \begin{definition}[Nesterov's Momentum]
-    \(\p^{(t+1)} = \p + v\), \(v = \alpha v - \eta \nabla_\p\left(\frac 1 m \sum_i \L(f(x\i; \p + \alpha v), y\i)\right)\). Look ahead before taking a step.
+    Use lookahead:
+    \(\p^{(t+1)} = \p + v\),
+    
+    \(v = \alpha v - \eta \nabla_\p\left(\frac 1 m \sum_i \L(f(x\i; \p + \alpha v), y\i)\right)\).
 \end{definition}
 
 \begin{definition}[AdaGrad]
-    Keep sum of past squared gradients (\(\nabla_2\)). Then \(\eta \frac{\nabla_\p}{\alpha \nabla_2} \).
+    Keep sum of past squared gradients per dimension (\(\nabla_2\)).
+    Then learning rate is: \(\eta \frac{\nabla_\p}{\alpha \nabla_2} \).
 \end{definition}
 
 \begin{definition}[RMSprop]

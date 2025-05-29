@@ -44,12 +44,14 @@
 % ------------------------------------------------------------------
 
 % Colors
-\definecolor{accent}{HTML}{2563eb}
+\definecolor{accent}{HTML}{9b59b6}
 \definecolor{H1}{HTML}{2ecc71}
 \definecolor{H2}{HTML}{3498db}
 \definecolor{H3}{HTML}{9b59b6}
 \definecolor{H4}{HTML}{e74c3c}
 \definecolor{H5}{HTML}{95a5a6}
+\definecolor{cgreen}{HTML}{27ae60}
+\definecolor{cred}{HTML}{e74c3c}
 
 % Column format
 \setlength{\columnsep}{3pt}
@@ -85,7 +87,7 @@
 % frames
 \usepackage{tcolorbox}
 \newenvironment{colored}
-{\begin{tcolorbox}[colback=H2!10, colframe=white, boxrule=0.0pt,
+{\begin{tcolorbox}[colback=accent!10, colframe=white, boxrule=0.0pt,
                    enlarge top by=-0.1cm, enlarge bottom by=-0.1cm, 
                    enlarge left by=0cm, left=6pt, right=6pt,
                    boxsep=-1.5mm, outer arc=1pt,
@@ -156,6 +158,8 @@
 \newcommand{\y}{\vb{y}}
 \renewcommand{\u}{\vb{u}}
 \renewcommand{\v}{\vb{v}}
+\newcommand{\U}{\vb{U}}
+\newcommand{\V}{\vb{V}}
 \newcommand{\z}{\vb{z}}
 \newcommand{\h}{\vb{h}}
 \newcommand{\w}{\vb{w}}
@@ -175,6 +179,7 @@
 \renewcommand{\I}{\vb{I}}
 \newcommand{\0}{\vb{0}}
 \newcommand{\Alg}{\mathcal{A}}
+\newcommand{\A}{\vb{A}}
 
 % Statistical stuff
 \DeclareMathOperator{\MSE}{MSE}
@@ -190,8 +195,8 @@
 % Misc
 \newcommand{\sdots}{\ifmmode\mathinner{\ldotp\kern-0.2em\ldotp\kern-0.2em\ldotp}\else.\kern-0.13em.\kern-0.13em.\fi}
 \newcommand{\todo}[1]{{\color{red}\textbf{TODO}: #1}}
-\newcommand{\adv}[1]{{\color{green}#1}}
-\newcommand{\disadv}[1]{{\color{red}#1}}
+\newcommand{\adv}[1]{{\color{cgreen}#1}}
+\newcommand{\disadv}[1]{{\color{cred}#1}}
 \newcommand{\ROT}{\text{ROT}_{180}}
 
 

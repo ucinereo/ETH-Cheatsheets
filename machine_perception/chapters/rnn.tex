@@ -3,6 +3,7 @@
 Hidden state summarizing previous input. Learn \textbf{one} model:
 
 \(\h^t = f(\h_{t-1}, x_t; \p)\): \(f\) transition f. Same \(f\) and \(\p\) over time.
+Can be probabilistic, by outputting params of probabilistic model.
 
 \begin{definition}[Vanilla RNN]
     \(\h_t = \tanh(\W_{hh}\h_{t - 1} + \W_{xh}\x_t + b), \hat\y_t = \W_{hy} \h_t\).

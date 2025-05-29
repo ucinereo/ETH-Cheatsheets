@@ -17,11 +17,15 @@
     &= \log(D(\x)) + \log(1 - D(G(\z))) \\
     &= \E_{\x \sim p_{\text{data}}}[\log D(\x)] + \E_{z \sim p_z}[\log(1 - D(G(\z)))] \\
     &= \int_{\x} p_{\text{data}}(\x)\log(D(\x)) \, d\x + \int_{\z} p(\z) \log91 - D(G(\z)) \, d\z \\
-    &= \int_{\x} p_{\text{data}}\x \log(D(\x)) + p_{\text{model}}(\x) \log(1 - D(\x)) \, d\x
+    &= \int_{\x} p_{\text{data}}(\x) \log(D(\x)) + p_{\text{model}}(\x) \log(1 - D(\x)) \, d\x
     \end{align*}
 \end{definition}
 
-\textit{Optimal} \(D^* = \frac{p_{\text{data}}(\x)}{p_{\text{data}}(\x) + p_{\text{model}}(\x)}\), \(G^*\) if \(p_{\text{model}}(\x) = p_{\text{data}}(\x)\) at opt. \(V(G^*, D^*) = -\log 4\) as \(V(G, D^*) = 2 \cdot D_{JS}(p_{\text{data}} \Vert p_{\text{model}}) - \log 4\).
+\(D^* = \frac{p_{\text{data}}(\x)}{p_{\text{data}}(\x) + p_{\text{model}}(\x)}\), by setting \(D^* = D(\x)\) and opt. f. inside \(\int\).
+
+\(G^*\) if \(p_{\text{model}}(\x) = p_{\text{data}}(\x)\) at opt. \(V(G^*, D^*) = -\log 4\) as
+
+\(V(G, D^*) = 2 \cdot D_{JS}(p_{\text{data}} \Vert p_{\text{model}}) - \log 4\).
 
 \begin{definition}[Convergence]
     If capacity is sufficient, \(D^*\) can be reached and optimize \(p_{\text{model}}\) directly. In practice, computationally prohibitive and would overfit finite data. Thus alternative \(k \in [5]\) steps \(D\), 1 step \(G\) (low \texttt{lr}). "Keep \(D\) near opt, change \(G\) slowly.
