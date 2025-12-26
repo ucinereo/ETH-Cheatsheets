@@ -34,16 +34,24 @@ Any linear, shift-equivariant transform can be a convolution.
     \begin{itemize}
         \item Dim: \(f(W) \times f(H) \times m\), \(f(i) = \lfloor\frac{i + 2P_i - D_i(K_i - 1) - 1}{S_i}\rfloor + 1\)
         \item Params: \(p = (K_W \cdot K_H \cdot C + {\color{H3} 1}) \cdot m \quad ({\color{H3} \hat{=} \ \text{Bias}})\).
-        \item Recptive field increases with depth, stride and dilation.
+        \item Receptive field increases with depth, stride and dilation.
     \end{itemize}
 \end{definition}
 
-\begin{definition}[Backprop]
-    \(\delta\l{l-1}_{i, j} = \sum_{i'}\sum_{j'}\delta_{i', j'}\l l w_{i'-i, j'-j}\l l = \delta\l l \ast \ROT(W\l l)\)
-\end{definition}
+% \begin{definition}[Backprop]
+%     \(\delta\l{l-1}_{i, j} = \sum_{i'}\sum_{j'}\delta_{i', j'}\l l w_{i'-i, j'-j}\l l = \delta\l l \ast \ROT(W\l l)\)
+% \end{definition}
 
-\begin{definition}[Update]
-    \(\frac{\partial L}{\partial w_{m, n}\l l} = \sum_i \sum_j \delta_{i, j} \l l z_{i-m, j-n}\l{l -1} = \delta\l l \ast \ROT(\Z\l{l-1})\)
+% \begin{definition}[Update]
+%     \(\frac{\partial L}{\partial w_{m, n}\l l} = \sum_i \sum_j \delta_{i, j} \l l z_{i-m, j-n}\l{l -1} = \delta\l l \ast \ROT(\Z\l{l-1})\)
+% \end{definition}
+
+\begin{definition}[Backprop]
+    Kernel \(K\), input \(X\), output \(Y\), loss \(E\):
+
+    \(X \ast K\): \(\frac{\partial E}{\partial K} = \frac{\partial E}{\partial Y} \star X = r_{180}(X \star \frac{\partial E}{\partial Y})\), \(\frac{\partial E}{\partial X} = \frac{\partial E}{\partial Y} \star K = \frac{\partial E}{\partial Y} \ast r_{180}(K) \)
+
+    \(X \star K\): \(\frac{\partial E}{\partial K} = \frac{\partial E}{\partial Y} \star X = r_{180}(X \star \frac{\partial E}{\partial Y})\), \(\frac{\partial E}{\partial X} = \frac{\partial E}{\partial Y} \ast K = \frac{\partial E}{\partial Y} \star r_{180}(K)\)
 \end{definition}
 
 \begin{definition}[Max-Pool]

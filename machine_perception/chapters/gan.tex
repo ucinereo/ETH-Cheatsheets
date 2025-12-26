@@ -16,7 +16,7 @@
     \begin{align*}
     &= \log(D(\x)) + \log(1 - D(G(\z))) \\
     &= \E_{\x \sim p_{\text{data}}}[\log D(\x)] + \E_{z \sim p_z}[\log(1 - D(G(\z)))] \\
-    &= \int_{\x} p_{\text{data}}(\x)\log(D(\x)) \, d\x + \int_{\z} p(\z) \log91 - D(G(\z)) \, d\z \\
+    &= \int_{\x} p_{\text{data}}(\x)\log(D(\x)) \, d\x + \int_{\z} p(\z) \log (1 - D(G(\z))) \, d\z \\
     &= \int_{\x} p_{\text{data}}(\x) \log(D(\x)) + p_{\text{model}}(\x) \log(1 - D(\x)) \, d\x
     \end{align*}
 \end{definition}

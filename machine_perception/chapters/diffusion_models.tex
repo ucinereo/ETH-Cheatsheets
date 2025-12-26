@@ -12,19 +12,19 @@
 %     Learn \(p_\p(\x_{t-1} \mid \x_{t}) = \Normal(\mu_\p(\x_t, t), \Sigma_\p(\x_t, t))\) for small steps. Infeasible, thus approximate via \(q(\x_{t-1} \mid \x_t, \x_0)\)
 % \end{definition}
 
-\begin{definition}[Denoising]
-    Learn \(p_\p(\x_{t-1} \mid \x_{t}) = \Normal(\mu_\p(\x_t, t), \Sigma_\p(\x_t, t))\). True reverse \(q(\x_{t-1} \mid \x_t)\) is intractable, so we train via variational bound using known \(q(\x_{t-1} \mid \x_t, \x_0)\) (Gaussian, since forward is Gaussian). Loss: \(\KL[q(\x_{t-1} \mid \x_t, \x_0) \,\|\, p_\p(\x_{t-1} \mid \x_t)]\).
-\end{definition}
+% \begin{definition}[Denoising]
+%     Learn \(p_\p(\x_{t-1} \mid \x_{t}) = \Normal(\mu_\p(\x_t, t), \Sigma_\p(\x_t, t))\). True reverse \(q(\x_{t-1} \mid \x_t)\) is intractable, so we train via variational bound using known \(q(\x_{t-1} \mid \x_t, \x_0)\) (Gaussian, since forward is Gaussian). Loss: \(\KL[q(\x_{t-1} \mid \x_t, \x_0) \,\|\, p_\p(\x_{t-1} \mid \x_t)]\).
+% \end{definition}
 
 \begin{definition}[Denoising]
-    Learn \(p_\p(\x_{t-1} \mid \x_{t}) = \Normal(\mu_\p(\x_t, t), \Sigma_\p(\x_t, t))\) as approx. of the true, intractable \(q(\x_{t-1} \mid \x_t)\). 
+    Learn \(p_\p(\x_{t-1} \mid \x_{t}) = \Normal(\mu_\p(\x_t, t), \Sigma_\p(\x_t, t))\) as approx. of the true \(q(\x_{t-1} \mid \x_t)\) is intractable. 
     
     Forward process is Markov: \(q(\x_t \mid \x_{t-1}, \x_0) = q(\x_t \mid \x_{t-1})\). Use Bayes:
     \(
     q(\x_{t-1} \mid \x_t, \x_0) = \frac{q(\x_t \mid \x_{t-1}, \x_0) q(\x_{t-1} \mid \x_0)}{q(\x_t \mid \x_0)}.
     \)
     All terms are Gaussian \(\implies q(\x_{t-1} \mid \x_t, \x_0) = \) is tractable. Optimize for marginal likelihood:
-    \(p(\x_0) = \int p(\x_{0:T}) \, d\x_{1:T} = \E_{q(\x_{1:T} \mid \x_0)}[p(\x_{0:T})]\).    
+    \(p(\x_0) = \int p(\x_{0:T}) \, d\x_{1:T} = \E_{q(\x_{1:T} \mid \x_0)}[\frac{p(\x_{0:T})}{q(\x_{1:T} \mid \x_0)}]\).    
     Use it to minimize ELBO:
 
     \vspace{-10pt}
@@ -66,7 +66,12 @@
 
 \begin{definition}[Guidance]
     Mix conditional and regressive mixed in lin combo.
-    \(\downarrow\) Diversity \(\uparrow\) Quality. Classifier-free needs double the time.
+    \(\downarrow\) Diversity \(\uparrow\) Quality.
+    \begin{itemize*}
+        \item \textit{Classifier-free}: dropout on conditioning (no external classifier, easy to implement).
+        \item \textit{Classifier}: Take pretrained DM and train classifier. Inject \(\nabla\) to nudge reverese diffusion. (faster, as requires twice as few reverse diffusion steps).
+    \end{itemize*}
+    Classifier-free needs double the time.
 \end{definition}
 
 \begin{definition}[Latent Diffusion]

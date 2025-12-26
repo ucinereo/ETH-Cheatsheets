@@ -8,7 +8,7 @@ Let \(\x \in \R^n\), \(\y \in \R^m\), then
 \end{itemize}
 
 \begin{definition}[Matrix Det. Lemma]
-    \(\text{det}(\A + \U\V^\top) = (\I + \V^\top \A^{-1} \U)\text{det}(\A)\)
+    \(\text{det}(\A + \u\v^\top) = (1 + \v^\top \A^{-1} \u)\text{det}(\A)\)
 \end{definition}
 
 \subsection{Probability Theory}
@@ -86,6 +86,10 @@ Let \(\x \in \R^n\), \(\y \in \R^m\), then
     \(f(x) = \max(0, x)\), \(\partial_x f(x) = 0\), if \(x < 0\), else \(1\)
 \end{definition}
 
+\begin{definition}[Softmax]
+    \(sm(\eta_i) = \frac{\exp\eta_i}{\sum_k \exp \eta_k}\), \(J = \text{diag} (\vb p) - \vb p \vb p^\top\) for \(\vb p = sm(\vb*{\eta})\).
+\end{definition}
+
 \subsection{Regularization}
 Any modification we make intended to reduce generalizaiton error, but not training error.
 \begin{center}
@@ -97,7 +101,7 @@ Any modification we make intended to reduce generalizaiton error, but not traini
 \end{definition}
 
 \begin{definition}[Lasso]
-    \(\Omega(\p) = \norm{\p}_1 \to \nabla \tilde \L = \nabla \L + \lambda (-1)^{\mathbb{1}_{\p < 0}}\) (sparse)
+    \(\Omega(\p) = \norm{\p}_1 \to \nabla \tilde \L = \nabla \L + \lambda (-1)^{\mathbb{I}_{\{\p < 0\}}}\) (sparse)
 \end{definition}
 
 \begin{definition}[Ensemble Methods]
@@ -132,7 +136,11 @@ Any modification we make intended to reduce generalizaiton error, but not traini
 \end{definition}
 
 \begin{definition}[Transfer learning]
-    If not sufficient data, train model on different task with more data available, then fine-tune on original task.
+    If not sufficient data, train model on different task with more data available and then fine-tune.
+\end{definition}
+
+\begin{definition}[Early Stop]
+    If last \(p\) epochs no validation improvement, stop.
 \end{definition}
 
 \subsection{Optimizations}
