@@ -1,0 +1,104 @@
+\section{Connectionism}
+
+\begin{definition}[MP Neuron]
+    \(\x \in \{0, 1\}^n, \sig \in \{-1, +1\}^n, \theta \in \R\):
+    \[f[\sig, \theta](\x) = \begin{cases}
+        1, & \sig \cdot \x \geq \theta \\ 0 & \text{otw.}
+    \end{cases}\]
+\end{definition}
+
+\begin{definition}[Thresh. Unit]
+    \(\x \in \R^n, \w \in \R^n, b \in \R\):
+    \(f[\w, b](\x) = \sign(\x \cdot \w + b)\)
+\end{definition}
+
+\begin{definition}[Hesse]
+    \(\x \cdot \w + b \overset{!}{=} 0 \iff \frac{\x \cdot \w}{\norm{\w}} + \frac{b}{\norm{\w}} = 0\), \(\n = \frac{\w}{\norm{\w}}\). \(- b / \norm{\w}\) d. to origin.
+\end{definition}
+
+\begin{definition}[Geometric Margin]
+    sign dist: \(\gamma[\w, b](\x, y) := \frac{y(\x \cdot \w + b)}{\norm{\w}}\). Correct if: \[f[\w, b](\x) = y \iff \sign(\x \cdot \w + b) = y \iff \sign(\gamma) = 1 \iff \gamma > 0\].
+\end{definition}
+
+\vspace{-1em}
+\begin{definition}[Classifier Margin]
+    \(\gamma[\w, b](S) := \min_{(\x, y) \in S} \gamma[\w, b](\x, y)\)
+\end{definition}
+
+\begin{definition}[Max Margin]
+    \(\argmax{\w, b} \gamma[\w, b](S)\). \adv{unique up to positive scaling}.
+\end{definition}
+
+\begin{definition}[Version Space]
+    \(\VS(S) = \{\theta \mid \forall (\x, y) \in S: f[\theta](\x) = y\} \neq \emptyset \implies\) Sep. \(S\)
+\end{definition}
+
+\begin{definition}[Perceptron Learning]
+    \(f[\w, b](\x) \neq y \implies \w \mathrel{+}= y\x, b \mathrel{+}= y\). If \(\w^0 \in \text{span}\{\x_1, \ldots, \x_s\} \implies \w^t \in \text{span}\{\x_1, \ldots, \x_s\}\).
+\end{definition}
+
+\begin{lemma}
+    \(\gamma[\w](S) = \gamma > 0, \norm{\w} = 1 \implies \w^t \cdot \w \geq t \gamma\).
+\end{lemma}
+
+\begin{lemma}
+    \(R = \max_{\x \in S} \norm{\x} \implies \norm{\w^t} \leq R\sqrt{t}\).
+\end{lemma}
+
+\begin{theorem}[Navikoff]
+    \(S\) is \(\gamma\)-sep \(\implies\) conv. in at most \(\lfloor R^2 / \gamma^2\rfloor\) steps.
+\end{theorem}
+
+\vspace{-1em}
+\begin{proof}
+    \(\cos(\w, \w^t) = \frac{\w \cdot \w^t}{\norm{\w^t}} \geq \frac{t \gamma}{\sqrt t R} = \sqrt t \frac{\gamma}{R} \overset{!}{\leq}1 \)
+\end{proof}
+
+\begin{definition}[Lin. Class.]
+    \(S \subset \R^n: C(S, n) = \lvert \{y \in \{-1, +1\}^s \mid \exists \w \in \R^n: \forall (\x, y) \in S: y(\x \cdot \w) > 0\} \rvert\). Require general pos: \(\forall \Xi \subseteq X, \lvert \Xi \rvert \leq n: \Xi\) lin. indep.
+\end{definition}
+
+\begin{theorem}[Covers]
+    \(C(s+1, n) = 2 \sum_{i=0}^{n-1}\binom{s}{i}\). Recurrence: \(C(s+1, n) = \underbrace{2 \cdot C(s, n-1)}_{\text{Split (both labels)}} + \underbrace{1 \cdot \big( C(s, n) - C(s, n-1) \big)}_{\text{Unsplit (one label)}} = C(s, n) + C(s, n-1)\)
+\end{theorem}
+
+\begin{theorem}
+    \(\frac{C(s, n)}{2^s} = \begin{cases}
+        1, & s \leq n \\
+        1 - \OB(e^{-n}), & n < s < 2n \\
+        1/2, & s = 2n \\
+        \OB(e^{-n}), & \text{otw.}
+    \end{cases}\)
+\end{theorem}
+
+\begin{definition}[Delta Learning]
+    \(\Delta w_{ij} = \eta \delta_i \phi'(w_i \cdot \x_j)\), \(\delta_i := (y_i - \phi_i)\), \(\eta > 0\). Derived by square loss: \(l = \frac{1}{2} \sum_{i=1}^n (\phi_i - y_i)^2, \phi_i := \phi(w_i \cdot \x)\) \(\equiv\) SGD.
+\end{definition}
+
+\subsection{Hopfield Networks}
+
+Energy function: \(E(X) = - \frac{1}{2} \sum_{i \neq j} w_{ij} X_i X_j + \sum_i b_i X_i, X_i \in \{\pm 1\}.\) with constraint \(w_{ij} = w_{ji}\) and \(w_{ii}\) = 0. Hopfield network follow dynamics: \(X_i \gets \begin{cases}
+    +1, & E(\ldots, X_{i-1}, 1, X_{i+1}, \ldots) \leq E(\ldots, X_{i-1}, -1, X_{i+1}, \ldots) \\ -1, & \text{otw.}
+\end{cases}\)
+
+Can be be updated synchronously or asynchronously. Energy always decreases or stays the same. Converges to local minimum.
+
+\begin{definition}[Effective Field]
+    \(H_i := \sum_j w_{ij} X_j - b_i\). Update: \(X_i \gets \sign(H_i) \setminus \{0\}\).
+\end{definition}
+
+\begin{definition}[Hebb Learning]
+    Patterns $x^t \in \{\pm 1\}^n, 1 \leq t \leq s \Rightarrow W = \frac{1}{n} \sum_{t=1}^s x^t {x^t}^\top$.
+    Meta-stable: $x_i^t \overset{!}{=} \sign\big(\sum_{j=1}^n w_{ij} x_j^t\big)$. 
+    $\sum w_{ij} x_j^t = \underbrace{x_i^t}_{\text{Signal}} + \underbrace{\frac{1}{n} \sum_{j, r \neq t} x_i^r x_j^r x_j^t}_{:= C_i^t (\text{Cross-talk})}$.
+
+    \vspace{-1.5em}
+    \textit{If $|C_i^t| > 1$, noise flips the bit.}
+\end{definition}
+
+\begin{definition}[Capacity]
+    Assume iid random signs, $n \to \infty$. By CLT, $C_i^t \sim \mathcal{N}(0, \frac{s}{n})$.
+    \textit{Intuition: Sum of $n(s-1)$ independent $\pm \frac{1}{n}$ terms $\Rightarrow$ Var $\approx \frac{ns}{n^2} = \frac{s}{n}$.}
+
+    Requireing a pattern to be retrieved with high porobability: \(s \leq \frac{n}{2 \log_2 n}\)
+\end{definition}
