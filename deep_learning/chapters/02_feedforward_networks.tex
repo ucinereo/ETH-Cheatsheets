@@ -1,0 +1,148 @@
+\section{Feedforward Networks}
+
+\begin{definition}[Least Squares]
+    \(f[w](x) = w^\top x\), MSE: \(h[w](S) = \frac{1}{2s} \norm{Xw - y}^2\). Then \(\nabla h = \frac 1 s X^\top X w - \frac{1}{s} X^\top y\) if not inertible, use: \(w^* = X^* y\) with \(X^* = \lim_{\delta \to 0} (X^\top X + \delta I)^{-1} X^\top\) (Moore-Penrose Inverse).
+\end{definition}
+
+\begin{lemma}
+    LSQ \(\equiv\) negative LL of homoscedastic Gaussian noise.
+\end{lemma}
+
+\begin{definition}[Ridge]
+    \(h_\lambda[w] = h[w] + \frac{\lambda}{2} \norm{w}^2 \implies w^* = (X^\top X + \lambda I)^{-1} X^\top y\)
+\end{definition}
+
+\subsection{Logistic Regression}
+\begin{definition}[\(\vb*{\sigma}\)]
+    \(\sigma(z) = \frac{1}{1 + e^{-z}}, \sigma' = \sigma(1-\sigma), \sigma'' = \sigma'(1-2\sigma), \sigma(-z) = 1 - \sigma(z)\)
+\end{definition}
+
+\begin{definition}[Logistic Loss]
+    \(l(y, z) = -y \log \sigma(z) - (1-y) \log (1-\sigma(z))\) is negative LL of Bernoulli.
+    \(l(y, z) =  -\log \sigma((2 y - 1)z)\).
+\end{definition}
+
+\begin{lemma}
+    \((\log \sigma)' = \frac{\sigma'}{\sigma} = 1 - \sigma, (\log \sigma)'' = -\sigma(1 - \sigma) < 0\).
+\end{lemma}
+
+\begin{definition}[Surrogate Loss]
+    \(- \log_2 \sigma \geq \Theta\), \(\Theta\) being 0-1 loss.
+\end{definition}
+
+\subsection{Layers and Units}
+\begin{definition}[FFN]
+    \(F[\theta](x) = \phi(Wx + b), G = F^L[\theta^L] \circ \dots \circ F^1[\theta^1]\)
+\end{definition}
+
+\begin{definition}[Ridge Function]
+    Invariance: \(f[w, b](x) = f[w, b](x + \delta x), \forall \delta x \bot w\) w/ level set \(L_f(z) \equiv \{x: \phi(w^\top x + b) = z\}, L_f(z) \bot w\).
+\end{definition}
+
+\begin{definition}[Unit Symmetry]
+    \(F[W, b](x) = P^{-1} F[(Pw), (Pb))](x)\)
+\end{definition}
+
+\begin{definition}[Cross Entropy]
+    \(l(p, q) = - \sum_i p_i \log q_i\); in ML \(p\) are true \(y\). \(l(z, q) = - \log q_y\), where \(q_y\) are softmax. Then \(l(y; z) = [- z_y + \ln \sum_j e^{z_j}] \frac{1}{\ln 2}\).
+\end{definition}
+
+\begin{definition}[Residual]
+    \(F[W, b](x) = x + [\phi(Wx + b) - \phi(0)] \implies F[0, 0] = \text{id}\).
+\end{definition}
+
+\subsection{Sigmoid Network}
+
+\begin{definition}[Function Class]
+    \(\G_n = \text{span}\{\sigma(w^\top x + b) \mid w \in \R^n, b \in \R\}\)
+\end{definition}
+
+\begin{definition}[Unif. Norm]
+    \(\norm{f}_{\infty, K} = \sup_{x \in K} |f(x)|\), metric: \(d(f, g) = \norm{f - g}_{\infty, K}\)
+    if \(f \in C(\R)\) always bounded over compact (closed + bounded) \(K\).
+\end{definition}
+
+\begin{definition}[Approx. Err.]
+    Approx. over \(K\): \(d_K(f, \G) = \inf_{g \in \G} d_K(f, g)\). Equiv. \(\exists\) seq. \(\forall \epsilon > 0: \exists M \geq 1: \forall m \geq M: \norm{g_m - f}_{\infty, K} < \epsilon\).
+\end{definition}
+
+\begin{definition}[Universal Approx.]
+    \(\G\) is UA for \(\mathcal{F}\) if: \(\forall f \in \mathcal F: d_K(f, \mathcal G) = 0\).
+\end{definition}
+
+\begin{theorem}[Weierstrass]
+    Polynomials are UA for \(C(\R)\).
+    \disadv{degree-unlimited}
+\end{theorem}
+
+\begin{theorem}
+    \(\phi \in C^\infty(\R)\) non-poly, \(\text{span}(\{\phi(ax + b) \mid a, b \in \R\})\) UA of \(C(\R)\).
+\end{theorem}
+
+\begin{theorem}[Lifting]
+    \(\text{span}(\{\phi(w^\top x + b) \mid w^\top \in \R^n, b \in \R\})\) UA of \(C(\R^n)\).
+\end{theorem}
+
+\begin{theorem}[UAT]
+    MLP are universal function approximators. \adv{strong approx guarantee}, \disadv{no insight into shallow vs deep, no upper bound on \(m\) to approximate to some error \(\epsilon\)}.
+\end{theorem}
+
+\subsection{Barron's Theorem}
+
+\begin{definition}[Fourier Transform]
+    $\widehat{f}(\omega) = \int_{\R^n} e^{-2\pi i \omega^\top x} f(x)dx$.
+\end{definition}
+
+\begin{definition}[Regularity Condition]
+    $C_f := \int \|\omega\| |\widehat{f}(\omega)| d\omega < \infty$.
+    Funcs. satisfying this are "Barron functions" (smooth/integrable spectral density).
+\end{definition}
+
+\begin{theorem}[Barron, 1993]
+    For every $f: \R^n \to \R$ with finite $C_f$ and $r > 0$, \(\exists\) seq of one hidden layer MLPs $(g_m)_{m \in \mathbb{N}}$ with $m$ nodes such that:
+    \[ \int_{r\mathbb{B}} (f(x) - g_m(x))^2 \mu(dx) \leq O\left(\frac{1}{m}\right) \quad \text{\adv{(indep. of \(n\), data dist.)}}\]
+    where $r\mathbb{B} := \{x \in \R^n : \|x\| \leq r\}$ and $\mu$ is any prob. measure on $r\mathbb{B}$.
+\end{theorem}
+
+\subsection{ReLU Networks}
+Consider \(m\) ReLU units on fixed \(x \in \R^n\), each unit either being activate or inactive. Defines boolean activation pattern: \(\Theta(Wx + b) \in \{0, 1\}^n\), \(\Theta \equiv\) Heaviside. Can split into partition \(X_0\) and \(X_1\). If \(n = 1\), then we can only have up to \(m + 1\) intervals.
+
+\begin{theorem}[Zalavsky]
+    \(R(\mathcal H)\) connected regions of \(\R^n \setminus \mathcal H\), \(\mathcal H\) being set of \(m\) hyperplanes. Then \(R(\mathcal H) \leq \sum_{i=0}^{\min(n, m)} \binom{m}{i}\). \(=\) if in gen. pos.
+\end{theorem}
+
+\begin{theorem}[Montufar]
+    ReLU NN with \(L\) layers of width \(m > n\). Number of cells \(R(m, L) \geq R(m) \lfloor \frac m n \rfloor^{n(L-1)}\). \adv{exp. for \(m \geq 2n\). better when deep.}
+\end{theorem}
+
+\begin{theorem}[Shektman]
+    Piecewise linear functions are UA of \(C(\R)\).
+\end{theorem}
+
+\begin{theorem}[Lebesgue]
+    Piecewise linear functions with \(m\) pieces and \(n\) knots can be written as \(g(x) = ax + b + \sum_{i=1}^{m-1} x_i(x - x_i)_+\).
+\end{theorem}
+
+\begin{theorem}[UAT]
+    Sketman, Lebesgue \(\implies\) 1 hid. lay. ReLU UA of \(C(\R)\).
+\end{theorem}
+
+\begin{definition}[Maxout / $m$-Hinge]
+    $g[W,b](x) = \max_{i=1}^m \{w_i^\top x + b_i\}$. 
+    Generalizes ReLUs; represents any continuous piecewise linear (CPWL) function.
+\end{definition}
+
+\begin{theorem}[Wang and Sun, 2004]
+    Every CPWL $g: \R^n \to \R$ can be written as a signed sum of $m$-Hinges with $m \leq n+1$.
+\end{theorem}
+
+\begin{theorem}[Wang, 2004]
+    Every CPWL $f$ is the difference of two polyhedral functions:
+    $f(x) = \max_{(w,b) \in \mathcal{A}^+} \{w^\top x + b\} - \max_{(w,b) \in \mathcal{A}^-} \{w^\top x + b\}$
+    where $\mathcal{A}^+, \mathcal{A}^-$ are finite.
+\end{theorem}
+
+\begin{corollary}
+    Two max ops are the min. non-linearity required for UA.
+\end{corollary}
+
