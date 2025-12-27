@@ -1,0 +1,79 @@
+\section{CNN}
+
+\begin{definition}[Integral Operators]
+    Kernel \(G: \R^2 \to \R\), \(t_1, t_2 \in \R \cup \{-\infty, \infty\}\), then
+    \((T f)(u) = \int_{t_1}^{t_2} G(u, t) f(t) \, dt\)
+\end{definition}
+
+\begin{definition}[Fourier]
+    \((\mathcal F f)(u) := \int_{-\infty}^{\infty} f(t) e^{-i 2 \pi u t} \, dt\)
+\end{definition}
+
+\begin{definition}[Convolution]
+    \((f * g)(u) := \int_{-\infty}^{\infty} g(u - t) f(t) \, dt\)
+\end{definition}
+
+\begin{definition}[Time-shift]
+    \(f_\Delta(t) := f(t + \Delta)\), then \(f_\Delta * h = (f * h)_\Delta\).
+\end{definition}
+
+\begin{theorem}[Convolution]
+    \(\mathcal F(f * h) = \mathcal F f \cdot \mathcal F h\)
+    and its inverse: \(f * h = \mathcal F^{-1}((\mathcal F f) \cdot (\mathcal F h))\).
+    \adv{\(\OB(n \log n)\) for FFT} \disadv{\(m < \log n\): favor time/space}
+\end{theorem}
+
+\begin{definition}[Linear shift-equivariant]
+    \(\forall f, g, \alpha, \beta: T(\alpha f + \beta g) = \alpha Tf + \beta Tg\)
+    and \((T f_\Delta)(t) = (Tf)(t + \Delta)\). \adv{Can be written as convolution}.
+\end{definition}
+
+\begin{definition}[Correlation]
+    \(I'(i, j) = \sum_{m=-k}^k \sum_{n=-k}^k K(m, n) I(i+m, j+n)\)
+\end{definition}
+
+\begin{definition}[Convolution]
+    \(I'(i, j) = \sum_{m=-k}^k \sum_{n=-k}^k I(i -m, j - n) K(m, n)\)
+
+    \begin{itemize*}
+        \item Corr \(\iff K(m, n) = K(-m, -n)\)
+        \item Commutative
+        \item Toepliz MM
+    \end{itemize*}
+
+    Fitler same depth as input map, but can stack multiple filters.
+\end{definition}
+
+\begin{definition}[CNN-formulas]
+    \(\bm{C}\)han., \(\bm{K}\)er. s., \(m = \#\)Ker., \(\bm{{D}}\)ill., \(\bm{P}\)ad, \(\bm{S}\)tride
+    \begin{itemize}
+        \item Dim: \(f(W) \times f(H) \times m\), \(f(i) = \lfloor\frac{i + 2P_i - D_i(K_i - 1) - 1}{S_i}\rfloor + 1\)
+        \item Params: \(p = (K_W \cdot K_H \cdot C + {\color{H3} 1}) \cdot m \quad ({\color{H3} \hat{=} \ \text{Bias}})\).
+        \item Receptive field increases with depth, stride and dilation.
+    \end{itemize}
+\end{definition}
+
+% \begin{definition}[Backprop]
+%     \(\delta\l{l-1}_{i, j} = \sum_{i'}\sum_{j'}\delta_{i', j'}\l l w_{i'-i, j'-j}\l l = \delta\l l \ast \ROT(W\l l)\)
+% \end{definition}
+
+% \begin{definition}[Update]
+%     \(\frac{\partial L}{\partial w_{m, n}\l l} = \sum_i \sum_j \delta_{i, j} \l l z_{i-m, j-n}\l{l -1} = \delta\l l \ast \ROT(\Z\l{l-1})\)
+% \end{definition}
+
+\begin{definition}[Backprop]
+    Kernel \(K\), input \(X\), output \(Y\), loss \(E\):
+
+    \(X \ast K\): \(\frac{\partial E}{\partial K} = \frac{\partial E}{\partial Y} \star X = r_{180}(X \star \frac{\partial E}{\partial Y})\), \(\frac{\partial E}{\partial X} = \frac{\partial E}{\partial Y} \star K = \frac{\partial E}{\partial Y} \ast r_{180}(K) \)
+
+    \(X \star K\): \(\frac{\partial E}{\partial K} = \frac{\partial E}{\partial Y} \star X = r_{180}(X \star \frac{\partial E}{\partial Y})\), \(\frac{\partial E}{\partial X} = \frac{\partial E}{\partial Y} \ast K = \frac{\partial E}{\partial Y} \star r_{180}(K)\)
+\end{definition}
+
+\begin{definition}[Max-Pool]
+    \(z_{i, j}\l l = \max\{Z_{is:is+k, js:js+k}\l{l-1}\}\) (\(s\) stride), \(\frac{\partial z_{i, j}\l l}{\partial z_{i', j'} \l{l-1}} = 1\) iff \((i',j') = (i^*, j^*)\) (max indices) and 0 otw. \(\delta\l{l-1} = \{\delta\l l\}_{i^*, j^*}\).
+\end{definition}
+
+\begin{definition}[Upsampling]
+    Nearest Neighbor(fill all with values), Bed of nails (fill upper left with value, rest 0), Max Unpooling (remember max location), Learnable Upsampling (transpose conv: filter moves stride in output for 1 in input, sum overlap).
+\end{definition}
+
