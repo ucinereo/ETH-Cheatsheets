@@ -1,0 +1,194 @@
+\section{Geometric Deep Learning}
+
+\begin{definition}[Symmetry]
+    Transformation that leaves an object invariant.
+\end{definition}
+
+\begin{definition}[Group]
+    Set \(\mathfrak{G}\) with composition \(\circ: \G \times \G \to \G\), satisfying:
+    \begin{itemize}
+        \item Associativity: \(\forall \gg, \hg, \fg \in \G: (\gg\hg)\fg = \gg(\hg\fg)\).
+        \item Identity: \(\exists\) unique \(\eg \in \G \forall \gg: \eg\gg = \gg\eg = \gg\).
+        \item Inverse: \(\forall \gg \exists\) unique \(\gg^{-1}: \gg\gg^{-1} = \gg^{-1}\gg = \eg\)
+        \item Closure: \(\forall \gg, \hg \in \G: \gg\hg \in \G\).
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Signal Space]
+    \(\DX(\Omega, \mathcal{C}) := \{x: \Omega \to \mathcal C\}\) space of \(\mathcal C\)-valued signals on set \(\Omega\). Induces linear structure.
+\end{definition}
+
+\begin{definition}[Action]
+    Mapping \((\gg, u) \mapsto \gg.u\), w/ \(\gg.(\hg.u) = (\gg\hg).u\), mapping group elements to transformations on set \(\Omega \ni u\). Implicitly defines action of \(\G\) onto signals: \((\gg.x)(u) := x(\gg^{-1}.u)\) with \((\gg(\hg.x))(u) = ((\gg\hg).x)(u)\).
+\end{definition}
+
+\begin{definition}[Representation]
+    Represent linear actions of \(\G\) via \(\rho: \G \to \R^{n \times n}\), assing invertible matrix \(\rho(\gg)\) and satisfying \(\rho(\gg\hg) = \rho(\gg) \rho(\hg)\). Again, stated \(\rho(\gg)x(u) = x(\gg^{-1} x)(u)\) and \((\rho(\gg)(\rho(\hg)x))(u) = (\rho(\gg\hg)x)(u)\).
+\end{definition}
+
+\begin{definition}[\(\G\)-invariance]
+    \(\forall \gg \in \G, x\in\DX(\Omega): f(\rho(\gg)x) = f(x)\).
+\end{definition}
+
+\begin{definition}[\(\G\)-equivariance]
+    \(\forall \gg \in \G, x\in\DX(\Omega): f(\rho(\gg)x) = \rho(\gg)f(x)\).
+\end{definition}
+
+\begin{colored}
+    \begin{itemize}
+        \item \(f\) non-invaraint \(\to\) \(f^*\) invariant: \(S_\G f(x) = \frac{1}{|\G|}\sum_{g \in \G} f(\rho(\gg)(x))\)
+    \end{itemize}
+\end{colored}
+
+\begin{tabularx}{\linewidth}{XXX}
+\textbf{Architecture} & \textbf{Domain} & \textbf{Symmetry} $\mathfrak{G}$ \\
+\hline
+CNN & Grid & Translation \\ \hline
+Spherical CNN & Sphere / SO(3) & Rotation SO(3) \\ \hline
+Deep Sets & Set & Permutation $\Sigma_n$ \\ \hline
+GNN & Graph & Permutation $\Sigma_n$ \\ \hline
+Transformer & Complete Graph & Permutation $\Sigma_n$ \\ \hline
+LSTM & 1D Grid & Time warping \\ \hline
+\end{tabularx}
+
+\begin{definition}[5-Gs]
+    Grids, Groups, Graphs, Geodesics, Gauges.
+\end{definition}
+
+\subsection{Set Neural Networks}
+Set domain \(V\) with \(\X = (\x_1, \ldots, \x_n)^\top \in \R^{n\times d}\), \(\G = \Sigma_n\), \(\rho(\gg) = \PM\).
+
+\begin{definition}[Permuation invariance]
+    \(\forall P \in \Sigma_n: f(\PM\X) = f(\X) = \phi\left(\sum_i \psi(\x_i)\right)\)
+\end{definition}
+
+\begin{definition}[Permutation equivariance]
+    \(\forall P \in \Sigma_n: f(\PM\X) = \PM f(\X)\), could be implemented as \(f_i(\X) = f(\X, \x_i) = \phi(\x_i, \sum_{j} \psi(\x_j))\).
+\end{definition}
+
+\subsection{Graph Neural Networks}
+Graph \(G = (V, E, \A)\) w/ \(a_{ij} > 0\) if \((i, j) \in E\), else \(0\).
+Rest assumes \textbf{undirected weighted graph}.
+
+\begin{definition}[Canonical Graph]
+    \(G_o = (V, E_0)\) with \(E_o = \{(i, j) \in E \mid i < j\}\).
+\end{definition}
+
+\begin{definition}[Incidence matrix]
+    \(\B \in \R^{|E_o| \times |V|}\) defined for edge \(e = (i, j) \in E_o\) by \(b_{e, v} = 1\) if \(v = i\), \(-1\) if \(v = j\), else \(0\).
+\end{definition}
+
+\begin{definition}[Degree Matrix]
+    \(\DM = \text{diag}(d_i)\) with \(d_i = \sum_j a_{ij}\).
+\end{definition}
+
+\begin{definition}[Edge Weight Matrix]
+    \(\A_e = \text{diag}(a_e)\) with \(a_e = a_{ij}\).
+\end{definition}
+
+\begin{lemma}
+    \begin{itemize}
+        \item \(\B^\top \A_e \B = \DM - \A\)
+        \item \(G\) unweighted \(\iff\) \(\A_e\) identity
+        \item \(G\) undirected \(\iff\) \(\A = \A^\top\).
+    \end{itemize}
+\end{lemma}
+
+\begin{definition}[Invariance for UWG]
+    \(f(\PM\X, \PM\A\PM^\top) = f(\X, \A)\)
+\end{definition}
+
+\begin{definition}[Equivariance for UWG]
+    \(f(\PM\X, \PM\A\PM^\top) = \PM f(\X, \A)\)
+\end{definition}
+
+\begin{definition}[Neighborhood]
+    \(\Normal_i := \{j : (i, j) \in E\}\), \(\X_{(\Normal_i)} = \multiset{\x_i: j \in \Normal_i}\)
+\end{definition}
+
+\begin{definition}[Layer]
+    \(\phi(\x_i, \X_{(\Normal_i)})\) perm. inv. in \(\X_{(\Normal_i)}\). \(f(\X, \A) = [\phi(\x_i, \X_{(\Normal_i)})]_i\)
+\end{definition}
+
+\begin{definition}[Equivariant Layer]
+    \(\phi(\x_i, \X_{(\Normal_i)}) = \phi\left(\x_i, \sum_{j \in \Normal_i} \psi(\x_j)\right)\)
+\end{definition}
+
+\begin{definition}[Conv. GNNs]
+    \(z_i = \phi\left(\x_i, \sum_j c_{ij}(\A) \psi(\x_j)\right)\) w/ \(\CM_{\A} = (c_{ij}(\A))_{ij}\) s.t.
+    \(\CM_{\PM \A \PM^\top} = \PM \CM_{\A} \PM^\top\) self-equivariant.
+\end{definition}
+
+\begin{definition}[Attentional GNNs]
+    \(z_i = \phi\left(\x_i, \sum_{j \in \Normal_i} a(\x_i, \x_j) \psi(\x_j)\right)\).
+\end{definition}
+
+\begin{definition}[Message-Passing GNNs]
+    \(z_i = \phi\left(\x_i, \sum_{j \in \Normal_i} \psi(\x_i, \x_j)\right)\).
+\end{definition}
+
+\begin{definition}[Weisfeiler-Lehman Test]
+    Test if two graphs are non-isomorphic by iteratively aggregating node features from neighbors and hashing them to new features. If after some iterations the multisets of node features differ, the graphs are non-isomorphic. NP-hard to decide in general.
+\end{definition}
+
+\begin{theorem}[Aggregators]
+    In order to discriminate multisets of size \(n\), whose underlying set is \(\R\), at least \(n\) aggregators are needed.
+\end{theorem}
+
+\subsection{Spectral Graph Theory (\(n := |V|, m := |E_o|\))}
+
+\begin{definition}[Discrete Derivative]
+    Along edge \((i, j)\): \(\partial f_{ij} = \sqrt{a_{ij}}(f_j - f_i)\).
+\end{definition}
+
+\begin{definition}[Divergence]
+    At vertex \(i\): \([\text{div}(g)]_i = \sum_{j: (i, j) \in E} \sqrt{a_{ij}} g_{ij}\) for \(g: E_0 \to \R\), with convention that \(g_{ij} = - g_{ji}\).
+\end{definition}
+
+\begin{definition}[Representations]
+    \(\text{grad}(f) = (\partial_{ij} f)_{(i,j) \in E_o}\), \(\text{div}(g) = ([\text{div}(g)]_i)_{i \in V}\). Then \(\grad := \A_e^{1/2} \B \in \R^{m \times n} \implies \grad f = \text{grad}(f)\) and \(\text{div}(g) = \grad^\top g\).
+\end{definition}
+
+\begin{definition}[Graph laplacian]
+    \(\LM := \grad^\top \grad = \B^\top \A_e \B = \DM - \A\)
+\end{definition}
+
+\begin{theorem}
+    \([\LM \vb f]_i = [\B^\top \A_e \B \vb f] = \sum_{j \in \Normal_i} a_{ij}(f_i - f_j)\) and \(\vb f^\top \LM \vb f = \norm{\grad \vb f}^2 = \sum_{ij} a_{ij} (f_i - f_j)^2\). \(\LM\) is symmetric positive semi-definite with eigenvalues \(0 = \lambda_1 \leq \lambda_2 \leq \ldots \leq \lambda_n\).
+    Hence \(\LM = \U \Lambda \U^\top\) and columns of \(\U\) form orthonormal basis of eigenvectors in fourier domain.
+\end{theorem}
+
+\begin{definition}[Spectral Graph Convolution]
+    \(\h *_G \x := \U \text{diag}(\hat \h) \U^\top \x\), but requires eigenvalues of decomposition. Hence just want \(\h *_G \x = \U h(\Lambda) \U^\top \x = h(\LM)\x\).
+
+    For efficiency, use polynomial filters \(h(\lambda) = \sum_{k=0}^K \theta_k \lambda^k\) (Chebyshev polynomials) or \(h(\lambda) = \theta (1 - \lambda)\) (first-order approx.).
+
+    In practice, learn \(C_{in} C_{out}\) poly kernels and use \(\x_{c'} = \sum_{c=1}^{C_{in}} p_{c', c}(\LM)\x_c + b_{c'}\vb{1}\) with \(C_{in}C_{out}(K+1)+C_{out}\) params.
+\end{definition}
+
+\begin{definition}[Norm. Graph Laplacian]
+    \(\bar\LM := \DM^{-1/2} \LM \DM^{-1/2} = \I - \DM^{-1/2}\A \DM^{-1/2}\).
+\end{definition}
+
+\begin{definition}[Data Representation]
+    Data matrix $\mathbf{X} \in \mathbb{R}^{d \times n}$ where $n$ = nodes, $d$ = channels.
+    \textbf{Propagation}: $\mathbf{X}^{l+1} = \sigma(\mathbf{W}^l \mathbf{X}^l \mathbf{Q})$ where $\mathbf{Q}$ couples node activities.
+\end{definition}
+
+\begin{definition}[Normalized Graph Laplacian]
+    Adjacency $\mathbf{A}$, degree matrix $\mathbf{D}$. 
+    $\bar{\mathbf{L}} = \mathbf{I} - \mathbf{D}^{-1/2} \mathbf{A} \mathbf{D}^{-1/2}$.
+    \textbf{Properties}: $\lambda(\bar{\mathbf{L}}) \in [0, 2]$. $\lambda_{max} = 2$ can cause instabilities.
+\end{definition}
+
+\begin{definition}[GCN Coupling Matrix $\mathbf{Q}$]
+    To fix instabilities, use \textbf{Renormalization Trick}: 
+    $\tilde{\mathbf{A}} = \mathbf{A} + \mathbf{I}_n$ (self-loops) and $\tilde{\mathbf{D}}$ is the degree matrix of $\tilde{\mathbf{A}}$.
+    $\mathbf{Q} = \tilde{\mathbf{D}}^{-1/2} \tilde{\mathbf{A}} \tilde{\mathbf{D}}^{-1/2}$.
+    \textbf{Result}: $\lambda_{max}(\mathbf{Q}) = 1$, preventing exploding gradients during stacking.
+\end{definition}
+
+\begin{theorem}[Spectral Filtering]
+    Using $\mathbf{Q} = \bar{\mathbf{A}}$ (normalized adjacency) is equivalent to a first-order spectral filter $h(\bar{\mathbf{L}}) = \mathbf{I} - \bar{\mathbf{L}}$.
+    Stacking $L$ layers allows learning higher-order polynomial filters.
+\end{theorem}
