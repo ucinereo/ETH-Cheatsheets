@@ -1,0 +1,67 @@
+\section{Probabilistic Viewpoint}
+\begin{definition}[Cond]
+    \(\mu_{B|A} = \mu_B + \Sigma_{BA}\Sigma_{AA}^{-1}(x_A - \mu_A), \quad \Sigma_{B|A} = \Sigma_{BB} - \Sigma_{BA}\Sigma_{AA}^{-1}\Sigma_{AB}\)
+\end{definition}
+
+\begin{lemma}[Push-Through]
+    \(X^\top (\sigma^2 I_n + XX^\top)^{-1} = (\sigma^2 I_d + X^\top X)^{-1} X^\top\).
+    \adv{Links weight-space (\(d \times d\)) and function-space (\(n \times n\)) inversions.}
+\end{lemma}
+
+\subsection{Bayesian Linear Regression (BLR)}
+\begin{definition}[Model]
+    Prior \(w \sim \mathcal{N}(0, I_d)\). LH \(y|X,w \sim \mathcal{N}(Xw, \sigma^2 I_n)\).
+    Joint dist. of \((y, w)\):
+    \( \mqty[y \\ w] \sim \mathcal{N}\left(\mqty[0 \\ 0], \mqty[XX^\top + \sigma^2 I_n & X \\ X^\top & I_d]\right) \)
+\end{definition}
+
+\begin{theorem}[Posterior]
+    \( \mu_{w|y} = (X^\top X + \sigma^2I)^{-1}X^\top y \equiv X^\top(XX^\top + \sigma^2 I)^{-1}y \)
+    \( \Sigma_{w|y} = \sigma^2(X^\top X + \sigma^2I)^{-1} \equiv I - X^\top(XX^\top + \sigma^2 I)^{-1}X \)
+\end{theorem}
+
+\begin{lemma}[Ridge Equivalence]
+    \(\mu_{w|y}\) is the sol. to Ridge Regression: \(\min_w \frac{1}{2\sigma^2}\|y - Xw\|^2 + \frac{1}{2}\|w\|^2\).
+    \(\implies\) MAP estimate = posterior mean.
+\end{lemma}
+
+\subsection{Gaussian Processes}
+\begin{definition}[Kernel Trick]
+    Define \(k(x, x') = \phi(x)^\top \phi(x')\) and \(K = \Phi \Phi^\top\). In BLR \(\phi(x)=x\), so \(K = XX^\top\).
+    Rewriting BLR predictive \(p(f(x_*) | y)\) solely via dot products yields GP equations.
+\end{definition}
+
+\begin{theorem}
+    \(f \sim \mathcal{GP}(0, k)\), \(y = f + \epsilon\). Post: \(f|y \sim \mathcal{GP}(\mu_{post}, k_{post})\):
+    using \(k(x_*) = [k(x_1, x_*), \dots, k(x_n, x_*)]^\top\):
+    \( \mu_{post}(x_*) = k(x_*)^\top (K + \sigma^2 I)^{-1} y\), 
+    \( k_{post}(x_*, x_*) = k(x_*, x_*) - k(x_*)^\top (K + \sigma^2 I)^{-1} k(x_*) \)
+\end{theorem}
+
+\subsection{Neural Network Gaussian Processes (NNGP)}
+\begin{definition}[Infinite Width Net]
+    \(f(x) = v_0 + \frac{1}{\sqrt{m}}\sum_{j=1}^m v_j \varphi(\theta_j^\top x)\).
+    Priors: \(v_0 \sim \mathcal{N}(0, \sigma_0^2)\), \(v_j \sim \mathcal{N}(0, \sigma_v^2)\), \(\theta_j \sim p(\theta)\).
+\end{definition}
+
+\begin{theorem}[NNGP Limit]
+    As \(m \to \infty\), \(f(\cdot) \to \mathcal{GP}(0, k_{NN})\).
+    \textit{Hint (CLT):} For data \(X\), \(\vb{f} = [f(x_1), \dots, f(x_n)]^\top = \frac{1}{\sqrt{m}} \sum_{j=1}^m \vb{h}_j\). Since \(\vb{h}_j\) are i.i.d. vectors with finite cov, \(\vb{f} \xrightarrow{d} \mathcal{N}(0, K_{NN})\).
+\end{theorem}
+
+\begin{definition}[NNGP Kernel]
+    \(k_{NN}(x, x') = \sigma_0^2 + \sigma_v^2 \mathbb{E}_{\theta}[\varphi(\theta^\top x) \varphi(\theta^\top x')]\).
+    Exact integral for some \(\varphi\) (e.g., ReLU \(\to\) ArcCosine kernel).
+\end{definition}
+
+\subsection{Monte Carlo Approximation}
+\begin{definition}[Empirical Kernel]
+    Sample \(B\) nets \(\{f_b\}_{b=1}^B\). Feature map \(\phi(x) = \frac{1}{\sqrt{B}}[f_1(x), \dots, f_B(x)]^\top\).
+    \( \hat{k}(x, x') = \frac{1}{B} \sum_{b=1}^B f_b(x) f_b(x') \xrightarrow{B \to \infty} k_{NN}(x, x') \)
+\end{definition}
+
+\begin{corollary}[Grand Unification]
+    Bayesian inference on NNGP \(\equiv\) Ridge Regression on random features \(\phi(x)\).
+    \[ \underbrace{\phi(x_*)^\top (\Phi^\top \Phi + \sigma^2 I_B)^{-1} \Phi^\top y}_{\text{Ridge (Primal)}} \equiv \underbrace{\hat{k}(x_*)^\top (\hat{K} + \sigma^2 I_n)^{-1} y}_{\text{GP (Dual)}} \]
+    Train last layer of ensemble \(\approx\) Full Bayesian inf. of infinite depth net.
+\end{corollary}
