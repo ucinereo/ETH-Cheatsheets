@@ -205,6 +205,14 @@
 \renewcommand{\i}{^{(i)}}
 \renewcommand{\l}[1]{^{[#1]}}
 
+% Learning theory
+\newcommand{\risk}[1]{\mathcal{R}(#1)}
+\newcommand{\emprisk}[1]{\mathcal{R}_n(#1)}
+\newcommand{\targetF}{h^{*}}
+\newcommand{\predF}{\hat{h}_H}
+\newcommand{\hypF}{h_{H}^{*}}
+\newcommand{\RC}{\mathfrak{R}}
+
 % Misc
 \newcommand{\sdots}{\ifmmode\mathinner{\ldotp\kern-0.2em\ldotp\kern-0.2em\ldotp}\else.\kern-0.13em.\kern-0.13em.\fi}
 \newcommand{\todo}[1]{{\color{red}\textbf{TODO}: #1}}
@@ -240,5 +248,6 @@
 \input{chapters/04_cnn.tex}
 \input{chapters/05_geometric_deep_learning.tex}
 \input{chapters/06_probabilistic_viewpoint.tex}
+\input{chapters/07_theory_of_dnns.tex}
 
 \end{document}
