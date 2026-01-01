@@ -1,0 +1,28 @@
+\section{GAN}
+Likelihood-free model as LL not best indicator of quality. Can have \(\uparrow\) LL, but \(\downarrow\) Samples or vice verca.
+
+\begin{definition}[Obj]
+    \(\min_\theta \max_\phi \E_{p_r}[\log D_\phi(x)] + \E_{z \sim p_z}[\log(1 - D_\phi(G_\theta(z)))]\)
+\end{definition}
+
+\begin{definition}[Theor. Target]
+    Ass. \(\tilde p_\theta(\x, y) = \frac 1 2 (y p_r(\x) + (1 - y) p_\theta(\x))\). Then opt. bayes classifier: posterior: \(q_\theta(\x) := \P(y=1 \mid \x) = \frac{p_r(\x)}{p_r(\x) + p_\theta(\x)}\). Hence train \(G\) by min log. LL: \(l^* = \E_{\tilde{p}}[y \ln q_\theta(\x) + (1 - y)\ln(1 - q_\theta(\x))] \) which is equivalent to \(\DJS(p_r \parallel p_\theta) - \ln 2\). As \(p_\theta\) inaccessible, train \(q_\phi: \x \mapsto [0, 1]\) s.t. \(l^* \geq \sup_\phi l(\theta, \phi)\).
+\end{definition}
+
+\todo{Add training issues}
+
+\begin{definition}[Transport Plan]
+    \(\pi(x, y)\) on \(\R^d \times \R^d\), how mass \(x \sim p\) moved to \(y \sim q\).
+\end{definition}
+
+\begin{definition}[Wasserstein Dist.]
+    \(W(p, q) = \inf_{\pi \in \Pi(p, q)} \int_{\R^d \times \R^d} c(x, y) \pi(x, y) \, dxdy\)
+\end{definition}
+
+\begin{definition}[WGAN]
+    \(c(x, y) = \norm{x - y}\), \disadv{expensive to compute} \(\implies\) Kantorovich-Rubinstein duality: \(W(p_r, p_\theta) = \sup_{\norm{f}_L \leq 1} \E_{p_r}[f(x)] - \E_{p_\theta}[f(x)]\) w/ \(f\) 1-Lipschitz. Enforce via gradient penalty: \(\E_{\hat{\x}}[(\norm{\nabla_{\hat{\x}} f_w(\hat{\x})}_2 - 1)^2]\), \(\hat{\x}\) LERP between \((\x, G_\theta(\z))\). Thus the full los function becomes:
+
+    \resizebox{\linewidth}{!}{
+        \(\min_\theta \max_w \E_{p_r}[f_w(\x)] - \E_{p_z}[f_w(G_\theta(\z))] + \lambda \E_{\hat{\x}}[(\norm{\nabla_{\hat{\x}} f_w(\hat{\x})} - 1)^2]\)
+    }
+\end{definition}
