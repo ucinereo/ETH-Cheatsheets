@@ -1,0 +1,61 @@
+\section{Normalizing Flows}
+
+\begin{definition}[Diffeomorphism]
+    \(T: \Unif \to \DX\) diffeomorphism if: bijective, \(C^1\), and \(T^{-1}\) is \(C^1\). Thus \(J_{T^{-1}}(T(u))J_T(u) = I_d \iff J_{T^{-1}}(x) J_t(T^{-1}(x)) = I_d\).
+\end{definition}
+
+\begin{definition}[COV]
+    \(\int_{\Unif} f(T(u)) p_u(u) \, du = \int_{\DX} f(x) p_x(x) \, dx\), with \(x = T(u)\). Comes from \(\forall A: P(u \in A) = P(x \in T(a)) \iff \int_A p(u) \, du = \int_{T(A)} p(x) \, dx\). Let \(x = T(u)\), then \(\int_A p(u) \, du = \int_A p_x(T(u)) \cdot \vert \det J_T(u) \vert \, du\). Hence we get \(p(u) = p(T(u)) \cdot \vert \det J_T(u)\vert \iff p(x) = p(T^{-1}(x)) \vert \det J_{T^{-1}}(x)\vert\).
+\end{definition}
+
+\begin{definition}[DM by ML]
+    GT \(p_x^*\), model \(x_i = T_\theta(u_i), u_i \sim p_u\). \(T\) for gen; \(T^{-1}\) for ML.
+    
+    \resizebox{\linewidth}{!}{
+    \(\max_\theta \frac 1 n \sum_{i=1}^n \log p_x(x_i) = \max_\theta \frac 1 n \sum_{i=1}^n \log p_u(T_\theta^{-1}(x_i)) + \log \vert \det J_{T_\theta^{-1}}(x_i)\vert\).
+    }
+\end{definition}
+
+\begin{definition}[DM by KL]
+    Approx \(p(z \mid x)\) using \(q_\phi(z) = p_u(T_\phi^{-1}(z)) \vert \det J_{T_\phi^{-1}}(z)\vert\) parameterized by flow \(T_\phi\), then: \(\min_\phi \DKL(q_\phi(z) \parallel p(z \mid x))\) is
+
+    \(\E_{u \sim p_u}[\log p_u(u) - \log \vert \det J_{T_{\phi}}(u)\vert - \log p(T_\phi(u) \mid x)]\)
+\end{definition}
+
+\begin{theorem}
+    \(T = T_K \circ \ldots \circ T_1\), then \(\log \vert \det J_T(u) \vert = \sum_{k=1}^K \log \vert \det J_{T_k}(z_{k-1})\) with \(z_k = T_k(z_{k-1}), \ z_0 = u\). Need \(T_k\) with special structure.
+\end{theorem}
+
+\begin{definition}[Rosenblatt]
+    \(p_x(x)\) to \(u \sim \Unif([0, 1]^d)\). Cond. CDFs (\(S\)): \(u_1 = F_1(x_1)\), \(u_j = F_j(x_j \mid x_{1:j-1})\). Thus \(\frac{\partial u_j}{\partial x_j} = p(x_j \mid x_{1 : j-1}) \implies \det J_S(x) = \prod_j p(x_j \mid x_{1:j-1}) = p(x)\). \(p_u(u) = p_u(S(x)) = P_x(x) \vert \det J_s(x) \vert^{-1} = 1\).
+
+    \textit{Gen} \(T = S^{-1}\): \(x_1 = F^{-1}(u_1)\), \(x_i = F_i^{-1}(u_i \mid x_{1:i-1})\) and \(\log \vert \det J_T(u)\vert = - \sum_j \log p(x_j \mid x_{1:j-1}),\) \(x = T(u)\).
+\end{definition}
+
+\begin{definition}[Autoregressive Flows]
+        \(\tau\) strict mon. then AF is bijection \(T: \z \mapsto \z'\), with \(z_i' = \tau(z_i, \h_i)\), \(\h_i = c_i(\z_{<i})\). \(\tau\) transformer, \(c_i\) conditioner. \(z_i = \tau^{-1}(z_i', c_i(\z_{<i}))\) is gen. model.
+\end{definition}
+
+\begin{colored}
+    \begin{enumerate}
+        \item \textbf{Affine}: \(\tau(z_i, \h_i) = \sigma_i(\h_i)z_i + \mu_i (\h_i)\), \(\sigma_i(\h_i) > 0\). Simple + efficient, MAF, IAF, Real NVP.
+        \item \textbf{Combination}: \(\tau(z_i, \h_i) = \sum_{k} w_{ij}(\h_i)g_k(a_{ij z_i} + b_{ik})\) where \(w_{ij}(\h_i) > 0\) and \(g_k\) strictly increasing.
+        \item \textbf{Spline}: \(\tau(z_i, \h_i) = \text{Spline}_{\h_i}(z_i)\) monotonic spline w/ knots and slopes from \(\h_i\). \adv{flexible, non-linear, easily convertable}.
+    \end{enumerate}
+\end{colored}
+
+\begin{definition}[Masked Conditioners]
+    Comp. \(\h_1, \ldots, \h_D\) in parallel with masked NN.
+\end{definition}
+
+\begin{definition}[IAF]
+    \(x_i = \mu_\theta(\z_{<i}) + \sigma_\theta(\z_{<i})z_i\). \adv{fast sampling}, \disadv{slow density eval}. Use in VAE posterior approx.
+\end{definition}
+
+\begin{definition}[MAF]
+    \(z_i = \frac{x_i - \mu_\theta(\x_{<i})}{\sigma_\theta(\x_{<i})}\). \adv{fast density eval}, \disadv{slow sampling}. Used in density modeling.
+\end{definition}
+
+\begin{definition}[Coupling Layers]
+    \(\z = (\z_{1:d}, \z_{d+1:D})\) with \(\z'_{1:d} = \z_{1:d}\) identity and \(\z'_{d+1:D} = \tau(\z_{d+1:D}; \h(\z_{1:d}))\). \textbf{Real NVP}: affine coupling \(\z'_{d+1:D} = \z_{d+1:D} \odot \exp(s(\z_{1:d})) + t(\z_{1:d})\).
+\end{definition}

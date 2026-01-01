@@ -2,7 +2,7 @@
 
 \begin{definition}[Opt. Lin. AE]
     \(\min_{\DM, \CM} \norm{\X - \DM\CM\X}_F^2 \geq \min_{\U} \norm{\X - \U\U^\top}_F^2\).
-    Rewrite into \(\norm{\X - \U\U^\top}_F^2 = \tr(\X\X^\top) - \tr(\U^\top \S \U) \implies \max_{\U^\top \U = \I_k} \tr(\U^\top \S \U)\).
+    Rewrite into \(\norm{\X - \U\U^\top\X}_F^2 = \tr(\X\X^\top) - \tr(\U^\top \S \U) \implies \max_{\U^\top \U = \I_k} \tr(\U^\top \S \U)\).
     Let: \(\U = \vb Q \CM\), \(\X\X^\top = \vb Q \vb*{\Lambda}^2 \vb{Q}^\top\) w/ \(\CM^\top \CM = \I_k \implies\) Obj.\(= \sum_{j=1}^d \lambda_j^2 \norm{\CM_j}_2^2\).
 \end{definition}
 
@@ -23,7 +23,7 @@
         \item \(p(x, z) = p(x|z)p(z)\):
         \( \mathcal{L} = \underbrace{\E_q[\log p_\theta(x|z)]}_{\text{Reconstruction}} - \underbrace{\DKL(q_\phi(z|x) \parallel p(z))}_{\text{Regularization}} \)
         \item \(p(x, z) = p(z|x)p(x)\):
-        \( \mathcal{L} = \log p_\theta(x) - \underbrace{\DKL(q_\phi(z|x) \parallel p_\theta(z|x))}_{\text{Approximation Error } \ge 0} \)
+        \(\log p_\theta(x) = \mathcal{L} + \underbrace{\DKL(q_\phi(z|x) \parallel p_\theta(z|x))}_{\text{Approximation Error } \ge 0} \)
     \end{enumerate}
     Max \(\mathcal{L}\) \(\equiv\) Min distance to true posterior. Tight if \(q(z|x) = p(z|x)\).
 \end{lemma}
@@ -44,4 +44,6 @@
     \(\E_{q_\Phi(z_i \mid x_i)}[\log p_\theta(x_i \mid z_i)] \approx -\frac{1}{2 \sigma^2 K} \sum_{k} \norm{x_i - \mu_\theta(z_{ik})}_2^2 - \frac{d}{2} \log (2\pi \sigma^2)\).
 \end{definition}
 
-{\color{red} Maybe add Bonnet's theorem}
+\begin{theorem}[Bonnet's Thm]
+    \(\nabla_\mu \E_{z \sim \mathcal{N}(\mu, \Sigma)}[f(z)] = \E[\nabla_z f(z)]\), \(\nabla_\Sigma \E[f(z)] = \frac 1 2 \E[\nabla^2_z f(z)]\). Used to compute gradients of expectations w.r.t. parameters of the distribution.
+\end{theorem}
