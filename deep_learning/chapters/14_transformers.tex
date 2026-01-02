@@ -1,0 +1,49 @@
+\section{Attention and Transformers}
+
+\begin{definition}[Transformer]
+    Key \(K= XW_k\), Value \(V = XW_v\), Query \(Q = XW_q\) with learnable \(W \in \R^{D \times D}\) and \(X \in \R^{T \times D}\).
+    Attention:
+    \[ \text{Attn}(Q,K,V) = \text{softmax}\left(\frac{QK^\top}{\sqrt D} + M\right)V \]
+    w/ \(M = \begin{smallmatrix}-\infty & -\infty \\ 0 & -\infty\end{smallmatrix}\) (upper tri. \(-\infty\)) for AR masking.
+    Complexity: \(\mathcal{O}(T^2D)\).
+\end{definition}
+
+\begin{lemma}
+    queries: where to look, keys: token representation, values: token content. Search for keys similar to query, return corresponding weightedvalues.
+\end{lemma}
+
+\begin{definition}[Attention]
+    Attention in general can have different "alignment" scores:
+    \begin{itemize*}
+        \item DP: \(QK^\top\)
+        \item Scaled DP: \(\frac{QK^\top}{\sqrt D}\)
+        \item Additive: \(W_a \text{tanh}(W_q Q + W_k K)\)
+    \end{itemize*}
+\end{definition}
+
+\begin{definition}[MHA]
+    Compute multiple attentions in parallel, each with different learned projections \(W_k^i, W_v^i, W_q^i\). Concatenate outs and linearly project.
+\end{definition}
+
+\begin{definition}[Pos-Encoding]
+    Attention is permutation invariant, so we need to add pos info. Use fixed (sinusoidal) or learned encodings. Sinusoidal: \(\text{PE}(t, 2i) = \sin(t \omega_{2i})\), \(\text{PE}(t, 2i+1) = \cos(t \omega_{2i+1})\), \(\omega_i = C^{i / n}\).
+\end{definition}
+
+\subsection{Language Models}
+\textbf{Evolution of Neural LMs}: Early models used convolutional networks; RNNs/LSTMs improved long-range dependencies. Transformers enabled parallelism and longer context understanding post-2018.
+
+\begin{definition}[BERT]
+    Bidirectional transformer with 24 layers, 16 heads, 1024 dimensions. Uses Masked LM (MLM) and Next Sentence Prediction (NSP) for contextual learning.
+\end{definition}
+
+\begin{definition}[GPT]
+    Autoregressive transformer evolving from GPT-1 (117M) to GPT-4 (1.8T params). Predicts text sequentially, excelling in coherent generative tasks.
+\end{definition}
+
+\begin{definition}[Prompt Engineering]
+    Guides LLMs using task instructions, context, and style cues. Alignment via RLHF ensures safe and helpful responses.
+\end{definition}
+
+\begin{definition}[Fine-tuning BERT for Sentiment Analysis]
+    Tokenize input, add `[CLS]' / `[SEP]', fine-tune classifier on sentiment data. Optimize with cross-entropy, classify using `[CLS]' representation.
+\end{definition}
