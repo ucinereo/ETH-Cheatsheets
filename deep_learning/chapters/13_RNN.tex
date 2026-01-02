@@ -1,0 +1,80 @@
+\section{Recurrent Neural Network}
+
+\begin{definition}[Recurrent Model]
+    \(z^t \equiv F[\theta](z^{t-1}, x^t), \ z^0 \equiv 0\). Output \(y^t \equiv G[\phi](z^t)\).
+\end{definition}
+
+\begin{definition}[Evolution Op]
+    \(F[W, U](z, x) \equiv \phi(Wz + Ux)\), \(G[V](z) = \psi(Vz)\). Hidden states are noisy memory of data summary. \(\phi\psi \in \{\tanh, \text{ReLU}, \ldots\}\)
+\end{definition}
+
+\begin{definition}[Additive Loss]
+    \(\risk{y^1, \ldots, y^T} = \sum_{t=1}^T \risk{y^t} = \sum_{t=1}^T \risk{G[V](z^t)}\).
+\end{definition}
+
+\begin{definition}[BPTT]
+    Let \(\dot{\phi}_i^t := \phi'(F_i(z^{t-1}, x^t))\), then using this imm. derivative: \(\frac{\partial \riskR}{\partial w_{ij}} = \sum_{t=1}^s \frac{\partial \riskR}{\partial z_i^t} \cdot \frac{\partial z_i^t}{\partial w_{ij}} = \sum_{t=1}^s \frac{\partial\riskR}{\partial z_i^t} \cdot \dot{\phi}_i^t \cdot z_j^{t-1}\), \(\frac{\partial \riskR}{\partial w_{ij}} = \sum_{t=1}^s \frac{\partial\riskR}{\partial u_i^t} \cdot \dot{\phi}_i^t \cdot x_j^{t}\).
+
+    \(\frac{\partial \riskR}{\partial x^t} = \frac{\partial \riskR}{\partial y} \frac{\partial y}{\partial x_s} \prod_{r=t+1}^s W^\top \text{diag}(\dot{\phi}_1^r, \ldots, \dot{\phi}_n^r)\). 
+\end{definition}
+
+\begin{definition}[Exploding/Vanishing Grad]
+    Because \(\sigma'\) and \(\tanh'\) bounded, \(\text{diag} \preceq \I\) Then if \(\sigma_{\max}(W) < 1\), we have vanishing and otherwise exploding gradients over many time steps.
+\end{definition}
+
+\begin{definition}[Bidirection RNN]
+    \(\tilde{z}^t = \phi(\tilde W z^{t+1} + \tilde x^t)\), \(\hat y^t = \psi(Vz^t + \tilde V \tilde z^t)\).
+\end{definition}
+
+\begin{definition}[Deep RNN]
+    \(z^{t, l} = \phi(W^l z^{t-1, l} + U^l z^{t, l-1}), z^{t, 0} = x^t\).
+\end{definition}
+
+\subsection{Gated Memory}
+
+\begin{definition}[LSTM]
+\(\mathbf{f}_t\): forget, \(\mathbf{i}_t\): store, \(\mathbf{o}_t\): output, \(\mathbf{g}_t\): candidate values.
+\[
+\mathbf{
+    \begin{bmatrix}
+        \mathbf{i}_t \\
+        \mathbf{f}_t \\
+        \mathbf{o}_t \\
+        \mathbf{g}_t
+    \end{bmatrix}
+} = 
+\begin{bmatrix}
+    \sigma \\
+    \sigma \\
+    \sigma \\
+    \tanh
+\end{bmatrix}
+\left( W_{i, f, o, g}
+\begin{bmatrix}
+    \mathbf{x}_t \\  % {\color{gray}\h_t\l{l-1}}\\
+    \mathbf{h}_{t-1} % {\color{gray}\h_{t-1}\l l}
+\end{bmatrix}
+\right)
+\quad
+\begin{aligned}
+\mathbf{c}_t &= \mathbf{f}_t \odot \mathbf{c}_{t-1} + \mathbf{i}_t \odot \mathbf{g}_t \\
+\mathbf{h}_t &= \mathbf{o}_t \odot \tanh(\mathbf{c}_t)
+\end{aligned}
+\]
+\end{definition}
+
+\begin{definition}[GRU]
+    Calculate \(z_t\) implicitly, without recursion.
+    \begin{align*}
+        z_t &= \sigma(W_z \cdot [h_{t-1}, x_t])
+        & r_t &= \sigma(W_r \cdot [h_{t-1}, x_t]) \\
+        \tilde{h}_t &= \tanh(W \cdot [r_t \odot h_{t-1}, x_t])
+        & h_t &= (1 - z_t) \odot h_{t-1} + z_t \odot \tilde{h}_t
+    \end{align*}
+\end{definition}
+
+\begin{definition}[LRU]
+    Hidden state as discrete time linear system: \(z^{t+1} = Az^t + Bx^t\). Use \(A = P\Lambda P^{-1}\), \(\Lambda \equiv \text{diag}(\lambda_i)\), \(\lambda_i \in \C\). use basis: \(\zeta^{t+1} = \Lambda \zeta^t + Cx^t\), \(\zeta^t = P^{-1} z^t\). Reparam: \(\lambda_i = \exp(-\exp(\nu_i) + i\phi_i) {\color{gray} = re^{i\phi}, \ 0 < r < 1}\). Initialize: \(\phi_i \sim \Unif[0, 2\pi], r_i \Unif[0, 1], e^{\nu_i} = - \ln r_i\).
+
+    \adv{clean understanding of long range vsshort range, no req of miing channels, paralleizable as \(z^t\) analy.}
+\end{definition}
