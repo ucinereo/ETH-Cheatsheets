@@ -1,16 +1,13 @@
 \section{CNN}
 
-\begin{definition}[Integral Operators]
-    Kernel \(G: \R^2 \to \R\), \(t_1, t_2 \in \R \cup \{-\infty, \infty\}\), then
+\begin{definition}[Integral Op]
+    Ker \(G: \R^2 \to \R\), \(t_1, t_2 \in \R_\infty\), then
     \((T f)(u) = \int_{t_1}^{t_2} G(u, t) f(t) \, dt\)
 \end{definition}
 
 \begin{definition}[Fourier]
-    \((\mathcal F f)(u) := \int_{-\infty}^{\infty} f(t) e^{-i 2 \pi u t} \, dt\)
-\end{definition}
-
-\begin{definition}[Convolution]
-    \((f * g)(u) := \int_{-\infty}^{\infty} g(u - t) f(t) \, dt\)
+    \((\mathcal F f)(u) = \int_\R f(t) e^{-i 2 \pi u t} \, dt\) \ \textbf{Conv}:
+    \((f * g)(u) = \int_{-\infty}^{\infty} g(u - t) f(t) \, dt\)
 \end{definition}
 
 \begin{definition}[Time-shift]
@@ -19,45 +16,41 @@
 
 \begin{theorem}[Convolution]
     \(\mathcal F(f * h) = \mathcal F f \cdot \mathcal F h\)
-    and its inverse: \(f * h = \mathcal F^{-1}((\mathcal F f) \cdot (\mathcal F h))\).
-    \adv{\(\OB(n \log n)\) for FFT} \disadv{\(m < \log n\): favor time/space}
+    \adv{\(\OB(n \log n)\) for FFT}
+    w/ inverse: \(f * h = \mathcal F^{-1}((\mathcal F f) \cdot (\mathcal F h))\).
+     \disadv{\(m < \log n\): favor time/space instead of freq}
 \end{theorem}
 
 \begin{definition}[Linear shift-equivariant]
     \(\forall f, g, \alpha, \beta: T(\alpha f + \beta g) = \alpha Tf + \beta Tg\)
-    and \((T f_\Delta)(t) = (Tf)(t + \Delta)\). \adv{Can be written as convolution}.
+    and \\ \((T f_\Delta)(t) = (Tf)(t + \Delta)\). \adv{Can \textit{always} be written as convolution}.
 \end{definition}
 
-\begin{definition}[Correlation]
+\begin{definition}[Discrete Correlation]
     \(I'(i, j) = \sum_{m=-k}^k \sum_{n=-k}^k K(m, n) I(i+m, j+n)\)
 \end{definition}
 
-\begin{definition}[Convolution]
+\begin{definition}[Discrete Convolution]
     \(I'(i, j) = \sum_{m=-k}^k \sum_{n=-k}^k I(i -m, j - n) K(m, n)\)
 
     \begin{itemize*}
         \item Corr \(\iff K(m, n) = K(-m, -n)\)
         \item Commutative
-        \item Toepliz MM
+        \item Toepliz MM \(\in \R^{(D-K+1) \times D}\)
     \end{itemize*}
-
-    Filter same depth as input map, but can stack multiple filters.
 \end{definition}
 
 \begin{definition}[CNN-formulas]
-    \(\bm{C}\)han., \(\bm{K}\)er. s., \(m = \#\)Ker., \(\bm{{D}}\)ill., \(\bm{P}\)ad, \(\bm{S}\)tride
-    \begin{itemize}
-        \item Dim: \(f(W) \times f(H) \times m\), \(f(i) = \lfloor\frac{i + 2P_i - D_i(K_i - 1) - 1}{S_i}\rfloor + 1\)
-        \item Params: \(p = (K_W \cdot K_H \cdot C + {\color{H3} 1}) \cdot m \quad ({\color{H3} \hat{=} \ \text{Bias}})\).
-        \item Receptive field increases with depth, stride and dilation.
-    \end{itemize}
+    \(\bm{C}\)hannels, \(\bm{K}\)ernel size, \(m = \#\)Kernels, \(\bm{{D}}\)ill., \(\bm{P}\)ad, \(\bm{S}\)tride
+    \begin{itemize*}
+        \item Dim: \(f(i) = \lfloor\frac{i + 2P_i - D_i(K_i - 1) - 1}{S_i}\rfloor + 1\)
+        \item Par: \(p = (K_W \cdot K_H \cdot C + {\color{H3} 1}) \cdot m \ ({\color{H3} \hat{=} \ \text{Bias}})\).
+        % \item Receptive field increases with depth, stride and dilation.
+    \end{itemize*}
 \end{definition}
 
 \begin{definition}[Backprop]
-    Kernel \(K\), input \(X\), output \(Y\), loss \(E\). \\
-    Note: \(\star\) is not commutative (\(A \star B \neq B \star A\)). \\
-    Identity: \(r_{180}(X) * \frac{\partial E}{\partial Y} = \frac{\partial E}{\partial Y} \star X\).
-
+    Kernel \(K\), input \(X\), output \(Y\), loss \(E\). Note: \(\star\) (\(A \star B \neq B \star A\)). \\
     % ROW 1: CONVOLUTION (Forward *)
     % Since forward pass flipped K, the gradient effectively "unflips" it.
     % This results in swapping the operands compared to the Correlation case.
@@ -70,6 +63,7 @@
     \(X \star K\): 
     \(\frac{\partial E}{\partial K} = X \star \frac{\partial E}{\partial Y}\), 
     \(\frac{\partial E}{\partial X} = \frac{\partial E}{\partial Y} \ast K\)
+    \textit{Useful identity}: \(r_{180}(X) * \frac{\partial E}{\partial Y} = \frac{\partial E}{\partial Y} \star X\).
 \end{definition}
 
 \begin{definition}[Max-Pool]
@@ -77,6 +71,6 @@
 \end{definition}
 
 \begin{definition}[Upsampling]
-    Nearest Neighbor(fill all with values), Bed of nails (fill upper left with value, rest 0), Max Unpooling (remember max location), Learnable Upsampling (transpose conv: filter moves stride in output for 1 in input, sum overlap).
+    Nearest Neighbor, Bed of nails (fill upper left with value, rest 0), Max Unpooling (remember max location), Learnable Upsampling (transpose conv: filter moves stride in output for input e, sum overlap).
 \end{definition}
 
