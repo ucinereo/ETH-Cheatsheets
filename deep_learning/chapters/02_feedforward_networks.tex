@@ -12,31 +12,24 @@
     \(h_\lambda[w] = h[w] + \frac{\lambda}{2} \norm{w}^2 \implies w^* = (X^\top X + \lambda I)^{-1} X^\top y\)
 \end{definition}
 
-\subsection{Logistic Regression}
-\begin{definition}[\(\vb*{\sigma}\)]
-    \(\sigma(z) = \frac{1}{1 + e^{-z}}, \sigma' = \sigma(1-\sigma), \sigma'' = \sigma'(1-2\sigma), \sigma(-z) = 1 - \sigma(z)\)
-\end{definition}
-
+\subsection{Logistic Regression (\(p(y=1 \mid x) = \sigma(w^\top x + b)\))}
 \begin{definition}[Logistic Loss]
     \(l(y, z) = -y \log \sigma(z) - (1-y) \log (1-\sigma(z))\) is negative LL of Bernoulli.
     \(l(y, z) =  -\log \sigma((2 y - 1)z)\).
 \end{definition}
-
-\begin{lemma}
-    \((\log \sigma)' = \frac{\sigma'}{\sigma} = 1 - \sigma, (\log \sigma)'' = -\sigma(1 - \sigma) < 0\).
-\end{lemma}
 
 \begin{definition}[Surrogate Loss]
     \(- \log_2 \sigma \geq \Theta\), \(\Theta\) being 0-1 loss.
 \end{definition}
 
 \subsection{Layers and Units}
-\begin{definition}[FFN]
-    \(F[\theta](x) = \phi(Wx + b), G = F^L[\theta^L] \circ \dots \circ F^1[\theta^1]\)
-\end{definition}
+% \begin{definition}[FFN]
+%     \(F[\theta](x) = \phi(Wx + b), G = F^L[\theta^L] \circ \dots \circ F^1[\theta^1]\)
+% \end{definition}
 
 \begin{definition}[Ridge Function]
-    Invariance: \(f[w, b](x) = f[w, b](x + \delta x), \forall \delta x \bot w\) w/ level set \(L_f(z) \equiv \{x: \phi(w^\top x + b) = z\}, L_f(z) \bot w\).
+    Invariance: \(f[w, b](x) = f[w, b](x + \delta x), \forall \delta x \bot w\) w/ level \(L_f(z) \equiv \{x: f(x)=\phi(w^\top x + b) = z\}, L_f(z) \bot w\).
+    \adv{Non-lin. only affect dir. \(w\)}.
 \end{definition}
 
 \begin{definition}[Unit Symmetry]
@@ -59,7 +52,7 @@
 
 \begin{definition}[Unif. Norm]
     \(\norm{f}_{\infty, K} = \sup_{x \in K} |f(x)|\), metric: \(d(f, g) = \norm{f - g}_{\infty, K}\)
-    if \(f \in C(\R)\) always bounded over compact (closed + bounded) \(K\).
+    if \(f \in C(\R)\) always bounded over compact (closed + bounded) \(K\) (approx. Interv).
 \end{definition}
 
 \begin{definition}[Approx. Err.]
@@ -84,7 +77,7 @@
 \end{theorem}
 
 \begin{theorem}[UAT]
-    MLP are universal function approximators. \adv{strong approx guarantee}, \disadv{no insight into shallow vs deep, no upper bound on \(m\) to approximate to some error \(\epsilon\)}.
+    MLP are UA. \adv{strong approx guarantee}, \disadv{no insight into shallow vs deep, no bound on \(m\) to approx. to some error \(\epsilon\)}.
 \end{theorem}
 
 \subsection{Barron's Theorem}
@@ -105,14 +98,14 @@
 \end{theorem}
 
 \subsection{ReLU Networks}
-Consider \(m\) ReLU units on fixed \(x \in \R^n\), each unit either being activate or inactive. Defines boolean activation pattern: \(\Theta(Wx + b) \in \{0, 1\}^n\), \(\Theta \equiv\) Heaviside. Can split into partition \(X_0\) and \(X_1\). If \(n = 1\), then we can only have up to \(m + 1\) intervals.
+Consider \(m\) ReLU units on fixed \(x \in \R^n\), each unit either being activate or inactive. Defines boolean pattern: \(\Theta(Wx + b) \in \{0, 1\}^n\), \(\Theta \equiv\) Heaviside. Can split partitions \(X_0\) and \(X_1\). If \(n = 1\), then only max \(m + 1\) linear intervals.
 
 \begin{theorem}[Zalavsky]
-    \(R(\mathcal H)\) connected regions of \(\R^n \setminus \mathcal H\), \(\mathcal H\) being set of \(m\) hyperplanes. Then \(R(\mathcal H) \leq \sum_{i=0}^{\min(n, m)} \binom{m}{i}\). \(=\) if in gen. pos.
+    \(R(\mathcal H)\) connected regions of \(\R^n \setminus \mathcal H\), \(\mathcal H\) being set of \(m\) hyperplanes. Then \(R(\mathcal H) \leq \sum_{i=0}^{\min(n, m)} \binom{m}{i}\). \(=\) if in {\color{orange} general position}.
 \end{theorem}
 
 \begin{theorem}[Montufar]
-    ReLU NN with \(L\) layers of width \(m > n\). Number of cells \(R(m, L) \geq R(m) \lfloor \frac m n \rfloor^{n(L-1)}\). \adv{exp. for \(m \geq 2n\). better when deep.}
+    ReLU NN with \(L\) layers of width \(m > n\). Number of cells \(R(m, L) \geq R(m) \lfloor \frac m n \rfloor^{n(L-1)}\). \adv{exponential for \(m \geq 2n\). better when deep.}
 \end{theorem}
 
 \begin{theorem}[Shektman]
@@ -120,24 +113,20 @@ Consider \(m\) ReLU units on fixed \(x \in \R^n\), each unit either being activa
 \end{theorem}
 
 \begin{theorem}[Lebesgue]
-    Piecewise linear functions with \(m\) pieces and \(n\) knots can be written as \(g(x) = ax + b + \sum_{i=1}^{m-1} x_i(x - x_i)_+\).
+    Piecewise linear functions with \(m\) pieces and \(n\) knots can be written as \(g(x) = ax + b + \sum_{i=1}^{m-1} x_i(x - x_i)_+\). (ReLU like)
 \end{theorem}
 
 \begin{theorem}[UAT]
-    Sketman, Lebesgue \(\implies\) 1 hid. lay. ReLU UA of \(C(\R)\).
+    Sketman, Lebesgue \(\implies\) 1 hidden layer ReLU UA of \(C(\R)\).
 \end{theorem}
 
 \begin{definition}[Maxout / $m$-Hinge]
     $g[W,b](x) = \max_{i=1}^m \{w_i^\top x + b_i\}$. 
-    Generalizes ReLUs; represents any continuous piecewise linear (CPWL) function.
+    Generalizes ReLUs; represents any continuous piecewise linear ({\color{H2}CPWL}) function.
 \end{definition}
 
-\begin{theorem}[Wang and Sun, 2004]
-    Every CPWL $g: \R^n \to \R$ can be written as a signed sum of $m$-Hinges with $m \leq n+1$.
-\end{theorem}
-
-\begin{theorem}[Wang, 2004]
-    Every CPWL $f$ is the difference of two polyhedral functions:
+\begin{theorem}[Wang]
+    Every {\color{H2}CPWL} $g: \R^n \to \R$ can be written as a signed sum of $m$-Hinges with $m \leq n+1$. $f$ is the diff. of two polyhedral functions:
     $f(x) = \max_{(w,b) \in \mathcal{A}^+} \{w^\top x + b\} - \max_{(w,b) \in \mathcal{A}^-} \{w^\top x + b\}$
     where $\mathcal{A}^+, \mathcal{A}^-$ are finite.
 \end{theorem}
