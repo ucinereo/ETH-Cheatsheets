@@ -6,9 +6,9 @@
 \subsection{Convergence of Gradient Descent}
 
 \begin{definition}[Setup]
-    $f(\mathbf{x}) = \frac{1}{2}\mathbf{x}^\top \mathbf{Q} \mathbf{x} - \mathbf{q} \cdot \mathbf{x}$, \(\mathbf Q \succ 0\).
-    Let $\mathbf{Q} = \U \vb*{\Lambda}\U^\top$. Change basis $\mathbf{z} = \mathbf{U}^\top \mathbf{x}$, $q = \U^\top q$ to decouple: $g_i(z) = \frac{\lambda_i}{2}z^2 - q_i z$.
-    \textbf{Shifted Loss}: $g(z) \leftarrow g(z) - g(z^*) = \frac{1}{2\lambda}(\lambda z - q)^2$ sets $f_{min}=0$.
+    $g(\mathbf{x}) = \frac{1}{2}\mathbf{x}^\top \mathbf{Q} \mathbf{x} - \mathbf{q} \cdot \mathbf{x}$, \(\mathbf Q \succ 0\).
+    $\mathbf{Q} = \U \vb*{\Lambda}\U^\top$. Basis: $\mathbf{z} = \mathbf{U}^\top \mathbf{x}$, $q = \U^\top q$ decouples: $g_i(z) = \frac{\lambda_i}{2}z^2 - q_i z$.
+    \textit{Shifted}: $g(z) \leftarrow g(z) - g(z^*) = \frac{1}{2\lambda}(\lambda z - q)^2$.
 \end{definition}
 
 \begin{theorem}
@@ -16,12 +16,12 @@
         \item \textbf{Req.}: $z_{k+1} = z_k - \eta g'(z_k)$ yields $g(z_{k+1}) = (1-\eta\lambda)^2 g(z_k)$.
         \item \textbf{Conv.}: Must have $|1-\eta\lambda| < 1$ for all $\lambda_i$, implying $\eta < 2/\lambda_{max}$.
         \item \textbf{$\eta^*$}: Minimize the "worst-case" contraction $\max_i (1-\eta\lambda_i)^2$. 
-        \item \textbf{Equilibrium}: Attained when the two extreme errors are equal: $\eta\lambda_{max} - 1 = 1 - \eta\lambda_{min} \implies \eta^* = \frac{2}{\lambda_{max} + \lambda_{min}}$.
+        \item \textbf{Equilib.}: Equal extrem error: $\eta\lambda_{max} - 1 = 1 - \eta\lambda_{min} \implies \eta^* = \frac{2}{\lambda_{max} + \lambda_{min}}$.
     \end{itemize}
 \end{theorem}
 
-\begin{definition}[Pre-conditioning]
-    Approximate Hessian $\mathbf{B} \approx \nabla^2 f(\mathbf{x})$.
+\begin{definition}[Pre-cond.]
+    Approximate Hess $\mathbf{B} \approx \nabla^2 f(\mathbf{x})$.
     \textbf{Diagonal}: $\mathbf{B} = \text{Diag}(\nabla^2 f(\mathbf{x}))$ scales coordinates to equalize curvatures.
 \end{definition}
 
@@ -32,44 +32,52 @@
 \subsection{Smoothness and Convexity}
 
 \begin{theorem}
-    \(\mu\)-strongly convex, \(L\)-smooth \(\implies\) GD with \(0 < \eta \leq 1/L\) converges at rate \(\norm{x^k - x^*}^2 \leq (1 - \mu \eta)^k \norm{x_0 - x^*}^2\).
+    \(\mu\)-SC, \(L\)-Sm: GD ({\color{H1}\(0 < \eta \leq 1/L\)}): \(\norm{x^k - x^*}^2 \leq (1 - \mu \eta)^k \norm{x_0 - x^*}^2\).
 \end{theorem}
 
 \begin{theorem}
-    convex and \(L\)-smooth, then GD with \(0 < \eta \leq 1/L\) converges at rate \(f(x^k) - f(x^*) \leq \frac{1}{2 \eta k} \norm{x^0 - x^*}^2\).
+    conv, \(L\)-Sm: GD ({\color{H1} *}): \(f(x^k) - f(x^*) \leq \frac{1}{2 \eta k} \norm{x^0 - x^*}^2\).
 \end{theorem}
 
 \begin{theorem}
-    diff, non-convex and \(L\)-smooth, then GD with \(0 < \eta \leq 1/L\) converges at rate \(\min_{0 \leq i \leq k} \norm{\nabla f(x^i)}^2 \leq \frac{2(f(x^0) - f(x^*))}{\eta (k+1)}\).
+    diff, non-conv, \(L\)-Sm: GD ({\color{H1} *}): \(\min_{0 \leq i \leq k} \norm{\nabla f(x^i)}^2 \leq \frac{2(f(x^0) - f(x^*))}{\eta (k+1)}\).
 \end{theorem}
 
 
 \begin{theorem}
-    diff, non-convex, \(L\)-smooth, PL-condition, then GD with \(0 < \eta \leq 1/L\) converges at rate \(f(x^k) - f(x^*) \leq (1 - \mu \eta)^k (f(x^0) - f(x^*))\).
+    diff, non-conv, \(L\)-Sm, PL: GD ({\color{H1} *}): 
+    \resizebox{.45\linewidth}{!}{\(f(x^k) - f(x^*) \leq (1 - \mu \eta)^k (f(x^0) - f(x^*))\).}
 \end{theorem}
 
 \subsection{Stochastic Gradient Descent}
 Assume empirical risk \(f(x) = \frac 1 n \sum_{i=1}^n f_i(x)\), s.t. \(\nabla f(x) = \frac 1 n \sum_{i=1}^n \nabla f_i (x)\).
-\vspace{-1em}
 \[x^{k+1} = k^k - \eta_k \nabla f_{I(k)}(x^k), \quad I(k) \sim \Unif(1, \ldots, n) \quad (\text{\adv{unbiased}})\]
 where \(\eta_k > 0\) decaying with \(k\).
 \(V(x) = \frac 1 n \sum_{i=1}^n \norm{\nabla f(x) - \nabla f_i(x)}^2\).
 
 \begin{definition}[Idea]
-    \resizebox{.9\linewidth}{!}{\(\E\norm{x^{k+1} - x^*}^2 = \E\norm{x^k - x^*}^2 - \underbrace{2 \eta_k \E(x^k - x^*)^\top \nabla f_i (x^k)}_{\text{Progress}} + \underbrace{\eta_k^2 \E\norm{\nabla f_i(x^k)}^2}_{\text{Variance}}\)}
+    \resizebox{.9\linewidth}{!}{\(\E\norm{x^{k+1} - x^*}^2 = \E\norm{x^k - x^*}^2 - \underbrace{2 \eta_k \E(x^k - x^*)^\top \nabla f_i (x^k)}_{\text{Progress}} + \underbrace{\eta_k^2 \E\norm{\nabla f_i(x^k)}^2}_{\text{Variance (want to reduce)}}\)}
 \end{definition}
 
 \begin{definition}[Polyak-Rupert averages]
-    \(\bar x^{k+1} = \frac{k}{k+1} \bar x^k + \frac{1}{k + 1} x^{k+1}\)
+    To minimize \(V(x)\):
+    \(\bar x^{k+1} = \frac{k}{k+1} \bar x^k + \frac{1}{k + 1} x^{k+1}.\)
+
+    \disadv{Would only do in transient phases, not from start.}
 \end{definition}
 
 \begin{theorem}
-    \(\bar x^k\) Polyak-Rupert averages, \(\eta_k \propto \frac{1}{k}\), then:
-    \begin{itemize}
-        \item \(f\) convex: \(\E f(\bar x^k) - f(x^*) \leq \OB\left(\frac{1}{\sqrt k}\right)\)
-        \item \(f\) strongly convex: \(\E f(\bar x^k) - f(x^*) \leq \OB\left(\frac{\log k}{k}\right)\)
-        \item \(f\) sc + smooth: \(\E f(\bar x^k) - f(x^*) \leq \OB\left(\frac{1}{k}\right)\)
-    \end{itemize}
+    \(\bar x^k\), \(\eta_k \propto \frac{1}{k}\), then \(\E f(\bar x^k) - f(x^*) \leq \):
+    \(\OB\left(\frac{1}{\sqrt{k}}\right)\) (if conv.),
+    \(\OB\left(\frac{\log k}{k}\right)\) (if sc.),
+    \(\OB\left(\frac{1}{k}\right)\) (if sc. + smooth). 
+    \disadv{this is worse than GD because of variance.}
+    % \textbf{Rates for SGD with decreasing step size}
+    % \begin{itemize}
+    %     \item \(f\) convex: \(\E f(\bar x^k) - f(x^*) \leq \OB\left(\frac{1}{\sqrt k}\right)\)
+    %     \item \(f\) strongly convex: \(\E f(\bar x^k) - f(x^*) \leq \OB\left(\frac{\log k}{k}\right)\)
+    %     \item \(f\) sc + smooth: \(\E f(\bar x^k) - f(x^*) \leq \OB\left(\frac{1}{k}\right)\)
+    % \end{itemize}
 \end{theorem}
 
 \begin{theorem}[Constant Step Size]
@@ -89,20 +97,21 @@ where \(\eta_k > 0\) decaying with \(k\).
 \begin{definition}[VR via SVRG]
     \(x^{k+1} = x^k - \eta \left[\nabla f_i(x^k) - \nabla f_i(\bar x) + \nabla f(\bar x)\right]\),
     where \(\bar x\) is iterate where occasional full gradient is taken.
+    \adv{exp. conv for SC + smooth}
 \end{definition}
 
 \subsection{Momentum and Adaptivity}
 
 \begin{definition}[MB-GD]
     \(\p^{(t+1)} = \p^{(t)} - \frac 1 m \nabla_\p \sum_i \L(f(\x\i; \p), y\i)\).
-    \adv{\(\downarrow V\) of SGD}
+    \adv{\(\downarrow V\) of SGD \(\propto m\)}
 \end{definition}
 
-\begin{definition}[Heavy Ball]
-    \(\theta^{k+1} = \theta^k - \eta \nabla l(\theta^k) + \beta\underbrace{(\theta^k - \theta^{k-1})}_{\text{extrapolate}}, \quad \beta \in (0, 1)\)
+\begin{definition}[Heavy Ball (Mom.)]
+    \(\theta^{k+1} = \theta^k - \eta \nabla l(\theta^k) + \beta\underbrace{(\theta^k - \theta^{k-1})}, \quad \beta \in (0, 1)\)
 \end{definition}
 
-\begin{definition}[Nesterov]
+\begin{definition}[Nesterov (Acc.)]
     \(
         \theta'^{k+1} = \theta^k + \beta(\theta^k - \theta^{k-1}), \
         \theta^{k+1} = \theta'^{k+1} - \eta \nabla l(\theta'^{k+1})
@@ -110,25 +119,26 @@ where \(\eta_k > 0\) decaying with \(k\).
 \end{definition}
 
 \begin{theorem}
-    \(f\) \(\mu\)-strongly convex, \(L\)-smooth, \(\kappa = \frac L \mu\). Then with \(\beta = \frac{\sqrt \kappa - 1}{\sqrt \kappa + 1}\):
-    \[f(x^k) - f(x^*) \leq L\left(\frac{\sqrt \kappa - 1}{\sqrt \kappa}\right)^k \norm{x^0 - x^*}^2.\]
+    \(f\) \(\mu\)-SC, \(L\)-Sm, \(\kappa = \frac L \mu\) w/ \(\beta = \frac{\sqrt \kappa - 1}{\sqrt \kappa + 1}\):
+    \resizebox{.4\linewidth}{!}{
+        \(f(x^k) - f(x^*) \leq L\left(\frac{\sqrt \kappa - 1}{\sqrt \kappa}\right)^k \norm{x^0 - x^*}^2.\)
+    }
 \end{theorem}
 
 \begin{definition}[AdaGrad]
-    Per dimension momentum: \(\gamma_i^k = \gamma_i^{k-1} + \left[\partial_i l(\theta^k)\right]^2\), and use adaptivity: \(\theta_i^{k+1} = \theta_i^k - \eta_i^k \partial_i l(\theta^k)\), \(\eta_i^k := \frac{\eta}{\sqrt{\gamma_i^k}} + \delta\)
+    \(\gamma_i^k = \gamma_i^{k-1} + \left[\partial_i l(\theta^k)\right]^2\), \(\theta_i^{k+1} = \theta_i^k - \eta_i^k \partial_i l(\theta^k)\), \(\eta_i^k := \frac{\eta}{\sqrt{\gamma_i^k}} + \delta\)
 \end{definition}
 
-\begin{definition}[RMSProp]
-    AdaGrad + exponential moving averages:
-    \(\gamma_i^k = \rho \gamma_i^{k-1} + (1 - \rho)[\partial_iL(\theta^k)]^2\), 
-    \(\theta_i^{k+1} = \theta_i^k - \eta_i^k \partial_i l(\theta^k), \eta_i^k := \frac{\eta}{\sqrt{\gamma_i^k}}\)
-\end{definition}
+% \begin{definition}[RMSProp]
+%     AdaGrad + exponential moving averages:
+%     \(\gamma_i^k = \rho \gamma_i^{k-1} + (1 - \rho)[\partial_iL(\theta^k)]^2\), 
+%     \(\theta_i^{k+1} = \theta_i^k - \eta_i^k \partial_i l(\theta^k), \eta_i^k := \frac{\eta}{\sqrt{\gamma_i^k}}\)
+% \end{definition}
 
 \begin{definition}[ADAM]
-    RMSProp + momentum:
-    \(m_i^k = \beta m_i^{k-1} + (1 - \beta) \partial_i l(\theta^k)\)
+    \(m_i^k = \beta m_i^{k-1} + (1 - \beta) \partial_i l(\theta^k)\);
     \(\gamma_i^k = \rho \gamma_i^{k-1} + (1 - \rho)[\partial_iL(\theta^k)]^2\), 
-    \(\theta_i^{k+1} = \theta_i^k - \eta_i^k m_i^k, \eta_i^k := \frac{\eta}{\sqrt{\gamma_i^k} + \delta}\)
+    \(\theta_i^{k+1} = \theta_i^k - \eta_i^k m_i^k, \eta_i^k := \frac{\eta}{\sqrt{\gamma_i^k} + \delta}\). \disadv{might not converge on convex functions}.
 \end{definition}
 
 \begin{definition}[AMSGrad]
