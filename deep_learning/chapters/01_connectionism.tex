@@ -2,9 +2,7 @@
 
 \begin{definition}[MP Neuron]
     \(\x \in \{0, 1\}^n, \sig \in \{-1, +1\}^n, \theta \in \R\):
-    \[f[\sig, \theta](\x) = \begin{cases}
-        1, & \sig \cdot \x \geq \theta \\ 0 & \text{otw.}
-    \end{cases}\]
+    \(f[\sig, \theta](\x) = \vb{1}\{\sig \cdot \x \geq \theta\}\)
 \end{definition}
 
 \begin{definition}[Thresh. Unit]
@@ -13,32 +11,34 @@
 \end{definition}
 
 \begin{definition}[Hesse]
-    \(\x \cdot \w + b \overset{!}{=} 0 \iff \frac{\x \cdot \w}{\norm{\w}} + \frac{b}{\norm{\w}} = 0\), \(\n = \frac{\w}{\norm{\w}}\). \(- b / \norm{\w}\) d. to origin.
+    \(\x \cdot \w + b \overset{!}{=} 0 \iff \frac{\x \cdot \w}{\norm{\w}} + \frac{b}{\norm{\w}} = 0\), \(\n = \frac{\w}{\norm{\w}}\). \(- b / \norm{\w}\) dist. to origin.
 \end{definition}
 
 \begin{definition}[Geometric Margin]
-    sign dist: \(\gamma[\w, b](\x, y) := \frac{y(\x \cdot \w + b)}{\norm{\w}}\). Correct if: \[f[\w, b](\x) = y \iff \sign(\x \cdot \w + b) = y \iff \sign(\gamma) = 1 \iff \gamma > 0\].
+    sign dist: \({\color{H2}\gamma[\w, b](\x, y)} := \frac{y(\x \cdot \w + b)}{\norm{\w}}\). Correct if: \[f[\w, b](\x) = y \iff \sign(\x \cdot \w + b) = y \iff \sign({\color{H2}\gamma}) = 1 \iff {\color{H2}\gamma} > 0\].
 \end{definition}
 
 \vspace{-1em}
 \begin{definition}[Classifier Margin]
-    \(\gamma[\w, b](S) := \min_{(\x, y) \in S} \gamma[\w, b](\x, y)\)
+    \({\color{H3}\gamma[\w, b](S)} := \min_{(\x, y) \in S} {\color{H2}\gamma[\w, b](\x, y)}\)
 \end{definition}
 
 \begin{definition}[Max Margin]
-    \(\argmax{\w, b} \gamma[\w, b](S)\). \adv{unique up to positive scaling}.
+    \(\argmax{\w, b} {\color{H3}\gamma[\w, b](S)}\). \adv{unique up to positive scaling}.
 \end{definition}
 
 \begin{definition}[Version Space]
     \(\VS(S) = \{\theta \mid \forall (\x, y) \in S: f[\theta](\x) = y\} \neq \emptyset \implies\) Sep. \(S\)
 \end{definition}
 
-\begin{definition}[Perceptron Learning]
-    \(f[\w, b](\x) \neq y \implies \w \mathrel{+}= y\x, b \mathrel{+}= y\). If \(\w^0 \in \text{span}\{\x_1, \ldots, \x_s\} \implies \w^t \in \text{span}\{\x_1, \ldots, \x_s\}\).
+\begin{definition}[Perc. Learn.]
+    \resizebox{.80\linewidth}{!}{
+    \(f[\w, b](\x) \neq y \implies \w \mathrel{+}= y\x, b \mathrel{+}= y\). \(\w^0 \in \text{span}\{\x_i\} \implies \w^t \in \text{span}\{\x_i\}\).
+    }
 \end{definition}
 
 \begin{lemma}
-    \(\gamma[\w](S) = \gamma > 0, \norm{\w} = 1 \implies \w^t \cdot \w \geq t \gamma\).
+    \({\color{H3}\gamma[\w](S)} = {\color{H3}\gamma} > 0, \norm{\w} = 1 \implies \w^t \cdot \w \geq t {\color{H3}\gamma}\).
 \end{lemma}
 
 \begin{lemma}
@@ -46,42 +46,49 @@
 \end{lemma}
 
 \begin{theorem}[Navikoff]
-    \(S\) is \(\gamma\)-sep \(\implies\) conv. in at most \(\lfloor R^2 / \gamma^2\rfloor\) steps.
+    \(S\) is \({\color{H3}\gamma}\)-sep \(\implies\) converges in at most \(\lfloor R^2 / {\color{H3}\gamma}^2\rfloor\) steps.
 \end{theorem}
 
-\vspace{-1em}
-\begin{proof}
-    \(\cos(\w, \w^t) = \frac{\w \cdot \w^t}{\norm{\w^t}} \geq \frac{t \gamma}{\sqrt t R} = \sqrt t \frac{\gamma}{R} \overset{!}{\leq}1 \)
-\end{proof}
+% \begin{proof}
+%     \(\cos(\w, \w^t) = \frac{\w \cdot \w^t}{\norm{\w^t}} \geq \frac{t {\color{H3}\gamma}}{\sqrt t R} = \sqrt t \frac{{\color{H3}\gamma}}{R} \overset{!}{\leq}1 \)
+% \end{proof}
 
-\begin{definition}[Lin. Class.]
-    \(S \subset \R^n: C(S, n) = \lvert \{y \in \{-1, +1\}^s \mid \exists \w \in \R^n: \forall (\x, y) \in S: y(\x \cdot \w) > 0\} \rvert\). Require general pos: \(\forall \Xi \subseteq X, \lvert \Xi \rvert \leq n: \Xi\) lin. indep.
+\begin{definition}[\#Classes]
+    \resizebox{.85\linewidth}{!}{
+    \(S \subset \R^n: C(S, n) = \lvert \{y \in \{-1, +1\}^s \mid \exists \w \in \R^n: \forall (\x, y) \in S: y(\x \cdot \w) > 0\} \rvert\).
+    }
+    Require general pos: \(\forall \Xi \subseteq X, \lvert \Xi \rvert \leq n: \Xi\) lin. indep.
 \end{definition}
 
 \begin{theorem}[Covers]
-    \(C(s+1, n) = 2 \sum_{i=0}^{n-1}\binom{s}{i}\). Recurrence: \(C(s+1, n) = \underbrace{2 \cdot C(s, n-1)}_{\text{Split (both labels)}} + \underbrace{1 \cdot \big( C(s, n) - C(s, n-1) \big)}_{\text{Unsplit (one label)}} = C(s, n) + C(s, n-1)\)
+    Number of possible labelings:
+    \(C(s+1, n) = 2 \sum_{i=0}^{n-1}\binom{s}{i}\). Rec:
+    \resizebox{\linewidth}{!}{
+    \(C(s+1, n) = \underbrace{2 \cdot C(s, n-1)}_{\text{Split (both labels)}} + \underbrace{1 \cdot \big( C(s, n) - C(s, n-1) \big)}_{\text{Unsplit (one label)}} = C(s, n) + C(s, n-1)\)
+    }
 \end{theorem}
 
 \begin{theorem}
-    \(\frac{C(s, n)}{2^s} = \begin{cases}
-        1, & s \leq n \\
-        1 - \OB(e^{-n}), & n < s < 2n \\
-        1/2, & s = 2n \\
-        \OB(e^{-n}), & \text{otw.}
-    \end{cases}\)
+    \(\frac{C(s, n)}{2^s} = \{ 1 \ (s \leq n); 1 - \OB(e^{-n}) (n < s < 2n); \frac{1}{2} (s=2n); \OB(e^{-n}) \ (\text{otw})\)
+    % \(\frac{C(s, n)}{2^s} = \begin{cases}
+    %     1, & s \leq n \\
+    %     1 - \OB(e^{-n}), & n < s < 2n \\
+    %     1/2, & s = 2n \\
+    %     \OB(e^{-n}), & \text{otw.}
+    % \end{cases}\)
 \end{theorem}
 
 \begin{definition}[Delta Learning]
-    \(\Delta w_{ij} = \eta \delta_i \phi'(w_i \cdot \x_j)\), \(\delta_i := (y_i - \phi_i)\), \(\eta > 0\). Derived by square loss: \(l = \frac{1}{2} \sum_{i=1}^n (\phi_i - y_i)^2, \phi_i := \phi(w_i \cdot \x)\) \(\equiv\) SGD.
+    Function \(f[W, b](x) = \phi(Wx + b)\).
+    \(\Delta w_{ij} = \eta \delta_i \phi'(w_i \cdot \x_j)\), \(\delta_i := (y_i - \phi_i)\), \(\eta > 0\). Derived: \(l = \frac{1}{2} \sum_{i=1}^n (\phi_i - y_i)^2, \phi_i := \phi(w_i \cdot \x)\) \(\equiv\) SGD.
 \end{definition}
 
 \subsection{Hopfield Networks}
 
-Energy function: \(E(X) = - \frac{1}{2} \sum_{i \neq j} w_{ij} X_i X_j + \sum_i b_i X_i, X_i \in \{\pm 1\}.\) with constraint \(w_{ij} = w_{ji}\) and \(w_{ii}\) = 0. Hopfield network follow dynamics: \(X_i \gets \begin{cases}
-    +1, & E(\ldots, X_{i-1}, 1, X_{i+1}, \ldots) \leq E(\ldots, X_{i-1}, -1, X_{i+1}, \ldots) \\ -1, & \text{otw.}
-\end{cases}\)
+\textbf{Energy Function}: \(E(X) = - \frac{1}{2} \sum_{i \neq j} w_{ij} X_i X_j + \sum_i b_i X_i, X_i \in \{\pm 1\}.\) with constraint \(w_{ij} = w_{ji}\) and \(w_{ii}\) = 0.
+Dynamics: \(X_i \gets 1\) if \(E(X_i = 1) \leq E(X_i = -1)\).
 
-Can be be updated synchronously or asynchronously. Energy always decreases or stays the same. Converges to local minimum.
+Can be be updated \textit{synchronously} or \textit{asynchronously}. Energy always decreases or stays the same. Converges to local minimum.
 
 \begin{definition}[Effective Field]
     \(H_i := \sum_j w_{ij} X_j - b_i\). Update: \(X_i \gets \sign(H_i) \setminus \{0\}\).
@@ -100,5 +107,5 @@ Can be be updated synchronously or asynchronously. Energy always decreases or st
     Assume iid random signs, $n \to \infty$. By CLT, $C_i^t \sim \mathcal{N}(0, \frac{s}{n})$.
     \textit{Intuition: Sum of $n(s-1)$ independent $\pm \frac{1}{n}$ terms $\Rightarrow$ Var $\approx \frac{ns}{n^2} = \frac{s}{n}$.}
 
-    Requireing a pattern to be retrieved with high porobability: \(s \leq \frac{n}{2 \log_2 n}\)
+    Requiering a pattern to be retrieved with high porobability: \(s \leq \frac{n}{2 \log_2 n}\)
 \end{definition}
