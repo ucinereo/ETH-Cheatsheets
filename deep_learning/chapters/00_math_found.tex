@@ -1,0 +1,121 @@
+\section{Mathematical Foundations}
+\subsection{Probability Theory}
+
+\begin{colored}
+    \textbf{Expectation Dump}
+
+    \begin{itemize*}
+        \item \(\E[\vb{A}\X + \vb{B}\Y + \vb{b}] = \E[\vb{A}\X] + \E[\vb{B}\Y] + \vb{b}\)
+        \item \(\E[\X\Y^\top] = \E[\X] \E[\Y]^\top\) if \(\X \bot \Y\)
+        \item \textbf{LOTUS} \(\E[f(\X)] = \int_{\X(\Omega)} f(\x)p(\x)\,d\x\)
+        \item \textbf{TOWER} \(\E_{\Y} [\E_{\X}[\X \mid \Y]] = \E[\X]\)
+    \end{itemize*}
+\end{colored}
+
+\begin{colored}
+    \textbf{Independence}
+    \begin{itemize*}
+    \item \(\X\bot\Y \iff p(\x\y) = p(\x)p(\y) \iff p(\x \mid y) = p(\x) \)
+
+    \item \(\X\bot\Y\mid\Z \iff p(\x, \y \mid \z) = p(\x\mid\z) p(\y \mid \z)
+    \iff p(\x \mid \y, \z) = p(\x \mid \z)\)
+    \end{itemize*}
+    
+\end{colored}
+
+\begin{colored}
+    \textbf{Variance}
+    \(\Cov[\X, \Y] = \E[(\X - \E[\X])(\Y - \E[\Y])^\top]\);
+    \(\Var[\vb{A}\X + \vb{b}] = \vb{A}\Var[\X]\vb{A}^\top\);
+    \(\Var[\X + \Y] = \Var[\X] + \Var[\Y] + 2 \Cov[\X, \Y]\)
+\end{colored}
+
+\begin{definition}[Gauss]
+    \(p(\x) = \frac{\exp\left(-\frac{1}{2}(\x - \m)^\top \S^{-1}(\x - \m)\right)}{(2 \pi)^{n/2} \sqrt{\vert\S\vert}}\), \todo{add special cases}
+\end{definition}
+
+\begin{lemma}
+    \(\ln p(\x) = -\frac{1}{2}\x^\top \mathbf{A} \x + \mathbf{b}^\top \x + \text{const} \implies x \sim \Normal(\A^{-1}\vb{b}, \A^{-1})\)
+\end{lemma}
+
+\begin{definition}[Cond]
+    \(\mu_{B|A} = \mu_B + \Sigma_{BA}\Sigma_{AA}^{-1}(x_A - \mu_A), \quad \Sigma_{B|A} = \Sigma_{BB} - \Sigma_{BA}\Sigma_{AA}^{-1}\Sigma_{AB}\)
+\end{definition}
+
+\begin{lemma}[Push-Through]
+    \(X^\top (\sigma^2 I_n + XX^\top)^{-1} = (\sigma^2 I_d + X^\top X)^{-1} X^\top\).
+    \adv{weight-space (\(d \times d\)) and function-space (\(n \times n\)) inversions.}
+\end{lemma}
+
+
+\subsection{Divergences}
+\resizebox{\linewidth}{!}{
+    \(D_{KL}(P \Vert Q) = \int_x p(x) \log \frac{p(x)}{q(x)} = \E_x\left[\log\frac{p(x)}{q(x)}\right]\);
+    \(D_{JS}(P \Vert Q) = \frac 1 2 D_{KL}(p \Vert \frac{p+q}{2})+ \frac 1 2 D_{KL}(q \Vert \frac{p + q}{2})\)
+}
+
+\subsection{Calculus , Smoothness \& Convexity}
+
+\begin{theorem}
+    \((f \cdot g)'(x) = f'(x) \cdot g(x) + f(x) \cdot g'(x)\);
+    \(\left(\frac{f}{g}\right)'(x) = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}\)
+\end{theorem}
+
+\begin{definition}[Directional Derivative]
+    \(\lim_{\lambda \to 0} \frac{f(x + \lambda v) - f(x)}{\lambda} = \mathcal{J}_f(x)^\top v\).
+\end{definition}
+
+\begin{theorem}
+    \(\int_a^b f(x) g'(x) \, dx = (f \cdot g)\vert_a^b - \int_a^b f'(x) g(x) \, dx\);
+\end{theorem}
+
+\begin{definition}[Convex]
+    \(f(\lambda x + (1 - \lambda)x') \leq \lambda f(x) + (1 - \lambda)f(x')\);
+    If diff: \(f(x) \geq f(x') + \nabla f(x')^\top(x - x')\);
+    Twice diff: \(\nabla^2 f(x) \succeq 0\);
+    \textit{strict if}: \((\geq, \leq \succeq) \to (>, <, \succ)\).
+\end{definition}
+
+\begin{definition}[\(\mu\)-Strongly Convex]
+    \(\forall x, y: f(x) \geq f(y) + \nabla f(y)^\top (x - y) + \frac \mu 2 \norm{x - y}_2^2\)
+\end{definition}
+
+\begin{definition}[\(L\)-Smooth]
+    \resizebox{.85\linewidth}{!}{
+    \(\forall x, y: \norm{\nabla f(x) - \nabla f(y)} \leq L \norm{x - y}\); \(f(x) \leq f(y) + \nabla f(y)^\top (x - y) + \frac{L}{2} \norm{x - y}_2^2\)
+    }
+\end{definition}
+
+\begin{definition}[Lipschitz Continuity]
+    \(\forall x, y: \norm{f(x) - f(y)} \leq L \norm{x - y}\)
+\end{definition}
+
+\begin{theorem}
+    \(\mu \I \preceq \nabla^2 f \preceq L \I \iff f\) is \(\mu\)-strongly convex and \(L\)-smooth.
+\end{theorem}
+
+\begin{lemma}
+    \(f\) diff and \(L\)-smooth: \(f(x) - f(x^*) \geq \frac{1}{2L} \norm{\nabla f(x)}^2\).
+\end{lemma}
+
+\begin{definition}[PL-condition]
+    \(\frac{1}{2} \norm{\nabla f(x)}^2 \geq \mu(f(x) - f^*)\). \(f\) \(\mu\)-str. conv. \(\implies\) PL.
+\end{definition}
+
+\subsection{Activation Functions and Losses}
+
+\begin{definition}
+    \(\sigma(x) = \frac{1}{1 + e^{-x}} = \frac{e^x}{e^x + 1}\), \(\partial_x \sigma(x) = \sigma(x) \odot (1 - \sigma(x))\), \((\log \sigma)' = \frac{\sigma'}{\sigma} = 1-\sigma\).
+\end{definition}
+
+\begin{definition}[Tanh]
+    \(\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} = 2\sigma(2x) - 1\), \(\partial_x \tanh(x) = 1 - \tanh^2(x)\)
+\end{definition}
+
+\begin{definition}[Relu]
+    \(f(x) = \max(0, x)\), \(\partial_x f(x) = 0\), if \(x < 0\), else \(1\)
+\end{definition}
+
+\begin{definition}[Softmax]
+    \(sm(\eta_i) = \frac{\exp\eta_i}{\sum_k \exp \eta_k}\), \(J = \text{diag} (\vb p) - \vb p \vb p^\top\) for \(\vb p = sm(\vb*{\eta})\).
+\end{definition}

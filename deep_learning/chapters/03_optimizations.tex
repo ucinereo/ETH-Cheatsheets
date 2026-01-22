@@ -30,33 +30,10 @@
 \end{definition}
 
 \subsection{Smoothness and Convexity}
-\begin{definition}[\(L\)-Smooth]
-    \(\forall x, y: \norm{\nabla f(x) - \nabla f(y)} \leq L \norm{x - y}\)
-\end{definition}
-
-\begin{definition}[Lipschitz Continuity]
-    \(\forall x, y: \norm{f(x) - f(y)} \leq L \norm{x - y}\)
-\end{definition}
-
-\begin{definition}[\(\mu\)-Strongly Convex]
-    \(\forall x, y: f(y) \geq f(x) + \nabla f(x)^\top (y - x) + \frac \mu 2 \norm{y - x}^2\)
-\end{definition}
-
-\begin{theorem}
-    \(f\) diff, then smoothness can be restated as: \\ \(\forall x, y: f(y) \leq f(x) + \nabla f(x)^\top (y - x) + \frac L 2 \norm{y - x}^2\).
-\end{theorem}
-
-\begin{theorem}
-    \(\mu \I \preceq \nabla^2 f \preceq L \I \iff f\) is \(\mu\)-strongly convex and \(L\)-smooth.
-\end{theorem}
 
 \begin{theorem}
     \(\mu\)-strongly convex, \(L\)-smooth \(\implies\) GD with \(0 < \eta \leq 1/L\) converges at rate \(\norm{x^k - x^*}^2 \leq (1 - \mu \eta)^k \norm{x_0 - x^*}^2\).
 \end{theorem}
-
-\begin{lemma}
-    \(f\) diff and \(L\)-smooth: \(f(x) - f(x^*) \geq \frac{1}{2L} \norm{\nabla f(x)}^2\).
-\end{lemma}
 
 \begin{theorem}
     convex and \(L\)-smooth, then GD with \(0 < \eta \leq 1/L\) converges at rate \(f(x^k) - f(x^*) \leq \frac{1}{2 \eta k} \norm{x^0 - x^*}^2\).
@@ -66,9 +43,6 @@
     diff, non-convex and \(L\)-smooth, then GD with \(0 < \eta \leq 1/L\) converges at rate \(\min_{0 \leq i \leq k} \norm{\nabla f(x^i)}^2 \leq \frac{2(f(x^0) - f(x^*))}{\eta (k+1)}\).
 \end{theorem}
 
-\begin{definition}[PL-condition]
-    \(\frac{1}{2} \norm{\nabla f(x)}^2 \geq \mu(f(x) - f^*)\).
-\end{definition}
 
 \begin{theorem}
     diff, non-convex, \(L\)-smooth, PL-condition, then GD with \(0 < \eta \leq 1/L\) converges at rate \(f(x^k) - f(x^*) \leq (1 - \mu \eta)^k (f(x^0) - f(x^*))\).

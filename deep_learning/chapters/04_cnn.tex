@@ -41,7 +41,7 @@
         \item Toepliz MM
     \end{itemize*}
 
-    Fitler same depth as input map, but can stack multiple filters.
+    Filter same depth as input map, but can stack multiple filters.
 \end{definition}
 
 \begin{definition}[CNN-formulas]
@@ -53,20 +53,23 @@
     \end{itemize}
 \end{definition}
 
-% \begin{definition}[Backprop]
-%     \(\delta\l{l-1}_{i, j} = \sum_{i'}\sum_{j'}\delta_{i', j'}\l l w_{i'-i, j'-j}\l l = \delta\l l \ast \ROT(W\l l)\)
-% \end{definition}
-
-% \begin{definition}[Update]
-%     \(\frac{\partial L}{\partial w_{m, n}\l l} = \sum_i \sum_j \delta_{i, j} \l l z_{i-m, j-n}\l{l -1} = \delta\l l \ast \ROT(\Z\l{l-1})\)
-% \end{definition}
-
 \begin{definition}[Backprop]
-    Kernel \(K\), input \(X\), output \(Y\), loss \(E\):
+    Kernel \(K\), input \(X\), output \(Y\), loss \(E\). \\
+    Note: \(\star\) is not commutative (\(A \star B \neq B \star A\)). \\
+    Identity: \(r_{180}(X) * \frac{\partial E}{\partial Y} = \frac{\partial E}{\partial Y} \star X\).
 
-    \(X \ast K\): \(\frac{\partial E}{\partial K} = \frac{\partial E}{\partial Y} \star X = r_{180}(X \star \frac{\partial E}{\partial Y})\), \(\frac{\partial E}{\partial X} = \frac{\partial E}{\partial Y} \star K = \frac{\partial E}{\partial Y} \ast r_{180}(K) \)
+    % ROW 1: CONVOLUTION (Forward *)
+    % Since forward pass flipped K, the gradient effectively "unflips" it.
+    % This results in swapping the operands compared to the Correlation case.
+    \(X \ast K\): 
+    \(\frac{\partial E}{\partial K} = \frac{\partial E}{\partial Y} \star X = r_{180}(X \star \frac{\partial E}{\partial Y})\), 
+    \(\frac{\partial E}{\partial X} = \frac{\partial E}{\partial Y} \star K\)
 
-    \(X \star K\): \(\frac{\partial E}{\partial K} = \frac{\partial E}{\partial Y} \star X = r_{180}(X \star \frac{\partial E}{\partial Y})\), \(\frac{\partial E}{\partial X} = \frac{\partial E}{\partial Y} \ast K = \frac{\partial E}{\partial Y} \star r_{180}(K)\)
+    % ROW 2: CORRELATION (Forward star)
+    % Standard DL formulas. Input X is correlated with Error dE/dY.
+    \(X \star K\): 
+    \(\frac{\partial E}{\partial K} = X \star \frac{\partial E}{\partial Y}\), 
+    \(\frac{\partial E}{\partial X} = \frac{\partial E}{\partial Y} \ast K\)
 \end{definition}
 
 \begin{definition}[Max-Pool]
