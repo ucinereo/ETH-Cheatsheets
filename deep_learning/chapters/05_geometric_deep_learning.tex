@@ -6,16 +6,16 @@
 
 \begin{definition}[Group]
     Set \(\mathfrak{G}\) with composition \(\circ: \G \times \G \to \G\), satisfying:
-    \begin{itemize}
+    \begin{itemize*}
         \item Associativity: \(\forall \gg, \hg, \fg \in \G: (\gg\hg)\fg = \gg(\hg\fg)\).
         \item Identity: \(\exists\) unique \(\eg \in \G \forall \gg: \eg\gg = \gg\eg = \gg\).
         \item Inverse: \(\forall \gg \exists\) unique \(\gg^{-1}: \gg\gg^{-1} = \gg^{-1}\gg = \eg\)
         \item Closure: \(\forall \gg, \hg \in \G: \gg\hg \in \G\).
-    \end{itemize}
+    \end{itemize*}
 \end{definition}
 
 \begin{definition}[Signal Space]
-    \(\DX(\Omega, \mathcal{C}) := \{x: \Omega \to \mathcal C\}\) space of \(\mathcal C\)-valued signals on set \(\Omega\). Induces linear structure.
+    \(\DX(\Omega, \mathcal{C}) := \{x: \Omega \to \mathcal C\}\). Induces linear structure.
 \end{definition}
 
 \begin{definition}[Action]
@@ -23,7 +23,7 @@
 \end{definition}
 
 \begin{definition}[Representation]
-    Represent linear actions of \(\G\) via \(\rho: \G \to \R^{n \times n}\), assing invertible matrix \(\rho(\gg)\) and satisfying \(\rho(\gg\hg) = \rho(\gg) \rho(\hg)\). Again, stated \(\rho(\gg)x(u) = x(\gg^{-1} u)\) and \((\rho(\gg)(\rho(\hg)x))(u) = (\rho(\gg\hg)x)(u)\).
+    Actions of \(\G\) via \(\rho: \G \to \R^{n \times n}\), assigning invertible \(\rho(\gg)\) w/ \(\rho(\gg\hg) = \rho(\gg) \rho(\hg)\). \(\rho(\gg)x(u) = x(\gg^{-1} u)\), \((\rho(\gg)(\rho(\hg)x))(u) = (\rho(\gg\hg)x)(u)\).
 \end{definition}
 
 \begin{definition}[\(\G\)-invariance]
@@ -40,16 +40,15 @@
     \end{itemize}
 \end{colored}
 
-\begin{tabularx}{\linewidth}{XXX}
-\textbf{Architecture} & \textbf{Domain} & \textbf{Symmetry} $\mathfrak{G}$ \\
+\resizebox{\linewidth}{!}{
+\begin{tabular}{lll|lll}
+\textbf{Arch} & \textbf{Dom} & \textbf{Symm} & \textbf{Arch} & \textbf{Dom} & \textbf{Symm} \\
 \hline
-CNN & Grid & Translation \\ \hline
-Spherical CNN & Sphere / SO(3) & Rotation SO(3) \\ \hline
-Deep Sets & Set & Permutation $\Sigma_n$ \\ \hline
-GNN & Graph & Permutation $\Sigma_n$ \\ \hline
-Transformer & Complete Graph & Permutation $\Sigma_n$ \\ \hline
-LSTM & 1D Grid & Time warping \\ \hline
-\end{tabularx}
+CNN & Grid & Trans. & Spher. CNN & Sphere / SO(3) & Rot. SO(3) \\
+Deep Sets & Set & Perm $\Sigma_n$ & GNN & Graph & Perm $\Sigma_n$ \\
+Transf. & Com. Gr. & Perm $\Sigma_n$ & LSTM & 1D Grid & Time Warp \\
+\end{tabular}
+}
 
 \begin{definition}[5-Gs]
     Grids, Groups, Graphs, Geodesics, Gauges.
@@ -68,46 +67,41 @@ Set domain \(V\) with \(\X = (\x_1, \ldots, \x_n)^\top \in \R^{n\times d}\), \(\
 
 \subsection{Graph Neural Networks}
 Graph \(G = (V, E, \A)\) w/ \(a_{ij} > 0\) if \((i, j) \in E\), else \(0\).
-Rest assumes \textbf{undirected weighted graph}.
+\textit{Assume undirected graph.}
 
 \begin{definition}[Canonical Graph]
     \(G_o = (V, E_0)\) with \(E_o = \{(i, j) \in E \mid i < j\}\).
 \end{definition}
 
-\begin{definition}[Incidence matrix]
-    \(\B \in \R^{|E_o| \times |V|}\) defined for edge \(e = (i, j) \in E_o\) by \(b_{e, v} = 1\) if \(v = i\), \(-1\) if \(v = j\), else \(0\).
+\begin{definition}[Incidence]
+    \(\B \in \R^{|E_o| \times |V|}\), \(e = (i, j) \in E_o\): \(b_{e, v} = 1\) if \(v = i\), \(-1\) if \(v = j\); el \(0\).
 \end{definition}
 
-\begin{definition}[Degree Matrix]
-    \(\DM = \text{diag}(d_i)\) with \(d_i = \sum_j a_{ij}\).
-\end{definition}
-
-\begin{definition}[Edge Weight Matrix]
-    \(\A_e = \text{diag}(a_e)\) with \(a_e = a_{ij}\).
+\begin{definition}[Deg]
+    \(\DM = \text{diag}(d_i)\) w/ \(d_i = \sum_j a_{ij}\).
+    \textbf{Edge Weight}:
+    \(\A_e = \text{diag}(a_e)\) w/ \(a_e = a_{ij}\).
 \end{definition}
 
 \begin{lemma}
-    \begin{itemize}
+    \begin{itemize*}
         \item \(\B^\top \A_e \B = \DM - \A\)
-        \item \(G\) unweighted \(\iff\) \(\A_e\) identity
-        \item \(G\) undirected \(\iff\) \(\A = \A^\top\).
-    \end{itemize}
+        \item \(G\) {\color{H1}unweight}. \(\iff\) \(\A_e = \I\)
+        \item \(G\) undir. \(\iff\) \(\A = \A^\top\).
+    \end{itemize*}
 \end{lemma}
 
-\begin{definition}[Invariance for UWG]
-    \(f(\PM\X, \PM\A\PM^\top) = f(\X, \A)\)
-\end{definition}
-
-\begin{definition}[Equivariance for UWG]
+\begin{definition}[In-/Equivar. for {\color{H1}UWG}]
+    \(f(\PM\X, \PM\A\PM^\top) = f(\X, \A)\);
     \(f(\PM\X, \PM\A\PM^\top) = \PM f(\X, \A)\)
 \end{definition}
 
 \begin{definition}[Neighborhood]
-    \(\Normal_i := \{j : (i, j) \in E\}\), \(\X_{(\Normal_i)} = \multiset{\x_i: j \in \Normal_i}\)
+    \(\Normal_i := \{j : (i, j) \in E\}\), \(\X_{(\Normal_i)} = \multiset{\x_i: j \in \Normal_i}\) (multiset)
 \end{definition}
 
 \begin{definition}[Layer]
-    \(\phi(\x_i, \X_{(\Normal_i)})\) perm. inv. in \(\X_{(\Normal_i)}\). \(f(\X, \A) = [\phi(\x_i, \X_{(\Normal_i)})]_i\)
+    \(\phi(\x_i, \X_{(\Normal_i)})\) perm. inv. in \(\X_{(\Normal_i)}\): \(f(\X, \A) = [\phi(\x_i, \X_{(\Normal_i)})]_i\)
 \end{definition}
 
 \begin{definition}[Equivariant Layer]
@@ -127,13 +121,13 @@ Rest assumes \textbf{undirected weighted graph}.
     \(z_i = \phi\left(\x_i, \sum_{j \in \Normal_i} \psi(\x_i, \x_j)\right)\).
 \end{definition}
 
-\begin{definition}[Weisfeiler-Lehman Test]
-    Test if two graphs are non-isomorphic by iteratively aggregating node features from neighbors and hashing them to new features. If after some iterations the multisets of node features differ, the graphs are non-isomorphic. NP-hard to decide in general.
-\end{definition}
+% \begin{definition}[Weisfeiler-Lehman Test]
+%     Test if two graphs are non-isomorphic by iteratively aggregating node features from neighbors and hashing them to new features. If after some iterations the multisets of node features differ, the graphs are non-isomorphic. NP-hard to decide in general.
+% \end{definition}
 
-\begin{theorem}[Aggregators]
-    In order to discriminate multisets of size \(n\), whose underlying set is \(\R\), at least \(n\) aggregators are needed.
-\end{theorem}
+% \begin{theorem}[Aggregators]
+%     In order to discriminate multisets of size \(n\), whose underlying set is \(\R\), at least \(n\) aggregators are needed.
+% \end{theorem}
 
 \subsection{Spectral Graph Theory (\(n := |V|, m := |E_o|\))}
 
@@ -154,14 +148,14 @@ Rest assumes \textbf{undirected weighted graph}.
 \end{definition}
 
 \begin{theorem}
-    \([\LM \vb f]_i = [\B^\top \A_e \B \vb f] = \sum_{j \in \Normal_i} a_{ij}(f_i - f_j)\) and \(\vb f^\top \LM \vb f = \norm{\grad \vb f}^2 = \sum_{ij} a_{ij} (f_i - f_j)^2\). \(\LM\) is symmetric positive semi-definite with eigenvalues \(0 = \lambda_1 \leq \lambda_2 \leq \ldots \leq \lambda_n\).
+    \([\LM \vb f]_i = [\B^\top \A_e \B \vb f] = \sum_{j \in \Normal_i} a_{ij}(f_i - f_j)\) and \(\vb f^\top \LM \vb f = \norm{\grad \vb f}^2 = \sum_{ij} a_{ij} (f_i - f_j)^2\). \(\LM\) is SPSD with EV \(0 = \lambda_1 \leq \lambda_2 \leq \ldots \leq \lambda_n\).
     Hence \(\LM = \U \Lambda \U^\top\) and columns of \(\U\) form orthonormal basis of eigenvectors in fourier domain.
 \end{theorem}
 
 \begin{definition}[Spectral Graph Convolution]
     \(\h *_G \x := \U \text{diag}(\hat \h) \U^\top \x\), but requires eigenvalues of decomposition. Hence just want \(\h *_G \x = \U h(\Lambda) \U^\top \x = h(\LM)\x\).
 
-    For efficiency, use polynomial filters \(h(\lambda) = \sum_{k=0}^K \theta_k \lambda^k\) (Chebyshev polynomials) or \(h(\lambda) = \theta (1 - \lambda)\) (first-order approx.).
+    For efficiency, use \(h(\lambda) = \sum_{k=0}^K \theta_k \lambda^k\) (Chebyshev poly.) or \(h(\lambda) = \theta (1 - \lambda)\).
 
     In practice, learn \(C_{in} C_{out}\) poly kernels and use \(\x_{c'} = \sum_{c=1}^{C_{in}} p_{c', c}(\LM)\x_c + b_{c'}\vb{1}\) with \(C_{in}C_{out}(K+1)+C_{out}\) params.
 \end{definition}
@@ -172,7 +166,7 @@ Rest assumes \textbf{undirected weighted graph}.
 
 \begin{definition}[Data Representation]
     Data matrix $\mathbf{X} \in \mathbb{R}^{d \times n}$ where $n$ = nodes, $d$ = channels.
-    \textbf{Propagation}: $\mathbf{X}^{l+1} = \sigma(\mathbf{W}^l \mathbf{X}^l \mathbf{Q})$ where $\mathbf{Q}$ couples node activities.
+    \textbf{Propagation}: $\mathbf{X}^{l+1} = \sigma(\mathbf{W}^l \mathbf{X}^l \mathbf{Q})$ where $\mathbf{Q}$ couples node activities. Note that \(\mathbf{W}\mathbf{X}\) sum over channels, \(\mathbf{X}\mathbf{Q}\) over nodes.
 \end{definition}
 
 \begin{definition}[Normalized Graph Laplacian]
@@ -189,6 +183,6 @@ Rest assumes \textbf{undirected weighted graph}.
 \end{definition}
 
 \begin{theorem}[Spectral Filtering]
-    Using $\mathbf{Q} = \bar{\mathbf{A}}$ (normalized adjacency) is equivalent to a first-order spectral filter $h(\bar{\mathbf{L}}) = \mathbf{I} - \bar{\mathbf{L}}$.
+    Using $\mathbf{Q} = \bar{\mathbf{A}}$ (normalized adjacency) is equivalent to first-order spectral filter $h(\bar{\mathbf{L}}) = \mathbf{I} - \bar{\mathbf{L}}$.
     Stacking $L$ layers allows learning higher-order polynomial filters.
 \end{theorem}
