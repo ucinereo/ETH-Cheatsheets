@@ -2,19 +2,19 @@
 \begin{definition}[Explicit Control]
     \begin{itemize*}
         \item \#vars
-        \item max deg. of poly.
-        \item spline complx.
-        \item max res in wavelet
-        \item bandwidth in RKHS
+        \item poly deg.
+        \item spline.
+        \item wavelet res
+        \item BW in RKHS
     \end{itemize*}
 \end{definition}
 
 \begin{definition}[Implicit Control]
     \begin{itemize*}
-        \item reg.
-        \item bayesian priors
-        \item learing alg.
-        \item random
+        \item regularization
+        \item bayesian
+        \item learing alg
+        \item randomization
     \end{itemize*}
 \end{definition}
 
@@ -26,27 +26,30 @@
     \(\E[\risk{\predF}] - \risk{\hypF} \leq \E[\sup_{h \in H}(\risk{h} - \emprisk{h})]\). Expected estimation error smaller than expected worst-case difference.
 \end{theorem}
 
-\begin{definition}[Rademacher RVs]
-    \(\sigma_1, \ldots, \sigma_n\) RV values in \(\{-1, +1\}\).
-\end{definition}
+% \begin{definition}[Rademacher RVs]
+%     \(\sigma_1, \ldots, \sigma_n\) RV values in \(\{-1, +1\}\).
+% \end{definition}
 
 \begin{definition}[Rademacher Complexity]
     Let \(z_i = (x_i, y_i)\) and \(g_h(z) = l(h(x), y)\).
     \[\hat{\RC}_{D_n}(G) = \E_{\sig}\left[\sup_{g \in G} \frac 1 n \sum_{i} \sigma_i g(z_i)\right], \
     \RC_n(G) = \E_{D_n}\left[\hat{\RC}_{D_n}(G)\right]\]
 
-    Measures ability to fit noise; can model fit to random target.
+    Measures ability to fit noise; can model fit to random target. \(\sigma_i \in \{-1, 1\}\)
 \end{definition}
 
 \begin{definition}[Corollary]
-    \(\E[\sup_{h \in H}(\risk{h} - \emprisk{h})] \leq 2 \RC_n(G)\).
+    \resizebox{.85\linewidth}{!}{
+        \(\E[\sup_{h \in H}(\risk{h} - \emprisk{h})] \leq 2 \RC_n(G)\).
+        \(\E[\risk{\predF}] \leq \risk{\hypF} + 2 \RC_n(G)\)
+    }
 \end{definition}
 
 \begin{definition}[Double Descent]
-    Overparameterized model can generalize "interpolate" data well due to implicit control.
+    Overparam. \(M\) can generalize  well due to {\color{H2}implicit control}.
 \end{definition}
 
-\subsection{Implicit Bias}
+\subsection{{\color{H2}Implicit} Bias}
 Tendency of an opt. alg. to converge to a specific type of "simple" solution even when no explicit penalty is added to the loss function.
 
 \begin{theorem}[Linear Case]
@@ -54,49 +57,57 @@ Tendency of an opt. alg. to converge to a specific type of "simple" solution eve
 \end{theorem}
 
 \begin{theorem}[linear DNN]
-    Implicit bias is not explained by norm min.
+    Implicit bias is not explained by norm minimization.
+\end{theorem}
+
+\begin{theorem}[Logistic Reg.]
+    For sep. binary class. logistic reg finds max margin.
 \end{theorem}
 
 \subsection{PAC (Probably Approximately Correct) Learning}
 
 \begin{theorem}[PAC]
     \(\E_Q[\risk{f}] \leq E_Q[\emprisk{f}] + \sqrt{\frac 2 n \left[\KL(Q \Vert P) + \ln\left(\frac{2\sqrt{n}}{\epsilon}\right)\right]}\)
-    True risk bounded by empirical risk + complexity term. \(Q/P\) posterior/prior param. dist.
-    If both Gauss, then add complexity to loss. Generate \(\theta^t\) via SGD and evaluate grad via MC on \(\theta' \sim Q(\theta, \sigma)\).
+    True risk bounded by emp. + complex. \(Q/P\) post/prior param. dist.
+    \(P = \Normal(\theta_0, \lambda\I)\), \(Q = \Normal(\theta, \sigma\I)\), add complex to loss. \(\theta^t\) via SGD and evaluate grad via MC on \(\theta' = \theta + \sigma \eta \sim Q(\theta, \sigma)\).
 \end{theorem}
 
 \subsection{Neural Tangent Kernel and Lazy Training}
-DNN \(x \mapsto f(\theta)(x)\) with ERM target \(\min_{\theta} \frac{1}{2n}\sum(f(\theta)(x_i) - y_i)^2\).
-Linearize around \(\theta_0:\) \(h(\beta)(x) := f(\theta_0)(x) + \beta \cdot \nabla f(\theta_0)(x)\), \(\beta = \theta - \theta_0\).
-
-Let \(\tilde{y}_i = y_i - f(\theta_0)(x)\), then ERM: \(\min_{\beta} \frac{1}{2n}\sum(\beta \cdot \nabla f(\theta_0)(x_i) - \tilde{y}_i)^2\).
+DNN \(x \mapsto f(\theta)(x)\) w/ ERM \(\min_{\theta} \frac{1}{2n}\sum(f(\theta)(x_i) - y_i)^2 =: {\color{H6}R(\theta)}\).
+Lin. on \(\theta_0:\) \(h(\beta)(x) := f(\theta_0)(x) + {\color{H1}\beta} \cdot {\color{H2}\nabla f(\theta_0)(x)}\), \({\color{H1}\beta = \theta - \theta_0}\),
+\resizebox{.35\linewidth}{!}{
+{\color{H2}\(\nabla f(\theta')(x) := \frac{\partial}{\partial \theta}f(\theta')(x)\mid_{\theta = \theta'}\)}.
+}
+Let \(\tilde{y}_i = y_i - f(\theta_0)(x)\), then ERM: \(\min_{{\color{H1}\beta}} \frac{1}{2n}\sum({\color{H3}\beta \cdot \nabla f(\theta_0)(x_i)} - \tilde{y}_i)^2\).
 
 \begin{lemma}
-    Equiv. to kernel linreg with \(\phi(x) = \nabla f(\theta_0)(x)\).
+    Equivalence to kernel linreg with \(\phi(x) = \nabla f(\theta_0)(x)\) \& params \(\beta\).
 \end{lemma}
 
 \begin{theorem}[Representer]
-    \(\beta \in \text{span}\{\nabla f(\theta_0)(x_i)\}_i \implies \beta = \sum_i \alpha_i \nabla f(\theta_0)(x_i)\).
+    \({\color{H1}\beta} \in \text{span}\{\nabla f(\theta_0)(x_i)\}_i \implies {\color{H1}\beta} = \sum_i \alpha_i \nabla f(\theta_0)(x_i)\).
 \end{theorem}
 
-\begin{definition}[NTK]
-    \(k_{\theta_0}(x, x') := \nabla f(\theta_0)(x) \cdot \nabla f(\theta_0)(x')\).
+\begin{definition}[{\color{H7}NTK}]
+    \(k_{\theta}(x, x') := {\color{H7}\nabla f(\theta)(x) \cdot \nabla f(\theta)(x')} \implies {\color{H3}\beta \cdot \nabla f(\theta_0)(x)} = \sum_j \alpha_j k_{\theta_0}(x_j, x)\)
 \end{definition}
 
 \begin{definition}[NTK ERM]
-    \(\min_\alpha \frac{1}{2n} \sum_i\left(\sum_j \alpha_j k_{\theta_0}(x_i, x_j) - \tilde{y}_i\right)^2 = \min_\alpha \norm{\K_{\theta_0} \alpha - \tilde{y}}^2\).
+    \(\min_\alpha \frac{1}{2n} \sum_i\left(\sum_j {\color{H3}\alpha_j k_{\theta_0}(x_i, x_j)} - \tilde{y}_i\right)^2 = \min_\alpha \frac{1}{2n}\norm{\K_{\theta_0} \alpha - \tilde{y}}^2\) w/ \(\alpha^* = K_{\theta_0}^+ \tilde{y} \implies h^*(x) = k_{\theta_0}(x)^\top \alpha^*\) and \(k_{\theta_0}(x) = (k_{\theta_0}(x_1, x), \ldots, k_{\theta_0}(x_n, x))^\top\).
 \end{definition}
 
-\begin{definition}[Gradient Flow]
-    \(\dot{\theta} = -\nabla R(\theta) = \sum_i(y_i - f_i(\theta)) \nabla f(\theta)(x_i)\).
+\begin{definition}[\(\nabla\)-Flow]
+    Allow \(\theta\) to change:
+    \(\dot{\theta} = -\nabla {\color{H6}R(\theta)} = \sum_i(y_i - f_i(\theta)) \nabla f(\theta)(x_i)\).
 \end{definition}
 
-\begin{definition}[Functional Gradient Flow]
-    \(\dot{f}(\theta)(x_j) = \nabla f(\theta)(x_j)\cdot \dot{\theta} = \sum_i (y_i - f(\theta)(x_i)) \underbrace{\nabla f(\theta(t))(x_j) \cdot \nabla f(\theta)(x_j)}_{\text{NTK}}. \implies \dot{f}(\theta) = \K(\theta)(y - f(\theta))\).
+\begin{definition}[Func. \(\nabla\)-F]
+    Expressed via NTK: \(\dot{f}(\theta)(x_j) = {\color{H2}\nabla f(\theta)(x_j)}\cdot \dot{\theta} = \)
+    \[\sum_i (y_i - f(\theta)(x_i)) {\color{H7}\nabla f(\theta(t))(x_j) \cdot \nabla f(\theta)(x_j)}. \implies \dot{f}(\theta) = \K(\theta)(y - f(\theta)).\]
 \end{definition}
 
 \begin{lemma}[NTK Constancy]
     In infinite-width limit NTK remains constant, thus flow becomes linear and solves min-norm kernel regresion w.r.t NTK. For \(m_1 = \ldots = m_L = m\): \(\norm{K(\theta_0) - K(\theta(t))}_F = \OB\left(\frac 1 m \right)\)
 
-    \disadv{NTK does not explain feature learning; captures are fixed in infinite-width limit.}
+    \disadv{NTK not explains feature learning; captures lin. regime. Small change to \(\theta\).}
 \end{lemma}

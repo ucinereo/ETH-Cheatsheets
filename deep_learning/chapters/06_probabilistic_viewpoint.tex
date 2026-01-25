@@ -4,29 +4,29 @@
 \begin{definition}[Model]
     Prior \(w \sim \mathcal{N}(0, I_d)\). LH \(y|X,w \sim \mathcal{N}(Xw, \sigma^2 I_n)\).
     Joint dist. of \((y, w)\):
-    \( \mqty[y \\ w] \sim \mathcal{N}\left(\mqty[0 \\ 0], \mqty[XX^\top + \sigma^2 I_n & X \\ X^\top & I_d]\right) \)
+    \vspace{-1em}
+    \[ \mqty[y \\ w] \sim \mathcal{N}\left(\mqty[0 \\ 0], \mqty[XX^\top + \sigma^2 I_n & X \\ X^\top & I_d]\right) \]
 \end{definition}
 
-\begin{theorem}[Posterior]
-    \( \mu_{w|y} = (X^\top X + \sigma^2I)^{-1}X^\top y \equiv X^\top(XX^\top + \sigma^2 I)^{-1}y \)
-    \( \Sigma_{w|y} = \sigma^2(X^\top X + \sigma^2I)^{-1} \equiv I - X^\top(XX^\top + \sigma^2 I)^{-1}X \)
-\end{theorem}
-
 \begin{lemma}[Ridge Equivalence]
-    \(\mu_{w|y}\) is the sol. to Ridge Regression: \(\min_w \frac{1}{2\sigma^2}\|y - Xw\|^2 + \frac{1}{2}\|w\|^2\).
+    \(\mu_{w|y}\) is the sol. to Ridge Regression:
+    
+    \(\min_w \frac{1}{2\sigma^2}\|y - Xw\|^2 + \frac{1}{2}\|w\|^2\).
     \(\implies\) MAP estimate = posterior mean.
 \end{lemma}
 
 \subsection{Gaussian Processes}
 \begin{definition}[Kernel Trick]
     Define \(k(x, x') = \phi(x)^\top \phi(x')\) and \(K = \Phi \Phi^\top\). In BLR \(\phi(x)=x\), so \(K = XX^\top\).
-    Rewriting BLR predictive \(p(f(x_*) | y)\) solely via dot products yields GP equations.
+    Rewriting BLR \(p(f(x_*) | y)\) solely via dot products \(=\) GP.
 \end{definition}
 
 \begin{theorem}
     \(f \sim \mathcal{GP}(0, k)\), \(y = f + \epsilon\). Post: \(f|y \sim \mathcal{GP}(\mu_{post}, k_{post})\):
-    using \(k(x_*) = [k(x_1, x_*), \dots, k(x_n, x_*)]^\top\):
+    using \\
+    \(k(x_*) = [k(x_1, x_*), \dots, k(x_n, x_*)]^\top\):
     \( \mu_{post}(x_*) = k(x_*)^\top (K + \sigma^2 I)^{-1} y\), 
+
     \( k_{post}(x_*, x_*) = k(x_*, x_*) - k(x_*)^\top (K + \sigma^2 I)^{-1} k(x_*) \)
 \end{theorem}
 
@@ -34,6 +34,7 @@
 \begin{definition}[Infinite Width Net]
     \(f(x) = v_0 + \frac{1}{\sqrt{m}}\sum_{j=1}^m v_j \varphi(\theta_j^\top x)\).
     Priors: \(v_0 \sim \mathcal{N}(0, \sigma_0^2)\), \(v_j \sim \mathcal{N}(0, \sigma_v^2)\), \(\theta_j \sim p(\theta)\).
+    \adv{Proof equivalence to GP}
 \end{definition}
 
 \begin{theorem}[NNGP Limit]
