@@ -1,5 +1,7 @@
 \section{Attention and Transformers}
 
+\todo{Seq2Seq models}
+
 \begin{definition}[Transformer]
     Key \(K= XW_k\), Value \(V = XW_v\), Query \(Q = XW_q\) with learnable \(W \in \R^{D \times D}\) and \(X \in \R^{T \times D}\).
     Attention:
@@ -9,7 +11,7 @@
 \end{definition}
 
 \begin{lemma}
-    queries: where to look, keys: token representation, values: token content. Search for keys similar to query, return corresponding weightedvalues.
+    queries: where to look, keys: representation, values: token content. Search for keys similar to query, return corresponding weighted values.
 \end{lemma}
 
 \begin{definition}[Attention]
@@ -22,28 +24,57 @@
 \end{definition}
 
 \begin{definition}[MHA]
-    Compute multiple attentions in parallel, each with different learned projections \(W_k^i, W_v^i, W_q^i\). Concatenate outs and linearly project.
+    Parallel \(W_k^i, W_v^i, W_q^i\). Concatenate outs and linearly project.
+\end{definition}
+
+\begin{definition}[Usage]
+    \begin{itemize*}
+        \item Enc: Self A
+        \item Dec: Masked A
+        \item Dec: Mixed (Q D, V E, K E)
+    \end{itemize*}
 \end{definition}
 
 \begin{definition}[Pos-Encoding]
-    Attention is permutation invariant, so we need to add pos info. Use fixed (sinusoidal) or learned encodings. Sinusoidal: \(\text{PE}(t, 2i) = \sin(t \omega_{2i})\), \(\text{PE}(t, 2i+1) = \cos(t \omega_{2i+1})\), \(\omega_i = C^{i / n}\).
+    Attention is per-invariant \(\implies\) add pos info. Sinusoidal: \(\text{PE}(t, 2i) = \sin(t \omega_{2i})\), \(\text{PE}(t, 2i+1) = \cos(t \omega_{2i+1})\), \(\omega_i = C^{i / n}\).
 \end{definition}
 
 \subsection{Language Models}
-\textbf{Evolution of Neural LMs}: Early models used convolutional networks; RNNs/LSTMs improved long-range dependencies. Transformers enabled parallelism and longer context understanding post-2018.
+% \textbf{Evolution of Neural LMs}: Early models used convolutional networks; RNNs/LSTMs improved long-range dependencies. Transformers enabled parallelism and longer context understanding post-2018.
+
+\begin{definition}[ELMO]
+    Char-based, left2right (language) and right2left (context) LSTM.
+\end{definition}
 
 \begin{definition}[BERT]
-    Bidirectional transformer with 24 layers, 16 heads, 1024 dimensions. Uses Masked LM (MLM) and Next Sentence Prediction (NSP) for contextual learning.
+    Bidirectional transformer with 24 layers, 16 heads, 1024 dimensions. Masked LM and Next Sentence Prediction for contextual learning.
 \end{definition}
 
 \begin{definition}[GPT]
-    Autoregressive transformer evolving from GPT-1 (117M) to GPT-4 (1.8T params). Predicts text sequentially, excelling in coherent generative tasks.
+    Autoregressive transformer evolving from GPT-1 (117M) to GPT-4 (1.8T params). Predicts text sequentially, best in gen tasks.
 \end{definition}
 
 \begin{definition}[Prompt Engineering]
     Guides LLMs using task instructions, context, and style cues. Alignment via RLHF ensures safe and helpful responses.
 \end{definition}
 
-\begin{definition}[Fine-tuning BERT for Sentiment Analysis]
-    Tokenize input, add `[CLS]' / `[SEP]', fine-tune classifier on sentiment data. Optimize with cross-entropy, classify using `[CLS]' representation.
+\begin{definition}[Fine-tuning BERT]
+    Tokenize input, add `[CLS]' / `[SEP]', fine-tune classifier on sentiment data. Optimize with CE, classify using `[CLS]'.
 \end{definition}
+
+\textit{Few Shot}: add examples, \textit{One Shot}: one example, \textit{Zero Shot}: just instructions.
+
+\begin{center}
+\resizebox{.8\linewidth}{!}{
+\begin{tabular}{lccc}
+    \hline
+    Layer Type & \begin{tabular}[t]{@{}c@{}}Complexity \\ per Layer\end{tabular}  & \begin{tabular}[t]{@{}c@{}}Sequential\\ Operations\end{tabular} & Maximum Path Length \\
+    \hline
+    Self-Attention & $O(n^2 \cdot d)$ & $O(1)$ & $O(1)$ \\
+    Recurrent & $O(n \cdot d^2)$ & $O(n)$ & $O(n)$ \\
+    Convolutional & $O(k \cdot n \cdot d^2)$ & $O(1)$ & $O(\log_k(n))$ \\
+    Self-Attention (restricted) & $O(r \cdot n \cdot d)$ & $O(1)$ & $O(n/r)$ \\
+    \hline
+\end{tabular}
+}
+\end{center}
