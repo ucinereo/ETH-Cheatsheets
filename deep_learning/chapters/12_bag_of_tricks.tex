@@ -1,68 +1,81 @@
 \section{Bag of Tricks}
 
 \begin{definition}[Residuals]
-    \(g(\x) = \W\x + f(\x; \p)\); nice gradient behavior.
-\end{definition}
-
-\begin{definition}[Skip Connection]
-    Shortcut with concat features.
+    \(g(\x) = \W\x + f(\x; \p)\); \(f(\x) \approx 0 \implies \nabla g \approx \W\).
+    \textbf{Skip}: Concat.
 \end{definition}
 
 \subsection{Regularization}
 
-Encode prior knowledge to reduce ovrefitting.
-\[\risk{\p; S} = \risk(\p; S) + \Omega(\p) \quad \p \ (\text{params}), \ S \ (\text{data})\]
+Encode prior knowledge to reduce ovrefitting (lower generalization error).
+\[{\color{H6}\riskR_\Omega}(\p; S) = \risk{\p; S} + \Omega(\p) \quad \p \ (\text{params}), \ S \ (\text{data})\]
 
 \begin{definition}[L2-Reg]
-    \(\Omega(\p) = \frac 1 2 \sum_{l = 1}^L \mu^l \norm{\p^l}_F^2\), \(\mu^l \geq 0\) \(\equiv\) Weight Decay (WD).
+    \(\Omega(\p) = \frac 1 2 \sum_{l = 1}^L \mu^l \norm{\p^l}_F^2\), \(\mu^l \geq 0\) \(\equiv\) {\color{H1}Weight Decay}. (No bias reg.)
 \end{definition}
 
-\begin{definition}[WD]
-    \(\nabla \Omega = \mu \p \implies \p(k+1) = \underbrace{(1 - \mu\eta)\p(k)}_{\text{Decay}} - \eta \nabla \risk{\p(k); S}\).
+\begin{definition}[{\color{H1}WD}]
+    \(\nabla \Omega = \mu \p \implies \p(k+1) = {\color{H1}(1 - \mu\eta)\p(k)} - \eta \nabla \risk{\p(k); S}\). \({\color{H1}*} \to 0\).
 \end{definition}
 
 \begin{colored}
-    Assume opt. \(\p^* \implies \nabla \risk{\p^*} = 0\). Then \(\risk{\p} \approx \risk{\p^*} + \frac 1 2 (\p - \p^*)^\top \H (\p - \p^*)\). Optimiality condition: \(\nabla \riskR_\Omega = 0 \iff \H(\p - \p^*) + \mu\p = 0 \iff \p = \QM(\Lambda + \mu \I)^{-1} \Lambda \QM^\top \p^* = \QM\text{diag}\left(\frac{\lambda_i}{\lambda_i + \mu}\right)\QM^\top \p^*\) with \(\H = \QM \Lambda \QM^\top\).
-    If \(\lambda_i \gg \mu\): don't regularize; if \(\lambda_i \ll \mu\): zero out.
+    Ass. GT \(\p^* \implies \nabla \risk{\p^*} = 0\): \(\risk{\p} \approx \risk{\p^*} + \frac 1 2 (\p - \p^*)^\top \H (\p - \p^*)\).
+
+    Cond.: \(\nabla {\color{H6}\riskR_\Omega} = 0 \iff \H(\p - \p^*) + \mu\p = 0 \iff \p = \QM(\Lambda + \mu \I)^{-1} \Lambda \QM^\top \p^* = \QM\text{diag}\left(\frac{\lambda_i}{\lambda_i + \mu}\right)\QM^\top \p^*\) w/ \(\H = \QM \Lambda \QM^\top\).
+    If \(\lambda_i > \mu\): no reg.; \(\lambda_i < \mu\): zero out.
 \end{colored}
 
 \begin{definition}[Constrained Opt.]
-    \(\min_{\p: \norm{\p} \leq r_{> 0}} \risk{\p}\) with projected GD \(\p(k+1) = \Pi_r[\p(k) - \eta \nabla \risk{\p(k)}], \Pi_r(\v) := \min \{1, \frac{r}{\norm{\v}}\} \v\)
+    \(\min_{\p: \norm{\p} \leq r} \risk{\p}\) with projected GD \(\p(k+1) = \Pi_r[\p(k) - \eta \nabla \risk{\p(k)}], \Pi_r(\v) := \min \{1, \frac{r}{\norm{\v}}\} \v\). Only affect large weights.
 \end{definition}
 
 \begin{definition}[Early Stopping]
-    Stop learning after finite number of iterations.
+    Stop learning after finite number of iterations. And rely on validation data.
 \end{definition}
 
 \begin{colored}
-    Approx. \(\nabla \riskR \mid_{\theta_0} \approx \H\mid_{\p^*}(\theta_0 - \p^*)\). Thus \(\p(k+1) - \p^* \approx \left(\I - \eta \H\mid_{\p^*}\right)(\p(k) - \p^*)\). Let \(\tilde{\p} = \QM^\top \p\), then ass. \(\theta(0) = 0\) yields \(\tilde\p = \left(\I - (\I - \eta \Lambda)^k\right) \tilde\p^*\). Hence if \(k\) s.t. \(\I - (\I - \eta \Lambda)^k \overset{!}{=} (\Lambda + \mu\I)^{-1}\Lambda \implies k = \frac{1}{\eta\mu}\) steps s.t. \(\eta \lambda_i \ll 1, \lambda_i \ll \mu\).
+    Approx. \(\nabla \riskR \mid_{\theta_0} \approx \nabla \riskR |_{\p^*} + \H|_{\p^*}(\theta_0 - \p^*)\). \(\nabla \riskR |_{\p^*} = 0\). Thus \(\p(k+1) - \p^* \approx \left(\I - \eta \H\mid_{\p^*}\right)(\p(k) - \p^*)\). Let \(\tilde{\p} = \QM^\top \p\), then ass. \(\theta(0) = 0\), \(|1 - \eta \lambda_i| < 1\) yields \(\tilde\p = \left(\I - (\I - \eta \Lambda)^k\right) \tilde\p^*\). Hence choose \(k\) s.t. \(\I - (\I - \eta \Lambda)^k \overset{!}{=} (\Lambda + \mu\I)^{-1}\Lambda \implies k = \frac{1}{\eta\mu}\) steps s.t. \(\eta \lambda_i \ll 1, \lambda_i \ll \mu\). \adv{Early stop \(\equiv\) \(L_2\)-reg}.
 \end{colored}
 
 \begin{definition}[Bagging]
-    \(k\) indep. models, \(k\) \(S\) w/ replacement; Aggregate results.
+    \(k\) indep. models, \(k\) samples of \(S\) w/ replacement; Aggregate results.
 \end{definition}
 
 \begin{definition}[Distillation]
-    Let complex model label data, train target model on augmented training. Use soft targets for refinement.
+    \begin{enumerate*}
+        \item Let complex model label data
+        \item Train target model on augmented training
+        \item Use soft targets for refinement
+    \end{enumerate*}
 \end{definition}
 
 \begin{definition}[Dropout]
-    Drop subsets of units. Keep w/ \(\pi_i^l\). Realizes ensemble \(p(\y \mid \x) = \sum_{\z} p(\z) p(\y \mid \x; \z)\), \(\z \sim \pi\). Use \(\tilde\p_{ij}^l = \pi_j^{l-1}\p_{ij}^l\).
+    Drop subsets of units. Keep w/ \(\pi_i^l\). Realizes ensemble \(p(\y \mid \x) = \sum_{\z} p(\z) p(\y \mid \x; \z)\), \(\z \sim \pi\). Use \(\tilde\p_{ij}^l = \pi_j^{l-1}\p_{ij}^l\) at test time.
 \end{definition}
 
 \subsection{Normalization Techniques}
 \begin{definition}[Batch Norm (BN)]
     Normalize activations over MB \(I\). Learnable \(\gamma, \beta\) to regain power.
-    \(\mu_I = \frac{1}{|I|}\sum_{t \in I} \z[t], \quad \sigma_I^2 = \delta + \frac{1}{|I|}\sum_{t \in I} (\z[t] - \mu_I)^2\)
-    \[\hat{\z} = \frac{\z - \mu_I}{\sigma_I}, \quad \tilde{\z} = \gamma \odot \hat{\z} + \beta\]
-    \adv{High LR, faster conv., removes Dropout/L2, Vision SOTA}
+    \(\mu_I = \frac{1}{|I|}\sum_{t \in I} \z[t], \quad \sigma_I^2 = \delta + \frac{1}{|I|}\sum_{t \in I} (\z[t] - \mu_I)^2\). Rescale: 
+    \(\hat{\z} = \frac{\z - \mu_I}{\sigma_I}, \quad \tilde{\z} = \gamma \odot \hat{\z} + \beta\)
+    \adv{High LR, faster conv., removes Dropout/L2(WD), Vision SOTA}
     \disadv{Dep. on batch size, bad for RNNs}.
 \end{definition}
 
 \begin{definition}[Layer Norm (LN)]
-    Normalize across activations (features \(H\)) for single sample.
-    \(\mu[t] = \frac{1}{H}\sum_{i=1}^H a_i[t], \quad \sigma[t] = \sqrt{\delta + \frac{1}{H}\sum (\dots)^2}\)
-    \[\h[t] = f(\frac{g}{\sigma[t]} \odot (a[t] - \mu[t]) + b)\]
-    \adv{Indep. of batch size, good for NLP/RNNs/Transformers}.
-    \disadv{No consistent benefits in Vision}.
+    Across activations (features \(H\)) for single sample.
+
+    \(\mu_t = \frac{1}{H}\sum_{i=1}^H a_i[t], \ \sigma_t = \sqrt{\delta + \frac{1}{H}\sum (\dots)^2}, \ \h_t = f(\frac{g}{\sigma_t} \odot (a[t] - \mu_t) + b)\)
+
+    \adv{Indep. of batch size, NLP/RNNs/Transformers}.
+    \disadv{No benefits in Vision}.
+\end{definition}
+
+\begin{definition}[Task Aug.]
+    \begin{itemize*}
+        \item Semi-Supervised
+        \item Pre-Train
+        \item Multi-Task
+        \item Self-Supervised
+    \end{itemize*}
 \end{definition}
