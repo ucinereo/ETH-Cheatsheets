@@ -1,29 +1,29 @@
 \section{Variational Autoencoder}
 
 \begin{definition}[Opt. Lin. AE]
-    \(\min_{\DM, \CM} \norm{\X - \DM\CM\X}_F^2 \geq \min_{\U} \norm{\X - \U\U^\top}_F^2\).
+    \(\min_{\DM, \CM} \norm{\X - \DM\CM\X}_F^2 \geq \min_{\U} \norm{\X - \U\U^\top \X}_F^2\).
     Rewrite into \(\norm{\X - \U\U^\top\X}_F^2 = \tr(\X\X^\top) - \tr(\U^\top \S \U) \implies \max_{\U^\top \U = \I_k} \tr(\U^\top \S \U)\).
-    Let: \(\U = \vb Q \CM\), \(\X\X^\top = \vb Q \vb*{\Lambda}^2 \vb{Q}^\top\) w/ \(\CM^\top \CM = \I_k \implies\) Obj.\(= \sum_{j=1}^d \lambda_j^2 \norm{\CM_j}_2^2\).
+    Let: \(\U = \vb Q \CM\), \(\X\X^\top = \vb Q \vb*{\Lambda}^2 \vb{Q}^\top\) w/ \(\CM^\top \CM = \I_k \implies\) Obj.\(= \sum_{j=1}^d \lambda_j^2 \norm{\CM_j}_2^2\) w/ \(\sum_j \norm{\CM_j}_2^2 = k, 0 \leq \norm{\CM_j}_2^2 \leq 1\). top \(k\) EV of \(\S\) \(\equiv\) \(\X = \U\Lambda \V^\top \implies (\CM, \DM) = (\U_k\A, \A^{-1}(\U_k^\top))\).
 \end{definition}
 
 \begin{definition}[LFA]
-    \(z \sim \Normal(0, I), \eta \sim \Normal(0, \Sigma := \text{diag}(\sigma_i^2)_i)\), \(\eta \bot z\), then \(x = \mu + Wz + \eta \implies x \sim \Normal(\mu, WW^\top + \Sigma)\), \(\mu, \Sigma\) via MLE, \(W\) via EM. When \(\Sigma = \sigma^2 I, \sigma \to 0 \implies \mu_{z \mid x} = W^+(x - \mu), \Sigma_{z \mid x} = 0\) (PCA)
+    \(z \sim \Normal(0, I), \eta \sim \Normal(0, \Sigma := \text{diag}(\sigma_i^2)_i)\), \(\eta \bot z\), then \(x = \mu + Wz + \eta \implies x \sim \Normal(\mu, WW^\top + \Sigma)\), \(\mu, \Sigma\) via MLE, \(W\) via EM. When \(\Sigma = \sigma^2 I, \sigma \to 0\) Encoding \(\implies \mu_{z \mid x} = W^+(x - \mu), \Sigma_{z \mid x} = 0\) (PCA) (\disadv{\(W\) up to rot/ref/perm})
 \end{definition}
 
 \begin{definition}[Probabilistic PCA]
-    \(\Sigma = \sigma^2 I \implies w_i = \rho_i u_i\), \(\rho_i^2 = \max\{0, \lambda_i - \sigma^2\}\) and \((\lambda_i, u_i)\) \(i\)-th eigpair of data covariance matrix.
+    \(\Sigma = \sigma^2 I \implies w_i = \rho_i u_i\), \(\rho_i^2 = \max\{0, \lambda_i - \sigma^2\}\) and \((\lambda_i, u_i)\) \(i\)-th eigpair of data covariance matrix. Recover PCA \(\sigma \to 0\).
 \end{definition}
 
 \begin{definition}[ELBO]
-    \( \mathcal{L}(\theta, \phi; x) = \E_{q_\phi(z|x)}\left[\log \frac{p_\theta(x, z)}{q_\phi(z|x)}\right] \)
+    \(\log p_\theta(x) \geq  \mathcal{L}(\theta, \phi; x) = \E_{q_\phi(z|x)}\left[\log \frac{p_\theta(x, z)}{q_\phi(z|x)}\right] \)
 \end{definition}
 
 \begin{lemma}[Two Views of ELBO] \
     \begin{enumerate}
         \item \(p(x, z) = p(x|z)p(z)\):
-        \( \mathcal{L} = \underbrace{\E_q[\log p_\theta(x|z)]}_{\text{Reconstruction}} - \underbrace{\DKL(q_\phi(z|x) \parallel p(z))}_{\text{Regularization}} \)
+        \( \mathcal{L} = \E_q[\log p_\theta(x|z)] - \DKL(q_\phi(z|x) \parallel p(z)) \)
         \item \(p(x, z) = p(z|x)p(x)\):
-        \(\log p_\theta(x) = \mathcal{L} + \underbrace{\DKL(q_\phi(z|x) \parallel p_\theta(z|x))}_{\text{Approximation Error } \ge 0} \)
+        \(\log p_\theta(x) \geq \log p_\theta(x) - \DKL(q_\phi(z|x) \parallel p_\theta(z|x)) \)
     \end{enumerate}
     Max \(\mathcal{L}\) \(\equiv\) Min distance to true posterior. Tight if \(q(z|x) = p(z|x)\).
 \end{lemma}
@@ -33,10 +33,10 @@
     \[\DKL(p \parallel q) = \frac{1}{2}\left(\frac{\sigma_0^2}{\sigma_1^2} + \frac{(\mu_0 + \mu_1)^2}{\sigma_1^2} - 1 + \log\frac{\sigma_1^2}{\sigma_0^2}\right)\]
 \end{definition}
 
-\begin{definition}[VAE KL]
-    \(p(z) = \Normal(0, 1), q_\phi(z \mid x) = \Normal(\mu_\phi, \text{diag}(\sigma_\phi^2))\), then:
-    \[\DKL(q \parallel p) = \frac{1}{2}\sum_j \left(\sigma_{\phi, j}^2 + \mu_{\phi, j}^2 - 1 - \log \sigma_{\phi, j}^2\right)\]
-\end{definition}
+% \begin{definition}[VAE KL]
+%     \(p(z) = \Normal(0, 1), q_\phi(z \mid x) = \Normal(\mu_\phi, \text{diag}(\sigma_\phi^2))\), then:
+%     \[\DKL(q \parallel p) = \frac{1}{2}\sum_j \left(\sigma_{\phi, j}^2 + \mu_{\phi, j}^2 - 1 - \log \sigma_{\phi, j}^2\right)\]
+% \end{definition}
 
 \begin{definition}[Reparam.]
     \(z_i = \mu_\phi(x_i) + \sigma_\phi(x_i) \odot \epsilon_i, \epsilon_i \sim \Normal(0, I)\). LL via MC:
@@ -45,5 +45,5 @@
 \end{definition}
 
 \begin{theorem}[Bonnet's Thm]
-    \(\nabla_\mu \E_{z \sim \mathcal{N}(\mu, \Sigma)}[f(z)] = \E[\nabla_z f(z)]\), \(\nabla_\Sigma \E[f(z)] = \frac 1 2 \E[\nabla^2_z f(z)]\). Used to compute gradients of expectations w.r.t. parameters of the distribution.
+    \(\nabla_\mu \E[f(z)] = \E[\nabla_z f(z)]\), \(\nabla_\Sigma \E[f(z)] = \frac 1 2 \E[\nabla^2_z f(z)]\). Used to compute gradients of expectations w.r.t. parameters of dist.
 \end{theorem}
