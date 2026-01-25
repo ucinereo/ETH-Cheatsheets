@@ -2,25 +2,28 @@
 
 \subsection{Robustness}
 
-\begin{definition}[Adversarial Example]
-    Given input \(x\) with label \(y\), find perturbation \(\delta\) s.t. \(||\delta||_p \le \epsilon\).
+\begin{definition}[Adv. Ex.]
+    Find peturbation \(||\delta||_p \le \epsilon\).
     \begin{itemize*}
-        \item \textbf{Untargeted}: \(\max_{\delta} \mathcal{L}(f(x+\delta), y) \implies \hat{y}(x+\delta) \neq y\).
+        \item \textbf{Untargeted}: \(\max_{\delta} \mathcal{L}(f(x+\delta), y)\) \( \implies \hat{y}(x+\delta) \neq y\).
         \item \textbf{Targeted}: \(\min_{\delta} \mathcal{L}(f(x+\delta), t) \implies \hat{y}(x+\delta) = t\).
     \end{itemize*}
 \end{definition}
 
 \begin{definition}[Linear Binary Case]
-    Score \(f(x) = w^\top x + b\). Minimal \(L_2\) perturbation to flip sign:
-    \[ \delta^* = - \frac{w^\top x + b}{\norm{w}_2^2} w, \quad \norm{\delta^*}_2 = \frac{|w^\top x + b|}{\norm{w}_2} \]
+    Score \(f(x) = w^\top x + b\). Min. \(L_2\) perturbation to flip sign:
+    \(\delta^* = - \frac{w^\top x + b}{\norm{w}_2^2} w, \quad \norm{\delta^*}_2 = \frac{|w^\top x + b|}{\norm{w}_2}\)
     For \(L_\infty\): \(\delta = - \epsilon \, \text{sign}(y \cdot w)\).
 \end{definition}
 
 \begin{definition}[Attacks]
     \textbf{FGSM} (One-step \(L_\infty\)):
-    \[ x^{adv} = x + \epsilon \, \text{sign}(\nabla_x \mathcal{L}(f(x), y)) \]
-    \textbf{PGD} (Iterative with projection):
-    \[ \delta_{t+1} = \text{Proj}_{||\delta|| \le \epsilon} \left( \delta_t + \alpha \, \text{sign}(\nabla_x \mathcal{L}(f(x+\delta_t), y)) \right) \]
+    \(x^{adv} = x + \epsilon \, \text{sign}(\nabla_x \mathcal{L}(f(x), y))\)
+
+    \textbf{PGD}:
+    \( \delta_{t+1} = \text{Proj}_{||\delta|| \le \epsilon} \left( \delta_t + \alpha \, \text{sign}(\nabla_x \mathcal{L}(f(x+\delta_t), y)) \right) \)
+
+    \adv{Adv vulnerable is about distances to decision boundary under geometry.}
 \end{definition}
 
 \begin{definition}[Robust Training]
@@ -31,20 +34,27 @@
 
 \subsection{Interpretability}
 
-\begin{definition}[Local Attribution]
-    \textbf{Sensitivity}: Gradient \(\frac{\partial f(x)}{\partial x_j}\). \disadv{Infinitesimal only}.
-    \textbf{Ceteris Paribus}: \(x'_j \mapsto f(x'_j, x_{-j})\). \disadv{Unrealistic inputs}.
+\begin{definition}[Local]
+    \begin{itemize*}
+        \item \textit{Sens}: \(\frac{\partial f(x)}{\partial x_j}\). \disadv{Infinitesimal}
+        \item \textit{Ceteris Paribus}: Vary \(x_j\) while fixing \(x_{-j}\) \disadv{unrealistic input}.
+        \item \textit{Missing info}: \(x_j\) unobs. \(f(x) - \E[f(X) \mid X_{-j} = x_{-j}]\).
+    \end{itemize*}
+
 \end{definition}
 
-\begin{definition}[Global Importance]
-    \textbf{Permutation Importance}: Measure risk increase when \(x_j\) shuffled.
-    \[ \text{Imp}_j = \frac{1}{n} \sum \left( l(y, f(x_{-j}, x_j^{\text{perm}})) - l(y, f(x)) \right) \]
-    \textbf{Predictive Utility}: \(\mathcal{R}(f_{-j}) - \mathcal{R}(f)\). (LOFO principle).
+\begin{definition}[Global]
+    \begin{itemize*}
+        \item \textit{Mutual Info}: \(I(X_j ; Y) = \E\left[\log\frac{p(X_j, Y)}{p(X_j)p(Y)}\right]\) \disadv{difficult}.
+        \item \textit{Predicitive Utility} (LOFO): \(\mathcal{R}(f_{-j}) - \mathcal{R}(f)\) \disadv{retrain model}.
+        \item \textit{Permutation importance}: risk increase when \(x_j\) shuffled.
+        \(\text{Imp}_j = \frac{1}{n} \sum \left( l(y, f(x_{-j}, x_j^{\text{perm}})) - l(y, f(x)) \right)\)
+    \end{itemize*}
 \end{definition}
 
 \begin{definition}[Shapley Values (SHAP/SAGE)]
     Additive contribution \(\phi_j\) based on marginal \(\Delta_j(S) = \mathcal{Q}(S \cup \{j\}) - \mathcal{Q}(S)\).
-    \[ \phi_j = \sum_{S \subseteq \{1 \dots p\} \setminus \{j\}} \frac{|S|! (p - |S| - 1)!}{p!} \Delta_j(S) \]
+    \( \phi_j = \sum_{S \subseteq \{1 \dots p\} \setminus \{j\}} \frac{|S|! (p - |S| - 1)!}{p!} \Delta_j(S) \)
     \begin{itemize*}
         \item \textbf{SHAP}: \(\mathcal{Q}(S) = \mathbb{E}[f(x) \mid x_S]\) (Prediction).
         \item \textbf{SAGE}: \(\mathcal{Q}(S) = -\mathcal{R}(f_S)\) (Performance).
@@ -53,8 +63,7 @@
 
 \begin{definition}[Causal Intervention]
     Structural Equation \(X_j = f_j(\text{Pa}(X_j), U_j)\).
-    \textbf{Intervention} \(do(X_j = a)\): Replace equation with \(X_j = a\).
-    Compare \(Y(x)\) (observed) vs \(Y(do(X_j = x'_j))\) (counterfactual).
+    \textbf{Intervention} \(do(X_j = a)\): Repl. \(X_j = a\): \(Y(x)\) (obs) vs \(Y(do(X_j = x'_j))\) (counterfact).
 \end{definition}
 
 \subsection{Fairness}
@@ -62,8 +71,8 @@
 Let \(A\) be protected attribute, \(Y\) true label, \(\hat{Y}\) prediction.
 
 \begin{definition}[Demographic Parity]
+    \( \hat{Y} \perp A \iff P(\hat{Y}=1 \mid A=a) = P(\hat{Y}=1 \mid A=a') \)
     Prediction independent of group.
-    \[ \hat{Y} \perp A \iff P(\hat{Y}=1 \mid A=a) = P(\hat{Y}=1 \mid A=a') \]
     \disadv{Ignores qualifications/ground truth}.
 \end{definition}
 
@@ -74,11 +83,11 @@ Let \(A\) be protected attribute, \(Y\) true label, \(\hat{Y}\) prediction.
 \end{definition}
 
 \begin{definition}[Equality of Opportunity]
-    Equal TPR only.
-    \[ \hat{Y} \perp A \mid (Y=1) \]
+    Equal TPR only:
+    \( \hat{Y} \perp A \mid (Y=1) \)
 \end{definition}
 
 \begin{definition}[Fair Representation Learning]
-    Learn encoder \(Z = f(X)\) to predict \(Y\) (predictor \(h\)) but hide \(A\) (adversary \(g\)).
-    \[ \min_{f, h} \max_{g} \mathbb{E}[l_{\text{task}}(h(Z), Y)] - \lambda \mathbb{E}[l_{\text{adv}}(g(Z, Y), A)] \]
+    Learn encoder \(Z = f(X)\) to predict \(Y\) (pred \(h\)) but hide \(A\) (adv. \(g\)).
+    \( \min_{f, h} \max_{g} \mathbb{E}[l_{\text{task}}(h(Z), Y)] - \lambda \mathbb{E}[l_{\text{adv}}(g(Z, Y), A)] \).
 \end{definition}
